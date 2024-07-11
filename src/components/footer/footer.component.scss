@@ -114,3 +114,30 @@ footer {
     top: -9rem;
     right: 0;
   }
+
+  @media only screen and (max-width: 427px) {
+    footer {
+        padding: 5rem 2rem;
+    }
+    .track {
+        top: 12rem;
+    }
+    .content-container {
+        flex-direction: column;
+        align-items: flex-start !important;
+        div {
+            width: 100%;
+        }
+        #input-main-container {
+            margin-top: 15rem;
+        }
+        .contact {
+            width: 60%;
+        }
+    }
+    .input-div {
+        mat-icon {
+            right: 1.5rem;
+        }
+    }
+  }

@@ -80,3 +80,10 @@
       font-weight: 400;
     }
   }
+
+  @media only screen and (max-width: 427px) {
+    .card {
+      width: 20rem; /* Adjust based on your card size */
+      height: 28rem;
+    }
+  }
