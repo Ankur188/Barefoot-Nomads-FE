@@ -1,0 +1,41 @@
+<!-- <div>
+
+	<swiper [slidesPerView]="3" [spaceBetween]="50" (swiper)="setControlledSwiper($event)" [navigation]="{}"
+		[pagination]="{ clickable: true }" [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true">
+		<ng-template swiperSlide>Slide 1</ng-template>
+		<ng-template swiperSlide>Slide 2</ng-template>
+		<ng-template swiperSlide>Slide 3</ng-template>
+		<ng-template swiperSlide>Slide 4</ng-template>
+		<ng-template swiperSlide>Slide 5</ng-template>
+		<ng-template swiperSlide>Slide 6</ng-template>
+	</swiper>
+</div> -->
+
+<div class="slider-container">
+	<div class="heading text-uppercase">what we offer</div>
+	<div class="sub-heading">
+		Specially Curated <span>Adventures</span>
+	</div>
+	<div class="d-flex align-items-center justify-content-between chips-list">
+		<div *ngFor="let trip of tripsList" class="chip flex-center" [ngClass]="trip.selected ? 'chip-active' : ''">{{trip.name  | uppercase}}</div>
+	</div>
+	<div class="slider"  id="slider-main">
+		<div class="slider">
+			<div class="fade-left"></div>
+			<div class="fade-right"></div>
+			<div class="card-slider" [style.transform]="'translateX(' + slideOffset + 'px)'">
+			  <trip-card *ngFor="let card of cards" [card]="card"></trip-card>
+			</div>
+		</div>
+		<div class="d-flex align-items-center justify-content-between pagination">
+			<div>...</div>
+			<div>
+				<button (click)="previous()" [disabled]="currentIndex === 0">
+					<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_back"></mat-icon>
+				</button>
+				<button (click)="next()" [disabled]="currentIndex >= cards.length - visibleCards">
+					<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_forward"></mat-icon>
+				</button>
+			</div>
+		</div>
+</div>

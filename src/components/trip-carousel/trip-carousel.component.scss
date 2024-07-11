@@ -1,0 +1,104 @@
+.slider-container {
+    padding: 10rem 5rem;
+    font-weight: 600;
+    .heading {
+      color: #0C0C0C;
+      font-size: 1.25rem;
+      letter-spacing: 0.125rem;
+      opacity: 0.6;
+    }
+    .sub-heading {
+      color: #0C0C0C;
+      font-size: 2.5rem;
+      span {
+        color: #F0BB1F;
+        text-decoration-line: underline;
+      }
+    }
+}
+.chips-list {
+  margin: 1.5rem 0 3rem;
+}
+.chip {
+  height: 3rem;
+  padding: 1rem 3rem;
+  border-radius: 3rem;
+  background: rgba(12, 12, 12, 0.20);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.035rem;
+  cursor: pointer;
+}
+.chip-active {
+  background: rgba(12, 12, 12, 1);
+  color: #FFFFFF;
+}
+.slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .card-slider {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+  
+  .card {
+    flex: 0 0 auto;
+    width: 300px; /* Adjust based on your card size */
+    margin-right: 20px; /* Adjust based on your card margin */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card img {
+    width: 100%;
+    height: 200px; /* Adjust based on your image size */
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 10px;
+  }
+  
+  .fade-left,
+  .fade-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px; /* Adjust based on your fade width */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    pointer-events: none;
+  }
+  
+  .fade-left {
+    left: 0;
+  }
+  
+  .fade-right {
+    right: 0;
+    transform: scaleX(-1);
+  }
+
+  .pagination {
+    margin-top: 3rem;
+  }
+  
+  button {
+    cursor: pointer;
+    border: none ;
+    background: none;
+    mat-icon {
+        color: black;
+    }
+    &:first-child {
+        margin-right: 1.5rem;
+    }
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
