@@ -35,6 +35,11 @@ header {
     font-size: 0.875rem;
     letter-spacing: 0.0175rem;
     gap: 1.5rem;
+    cursor: pointer;
+}
+
+.is-active {
+    font-weight: 700;
 }
 
 @media only screen and (max-width: 427px) {
