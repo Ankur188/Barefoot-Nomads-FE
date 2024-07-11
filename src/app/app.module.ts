@@ -12,6 +12,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { TimestampToDatePipe } from 'src/utils/timestamp-to-date.pipe';
 import { FooterComponent } from 'src/components/footer/footer.component';
+import { AboutComponent } from 'src/components/about/about.component';
+import { ImageSliderComponent } from 'src/components/image-slider/image-slider.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { FooterComponent } from 'src/components/footer/footer.component';
     TripCarouselComponent,
     TripCardComponent,
     TimestampToDatePipe,
-    FooterComponent
+    FooterComponent,
+    AboutComponent,
+    ImageSliderComponent
   ],
   imports: [
     BrowserModule,
