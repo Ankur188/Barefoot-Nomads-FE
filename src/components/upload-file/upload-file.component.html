@@ -1,0 +1,18 @@
+<!-- image-upload.component.html -->
+
+<ng-conatiner *ngIf="staticService.trips$ | async as trips">
+  <label for="cars">Choose a destination:</label>
+  
+  <select name="cars" id="cars" [(ngModel)]="categoryId">
+    <!-- <option value="meghalaya">Meghalaya</option>
+    <option value="uttrakhand">Uttrakhand</option>
+    <option value="north-east">North-East</option>
+    <option value="rajasthan">Rajasthant</option>
+    <option value="jammu & kashmir">jammu & kashmir</option>
+    <option value="tamil nadu">tamil nadu</option> -->
+      <option *ngFor="let trip of trips"  [value]="trip.id">{{trip.category}}</option>
+  </select>
+  
+  <input type="file" (change)="onFileSelected($event)" accept="image/*">
+  <button (click)="onUpload()">Upload Image</button>
+</ng-conatiner>

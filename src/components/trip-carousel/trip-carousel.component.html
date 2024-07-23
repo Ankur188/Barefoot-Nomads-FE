@@ -19,12 +19,14 @@
 	<div class="d-flex align-items-center justify-content-between chips-list">
 		<div *ngFor="let trip of tripsList" class="chip flex-center" [ngClass]="trip.selected ? 'chip-active' : ''">{{trip.name  | uppercase}}</div>
 	</div>
-	<div class="slider"  id="slider-main">
+	<div *ngIf="trips" class="slider"  id="slider-main">
 		<div class="slider">
 			<div class="fade-left"></div>
 			<div class="fade-right"></div>
 			<div class="card-slider" [style.transform]="'translateX(' + slideOffset + 'px)'">
-			  <trip-card *ngFor="let card of cards" [card]="card"></trip-card>
+				<ng-container *ngFor="let card of trips">
+					<trip-card [card]="card"></trip-card>
+				</ng-container>
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-between pagination">
@@ -33,9 +35,10 @@
 				<button (click)="previous()" [disabled]="currentIndex === 0">
 					<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_back"></mat-icon>
 				</button>
-				<button (click)="next()" [disabled]="currentIndex >= cards.length - visibleCards">
+				<button (click)="next()" [disabled]="currentIndex >= trips.length - visibleCards">
 					<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_forward"></mat-icon>
 				</button>
 			</div>
 		</div>
+	</div>
 </div>

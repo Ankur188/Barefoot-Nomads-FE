@@ -14,6 +14,10 @@ import { TimestampToDatePipe } from 'src/utils/timestamp-to-date.pipe';
 import { FooterComponent } from 'src/components/footer/footer.component';
 import { AboutComponent } from 'src/components/about/about.component';
 import { ImageSliderComponent } from 'src/components/image-slider/image-slider.component';
+import { StaticService } from 'src/services/static.service';
+import { HttpClientModule } from '@angular/common/http';
+import { UploadFileComponent } from 'src/components/upload-file/upload-file.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,16 +29,19 @@ import { ImageSliderComponent } from 'src/components/image-slider/image-slider.c
     TimestampToDatePipe,
     FooterComponent,
     AboutComponent,
-    ImageSliderComponent
+    ImageSliderComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     SwiperModule,
-    MatIconModule
+    MatIconModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [StaticService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
