@@ -1,0 +1,37 @@
+<div class="background-wrapper">
+    <div class="main-div">
+        <div class="heading-container">
+            <p class="heading text-uppercase">Travel Awaits You!</p>
+            <p class="sub-heading">Unlock exclusive adventures tailored just for you.</p>
+            <p class="context para-font-style">Join our vibrant community of travelers and access your personalized profile,
+                view your
+                booking history, and manage your favorite adventure packages.
+                Sign up today to start exploring unique destinations and personalized travel experiences that await!</p>
+        </div>
+
+
+        <form [formGroup]="signUpform" (ngSubmit)="submitSignUpform()" class="form-details d-flex justify-content-center align-items-center">
+            <div class="form-div d-flex justify-content-center flex-column">
+                <label for="">Full Name</label>
+                <input type="text" placeholder="Name" formControlName="name">
+
+                <label for="">Email</label>
+                <input type="text" placeholder="Email" formControlName="email">
+
+                <label for="">Phone Number</label>
+                <input type="number" placeholder="Phone" formControlName="phone">
+
+                <label for="">Password</label>
+                <input type="password" placeholder="XXX-XXX-XXX" formControlName="password">
+
+                <label for="">Re-enter password</label>
+                <input type="password" placeholder="XXX-XXX-XXX">
+
+                <div class="btnDiv d-flex align-items-center justify-content-center flex-column">
+                    <button class="cstmSubmitBtn" type="submit">Create Now</button>
+                    <p class="mt-3">Have an account? <span class="loginNow" >Login Now</span></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

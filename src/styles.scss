@@ -24,16 +24,10 @@ html {
     justify-content: center;
 }
 
-.swiper-container {
-    width: 100%;
-    height: 300px;
-    margin: 50px auto;
-  }
-  
-  .swiper-slide {
-    background: #f1f1f1;
-    color: #000;
-    text-align: center;
-    line-height: 300px;
-  }
-  
+.para-font-style {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 2rem;
+  letter-spacing: 0.03125rem;
+  color: rgba(255, 255, 255, 0.75);
+}

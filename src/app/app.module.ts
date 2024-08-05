@@ -17,7 +17,8 @@ import { ImageSliderComponent } from 'src/components/image-slider/image-slider.c
 import { StaticService } from 'src/services/static.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UploadFileComponent } from 'src/components/upload-file/upload-file.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from 'src/components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     AboutComponent,
     ImageSliderComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { FormsModule } from '@angular/forms';
     SwiperModule,
     MatIconModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [StaticService],
   bootstrap: [AppComponent]
