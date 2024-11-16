@@ -1,0 +1,137 @@
+<div class="main-container">
+  <div class="type-container d-flex align-items-center justify-content-center">
+    <div
+      class="package-type"
+      (click)="isTailorMadeSelected = true"
+      [ngClass]="isTailorMadeSelected ? 'active-package' : ''"
+    >
+      Tailor-Made Experiences
+    </div>
+    <div
+      class="package-type"
+      (click)="isTailorMadeSelected = false"
+      [ngClass]="!isTailorMadeSelected ? 'active-package' : ''"
+    >
+      Adventure Packages
+    </div>
+  </div>
+  <div class="sub-div">
+    <p class="heading">Create Your Perfect Journey!</p>
+    <p class="sub-heading">Tailor-Made Travel Enquiry</p>
+    <div class="content">
+      <p class="para-font-style">
+        We specialize in crafting personalized travel experiences that cater to
+        your unique preferences and desires. Whether you’re dreaming of a serene
+        beach getaway, an adventurous mountain expedition, or an immersive
+        cultural journey, our dedicated team is here to help you every step of
+        the way.
+      </p>
+      <p class="para-font-style">
+        Please fill out the form below to share your travel vision with us. Let
+        us know your ideal destinations, travel dates, interests, and any
+        specific requirements you may have. Our experts will work closely with
+        you to design a custom itinerary that exceeds your expectations.
+      </p>
+    </div>
+  </div>
+  <div
+    class="form-container d-flex align-items-end justify-content-between mt-4"
+  >
+    <form
+      [formGroup]="enquireForm"
+      (ngSubmit)="submitEnquireForm()"
+      class="form-details"
+    >
+      <div class="form-div d-flex justify-content-center flex-column">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="col-md-12" for="">Full Name</label>
+            <input
+              class="col-md-12"
+              type="text"
+              placeholder="Name"
+              formControlName="name"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="col-md-12" for="">Location</label>
+            <select class="col-md-12" name="cars" id="cars">
+              <option value="meghalaya">Meghalaya</option>
+              <option value="uttrakhand">Uttrakhand</option>
+              <option value="north-east">North-East</option>
+              <option value="rajasthan">Rajasthant</option>
+              <option value="jammu & kashmir">jammu & kashmir</option>
+              <option value="tamil nadu">tamil nadu</option>
+              <!-- <option *ngFor="let trip of trips"  [value]="trip.id">{{trip.category}}</option> -->
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div [ngClass]="isTailorMadeSelected ? 'col-md-4' : 'col-md-6'">
+            <label class="col-md-12" for="">No. of adventurers</label>
+            <input
+              class="col-md-12"
+              type="text"
+              placeholder="Name"
+              formControlName="name"
+            />
+          </div>
+
+          <div [ngClass]="isTailorMadeSelected ? 'col-md-4' : 'col-md-6'">
+            <label class="col-md-12" for="">No. of Days</label>
+            <input
+              class="col-md-12"
+              type="text"
+              placeholder="Name"
+              formControlName="name"
+            />
+          </div>
+
+          <div *ngIf="isTailorMadeSelected" class="col-md-4">
+            <label class="col-md-12" for="">Budget (Per Person)</label>
+            <mat-slider class="col-md-12" min="200" max="500" discrete>
+              <input value="300" matSliderStartThumb />
+              <input value="400" matSliderEndThumb />
+            </mat-slider>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="col-md-12" for="">Email</label>
+            <input
+              class="col-md-12"
+              type="text"
+              placeholder="Email"
+              formControlName="email"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="col-md-12" for="">Phone Number</label>
+            <input
+              class="col-md-12"
+              type="number"
+              placeholder="Phone"
+              formControlName="phone"
+            />
+          </div>
+        </div>
+
+        <label class="col-md-12" for="">Message</label>
+        <textarea
+          type="number"
+          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
+          formControlName="phone"
+        ></textarea>
+
+        <div class="btnDiv d-flex align-items-center">
+          <button class="cstmSubmitBtn" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+    <img src="../../assets//how can we help u.svg" alt="" />
+  </div>
+</div>

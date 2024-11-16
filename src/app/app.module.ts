@@ -19,6 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { UploadFileComponent } from 'src/components/upload-file/upload-file.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from 'src/components/login/login.component';
+import { EnquireComponent } from 'src/components/enquire/enquire.component';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { LoginComponent } from 'src/components/login/login.component';
     AboutComponent,
     ImageSliderComponent,
     UploadFileComponent,
-    LoginComponent
+    LoginComponent,
+    EnquireComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { LoginComponent } from 'src/components/login/login.component';
     MatIconModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSliderModule
   ],
   providers: [StaticService],
   bootstrap: [AppComponent]

@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from 'src/components/about/about.component';
+import { EnquireComponent } from 'src/components/enquire/enquire.component';
 import { HomeComponent } from 'src/components/home/home.component';
 import { LoginComponent } from 'src/components/login/login.component';
 import { UploadFileComponent } from 'src/components/upload-file/upload-file.component';
 
 const routes: Routes = [
   {path:'', component: HomeComponent},
+  {path:'enquire',pathMatch: 'full', component: EnquireComponent},
   {path:'about',pathMatch: 'full', component: AboutComponent},
   {path:'upload',pathMatch: 'full', component: UploadFileComponent},
   {path:'login', pathMatch: 'full', component: LoginComponent},

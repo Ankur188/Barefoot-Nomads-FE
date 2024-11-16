@@ -28,10 +28,15 @@
   font-weight: 500;
   letter-spacing: 0.035rem;
   cursor: pointer;
+
+  &:hover {
+    color: #000000;
+    font-weight: 500;
+  }
 }
 .chip-active {
   background: rgba(12, 12, 12, 1);
-  color: #FFFFFF;
+  color: #FFFFFF !important;
 }
 .slider {
     position: relative;

@@ -12,6 +12,9 @@ import { StaticService } from 'src/services/static.service';
 export class LoginComponent {
 
 signUpform : FormGroup;
+loginForm : FormGroup;
+isSignUp:boolean = false;
+password:string = '';
 
 constructor(private formBuilder : FormBuilder, private staticService: StaticService){
   this.signUpform = new FormGroup({
@@ -21,7 +24,10 @@ constructor(private formBuilder : FormBuilder, private staticService: StaticServ
     password : new FormControl('')
 })
 
-
+this.loginForm = new FormGroup({
+  email : new FormControl(''),
+  password : new FormControl('')
+})
 
 }
 
@@ -33,7 +39,18 @@ constructor(private formBuilder : FormBuilder, private staticService: StaticServ
     postData['role'] = 'user';
     this.staticService.signUpUser(postData).subscribe(data => {
       this.signUpform.reset();
+      this.password = null;
+      this.isSignUp = false;
     });
+  }
+
+  submitLoginForm() {
+    let postData = this.loginForm.getRawValue();
+    this.staticService.loginUser(postData).subscribe(data => {
+      localStorage.setItem('isUserLoggedIn', 'true');
+      sessionStorage.setItem('bn_access', data.accessToken);
+      sessionStorage.setItem('bn_refresh', data.refreshToken);
+    })
   }
 
 }

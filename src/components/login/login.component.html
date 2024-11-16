@@ -1,37 +1,103 @@
 <div class="background-wrapper">
-    <div class="main-div">
-        <div class="heading-container">
-            <p class="heading text-uppercase">Travel Awaits You!</p>
-            <p class="sub-heading">Unlock exclusive adventures tailored just for you.</p>
-            <p class="context para-font-style">Join our vibrant community of travelers and access your personalized profile,
-                view your
-                booking history, and manage your favorite adventure packages.
-                Sign up today to start exploring unique destinations and personalized travel experiences that await!</p>
-        </div>
-
-
-        <form [formGroup]="signUpform" (ngSubmit)="submitSignUpform()" class="form-details d-flex justify-content-center align-items-center">
-            <div class="form-div d-flex justify-content-center flex-column">
-                <label for="">Full Name</label>
-                <input type="text" placeholder="Name" formControlName="name">
-
-                <label for="">Email</label>
-                <input type="text" placeholder="Email" formControlName="email">
-
-                <label for="">Phone Number</label>
-                <input type="number" placeholder="Phone" formControlName="phone">
-
-                <label for="">Password</label>
-                <input type="password" placeholder="XXX-XXX-XXX" formControlName="password">
-
-                <label for="">Re-enter password</label>
-                <input type="password" placeholder="XXX-XXX-XXX">
-
-                <div class="btnDiv d-flex align-items-center justify-content-center flex-column">
-                    <button class="cstmSubmitBtn" type="submit">Create Now</button>
-                    <p class="mt-3">Have an account? <span class="loginNow" >Login Now</span></p>
-                </div>
-            </div>
-        </form>
+  <div class="main-div">
+    <div *ngIf="!isSignUp" class="heading-container">
+      <p class="heading text-uppercase">Welcome Back, Adventurer!</p>
+      <p class="sub-heading">
+        Log in to access your personalized travel experience
+      </p>
+      <p class="context para-font-style">
+        Log in to access your personalized travel dashboard. Manage your
+        profile, view booking history, and keep track of your favorite trip
+        packages all in one convenient place. Your next adventure is just a
+        click away!
+      </p>
     </div>
+
+    <div *ngIf="isSignUp" class="heading-container">
+      <p class="heading text-uppercase">Travel Awaits You!</p>
+      <p class="sub-heading">
+        Unlock exclusive adventures tailored just for you.
+      </p>
+      <p class="context para-font-style">
+        Join our vibrant community of travelers and access your personalized
+        profile, view your booking history, and manage your favorite adventure
+        packages. Sign up today to start exploring unique destinations and
+        personalized travel experiences that await!
+      </p>
+    </div>
+
+    <form
+      *ngIf="!isSignUp"
+      [formGroup]="loginForm"
+      (ngSubmit)="submitLoginForm()"
+      class="form-details d-flex justify-content-center align-items-center"
+    >
+      <div class="form-div d-flex justify-content-center flex-column">
+        <label for="">Email / Phone Number</label>
+        <input type="text" placeholder="email" formControlName="email" />
+
+        <div class="d-flex align-items-end justify-content-between">
+          <label for="">Password</label>
+          <p class="small-text signup-login-btn">Forgot Password?</p>
+        </div>
+        <input
+          type="password"
+          placeholder="XXX-XXX-XXX"
+          formControlName="password"
+        />
+
+        <div
+          class="btnDiv d-flex align-items-center justify-content-center flex-column"
+        >
+          <button class="cstmSubmitBtn" type="submit">Login Now</button>
+          <p class="mt-3">
+            Don't have an account?
+            <span class="signup-login-btn" (click)="isSignUp = true"
+              >SignUp Now</span
+            >
+          </p>
+        </div>
+      </div>
+    </form>
+
+    <form
+      *ngIf="isSignUp"
+      [formGroup]="signUpform"
+      (ngSubmit)="submitSignUpform()"
+      class="form-details d-flex justify-content-center align-items-center"
+    >
+      <div class="form-div d-flex justify-content-center flex-column">
+        <label for="">Full Name</label>
+        <input type="text" placeholder="Name" formControlName="name" />
+
+        <label for="">Email</label>
+        <input type="text" placeholder="Email" formControlName="email" />
+
+        <label for="">Phone Number</label>
+        <input type="number" placeholder="Phone" formControlName="phone" />
+
+        <label for="">Password</label>
+        <input
+          type="password"
+          placeholder="XXX-XXX-XXX"
+          formControlName="password"
+        />
+
+        <label for="">Re-enter password</label>
+        <input type="password" placeholder="XXX-XXX-XXX" [(ngModel)]="password"/>
+
+        <div
+          class="btnDiv d-flex align-items-center justify-content-center flex-column"
+        >
+          <button class="cstmSubmitBtn" type="submit">Create Now</button>
+          <p class="mt-3">
+            Have an account?
+            <span class="signup-login-btn" (click)="isSignUp = false"
+              >Login Now</span
+            >
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

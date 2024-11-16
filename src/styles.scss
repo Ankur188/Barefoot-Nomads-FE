@@ -31,3 +31,39 @@ html {
   letter-spacing: 0.03125rem;
   color: rgba(255, 255, 255, 0.75);
 }
+
+.form-details {
+  margin-top: 5rem;
+  .form-div {
+      width: 30%;
+  }
+  input, select, textarea {
+      padding: .5rem;
+      border-radius: 0.275rem;
+      margin-bottom: 1rem;
+      color:#0C0C0C;
+  }
+  label {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+  }
+  input::placeholder, select::placeholder, textarea::placeholder {
+      opacity: 0.2; /* Change placeholder text color to gray (#999) */
+  }
+  .btnDiv {
+      margin-top: 3rem;
+      .loginNow {
+          color: #F0BB1F;
+          text-decoration: none;
+      }
+  }
+  .cstmSubmitBtn {
+      width: 18.75rem;
+      height: 2.5rem;
+      background-color: #F0BB1F;
+      color: #0C0C0C;
+      font-weight: 600;
+      border-radius: 6.25rem;
+  }
+}
+

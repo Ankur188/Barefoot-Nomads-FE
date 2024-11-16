@@ -1,0 +1,60 @@
+.main-container {
+    background-color: #000000;
+    padding: 10rem 5rem 5rem;
+    .heading {
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: .5rem;
+        letter-spacing: 0.125rem;
+        opacity: 0.6;
+    }
+    .sub-heading {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 3rem;
+    }
+    .sub-div {
+        margin-top: 7rem;
+    }
+}
+.form-container {
+    width: 100%;
+    form, .form-div {
+        width: 90%;
+    }
+    textarea {
+        height: 7rem;
+    }
+    .btnDiv {
+        margin-top: 2rem;
+        button {
+            width: 10rem;
+        }
+    }
+}
+mat-slider {
+    width: 300px;
+  }
+
+  .package-type {
+    padding: 1rem 2rem;
+    color: #000000;
+    cursor: pointer;
+    font-size: 1.3rem;
+    background: #FFFFFF;
+    &:first-child {
+        border-top-left-radius: 2rem;
+        border-bottom-left-radius: 2rem;
+    }
+    &:last-child {
+        border-top-right-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+    }
+  }
+
+  .active-package {
+    background-color: #F0BB1F;
+    color: #000000;
+    font-weight: 600;
+    border: white 1px solid;
+  }

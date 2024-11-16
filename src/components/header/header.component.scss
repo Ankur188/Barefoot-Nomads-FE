@@ -29,6 +29,7 @@ header {
     line-height: 3.02994rem; /* 133.333% */
     letter-spacing: -0.15906rem;
     gap: 0.125rem;
+    cursor: pointer;
 }
 
 .nav-links {
@@ -40,6 +41,7 @@ header {
 
 .is-active {
     font-weight: 700;
+    color: #F0BB1F;
 }
 
 @media only screen and (max-width: 427px) {

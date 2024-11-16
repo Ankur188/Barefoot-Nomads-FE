@@ -13,15 +13,6 @@ export class TripCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(111111, this.card)
-    // const base64Image = this.arrayBufferToBase64(this.card.image.data);
-    // console.log(base64Image)
-    // // Set as background image style
-    // this.imageURl = `data:image/jpeg;base64,${base64Image}`;
-    // this.imageURl = `data:image/jpeg;base64,${this.card.image}`
-    // const blob = this.base64ToBlob(this.card.image);
-    // this.imageURl = URL.createObjectURL(blob);
-    console.log(this.imageURl)
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer): string {

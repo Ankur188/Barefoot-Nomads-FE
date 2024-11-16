@@ -20,6 +20,10 @@ export class StaticService {
   }
 
   signUpUser(postData: any): Observable<any> {
-    return this.http.post(`${environment.localhost}user/signup`, postData);
+    return this.http.post(`${environment.localhost}users/signup`, postData);
+  }
+
+  loginUser(postData: any): Observable<any> {
+    return this.http.post(`${environment.localhost}user/login`, postData);
   }
 }

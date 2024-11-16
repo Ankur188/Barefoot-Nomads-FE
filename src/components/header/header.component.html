@@ -1,5 +1,5 @@
 <header [ngClass]="isScroll ? 'dark-bg' : 'transparent'">
-    <div class="logo d-flex align-items-center">
+    <div class="logo d-flex align-items-center" [routerLink]="'/'">
         <img src="../../assets/logo.svg" alt="">
         BarefootNomads
     </div>
@@ -10,8 +10,8 @@
         <div [routerLink]="'/about'" [routerLinkActive]="'is-active'">
             About Us
         </div>
-        <div>
-            Contact
+        <div [routerLink]="'/enquire'" [routerLinkActive]="'is-active'">
+            Enquire
         </div>
         <div  [routerLink]="'/login'" [routerLinkActive]="'is-active'">
             Sign Up/Login
