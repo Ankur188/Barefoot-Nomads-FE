@@ -1,8 +1,10 @@
+@import '../../styles.scss';
+
 header {
     display: flex;
     // width: 100;
     height: 5rem;
-    padding: 0rem 5rem;
+    padding: 0rem 12rem;
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
@@ -17,7 +19,7 @@ header {
 }
 .dark-bg {
     border-bottom: 1px solid rgba(255, 255, 255, 0.20);
-    background: #0C0C0C;
+    background: $lf-black;
 }
 .transparent {
     background: transparent;
@@ -33,7 +35,7 @@ header {
 }
 
 .nav-links {
-    font-size: 0.875rem;
+    font-size: 1rem;
     letter-spacing: 0.0175rem;
     gap: 1.5rem;
     cursor: pointer;
@@ -41,7 +43,7 @@ header {
 
 .is-active {
     font-weight: 700;
-    color: #F0BB1F;
+    color: $lf-gold;
 }
 
 @media only screen and (max-width: 427px) {

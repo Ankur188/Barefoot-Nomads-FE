@@ -1,12 +1,14 @@
+@import '../../styles.scss';
+
 footer {
-    padding: 5rem;
+    padding: 5rem 12rem;
     position: relative;
 }
 
 .contact-icons {
     width: 2.5rem !important;
     height: 2.5rem;
-    background: black;
+    background: $lf-black;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -16,7 +18,7 @@ footer {
 
 .heading {
     p {
-        color: #0C0C0C;
+        color: $lf-black;
         font-size: 2.27244rem;
         font-weight: 800;
         line-height: 3.02994rem; /* 133.333% */
@@ -33,70 +35,94 @@ footer {
 }
 
 .content {
-    color: #0C0C0C;
+    color: $lf-black;
     font-size: 1rem;
     font-weight: 300;
     line-height: 144%; /* 1.44rem */
+    opacity: .8;
     span {
         font-size: 1rem;
         font-weight: 600;
         line-height: 144%; /* 1.44rem */
-        color: #0C0C0C;
+        color: $lf-black;
     }
 }
 
 .contact {
-    width: 40%;
+    width: 100% !important;
     margin-top: 2rem;
     .conact-icons {
         cursor: pointer;
     }
 }
 
-.input-div {
-    width: 100% !important;
+.main-input-div {
     position: relative;
+    width: 100% !important;
     mat-icon {
-        color: #0C0C0C;
+        color: $lf-black ;
         position: absolute;
-        right: 13.5rem;
-        top: 3.7rem;
+        right: 2.5rem;
+        top: 1.9rem;
         cursor: pointer;
+        font-family: 'Material Icons';
+    }
+}
+.input-div {
+    position: relative;
+    width: 100% !important;
+    span {
+        color: $lf-black;
+        font-size: .9rem;
+        font-weight: bold;
+    }
+    border: 2px $lf-black solid;
+    margin-top: 3rem;
+    height: 5rem;
+    border-radius: .5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: .5rem 2rem;
+    .input {
+        height: 4rem;
+        border: none;
+        margin-bottom: 2px;
     }
 }
 
-.input {
-    width: 100%;
-    max-width: 26rem;
-    height: 45px;
-    padding: 12px;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-    box-shadow: 0px 0px 20px -18px;
-    margin-top: 3rem;
-    color: #0C0C0C;
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 144%;
-    border-radius: 0.75rem;
-    border: 1.5px solid #0C0C0C;
-  }
+// .input {
+//     width: 100%;
+//     max-width: 26rem;
+//     height: 45px;
+//     padding: 12px;
+//     outline: none;
+//     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+//     box-shadow: 0px 0px 20px -18px;
+//     margin-top: 3rem;
+//     color: $lf-black;
+//     font-size: 1rem;
+//     font-weight: 300;
+//     line-height: 144%;
+//     border-radius: 0.75rem;
+//     border: 1.5px solid $lf-black;
+//   }
   
-  .input:hover {
-    border: 2px solid lightgrey;
-    box-shadow: 0px 0px 20px -17px;
-  }
+//   .input:hover {
+//     border: 2px solid $lf-light-grey;
+//     box-shadow: 0px 0px 20px -17px;
+//   }
   
-  .input:active {
-    transform: scale(0.95);
-  }
+//   .input:active {
+//     transform: scale(0.95);
+//   }
   
-  .input:focus {
-    border: 2px solid grey;
-  }
+//   .input:focus {
+//     border: 2px solid grey;
+//   }
 
   .copywrite {
-      background: #0C0C0C;
+      background: $lf-black;
       padding: 0.5rem 0rem;
       p {
         font-size: 0.75rem;
@@ -110,9 +136,25 @@ footer {
   }
 
   .track {
+    width: 35rem;
     position: absolute;
-    top: -9rem;
-    right: 0;
+    top: -4rem;
+    left: 0;
+  }
+
+  .quick-links {
+    span, a, p {
+        color: $lf-black;
+    }
+    span {
+        margin-bottom: 1rem;
+        font-weight: 600;
+        letter-spacing: .1rem;
+    }
+    a, p {
+        margin-bottom: .5rem;
+        opacity: .7;
+    }
   }
 
   @media only screen and (max-width: 427px) {

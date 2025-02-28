@@ -1,43 +1,45 @@
+
+@import '../../styles.scss';
+
 .slider-container {
-    padding: 10rem 5rem;
+    padding: 10rem 12rem;
     font-weight: 600;
     .heading {
-      color: #0C0C0C;
+      color: $lf-black;
       font-size: 1.25rem;
       letter-spacing: 0.125rem;
       opacity: 0.6;
     }
     .sub-heading {
-      color: #0C0C0C;
+      color: $lf-black;
       font-size: 2.5rem;
       span {
-        color: #F0BB1F;
-        text-decoration-line: underline;
+        color: $lf-gold;
       }
     }
 }
-.chips-list {
-  margin: 1.5rem 0 3rem;
-}
-.chip {
-  height: 3rem;
-  padding: 1rem 3rem;
-  border-radius: 3rem;
-  background: rgba(12, 12, 12, 0.20);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.035rem;
-  cursor: pointer;
+// .chips-list {
+//   margin: 1.5rem 0 3rem;
+// }
+// .chip {
+//   height: 3rem;
+//   padding: 1rem 3rem;
+//   border-radius: 3rem;
+//   background: rgba(12, 12, 12, 0.20);
+//   font-size: 0.875rem;
+//   font-weight: 500;
+//   letter-spacing: 0.035rem;
+//   cursor: pointer;
 
-  &:hover {
-    color: #000000;
-    font-weight: 500;
-  }
-}
-.chip-active {
-  background: rgba(12, 12, 12, 1);
-  color: #FFFFFF !important;
-}
+//   &:hover {
+//     color: $lf-black;
+//     font-weight: 500;
+//   }
+// }
+// .chip-active {
+//   background: rgba(12, 12, 12, 1);
+//   color: $lf-white !important;
+// }
 .slider {
     position: relative;
     width: 100%;

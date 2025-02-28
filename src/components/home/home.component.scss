@@ -1,16 +1,18 @@
+@import '../../styles.scss';
+
 .hero-banner {
-    height: 44.3rem;
-    background-image : linear-gradient(180deg, rgba(12, 12, 12, 0), rgba(12, 12, 12, 1)), url(../../assets/banner-img.png);
+    height: 47rem;
+    background-image : linear-gradient(180deg, rgba(12, 12, 12, 0), $lf-black), url(../../assets/banner-img.png);
     background-repeat: no-repeat;
     background-size: cover;
-    padding: 10rem 5rem 5rem 5rem;
+    padding: 5rem 12rem 5rem 12rem;
     // margin-top: 5rem;
 }
 
 .tag-line {
     gap: 0.625rem;
     padding: 0.25rem 1rem;
-    border-radius: 3rem;
+    border-radius: .3rem;
     background: rgba(255, 255, 255, 0.34);
     font-size: 1.25rem;
     font-weight: 600;
@@ -26,7 +28,7 @@ p {
     font-size: 2.5rem;
     font-weight: 500;
     line-height: 3.5rem;
-    margin-top: 4rem;
+    margin-top: 1rem;
 }
 
 .img-bg {
@@ -39,7 +41,7 @@ p {
 }
 
 .banner-points {
-    margin-top: 4rem;
+    margin-top: 5rem;
     width: 52.3125rem;
 }
 
@@ -59,10 +61,10 @@ p {
 }
 
 .who-are-we-main-div {
-    padding: 5rem 7rem 7rem 5rem;
+    padding: 7rem 12rem 10rem 12rem;
     flex-direction: column;
     gap: 1.125rem;
-    background-color: #000000;
+    background-color: $lf-black;
     position: relative;
 
     .logo-watermark {
@@ -95,16 +97,20 @@ p {
     }
     .content {
         color: rgba(255, 255, 255, 0.75);
+        margin-top: 1rem;
         font-size: 1rem;
         font-weight: 300;
         line-height: 1.5rem; /* 150% */
         letter-spacing: 0.03125rem;
         span {
+            font-weight: bold;
+            color: $lf-gold;
             position: relative;
             img {
+                color: $lf-gold;
                 position: absolute;
                 top: 1.5rem;
-                right: -1rem;
+                right: .5rem;
             }
         }
     }
@@ -112,8 +118,8 @@ p {
 
 
 .stories {
-    background: #000000;
-    padding: 10rem 5rem;
+    background: $lf-black;
+    padding: 10rem 12rem;
     font-weight: 600;
     .heading {
         font-size: 1.25rem;
@@ -130,7 +136,7 @@ p {
         display: block;
     }
     .main-content {
-        margin-top: 5rem;
+        margin-top: 3rem;
         .reviews {
             width: 50%;
             #summary {
@@ -167,6 +173,19 @@ p {
         #video-container {
             background: linear-gradient(0deg, rgba(12, 12, 12, 0), rgba(12, 12, 12, 1));
         }
+    }
+}
+
+.brands {
+    background-color: $lf-black;
+    padding: 0 12rem 5rem 12rem;
+    span {
+        font-weight: 600;
+        font-size: 1.25rem;
+        word-spacing: .25rem;
+    }
+    div {
+        margin-top: 3rem;
     }
 }
 

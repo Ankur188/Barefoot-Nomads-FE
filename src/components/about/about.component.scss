@@ -1,9 +1,11 @@
+@import '../../styles.scss';
+
 * {
-    background-color: #0c0c0c;
+    background-color: $lf-black;
 }
 
 .intro-container {
-    padding: 10rem 5rem 5rem 5rem;
+    padding: 10rem 12rem 5rem 12rem;
     .heading {
         font-size: 1rem;
         font-weight: 600;
@@ -38,7 +40,7 @@
     }
 }
 .start-main-div {
-    padding: 5rem;
+    padding: 5rem 12rem;
     .start {
         width: 72%;
         .heading {
@@ -55,37 +57,29 @@
         }
     }
 }
+.cards-list {
+    // margin-top: 4rem;
+    padding: 0 12rem 5rem 12rem;
+}
+.perk {
+    background-color: $lf-dark-grey;
+    position: relative;
+    height: 8rem;
+    width: 17rem;
+    border-radius: 0.5rem;
+    padding: 2rem 0 2rem 2rem;
+    p, img {
+        color: $lf-white;
+        background-color: $lf-dark-grey;
+        padding: 0;
+        margin: 0;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    img {
+        width: 5rem;
+    }
 
-.jet-set-go {
-    padding: 5rem 5rem 10rem 5rem;
-    .heading {
-        font-size: 1.5rem;
-        font-weight: 600;
-        line-height: 2.25rem;
-
-    }
-    .cards-list {
-        margin-top: 4rem;
-    }
-    .perk {
-        background-color: #FFFFFF !important;
-        position: relative;
-        height: 6rem;
-        width: 12rem;
-        border-radius: 0.5rem;
-        padding: 1rem;
-        p, img {
-            color: #0c0c0c;
-            background-color: #FFFFFF;
-            padding: 0;
-            margin: 0;
-        }
-        img {
-            position: absolute;
-            top: 15%;
-            right: 1%;
-        }
-    }
 }
 
 @media only screen and (max-width: 427px) {

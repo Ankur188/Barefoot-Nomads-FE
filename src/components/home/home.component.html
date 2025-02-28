@@ -1,8 +1,8 @@
 <div class="hero-banner d-flex justify-content-center flex-column">
   <div class="tag-line text-uppercase">Embark on an escape</div>
   <p class="sub-tag-line">
-    Explore Handpicked <br />Adventures for an <b>Unforgettable </b
-    ><br *ngIf="viewPort > 425"/><b>Travel Experience</b>
+    Explore Handpicked Adventures for an <br /><b>Unforgettable </b
+    ><b>Travel Experience</b>
   </p>
   <div class="banner-points d-flex align-items-center justify-content-between">
     <div id="banner-point-1">
@@ -43,23 +43,24 @@
   </div>
 </div>
 <div class="who-are-we-main-div d-flex justify-content-center">
-  <img class="logo-watermark" src="../../assets//logo-watermark.svg" alt="">
+  <img class="logo-watermark" src="../../assets//logo-watermark.svg" alt="" />
   <span class="heading text-uppercase">Who we are??</span>
-  <p class="sub-heading d-flex align-items-center"><span>We are</span><span style="margin-left: .7rem;">BarefootNomads</span></p>
-  <p class="content"
-    >In the realm of travel, a tribe of modern-day nomads roams, driven not just
-    to visit destinations but to fully immerse themselves in each corner of the
-    globe. We are the <b>Barefoot Nomads</b>, free from material burdens, fueled
-    instead by a thirst for experiences and a longing for connection. Offering
-    meticulously curated adventure packages that transcend the ordinary, we
-    eradicates the hassle of itinerary planning and mundane bookings, empowering
-    nomads to journey seamlessly. Here, adventurers convene to swap stories,
-    exchange tips, and ignite each other's passion for exploration. Whether
-    seeking solitary retreats in remote landscapes or aiming to forge lifelong
-    memories with your family, all find a welcoming home within the Barefoot
-    Nomad tribe. Together, we traverse the world, <span>One barefoot step at a time <img src="../../assets/under-line.svg" alt=""></span>,
-    embracing the spirit of adventure and camaraderie that defines our
-    wanderlust-filled journey.</p>
+  <p class="sub-heading d-flex align-items-center">
+    <span>We are</span><span style="margin-left: 0.7rem">BarefootNomads</span>
+  </p>
+  <p class="content">
+    We are the Barefoot Nomads, a tribe of modern-day explorers driven not just
+    to visit destinations, but to fully immerse ourselves in every corner of the
+    globe. Free from material burdens and fueled by a thirst for experiences and
+    connection, we offer meticulously curated adventure packages that eliminate
+    the hassle of itinerary planning and mundane bookings, empowering seamless
+    journeys. Adventurers come together to share stories, exchange tips, and
+    ignite each other’s passion for exploration. Whether seeking solitary
+    retreats in remote landscapes or creating lifelong memories with family, the
+    Barefoot Nomad tribe welcomes all. Together, we traverse the world, <span>One
+      Barefoot Step at a Time <img src="../../assets/underline.svg" alt=""></span>, embracing the spirit of adventure and camaraderie
+    that defines our journey.
+  </p>
 </div>
 <ng-container>
   <trip-carousel></trip-carousel>
@@ -68,55 +69,76 @@
 <div class="stories">
   <div class="content-header d-flex align-items-center justify-content-between">
     <div class="content-heading">
-      <p class="heading text-uppercase mb-4">What our  customers say</p>
+      <p class="heading text-uppercase mb-2">What our customers say</p>
       <p class="sub-heading">Stories from our Contented Nomads</p>
     </div>
-    <img id="laptop-view-icon" src="../../assets/trip-advisor.svg" alt="">
+    <!-- <img id="laptop-view-icon" src="../../assets/trip-advisor.svg" alt="" /> -->
   </div>
-  <div class="main-content d-flex align-items-center justify-content-between">
+  <div class="main-content d-flex  justify-content-between">
     <div class="reviews">
-      <p id="summary">Treasure trove of authentic experiences shared by our satisfied travelers. Each story is a testament to the transformative power of exploration and the unparalleled service we provide. 
+      <p id="summary">
+        Our travelers' testimonials highlight the transformative power of exploration and the exceptional service we provide. From families seeking meaningful connections to solo adventurers on journeys of self-discovery, each story reflects the unforgettable experiences we curate.
+      </p>
 
-        From families seeking bonding moments to solo adventurers in search of self-discovery, our testimonials paint a vivid picture of the unforgettable journeys we curate. </p>
-        
-        <img id="mobile-view-icon" src="../../assets/trip-advisor.svg" alt="">
+      <img id="mobile-view-icon" src="../../assets/trip-advisor.svg" alt="" />
 
-        <div>
-          <div class="d-flex align-items-center review">
-            <img src="../../assets/Ellipse 9.svg" alt="">
-            <p class="d-flex flex-column">
-              <span class="review-heading">Effortless booking</span>
-              <span class="review-span">“Simplified our Journey with Hassle-Free Reservations”- Pooja Mishra, 2021</span>
-            </p>
-          </div>
-          <div class="d-flex align-items-center review" s>
-            <img src="../../assets/Ellipse 9 (1).svg" alt="">
-            <p class="d-flex flex-column">
-              <span class="review-heading">Safe Travelling</span>
-              <span class="review-span">"Peace of Mind, Every Mile of the Way." - Iqbal Hussain, 2023</span>
-            </p>
-          </div>
-          <div class="d-flex align-items-center review">
-            <img src="../../assets//Ellipse 9 (2).svg" alt="">
-            <p class="d-flex flex-column">
-              <span class="review-heading">Affordable Prices</span>
-              <span class="review-span">“Provided Quality Experience & Exceptional Value!” - Arush Mehta, 2022</span>
-            </p>
-          </div>
-          <div class="d-flex align-items-center review">
-            <img src="../../assets//Ellipse 9 (3).svg" alt="">
-            <p class="d-flex flex-column">
-              <span class="review-heading">Comfort Accommodation</span>
-              <span class="review-span">“Every Stay was a Haven.” - Saurabh garg, 2023</span>
-            </p>
-          </div>
+      <div>
+        <div class="d-flex align-items-center review">
+          <img src="../../assets/Ellipse 9.svg" alt="" />
+          <p class="d-flex flex-column">
+            <span class="review-heading">Effortless booking</span>
+            <span class="review-span"
+              >“Simplified our Journey with Hassle-Free Reservations”- Pooja
+              Mishra, 2021</span
+            >
+          </p>
         </div>
+        <div class="d-flex align-items-center review" s>
+          <img src="../../assets/Ellipse 9 (1).svg" alt="" />
+          <p class="d-flex flex-column">
+            <span class="review-heading">Safe Travelling</span>
+            <span class="review-span"
+              >"Peace of Mind, Every Mile of the Way." - Iqbal Hussain,
+              2023</span
+            >
+          </p>
+        </div>
+        <div class="d-flex align-items-center review">
+          <img src="../../assets//Ellipse 9 (2).svg" alt="" />
+          <p class="d-flex flex-column">
+            <span class="review-heading">Affordable Prices</span>
+            <span class="review-span"
+              >“Provided Quality Experience & Exceptional Value!” - Arush Mehta,
+              2022</span
+            >
+          </p>
+        </div>
+        <!-- <div class="d-flex align-items-center review">
+          <img src="../../assets//Ellipse 9 (3).svg" alt="" />
+          <p class="d-flex flex-column">
+            <span class="review-heading">Comfort Accommodation</span>
+            <span class="review-span"
+              >“Every Stay was a Haven.” - Saurabh garg, 2023</span
+            >
+          </p>
+        </div> -->
       </div>
-      <div id="video-container">
-        <video controls autoplay>
-          <source src="../../assets/reviews.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+    </div>
+    <div id="video-container">
+      <video controls autoplay>
+        <source src="../../assets/reviews.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
-      </div>
+    </div>
+  </div>
+</div>
+
+<div class="brands">
+  <span class="text-uppercase">Brands that trust us</span>
+  <div class="d-flex justify-content-between">
+    <img src="../../assets/brand 1.png" alt="">
+    <img src="../../assets/brand 2.png" alt="">
+    <img src="../../assets/brand 3.png" alt="">
+    <img src="../../assets/brand 4.png" alt="">
   </div>
 </div>
