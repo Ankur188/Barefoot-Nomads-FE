@@ -1,137 +1,104 @@
 <div class="main-container">
-  <div class="type-container d-flex align-items-center justify-content-center">
-    <div
-      class="package-type"
-      (click)="isTailorMadeSelected = true"
-      [ngClass]="isTailorMadeSelected ? 'active-package' : ''"
-    >
-      Tailor-Made Experiences
-    </div>
-    <div
-      class="package-type"
-      (click)="isTailorMadeSelected = false"
-      [ngClass]="!isTailorMadeSelected ? 'active-package' : ''"
-    >
-      Adventure Packages
-    </div>
-  </div>
   <div class="sub-div">
-    <p class="heading">Create Your Perfect Journey!</p>
-    <p class="sub-heading">Tailor-Made Travel Enquiry</p>
+    <p class="heading text-uppercase mb-2">PLAN Your Perfect Journey!</p>
+    <p class="sub-heading">Adventure Packages Travel Enquiry</p>
     <div class="content">
       <p class="para-font-style">
-        We specialize in crafting personalized travel experiences that cater to
-        your unique preferences and desires. Whether you’re dreaming of a serene
-        beach getaway, an adventurous mountain expedition, or an immersive
-        cultural journey, our dedicated team is here to help you every step of
-        the way.
-      </p>
-      <p class="para-font-style">
-        Please fill out the form below to share your travel vision with us. Let
-        us know your ideal destinations, travel dates, interests, and any
-        specific requirements you may have. Our experts will work closely with
-        you to design a custom itinerary that exceeds your expectations.
+        Thank you for considering us for your next adventure! If you have
+        questions about our pre-made adventure packages, Please fill out the
+        form below or reach out to us directly via email or phone. Our travel
+        experts are eager to assist you in finding the perfect itinerary
+        tailored to your interests and budget. Don’t hesitate to connect with
+        us—we can’t wait to help you explore the world!
       </p>
     </div>
   </div>
-  <div
-    class="form-container d-flex align-items-end justify-content-between mt-4"
-  >
+  <div class="form-container d-flex flex-column">
+    <span class="para-font-style"> Your enquiry is for - </span>
+    <div class="mt-3">
+      <mat-radio-group
+        aria-label="Select an option"
+        [(ngModel)]="isTailorMadeSelected"
+      >
+        <mat-radio-button value="false"
+          >Pre-made Adventure Package</mat-radio-button
+        >
+        <mat-radio-button value="true"
+          >Custom Tailor - Made Adventure</mat-radio-button
+        >
+      </mat-radio-group>
+    </div>
     <form
       [formGroup]="enquireForm"
       (ngSubmit)="submitEnquireForm()"
       class="form-details"
     >
-      <div class="form-div d-flex justify-content-center flex-column">
-        <div class="row">
-          <div class="col-md-6">
-            <label class="col-md-12" for="">Full Name</label>
-            <input
-              class="col-md-12"
-              type="text"
-              placeholder="Name"
-              formControlName="name"
-            />
-          </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <input type="text" placeholder="Full Name" formControlName="name" />
 
-          <div class="col-md-6">
-            <label class="col-md-12" for="">Location</label>
-            <select class="col-md-12" name="cars" id="cars">
-              <option value="meghalaya">Meghalaya</option>
-              <option value="uttrakhand">Uttrakhand</option>
-              <option value="north-east">North-East</option>
-              <option value="rajasthan">Rajasthant</option>
-              <option value="jammu & kashmir">jammu & kashmir</option>
-              <option value="tamil nadu">tamil nadu</option>
-              <!-- <option *ngFor="let trip of trips"  [value]="trip.id">{{trip.category}}</option> -->
-            </select>
-          </div>
-        </div>
+        <select name="cars" id="cars" formControlName="location">
+          <option value="" disabled selected>Select Adventure Package</option>
+          <option value="meghalaya">Meghalaya</option>
+          <option value="uttrakhand">Uttrakhand</option>
+          <option value="north-east">North-East</option>
+          <option value="rajasthan">Rajasthant</option>
+          <option value="jammu & kashmir">jammu & kashmir</option>
+          <option value="tamil nadu">tamil nadu</option>
+          <!-- <option *ngFor="let trip of trips"  [value]="trip.id">{{trip.category}}</option> -->
+        </select>
+      </div>
 
-        <div class="row">
-          <div [ngClass]="isTailorMadeSelected ? 'col-md-4' : 'col-md-6'">
-            <label class="col-md-12" for="">No. of adventurers</label>
-            <input
-              class="col-md-12"
-              type="text"
-              placeholder="Name"
-              formControlName="name"
-            />
-          </div>
-
-          <div [ngClass]="isTailorMadeSelected ? 'col-md-4' : 'col-md-6'">
-            <label class="col-md-12" for="">No. of Days</label>
-            <input
-              class="col-md-12"
-              type="text"
-              placeholder="Name"
-              formControlName="name"
-            />
-          </div>
-
-          <div *ngIf="isTailorMadeSelected" class="col-md-4">
-            <label class="col-md-12" for="">Budget (Per Person)</label>
-            <mat-slider class="col-md-12" min="200" max="500" discrete>
-              <input value="300" matSliderStartThumb />
-              <input value="400" matSliderEndThumb />
-            </mat-slider>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <label class="col-md-12" for="">Email</label>
-            <input
-              class="col-md-12"
-              type="text"
-              placeholder="Email"
-              formControlName="email"
-            />
-          </div>
-
-          <div class="col-md-6">
-            <label class="col-md-12" for="">Phone Number</label>
-            <input
-              class="col-md-12"
-              type="number"
-              placeholder="Phone"
-              formControlName="phone"
-            />
-          </div>
-        </div>
-
-        <label class="col-md-12" for="">Message</label>
-        <textarea
+      <div class="d-flex align-items-center justify-content-between">
+        <input
+          [ngClass]="{ 'w-small': isTailorMadeSelected === 'true' }"
           type="number"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-          formControlName="phone"
-        ></textarea>
+          placeholder="No. of People"
+          formControlName="travellers"
+        />
+        <input
+          [ngClass]="{ 'w-small': isTailorMadeSelected === 'true' }"
+          type="number"
+          placeholder="No. of Days"
+          formControlName="days"
+        />
 
-        <div class="btnDiv d-flex align-items-center">
-          <button class="cstmSubmitBtn" type="submit">Submit</button>
-        </div>
+        <select
+          *ngIf="isTailorMadeSelected === 'true'"
+          name="cars"
+          id="cars"
+          formControlName="budget"
+          [ngClass]="{ 'w-small': isTailorMadeSelected === 'true' }"
+        >
+          <option value="" disabled selected>Select Approx Budget</option>
+          <option value="0-10000">0-1000</option>
+          <option value="10000-15000">10000-15000</option>
+          <option value="15000-20000">15000-20000</option>
+          <option value="20000-30000">20000-30000t</option>
+          <option value="30000-50000">30000-50000</option>
+          <option value="Above 50000">Above 50000</option>
+        </select>
+      </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <input type="text" placeholder="Email" formControlName="email" />
+        <input
+          type="number"
+          placeholder="Phone Number"
+          formControlName="phone"
+        />
+      </div>
+      <div class="mt-4">
+        <textarea
+          name="message"
+          id=""
+          formControlName="message"
+          placeholder="Enter your message here..."
+        ></textarea>
+      </div>
+      <div class="btnDiv d-flex align-items-center justify-content-center">
+        <button class="cstmSubmitBtn text-uppercase" type="submit">
+          Submit
+        </button>
       </div>
     </form>
-    <img src="../../assets//how can we help u.svg" alt="" />
   </div>
 </div>

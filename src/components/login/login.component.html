@@ -32,13 +32,19 @@
       (ngSubmit)="submitLoginForm()"
       class="form-details d-flex justify-content-center align-items-center"
     >
-      <div class="form-div d-flex justify-content-center flex-column">
-        <label for="">Email / Phone Number</label>
-        <input type="text" placeholder="email" formControlName="email" />
+      <div
+        class="form-div d-flex justify-content-center flex-column align-items-center"
+      >
+        <p class="mb-4">
+          > Don't have an account?
+          <span class="signup-login-btn" (click)="isSignUp = true"
+            >SignUp Now</span
+          >
+        </p>
+        <input type="text" placeholder="Email" formControlName="email" />
 
         <div class="d-flex align-items-end justify-content-between">
-          <label for="">Password</label>
-          <p class="small-text signup-login-btn">Forgot Password?</p>
+          <!-- <p class="small-text signup-login-btn">Forgot Password?</p> -->
         </div>
         <input
           type="password"
@@ -49,13 +55,9 @@
         <div
           class="btnDiv d-flex align-items-center justify-content-center flex-column"
         >
-          <button class="cstmSubmitBtn" type="submit">Login Now</button>
-          <p class="mt-3">
-            Don't have an account?
-            <span class="signup-login-btn" (click)="isSignUp = true"
-              >SignUp Now</span
-            >
-          </p>
+          <button class="cstmSubmitBtn text-uppercase" type="submit">
+            Login
+          </button>
         </div>
       </div>
     </form>
@@ -66,36 +68,56 @@
       (ngSubmit)="submitSignUpform()"
       class="form-details d-flex justify-content-center align-items-center"
     >
-      <div class="form-div d-flex justify-content-center flex-column">
-        <label for="">Full Name</label>
-        <input type="text" placeholder="Name" formControlName="name" />
-
-        <label for="">Email</label>
-        <input type="text" placeholder="Email" formControlName="email" />
-
-        <label for="">Phone Number</label>
-        <input type="number" placeholder="Phone" formControlName="phone" />
-
-        <label for="">Password</label>
+      <div
+        class="form-div d-flex justify-content-center align-items-center flex-column"
+      >
+        <p class="mb-4">
+          > Have an account already?
+          <span class="signup-login-btn" (click)="isSignUp = false"
+            >Login Now</span
+          >
+        </p>
         <input
+          class="mb-4"
+          type="text"
+          placeholder="Name"
+          formControlName="name"
+        />
+
+        <input
+          class="mb-4"
+          type="text"
+          placeholder="Email"
+          formControlName="email"
+        />
+
+        <input
+          class="mb-4"
+          type="number"
+          placeholder="Phone"
+          formControlName="phone"
+        />
+
+        <input
+          class="mb-4"
           type="password"
-          placeholder="XXX-XXX-XXX"
+          placeholder="Password"
           formControlName="password"
         />
 
-        <label for="">Re-enter password</label>
-        <input type="password" placeholder="XXX-XXX-XXX" [(ngModel)]="password"/>
+        <input
+          class="mb-4"
+          type="password"
+          placeholder="Re-enter Password"
+          [(ngModel)]="password"
+        />
 
         <div
           class="btnDiv d-flex align-items-center justify-content-center flex-column"
         >
-          <button class="cstmSubmitBtn" type="submit">Create Now</button>
-          <p class="mt-3">
-            Have an account?
-            <span class="signup-login-btn" (click)="isSignUp = false"
-              >Login Now</span
-            >
-          </p>
+          <button class="cstmSubmitBtn text-uppercase" type="submit">
+            Create
+          </button>
         </div>
       </div>
     </form>

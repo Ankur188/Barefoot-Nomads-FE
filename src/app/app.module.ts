@@ -8,8 +8,8 @@ import { HeaderComponent } from 'src/components/header/header.component';
 import { TripCarouselComponent } from 'src/components/trip-carousel/trip-carousel.component';
 import { SwiperModule } from 'swiper/angular';
 import { TripCardComponent } from 'src/components/trip-card/trip-card.component';
-import {MatIconModule} from '@angular/material/icon';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimestampToDatePipe } from 'src/utils/timestamp-to-date.pipe';
 import { FooterComponent } from 'src/components/footer/footer.component';
 import { AboutComponent } from 'src/components/about/about.component';
@@ -20,7 +20,9 @@ import { UploadFileComponent } from 'src/components/upload-file/upload-file.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from 'src/components/login/login.component';
 import { EnquireComponent } from 'src/components/enquire/enquire.component';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatRadioModule } from '@angular/material/radio';
+import { GetQuotationComponent } from './get-quotation/get-quotation.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {MatSliderModule} from '@angular/material/slider';
     ImageSliderComponent,
     UploadFileComponent,
     LoginComponent,
-    EnquireComponent
+    EnquireComponent,
+    GetQuotationComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,9 +49,10 @@ import {MatSliderModule} from '@angular/material/slider';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSliderModule
+    MatSliderModule,
+    MatRadioModule,
   ],
   providers: [StaticService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

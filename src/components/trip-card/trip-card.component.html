@@ -1,29 +1,44 @@
 <div *ngIf="card" class="card">
-    <div class="card-body d-flex justify-content-between flex-column align-items-center" [ngStyle]="{'background-image': 'url(' + card.imageUrl + ')'}">
-      <div class="d-flex align-items-between justify-content-between" style="width: 100%;">
-        <div class="new-add flex-center" [style.visibility]="card.new ? 'visible' : 'hidden'">
-          <span *ngIf="card.new" class="text-uppercase">NEWLY ADDED</span>
-        </div>
-        <div class="category flex-center">
+  <div
+    class="card-body d-flex justify-content-between flex-column align-items-center"
+    [ngStyle]="{ 'background-image': 'url(' + card.imageUrl + ')' }"
+  >
+    <div
+      class="top-container d-flex align-items-between justify-content-between w-100"
+    >
+      <div class="new-add flex-center">
+        <span class="text-uppercase">Recently added</span>
+      </div>
+      <!-- <div class="category flex-center">
           <span>{{card.category | uppercase}}</span>
+        </div> -->
+    </div>
+    <p class="title">{{ card.destination_name | uppercase }}</p>
+    <div
+      class="bottom-container d-flex align-items-center justify-content-between w-100"
+    >
+      <div>
+        <img class="calendar-img" src="../../assets/money.png" alt="" />
+        <div class="trip-date d-flex flex-column">
+          <span>Starting from</span>
+          <span>{{ card._date | timestampToDate : "month" }}</span>
         </div>
       </div>
-      <p class="title">{{card.destination | uppercase}}</p>
-      <div class="d-flex align-items-center justify-content-between" style="width: 100%;">
-        <div>
-          <img class="calendar-img" src="../../assets/calendar.svg" alt="">
-          <div class="trip-date d-flex flex-column">
-            <span>{{card.from_date | timestampToDate : 'date'}}<sup>th</sup> - {{card.to_date | timestampToDate : 'date'}}<sup>th</sup></span>
-            <span>{{card._date | timestampToDate : 'month'}}</span>
-          </div>
-        </div>
-        <div>
-          <img class="calendar-img" src="../../assets/tabler_sun-moon.svg" alt="">
-          <div class="trip-date duration d-flex flex-column">
-            <span><b>{{card.days}}</b> Days</span>
-            <span><b>{{card.nights}}</b> Nights</span>
-          </div>
+      <div>
+        <img
+          class="calendar-img"
+          src="../../assets/tabler_sun-moon.svg"
+          alt=""
+        />
+        <div class="trip-date duration d-flex flex-column">
+          <span
+            ><b>{{ card.days }}</b> Days</span
+          >
+          <span
+            ><b>{{ card.nights }}</b> Nights</span
+          >
         </div>
       </div>
     </div>
   </div>
+</div>

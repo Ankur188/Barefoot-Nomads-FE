@@ -1,18 +1,46 @@
 <!-- image-upload.component.html -->
 
-<ng-conatiner *ngIf="staticService.trips$ | async as trips">
-  <label for="cars">Choose a destination:</label>
+<!-- <ng-conatiner *ngIf="staticService.trips$ | async as trips">
+  <label for="cars" style="margin-top: 20rem;">Choose a destination:</label>
   
   <select name="cars" id="cars" [(ngModel)]="categoryId">
-    <!-- <option value="meghalaya">Meghalaya</option>
-    <option value="uttrakhand">Uttrakhand</option>
-    <option value="north-east">North-East</option>
-    <option value="rajasthan">Rajasthant</option>
-    <option value="jammu & kashmir">jammu & kashmir</option>
-    <option value="tamil nadu">tamil nadu</option> -->
       <option *ngFor="let trip of trips"  [value]="trip.id">{{trip.category}}</option>
   </select>
-  
+  <input type="text">
   <input type="file" (change)="onFileSelected($event)" accept="image/*">
   <button (click)="onUpload()">Upload Image</button>
+</ng-conatiner> -->
+
+<ng-conatiner *ngIf="staticService.trips$ | async as trips">
+  <form
+    [formGroup]="uploadForm"
+    (ngSubmit)="onUpload()"
+    class="form-details d-flex justify-content-center align-items-center"
+  >
+    <div
+      class="form-div d-flex justify-content-center align-items-center flex-column"
+    >
+      <input
+        class="mb-4"
+        type="text"
+        placeholder="Name"
+        formControlName="name"
+      />
+      <select name="cars" id="cars" formControlName="categoryId" class="mb-4">
+        <option *ngFor="let trip of trips" [value]="trip.id">
+          {{ trip.destination_name }}
+        </option>
+      </select>
+
+      <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+
+      <div
+        class="btnDiv d-flex align-items-center justify-content-center flex-column"
+      >
+        <button class="cstmSubmitBtn text-uppercase" type="submit">
+          Upload
+        </button>
+      </div>
+    </div>
+  </form>
 </ng-conatiner>

@@ -1,25 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
-  styleUrls: ['./upload-file.component.scss']
+  styleUrls: ['./upload-file.component.scss'],
 })
 export class UploadFileComponent implements OnInit {
-
   selectedFile: File | null = null;
-  categoryId: string ='';
+  categoryId: string = '';
+  imageName: string = '';
   mimeType: string;
+  uploadForm: FormGroup;
 
   constructor(private http: HttpClient, public staticService: StaticService) {
+    this.uploadForm = new FormGroup({
+      name: new FormControl(''),
+      categoryId: new FormControl(''),
+    });
     this.staticService.getTrips();
-   }
-
-  ngOnInit(): void {
   }
+
+  ngOnInit(): void {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -28,11 +33,6 @@ export class UploadFileComponent implements OnInit {
 
   onUpload() {
     if (this.selectedFile) {
-      // Convert selected file to base64 before sending
-      // this.convertFileToBase64(this.selectedFile).then((base64: string) => {
-      //   console.log(this.selectedFile)
-      //   this.uploadImage(base64);
-      // });
       const formData = new FormData();
       formData.append('file', this.selectedFile);
       this.uploadImage(formData);
@@ -46,35 +46,29 @@ export class UploadFileComponent implements OnInit {
       reader.readAsDataURL(file);
 
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   }
 
   // Function to upload image to API
   uploadImage(base64data: FormData) {
-    const apiUrl =  `${environment.localhost}img/upload`; // Replace with your API endpoint
+    const fileName = this.uploadForm.getRawValue().name
+      ? this.uploadForm.getRawValue().name
+      : this.uploadForm.getRawValue().categoryId;
+    const apiUrl = `${environment.localhost}img/upload`; // Replace with your API endpoint
 
-    // Headers if needed (adjust accordingly)
-
-    // Body of the POST request
-    // const body = {
-    //   image: base64data,
-    //   categoryId : this.categoryId,
-    //   mimetype: this.mimeType
-    // };
-    base64data.append('categoryId', this.categoryId)
+    base64data.append('categoryId', fileName);
 
     // Sending POST request with image data
     this.http.post(apiUrl, base64data).subscribe(
-      response => {
+      (response) => {
         console.log('Image uploaded successfully:', response);
         // Handle success response
       },
-      error => {
+      (error) => {
         console.error('Error uploading image:', error);
         // Handle error response
       }
     );
   }
-
 }
