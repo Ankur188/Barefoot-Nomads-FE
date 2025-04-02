@@ -30,8 +30,8 @@
         class="card-slider"
         [style.transform]="'translateX(' + slideOffset + 'px)'"
       >
-        <ng-container *ngFor="let card of trips">
-          <trip-card [card]="card"></trip-card>
+        <ng-container *ngFor="let trip of trips">
+          <trip-card [card]="trip" (click)="navigateToTrip(trip)"></trip-card>
         </ng-container>
       </div>
     </div>

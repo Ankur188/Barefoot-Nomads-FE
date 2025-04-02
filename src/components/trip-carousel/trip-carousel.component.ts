@@ -13,6 +13,7 @@ import SwiperCore , {
 } from 'swiper';
 import { BehaviorSubject } from "rxjs";
 import { StaticService } from "src/services/static.service";
+import { Router } from "@angular/router";
 
 
 SwiperCore.use([
@@ -44,12 +45,11 @@ export class TripCarouselComponent implements AfterContentInit {
   visibleCards  // Number of cards visible at a time
   slideOffset = 0;
 
-  constructor (public staticService: StaticService) {    
+  constructor (public staticService: StaticService, private router: Router) {    
     this.staticService.getTrips();
     this.staticService.trips$.subscribe(data => {
       this.trips = data;
       
-      console.log(this.trips);
     })
   }
 
@@ -76,6 +76,10 @@ export class TripCarouselComponent implements AfterContentInit {
       this.currentIndex--;
       this.slideOffset = -this.currentIndex * this.cardWidth;
     }
+  }
+
+  navigateToTrip(trip) {
+    this.router.navigate([`trip/${trip.id}`]);
   }
 
 }

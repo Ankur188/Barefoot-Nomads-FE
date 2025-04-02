@@ -3,6 +3,8 @@
 footer {
     padding: 5rem 12rem;
     position: relative;
+    background-color: $lf-off-white;
+    border-top: 1px solid $lf-light-grey;
 }
 
 .contact-icons {
@@ -79,7 +81,7 @@ footer {
     border: 2px $lf-black solid;
     margin-top: 3rem;
     height: 5rem;
-    border-radius: .5rem;
+    border-radius: .4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
