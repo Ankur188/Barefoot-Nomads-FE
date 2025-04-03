@@ -26,6 +26,7 @@ import { GetQuotationComponent } from './get-quotation/get-quotation.component';
 import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
+import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
     LoginComponent,
     EnquireComponent,
     GetQuotationComponent,
-    TripDetailsComponent
+    TripDetailsComponent,
+    BookingConfirmationComponent
   ],
   imports: [
     BrowserModule,
