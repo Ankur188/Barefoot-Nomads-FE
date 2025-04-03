@@ -130,13 +130,16 @@ hr {
             cursor: pointer;
             &:last-child {
                 border-right: none;
-                border-bottom: .5rem solid $lf-gold;
-                color: $lf-gold;
-                font-weight: bold;
             }
         }
     }
 }
+.tab-selected {
+    border-bottom: .5rem solid $lf-gold;
+    color: $lf-gold;
+    font-weight: bold;
+}
+
 .overview-points {
     margin-top: 3rem;
     div > div {

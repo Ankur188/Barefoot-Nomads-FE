@@ -11,6 +11,7 @@ export class TripDetailsComponent implements OnInit {
   itinerary: any;
   keys: any;
   destinations: any;
+  selectedTab: any = 'overview';
   constructor(public staticService: StaticService, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.paramMap.subscribe(params => {
       this.tripId = params.get('id');
@@ -52,6 +53,7 @@ export class TripDetailsComponent implements OnInit {
   }
 
   scrollToContent(content) {
+    this.selectedTab = content;
     const headerOffset = 8 * 16; // 10rem converted to pixels (assuming 1rem = 16px)
     const element = document.getElementById(content);
     
