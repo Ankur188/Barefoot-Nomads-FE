@@ -1,13 +1,15 @@
+@use '@angular/material' as mat;
 // @import "~swiper/swiper-bundle";
 
 $lf-black: #121212;
 $lf-gold: #f2af29;
-$lf-blue: #41be37;
+// $lf-blue: #41be37;
 $lf-light-grey: #e9effe;
 $lf-red: #ff5a5f;
 $lf-green: #16b464;
 $lf-white: #ffffff;
 $lf-dark-grey: #252525;
+$lf-off-white: #FBFCF8;
 
 body,
 html {
@@ -21,7 +23,7 @@ html {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif !important;
   color: $lf-white;
 }
 
@@ -34,7 +36,7 @@ html {
 .para-font-style {
   font-size: 1rem;
   font-weight: 300;
-  line-height: 2rem;
+  line-height: 1.5rem;
   letter-spacing: 0.03125rem;
   color: rgba(255, 255, 255, 0.75);
 }
@@ -59,7 +61,7 @@ html {
       font-size: 1.25rem;
       outline: none;
       appearance: none;
-      border-radius: 0.35rem;
+      border-radius: 0.4rem;
     }
     textarea {
       width: 100%;
@@ -89,3 +91,30 @@ html {
 .w-100 {
   width: 100%;
 }
+
+mat-icon {
+  font-family: 'Material Icons' !important;
+}
+
+.mat-expansion-panel {
+  border: none;
+  box-shadow: none;
+  margin-top: 2rem !important;
+}
+.mat-expansion-panel-header {
+  background: #D3D8E5 !important;
+  height: 5rem;
+  .mat-content {
+    color: $lf-black;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+}
+.mat-expansion-panel-content  {
+  .mat-expansion-panel-body {
+    padding: 2rem 1rem;
+  }
+}
+
+

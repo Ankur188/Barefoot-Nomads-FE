@@ -35,4 +35,8 @@ export class StaticService {
   postEnquiry(postData): Observable<any> {
     return this.http.post(`${environment.localhost}trips/enquire`, postData);
   }
+
+  getTripDetails(id: string) {
+    return this.http.get(`${environment.localhost}trips/${id}`);
+  }
 }

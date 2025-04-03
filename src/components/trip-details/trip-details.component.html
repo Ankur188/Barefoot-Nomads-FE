@@ -1,0 +1,556 @@
+<div *ngIf="details" class="main-container">
+  <div class="sub-header d-flex align-items-center justify-content-between">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="arrow_backward"
+    ></mat-icon>
+    <div class="d-flex align-items-center">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="share"
+        class="me-2"
+      ></mat-icon>
+      <span>Share</span>
+    </div>
+  </div>
+  <div class="title mt-4">
+    <span>{{details.destination_name}}</span>
+  </div>
+  <div class="d-flex mt-3 main-content">
+    <div class="d-flex align-items-center justify-content-between me-4">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="schedule"
+        class="me-2"
+      ></mat-icon>
+      <span class="para-font-style">{{details.days}} days - {{details.nights}} nights</span>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="location_on"
+        class="me-2"
+      ></mat-icon>
+      <span class="para-font-style">Kashmir, India</span>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between w-100">
+    <div class="left-div">
+      <div class="d-flex justify-content-between">
+        <div class="details w-100">
+          <div
+            class="trip-img d-flex align-items-center justify-content-between"
+          >
+            <img
+              class="primary-img"
+              src="../../assets/kashmir_Gallery.png"
+              alt=""
+            />
+            <div class="secondary-img">
+              <img src="../../assets//Kashmir_Gallery_1.png" alt="" />
+              <img src="../../assets//Kashmir_Gallery_2.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <div class="overview w-100">
+          <div class="header d-flex justify-content-between">
+            <div
+              (click)="scrollToContent('overview')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'overview' ? 'tab-selected' : ''"
+            >
+              Overview
+            </div>
+            <div
+              (click)="scrollToContent('itinerary')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'itinerary' ? 'tab-selected' : ''"
+            >
+              Itinerary
+            </div>
+            <div
+              (click)="scrollToContent('reviews')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'reviews' ? 'tab-selected' : ''"
+            >
+              Reviews
+            </div>
+            <div
+              (click)="scrollToContent('inclusions')" class="text-uppercase d-flex align-items-center justify-content-center text-center" [ngClass]="selectedTab === 'inclusions' ? 'tab-selected' : ''"
+            >
+              Inclusions / Exclusions
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="overview-points" class="overview-points">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start">
+            <img src="../../assets/calendar.png" alt="" class="me-3">
+            <div class="d-flex flex-column">
+              <div>Travel Style: 1-4 People Together</div>
+              <span class="para-font-style mt-2">Fast, fresh, and fun adventures that never slow down, made for young, budget-minded travellers.</span>
+            </div>
+          </div>
+          <div class="d-flex align-items-start">
+            <img src="../../assets/service.png" alt="" class="me-3">
+            <div class="d-flex flex-column">
+              <div>Service Level: Basic</div>
+              <span class="para-font-style mt-2">Simple and clean hotels and hostels; affordable public and private transport; lots of optional activities.</span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+          <div class="d-flex align-items-start">
+            <img src="../../assets/physical.png" alt="" class="me-3">
+            <div class="d-flex flex-column">
+              <div>Physical Rating: 2 -Light</div>
+              <span class="para-font-style mt-2">Light walking and hiking suitable for most fitness levels. Nothing too challenging.</span>
+            </div>
+          </div>
+          <div class="d-flex align-items-start">
+            <img src="../../assets/group.png" alt="" class="me-3">
+            <div class="d-flex flex-column">
+              <div>Trip Type: Small Group</div>
+              <span class="para-font-style mt-2">Small group experience; Max 20, avg 12.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brief">
+        <div class="brief-container">
+          <div class="heading">Is this Adventure for me?</div>
+          <div class="mt-4 mb-4">
+            <div class="content para-font-style">
+              {{details.description}}
+            </div>
+            <!-- <div class="content para-font-style mt-3">
+            </div> -->
+          </div>
+          <span class="read-more text-uppercase fw-bold">Read more</span>
+        </div>
+      </div>
+
+      <div id="itinerary" class="itinerary">
+        <div class="d-flex justify-content-between">
+          <div class="heading d-flex align-items-center">
+            <img src="../../assets/itinerary.png" alt="" class="me-3" />
+            <span>Itinerary</span>
+          </div>
+          <div
+            class="download d-flex align-items-center justify-content-center"
+          >
+            <img src="../../assets/download.png" alt="" />
+          </div>
+        </div>
+
+        <div class="accordian-main-container">
+          <mat-accordion *ngFor="let key of keys" multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <div class="day-container me-4 text-uppercase">Day {{key}}</div>
+                <div class="description">
+                  {{itinerary[key].title}}
+                </div>
+              </mat-expansion-panel-header>
+              <span class="content para-font-style">
+                {{itinerary[key].content}}
+              </span>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <!-- <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <div class="day-container me-4 text-uppercase">Day 2</div>
+                <div class="description">
+                  Manali Arrival | Local Sightseeing
+                </div>
+              </mat-expansion-panel-header>
+              <span class="content para-font-style">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <div class="day-container me-4 text-uppercase">Day 3</div>
+                <div class="description">
+                  Manali to Solang Valley (13 Kilometers, 1 hour) | Solang
+                  Valley Excursion
+                </div>
+              </mat-expansion-panel-header>
+              <span class="content para-font-style">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <div class="day-container me-4 text-uppercase">Day 4</div>
+                <div class="description">
+                  Manali to Kasol (75 Kilometers, 2 Hours) | Kasol Sightseeing
+                </div>
+              </mat-expansion-panel-header>
+              <span class="content para-font-style">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </span>
+            </mat-expansion-panel>
+          </mat-accordion> -->
+        </div>
+      </div>
+
+      <div id="reviews" class="reviews">
+        <div class="heading d-flex align-items-center">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="star_border"
+            class="me-2"
+          ></mat-icon>
+          <span>Reviews</span>
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+          <div class="card">
+            <img src="../../assets/quotes.png" alt="" class="mb-4" />
+            <span class="para-font-style mb-4">
+              tis unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium, totam rem aperiam, eaque ipsa quae
+            </span>
+            <div class="profile">
+              <img src="../../assets/Ellipse 9.svg" alt="" class="me-3" />
+              <span>Jerome Bell</span>
+            </div>
+          </div>
+          <div class="card">
+            <img src="../../assets/quotes.png" alt="" class="mb-4" />
+            <span class="para-font-style mb-4">
+              tis unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium, totam rem aperiam, eaque ipsa quae
+            </span>
+            <div class="profile">
+              <img src="../../assets/Ellipse 9.svg" alt="" class="me-3" />
+              <span>Jerome Bell</span>
+            </div>
+          </div>
+          <div class="card">
+            <img src="../../assets/quotes.png" alt="" class="mb-4" />
+            <span class="para-font-style mb-4">
+              tis unde omnis iste natus error sit voluptatem accusantium
+              doloremque laudantium, totam rem aperiam, eaque ipsa quae
+            </span>
+            <div class="profile">
+              <img src="../../assets/Ellipse 9.svg" alt="" class="me-3" />
+              <span>Jerome Bell</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="inclusions" class="inclusions">
+        <div class="switch d-flex">
+          <div class="text-uppercase selected">Incluision</div>
+          <div class="text-uppercase">Exclusions</div>
+        </div>
+        <div class="mt-4">
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style">
+              Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style">
+              Transportation in Tempo Traveler for local sightseeing.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style">
+              Accommodations on sharing basis as per Itinerary.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style">
+              A female Trip Captain will be present at all times during the
+              tour.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style">
+              Zipline and Rocket Bungee in Solang Valley, If any of the
+              mentioned activities (Zipline and Rocket Bungee) are
+              <br />unavailable on the day of your tour, you will be compensated
+              with two additional activities.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style"> All kinds of Permits. </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style"> First Aid Kits. </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right-div" #stickyDiv>
+      <div class="pricing">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-column duration">
+            <span>{{details.days}} Days</span>
+            <span class="mt-3">{{details.nights}} Nights</span>
+          </div>
+          <div class="d-flex flex-column visitors align-items-end">
+            <img src="../../assets/visitors.png" alt="" />
+            <span class="para-font-style">+10 Already Visited</span>
+          </div>
+        </div>
+        <div class="locations w-100 mt-3">
+          <span *ngFor="let destination of destinations" class="para-font-style text-uppercase">
+            {{destination}} •
+          </span>
+        </div>
+        <div class="mt-4">
+          <div class="d-flex align-content-center">
+            <img class="me-2" src="../../assets/right tick.svg" alt="" />
+            <span class="para-font-style">Flexible Cancellation Policy</span>
+          </div>
+          <div class="d-flex align-content-center mt-1">
+            <img class="me-2" src="../../assets/right tick.svg" alt="" />
+            <span class="para-font-style">24/7 Customer Support</span>
+          </div>
+          <div class="d-flex align-content-center mt-1">
+            <img class="me-2" src="../../assets/right tick.svg" alt="" />
+            <span class="para-font-style">Secure Payment Options</span>
+          </div>
+        </div>
+        <hr class="mt-3" />
+        <div class="d-flex align-items-center justify-content-between mt-1">
+          <span class="para-font-style">Starting from</span>
+          <div class="price-tag d-flex align-items-center">
+            <span class="price me-2"> &#8377; {{details.price}}</span>
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="info"
+              class="material-symbols-outlined"
+            ></mat-icon>
+          </div>
+        </div>
+        <div
+          class="btnDiv d-flex align-items-center justify-content-center flex-column"
+        >
+          <button class="cstmSubmitBtn text-uppercase" type="submit">
+            Book now
+          </button>
+        </div>
+      </div>
+      <div class="batches">
+        <div class="header d-flex align-items-center justify-content-between">
+          <div>Batch Dates</div>
+          <div class="status">Status</div>
+        </div>
+        <div class="dates">
+          <div
+            class="d-flex align-items-center justify-content-between content"
+          >
+            <span>JAN 12 - 16, 2025</span>
+            <div
+              class="availablity d-flex align-items-center justify-content-center"
+            >
+              Available
+            </div>
+          </div>
+          <div
+            class="d-flex align-items-center justify-content-between content"
+          >
+            <span>JAN 12 - 16, 2025</span>
+            <div
+              class="availablity d-flex align-items-center justify-content-center"
+            >
+              Available
+            </div>
+          </div>
+          <div
+            class="d-flex align-items-center justify-content-between content"
+          >
+            <span>JAN 12 - 16, 2025</span>
+            <div
+              class="availablity d-flex align-items-center justify-content-center"
+            >
+              Available
+            </div>
+          </div>
+          <div
+            class="d-flex align-items-center justify-content-between content"
+          >
+            <span>JAN 12 - 16, 2025</span>
+            <div
+              class="availablity d-flex align-items-center justify-content-center"
+            >
+              Available
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="packing">
+    <div class="main-container">
+      <img src="../../assets/backpack.png" alt="" class="backpack" />
+      <div class="heading d-flex align-items-center">
+        <img src="../../assets/breifcase.png" alt="" class="me-3" />
+        <span>Things to pack</span>
+      </div>
+      <div class="items-main-container mb-4">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-start items">
+            <img src="../../assets/hiking_shoe.png" alt="" class="me-3" />
+            <div>
+              <div class="mb-2">Hiking Shoes</div>
+              <span class="para-font-style">
+                Durable footwear designed for rugged terrains.
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start items">
+            <img src="../../assets/t-shirt.png" alt="" class="me-3" />
+            <div>
+              <div class="mb-2">Tshirt</div>
+              <span class="para-font-style">
+                You must keep at least three pairs of quick dry tees so that you
+                can wash them in between stops for proper hygiene.
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start items">
+            <img src="../../assets/sunglasses.png" alt="" class="me-3" />
+            <div>
+              <div class="mb-2">Sun Glasses / Reading Glasses</div>
+              <span class="para-font-style">
+                Photochromatic glasses are specs that are designed to transform
+                into anti-glare shades depending upon exposure to the sun.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between items-main-container">
+          <div class="d-flex align-items-start items">
+            <img src="../../assets/charger.png" alt="" class="me-3" />
+            <div>
+              <div class="mb-2">Charger</div>
+              <span class="para-font-style">
+                To keep your electronic devices powered during the trip.
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start items">
+            <img src="../../assets/bottle.png" alt="" class="me-3" />
+            <div>
+              <div class="mb-2">Water Bottle</div>
+              <span class="para-font-style">
+                Hydration is extremely important when it comes to trekking.
+                Carrying a water bottle that you can refill with Himalayan water
+                is a must.
+              </span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start items">
+            <img src="../../assets/pole.png" alt="" class="me-3" />
+            <div>
+              <div class="mb-2">Trekking Pole</div>
+              <span class="para-font-style">
+                The trekking pole assists in more than one way. It saves energy
+                while also providing stability and helps you to maintain proper
+                balance.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="view-more text-uppercase">View More</span>
+    </div>
+  </div>
+
+  <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" />
+
+  <div class="suggested-trips">
+    <div class="heading d-flex align-items-center">
+      <img src="../../assets/hashtag.png" alt="" class="me-3" />
+      <span>Few handpicked Journeys for you!</span>
+    </div>
+    <div class="trips d-flex justify-content-between">
+      <ng-container *ngFor="let trip of trips">
+        <trip-card [card]="trip"></trip-card>
+      </ng-container>
+    </div>
+  </div>
+</div>

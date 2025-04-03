@@ -23,6 +23,11 @@ import { EnquireComponent } from 'src/components/enquire/enquire.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
 import { GetQuotationComponent } from './get-quotation/get-quotation.component';
+import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
+import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
+import { BookingComponent } from 'src/components/booking/booking.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +44,9 @@ import { GetQuotationComponent } from './get-quotation/get-quotation.component';
     LoginComponent,
     EnquireComponent,
     GetQuotationComponent,
+    TripDetailsComponent,
+    BookingConfirmationComponent,
+    BookingComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +59,8 @@ import { GetQuotationComponent } from './get-quotation/get-quotation.component';
     ReactiveFormsModule,
     MatSliderModule,
     MatRadioModule,
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers: [StaticService],
   bootstrap: [AppComponent],
