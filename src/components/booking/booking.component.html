@@ -1,0 +1,165 @@
+<div class="main-container">
+    <div class="heading">
+        <h1>Book Your adventure Today</h1>
+        <p>Fill in the details below, and the final bill amount will be calculated based on your selection.</p>
+    </div>
+
+    <div class="booking-Section d-flex">
+        <div class="booking-leftSection">
+            <div class="booking-Info">
+                <p>BOOKING CONTACT INFORMATION*</p>
+                <form class="form-detail ">
+                    <div>
+                        <input type="text" placeholder="Full Name">
+                        <input type="text" placeholder="Phone Number">
+                        <input type="text" placeholder="Emergency / Guardian Contact Number">
+                        <input type="text" placeholder="Email">
+                    </div>
+                </form>
+
+            </div>
+            <div class="travellerNumberDiv mt-4">
+                <div class="firstDiv d-flex justify-between align-center">
+                    <div>
+                        <label for="travelerCount" class="traveler-label">NO. OF TRAVELER(S)</label>
+                    </div>
+                    <div class="number">
+                        <button class="IncDecBtn" aria-label="Decrease number of travelers">-</button>
+                        <p id="travelerCount" class="traveler-count">2</p>
+                        <button class="IncDecBtn" aria-label="Increase number of travelers">+</button>
+                    </div>
+                </div>
+                <p class="info-text">
+                    Once your booking is complete, government-issued ID proofs will be required for you as well as all
+                    travelers added to the trip. We will connect with you after the booking to provide instructions on
+                    how to submit these documents.
+                </p>
+            </div>
+
+            <div class="dashedBorderImg mt-4">
+                <img src="../../assets/dashedLine.svg" alt="">
+            </div>
+
+            <div class="batchDiv">
+                <div class="batchHead d-flex justify-content-between mt-4">
+                    <p>SELECT THE BATCH</p>
+                    <p>ALL | JAN | Feb | MAR</p>
+                </div>
+                <div class="batchPara mt-4">
+                    <p>The starting price includes a default room. If you choose a different room type, the price may
+                        vary.</p>
+                </div>
+                <div class="batchInfoSection mt-4">
+                    <div class="batchHeading">
+                        <!-- <input class="cstmRadioBtn" type="radio"> -->
+                        <mat-radio-group>
+                            <mat-radio-button value="true"></mat-radio-button>
+                        </mat-radio-group>
+                        <p>Batch Dates</p>
+                        <p>Status</p>
+                        <p>Starting Price</p>
+                    </div>
+                    <div class=" batchInfo" *ngFor="let details of batchInfo">
+                        <!-- <input class="cstmRadioBtn" type="radio"> -->
+                        <mat-radio-group>
+                            <mat-radio-button value="true"></mat-radio-button>
+                        </mat-radio-group>
+                        <p>{{details.dates}}</p>
+                        <p [ngClass]=" {
+                            'cstmStatusBtn': true,
+                             'availStatus': details.status === 'AVAILABLE',
+                             'fullStatus': details.status === 'FULL',
+                            'fillingStatus': details.status === 'FILLING FAST'
+                        }">{{details.status}}</p>
+                        <p class="price">&#8377; {{details.startingPrice}}</p>
+                        <hr>
+                    </div>
+                    <div class="paginationDiv">
+                        <button (click)="prevPage()" [disabled]="currentPage === 1">
+                            <mat-icon>keyboard_arrow_left</mat-icon>
+                        </button>
+                        <span *ngFor="let page of pages" (click)="setPage(page)" [class.active]="currentPage === page">
+                            {{ page }}
+                        </span>
+                        <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                            <mat-icon>keyboard_arrow_right</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+               
+            </div>
+
+            <div class="roomTypeSection mt-5">
+                <div class="roomTypeDiv d-flex">
+                    <p>SELECT THE TYPE OF YOUR ROOM</p>
+                    <mat-icon aria-hidden="false" aria-label="Info icon" fontIcon="info"></mat-icon>
+                </div>
+
+                <div class="occupancyTypeContainer mt-4">
+                    <div class="occupancyTypeDiv " *ngFor="let data of occupancy">
+                        <mat-radio-group>
+                            <mat-radio-button value="true"></mat-radio-button>
+                        </mat-radio-group>
+                        <p>{{data.name}}</p>
+                        <hr>
+                        <p>+ &#8377; {{data.price}} </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="booking-rightSection">
+            <div class="adv-heading mt-3">
+                <h1>Kashmir Valley Adventure</h1>
+            </div>
+            <div class="dateDurationDiv mt-3 d-flex">
+                <div class="dates">
+                    <p>JAN 12 - 16, 2025</p>
+                </div>
+                <div class="duration">
+                    <p> 4 Days - 3 Nights</p>
+                </div>
+            </div>
+            <div class="itenaryDiv mt-3">
+                <p class="text-uppercase">Delhi • Srinagar • Gulmarg • Pahalgam • Betaab Valley • Dal lake • Delhi </p>
+            </div>
+            <hr class=" mt-4">
+
+            <div class="pricingdiv d-flex mt-3">
+                <div class="billContent">
+                    <p>Number of Adventurers </p>
+                    <p>Standard price</p>
+                    <p>Triple Room Occupancy / Per Person </p>
+                    <p>GST (5%)</p>
+                    <p>Subtotal</p>
+                </div>
+                <div class="pricingContent">
+                    <p style="text-align: right;">01</p>
+                    <p>&#8377;6400</p>
+                    <p>&#8377;400</p>
+                    <p>&#8377;200</p>
+                    <p>&#8377;7400</p>
+                </div>
+            </div>
+            <div class="couponDiv mt-4 d-flex">
+                <p>Enter Coupon Code</p>
+                <p>Apply</p>
+            </div>
+            <hr class="mt-4">
+
+            <div class="amountPaidDiv mt-2 d-flex">
+                <p>Amount to be paid</p>
+                <p>&#8377;7400</p>
+            </div>
+
+            <div class="paidBtnDiv mt-2">
+                <p>PAY NOW</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bannerSection mt-5">
+        <img src="../../assets/bookingLastBanner.svg" alt="banner">
+    </div>
+</div>
