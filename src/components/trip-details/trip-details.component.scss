@@ -151,11 +151,12 @@ hr {
     margin-top: 3rem;
     border: 1px solid $lf-light-grey;
     border-radius: .4rem;
+    font-weight: 500;
     .header, .dates > .content{
-        padding: 1.5rem 2rem;
+        padding: 1.5rem 1.5rem;
         background-color: $lf-light-grey;
         color: $lf-black;
-        font-size: 1.15rem;
+        font-size: 1rem;
         font-weight: normal;
     }
     .status {
@@ -163,14 +164,15 @@ hr {
     }
     .dates {
         .content {
-            padding: 1.2rem 1.5rem;
+            padding: 1rem;
             background-color: $lf-white;
             border-bottom: 1px solid $lf-light-grey;
             div {
-                padding: .5rem 1.75rem;
+                padding: .3rem 1.5rem;
                 background-color: $lf-green;
                 color: $lf-white;
                 border-radius: 2rem;
+                font-size: .75rem;
             }
         }
     }

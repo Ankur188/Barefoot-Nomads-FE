@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class TripDetailsComponent implements OnInit {
   keys: any;
   destinations: any;
   selectedTab: any = 'overview';
-  constructor(public staticService: StaticService, private activatedRoute: ActivatedRoute) {
+  constructor(public staticService: StaticService, private activatedRoute: ActivatedRoute, private router: Router) {
     this.activatedRoute.paramMap.subscribe(params => {
       this.tripId = params.get('id');
     })
@@ -66,5 +66,9 @@ export class TripDetailsComponent implements OnInit {
         behavior: 'smooth'
       });
     }
+  }
+
+  bookNow() {
+    this.router.navigate([`trip/${this.tripId}/booking`]);
   }
 }

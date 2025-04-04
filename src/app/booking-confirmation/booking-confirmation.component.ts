@@ -22,7 +22,7 @@ export class BookingConfirmationComponent implements OnInit {
 
     if (gifElement) {
       // Set a timeout to change the state when the gif finishes
-      const gifDuration = 1000; // Set this to the duration of your GIF in milliseconds
+      const gifDuration = 1200; // Set this to the duration of your GIF in milliseconds
       setTimeout(() => {
         this.gifCompleted = true;
       }, gifDuration);

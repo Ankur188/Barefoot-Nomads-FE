@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { StaticService } from 'src/services/static.service';
 
 @Component({
   selector: 'app-booking',
@@ -46,10 +48,12 @@ export class BookingComponent implements OnInit {
   itemsPerPage = 4;
   paginatedBatches = [];
   totalPages = Math.ceil(this.batchInfo.length / this.itemsPerPage);
+  bannerUrl: any;
 
 
-  constructor() { 
-    this.updatePagination()
+  constructor(public staticService: StaticService, private router: Router) { 
+    this.updatePagination();
+    this.getBanner();
   }
   
 
@@ -83,6 +87,16 @@ export class BookingComponent implements OnInit {
 
   get pages() {
     return Array(this.totalPages).fill(0).map((_, i) => i + 1);
+  }
+
+  getBanner() {
+    this.staticService.getBanner('home_page_banner').subscribe((data) => {
+      this.bannerUrl = data.imageUrl;
+    });
+  }
+
+  payNow() {
+    this.router.navigate(['trip/1-91-87-185-984-48/booking/81-4518451-87185-7714']);
   }
 
 }
