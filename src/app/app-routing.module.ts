@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'upload', pathMatch: 'full', component: UploadFileComponent },
   { path: 'trip/:id', pathMatch: 'full', component: TripDetailsComponent },
   { path: 'trip/:id/booking', pathMatch: 'full', component: BookingComponent },
-  { path: 'trip/:id/booking/:id', pathMatch: 'full', component: BookingConfirmationComponent },
+  { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: '**', component: HomeComponent },
 ];

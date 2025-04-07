@@ -40,6 +40,7 @@
 }
 
 .trip-img {
+    position: relative;
     .primary-img {
         width: 40rem;
         height: 29.7rem;
@@ -47,7 +48,34 @@
     }
 }
 
+.months-tag {
+    position: absolute;
+    top: 1rem;
+    left: 52%;
+    border-radius: 2rem;
+    background: $lf-white;
+    padding: .25rem .75rem;
+    // margin-right: 1rem;
+    span {
+      color: $lf-black
+    }
+  }
+
+.show-all {
+    position: absolute;
+    right: 1rem;
+    bottom: .5rem;
+    background: $lf-black;
+    padding: .25rem .75rem;
+    border-radius: .4rem;
+    cursor: pointer;
+    mat-icon, span {
+        color: $lf-white;
+    }
+}
+
 .secondary-img {
+    position: relative;
     width: min-content;
     // height: 100%;
     // width: 21rem;

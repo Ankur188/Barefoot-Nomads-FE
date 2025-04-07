@@ -22,7 +22,7 @@
   <!-- <div class="d-flex align-items-center justify-content-between chips-list">
 		<div *ngFor="let trip of tripsList" class="chip flex-center" [ngClass]="trip.selected ? 'chip-active' : ''">{{trip.name  | uppercase}}</div>
 	</div> -->
-  <div *ngIf="trips" class="slider" id="slider-main">
+  <div *ngIf="trips && trips.length" class="slider" id="slider-main">
     <div class="slider">
       <div class="fade-left"></div>
       <div class="fade-right"></div>

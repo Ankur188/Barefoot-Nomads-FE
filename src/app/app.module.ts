@@ -28,6 +28,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
 import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
+import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BookingComponent } from 'src/components/booking/booking.component';
     GetQuotationComponent,
     TripDetailsComponent,
     BookingConfirmationComponent,
-    BookingComponent
+    BookingComponent,
+    TripDurationPipe
   ],
   imports: [
     BrowserModule,

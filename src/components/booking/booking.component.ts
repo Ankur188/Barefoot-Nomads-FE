@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -49,9 +49,19 @@ export class BookingComponent implements OnInit {
   paginatedBatches = [];
   totalPages = Math.ceil(this.batchInfo.length / this.itemsPerPage);
   bannerUrl: any;
+  tripId = '';
+  details: any;
+  numberOfTravellers = 1;
+  destinations: any;
+  roomPrice = 200;
 
 
-  constructor(public staticService: StaticService, private router: Router) { 
+  constructor(public staticService: StaticService, private router: Router, private activatedRoute : ActivatedRoute) { 
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.tripId = params.get('id');
+      console.log('adadasdsa', this.tripId)
+    })
+    this.getTripDetails();
     this.updatePagination();
     this.getBanner();
   }
@@ -59,6 +69,22 @@ export class BookingComponent implements OnInit {
 
 
   ngOnInit(): void {
+  }
+
+  getTripDetails() {
+    this.staticService.getTripDetails(this.tripId).subscribe(data => {
+      this.details = data;
+      this.destinations = data.desitnations.split(',');
+      console.log('details', this.details)
+    })
+  }
+
+  updateCounter(type) {
+    if(type === 'increase') {
+      this.numberOfTravellers++;
+    }else if(type === 'decrease' && this.numberOfTravellers > 1){
+      this.numberOfTravellers--;
+    }
   }
 
   updatePagination() {
@@ -97,6 +123,14 @@ export class BookingComponent implements OnInit {
 
   payNow() {
     this.router.navigate(['trip/1-91-87-185-984-48/booking/81-4518451-87185-7714']);
+  }
+
+  navigateBack() {
+    this.router.navigate(['./'])
+  }
+
+  selectRoom(price) {
+    this.roomPrice = price;
   }
 
 }

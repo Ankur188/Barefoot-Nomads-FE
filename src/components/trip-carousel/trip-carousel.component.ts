@@ -46,10 +46,8 @@ export class TripCarouselComponent implements AfterContentInit {
   slideOffset = 0;
 
   constructor (public staticService: StaticService, private router: Router) {    
-    this.staticService.getTrips();
-    this.staticService.trips$.subscribe(data => {
-      this.trips = data;
-      
+    this.staticService.getTrips().subscribe(data => {
+      this.trips = data.trips;
     })
   }
 

@@ -45,9 +45,9 @@ export class TripDetailsComponent implements OnInit {
   }
 
   getTrips() {
-    this.staticService.getTrips();
-    this.staticService.trips$.subscribe(data => {
-      let shuffled = data.sort(() => 0.5 - Math.random()); // Shuffle the array 
+    this.staticService.getTrips().subscribe(data => {
+      console.log(22222222, data)
+      let shuffled = data.trips.sort(() => 0.5 - Math.random()); // Shuffle the array 
       this.trips =  shuffled.slice(0, 4);
     })
   }

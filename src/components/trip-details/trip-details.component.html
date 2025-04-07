@@ -51,9 +51,22 @@
               src="../../assets/kashmir_Gallery.png"
               alt=""
             />
+            <div class="months-tag">
+              <img src="../../assets/calendar_small.png" alt="" class="me-2">
+              <span>{{details.from_month | timestampToDate}} - {{details.to_month | timestampToDate}}</span>
+            </div>
             <div class="secondary-img">
               <img src="../../assets//Kashmir_Gallery_1.png" alt="" />
               <img src="../../assets//Kashmir_Gallery_2.png" alt="" />
+              <div class="show-all d-flex align-items-center">
+                <mat-icon
+                aria-hidden="false"
+                aria-label="Example home icon"
+                fontIcon="apps"
+                class="me-2"
+                ></mat-icon>
+                <span class="text-uppercase">show all</span>
+              </div>
             </div>
           </div>
         </div>
