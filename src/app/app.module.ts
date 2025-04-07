@@ -29,6 +29,7 @@ import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
 import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
+import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
     TripDetailsComponent,
     BookingConfirmationComponent,
     BookingComponent,
-    TripDurationPipe
+    TripDurationPipe,
+    LightboxComponent
   ],
   imports: [
     BrowserModule,

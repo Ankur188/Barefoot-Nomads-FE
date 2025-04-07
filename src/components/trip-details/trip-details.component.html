@@ -1,16 +1,16 @@
 <div *ngIf="details" class="main-container">
   <div class="sub-header d-flex align-items-center justify-content-between">
     <mat-icon
-      aria-hidden="false"
-      aria-label="Example home icon"
-      fontIcon="arrow_backward"
+    aria-hidden="false"
+    aria-label="Example home icon"
+    fontIcon="arrow_backward"
     ></mat-icon>
     <div class="d-flex align-items-center">
       <mat-icon
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="share"
-        class="me-2"
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="share"
+      class="me-2"
       ></mat-icon>
       <span>Share</span>
     </div>
@@ -21,44 +21,44 @@
   <div class="d-flex mt-3 main-content">
     <div class="d-flex align-items-center justify-content-between me-4">
       <mat-icon
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="schedule"
-        class="me-2"
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="schedule"
+      class="me-2"
       ></mat-icon>
       <span class="para-font-style">{{details.days}} days - {{details.nights}} nights</span>
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <mat-icon
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="location_on"
-        class="me-2"
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="location_on"
+      class="me-2"
       ></mat-icon>
       <span class="para-font-style">Kashmir, India</span>
     </div>
   </div>
-
+  
   <div class="d-flex justify-content-between w-100">
     <div class="left-div">
       <div class="d-flex justify-content-between">
         <div class="details w-100">
           <div
-            class="trip-img d-flex align-items-center justify-content-between"
+          class="trip-img d-flex align-items-center justify-content-between"
           >
-            <img
-              class="primary-img"
+          <img
+          class="primary-img"
               src="../../assets/kashmir_Gallery.png"
               alt=""
-            />
-            <div class="months-tag">
-              <img src="../../assets/calendar_small.png" alt="" class="me-2">
-              <span>{{details.from_month | timestampToDate}} - {{details.to_month | timestampToDate}}</span>
+              />
+              <div class="months-tag">
+                <img src="../../assets/calendar_small.png" alt="" class="me-2">
+                <span>{{details.from_month | timestampToDate}} - {{details.to_month | timestampToDate}}</span>
             </div>
             <div class="secondary-img">
               <img src="../../assets//Kashmir_Gallery_1.png" alt="" />
               <img src="../../assets//Kashmir_Gallery_2.png" alt="" />
-              <div class="show-all d-flex align-items-center">
+              <div class="show-all d-flex align-items-center" (click)="openLightbox()">
                 <mat-icon
                 aria-hidden="false"
                 aria-label="Example home icon"
@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-
+      
       <div class="d-flex justify-content-between">
         <div class="overview w-100">
           <div class="header d-flex justify-content-between">
@@ -82,17 +82,17 @@
             </div>
             <div
               (click)="scrollToContent('itinerary')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'itinerary' ? 'tab-selected' : ''"
-            >
+              >
               Itinerary
             </div>
             <div
-              (click)="scrollToContent('reviews')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'reviews' ? 'tab-selected' : ''"
+            (click)="scrollToContent('reviews')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'reviews' ? 'tab-selected' : ''"
             >
-              Reviews
-            </div>
-            <div
+            Reviews
+          </div>
+          <div
               (click)="scrollToContent('inclusions')" class="text-uppercase d-flex align-items-center justify-content-center text-center" [ngClass]="selectedTab === 'inclusions' ? 'tab-selected' : ''"
-            >
+              >
               Inclusions / Exclusions
             </div>
           </div>
@@ -147,7 +147,7 @@
           <span class="read-more text-uppercase fw-bold">Read more</span>
         </div>
       </div>
-
+      
       <div id="itinerary" class="itinerary">
         <div class="d-flex justify-content-between">
           <div class="heading d-flex align-items-center">
@@ -155,12 +155,12 @@
             <span>Itinerary</span>
           </div>
           <div
-            class="download d-flex align-items-center justify-content-center"
+          class="download d-flex align-items-center justify-content-center"
           >
-            <img src="../../assets/download.png" alt="" />
+          <img src="../../assets/download.png" alt="" />
           </div>
         </div>
-
+        
         <div class="accordian-main-container">
           <mat-accordion *ngFor="let key of keys" multi>
             <mat-expansion-panel>
@@ -291,21 +291,21 @@
         <div class="mt-4">
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
+            aria-hidden="false"
+            aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-            ></mat-icon>
-            <span class="para-font-style">
-              Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
+              ></mat-icon>
+              <span class="para-font-style">
+                Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
             </span>
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              fontIcon="done"
-              class="me-2"
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="done"
+            class="me-2"
             ></mat-icon>
             <span class="para-font-style">
               Transportation in Tempo Traveler for local sightseeing.
@@ -317,18 +317,18 @@
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-            ></mat-icon>
-            <span class="para-font-style">
-              Accommodations on sharing basis as per Itinerary.
-            </span>
-          </div>
+              ></mat-icon>
+              <span class="para-font-style">
+                Accommodations on sharing basis as per Itinerary.
+              </span>
+            </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-            ></mat-icon>
+              ></mat-icon>
             <span class="para-font-style">
               A female Trip Captain will be present at all times during the
               tour.
@@ -336,11 +336,11 @@
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-              aria-hidden="false"
+            aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-            ></mat-icon>
+              ></mat-icon>
             <span class="para-font-style">
               Zipline and Rocket Bungee in Solang Valley, If any of the
               mentioned activities (Zipline and Rocket Bungee) are
@@ -354,8 +354,8 @@
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-            ></mat-icon>
-            <span class="para-font-style"> All kinds of Permits. </span>
+              ></mat-icon>
+              <span class="para-font-style"> All kinds of Permits. </span>
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
@@ -401,7 +401,7 @@
           </div>
         </div>
         <hr class="mt-3" />
-        <div class="d-flex align-items-center justify-content-between mt-1">
+        <div class="d-flex align-items-center justify-content-between mt-2">
           <span class="para-font-style">Starting from</span>
           <div class="price-tag d-flex align-items-center">
             <span class="price me-2"> &#8377; {{details.price}}</span>
@@ -566,4 +566,7 @@
       </ng-container>
     </div>
   </div>
+
+  <app-lightbox [galleryData]="galleryData" [showCount]="true" [previewImage]="previewImage" [showMask]="showMask" (closeLightBox)="closeLightBox($event)"></app-lightbox>
+
 </div>

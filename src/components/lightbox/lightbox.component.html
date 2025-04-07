@@ -1,0 +1,48 @@
+<div *ngIf="showMask" class="lightbox" @animation2>
+  <span *ngIf="showCount" class="count"
+    >{{ currentIndex + 1 }} / {{ totalImageCount }}</span
+  >
+  <button *ngIf="previewImage" class="close-btn" (click)="onClose()">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="close"
+    ></mat-icon>
+  </button>
+  <button
+    *ngIf="controls"
+    class="btn-lightbox-carousel btn-prev"
+    (click)="prev()"
+  >
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="arrow_backward"
+      class="icon-lightbox-carousel icon-prev"
+    ></mat-icon>
+  </button>
+  <button
+    *ngIf="controls"
+    class="btn-lightbox-carousel btn-next"
+    (click)="next()"
+  >
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="arrow_forward"
+      class="icon-lightbox-carousel icon-next"
+    ></mat-icon>
+  </button>
+
+  <div
+    *ngIf="previewImage"
+    class="lightbox-img"
+    [@animation]="{ value: 'visible' }"
+    (@animation.done)="onAnimationEnd($event)"
+  >
+    <img
+      [src]="currentLightBoxImage.imageSrc"
+      [alt]="currentLightBoxImage.imgAlt"
+    />
+  </div>
+</div>
