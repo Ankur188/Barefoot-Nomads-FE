@@ -1,4 +1,7 @@
-<div *ngIf="details" class="main-container">
+<div *ngIf="loading$ | async" class="loader-overlay">
+    <app-loader></app-loader>
+  </div>
+<div *ngIf="details && !(loading$ | async)" class="main-container">
     <div class="navigate-back">
         <mat-icon
         aria-hidden="false"

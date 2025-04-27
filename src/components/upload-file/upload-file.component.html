@@ -11,7 +11,7 @@
   <button (click)="onUpload()">Upload Image</button>
 </ng-conatiner> -->
 
-<ng-conatiner *ngIf="staticService.trips$ | async as trips">
+<ng-conatiner *ngIf="trips">
   <form
     [formGroup]="uploadForm"
     (ngSubmit)="onUpload()"
@@ -27,7 +27,7 @@
         formControlName="name"
       />
       <select name="cars" id="cars" formControlName="categoryId" class="mb-4">
-        <option *ngFor="let trip of trips" [value]="trip.id">
+        <option *ngFor="let trip of trips" [value]="trip.destination_name">
           {{ trip.destination_name }}
         </option>
       </select>

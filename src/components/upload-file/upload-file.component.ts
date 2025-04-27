@@ -15,13 +15,14 @@ export class UploadFileComponent implements OnInit {
   imageName: string = '';
   mimeType: string;
   uploadForm: FormGroup;
+  trips: any;
 
   constructor(private http: HttpClient, public staticService: StaticService) {
     this.uploadForm = new FormGroup({
       name: new FormControl(''),
       categoryId: new FormControl(''),
     });
-    this.staticService.getTrips();
+    this.staticService.getTrips().subscribe(data => this.trips = data.trips);
   }
 
   ngOnInit(): void {}

@@ -10,12 +10,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,.9);
+  background-color: rgba(0,0,0,.95);
 
   .count {
     position: absolute;
-    top: 0;
-    left: 0;
+    bottom: 7rem;
+    left: 46%;
     width: 7%;
     height: 10%;
     color: $lf-white;

@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { LoadingService } from 'src/services/loading.service';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -12,7 +14,9 @@ export class TripDetailsComponent implements OnInit {
   keys: any;
   destinations: any;
   selectedTab: any = 'overview';
-  constructor(public staticService: StaticService, private activatedRoute: ActivatedRoute, private router: Router) {
+  loading$: Observable<boolean>;
+  constructor(public staticService: StaticService, private activatedRoute: ActivatedRoute, private router: Router, private loadingService: LoadingService) {
+    this.loading$ = this.loadingService.loading$;
     this.activatedRoute.paramMap.subscribe(params => {
       this.tripId = params.get('id');
     })
@@ -23,6 +27,7 @@ export class TripDetailsComponent implements OnInit {
   details: any;
   showMask = false;
   previewImage = false;
+  inclusionSelected = true;
   galleryData = [
     {
       imageSrc: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
@@ -82,6 +87,10 @@ export class TripDetailsComponent implements OnInit {
     this.getTripDetials();
     this.getBanner();
     this.getTrips();
+    this.loadingService.show();
+    setTimeout(() => {
+      this.loadingService.hide();
+    }, 3500);
   }
 
   getTripDetials() {

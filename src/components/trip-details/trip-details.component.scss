@@ -102,12 +102,12 @@
 }
 
 .locations {
-    background-color: #f6f9ff;
-    padding: .5rem 1rem;
+    padding:    .75rem 1rem;
+    background-color: $lf-light-grey;
     border-radius: .4rem;
     span {
-        font-weight: 500;
-        opacity: .6;
+        font-size: .85rem;
+        font-weight: 400;
     }
 }
 
@@ -320,9 +320,19 @@ hr {
             background-color: $lf-gold;
         }
     }
-    .content {
-        mat-icon {
-            color: #13AE4B;
+    .inclusions-content {
+        .content {
+            mat-icon {
+                color: $lf-green;
+            }
+        }
+    }
+
+    .exclusions-content {
+        .content {
+            mat-icon {
+                color: red;
+            }
         }
     }
   }

@@ -15,7 +15,7 @@ import { FooterComponent } from 'src/components/footer/footer.component';
 import { AboutComponent } from 'src/components/about/about.component';
 import { ImageSliderComponent } from 'src/components/image-slider/image-slider.component';
 import { StaticService } from 'src/services/static.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UploadFileComponent } from 'src/components/upload-file/upload-file.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from 'src/components/login/login.component';
@@ -24,12 +24,14 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
 import { GetQuotationComponent } from './get-quotation/get-quotation.component';
 import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
 import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
+import { LoadingInterceptor } from 'src/interceptors/loading.interceptor';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
     BookingConfirmationComponent,
     BookingComponent,
     TripDurationPipe,
-    LightboxComponent
+    LightboxComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -64,9 +67,12 @@ import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
     MatSliderModule,
     MatRadioModule,
     MatTabsModule,
-    MatExpansionModule
+    MatExpansionModule,
   ],
-  providers: [StaticService],
+  providers: [
+    StaticService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

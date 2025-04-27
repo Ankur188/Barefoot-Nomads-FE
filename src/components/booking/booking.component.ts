@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { LoadingService } from 'src/services/loading.service';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -54,9 +56,10 @@ export class BookingComponent implements OnInit {
   numberOfTravellers = 1;
   destinations: any;
   roomPrice = 200;
-
-
-  constructor(public staticService: StaticService, private router: Router, private activatedRoute : ActivatedRoute) { 
+    loading$: Observable<boolean>;
+  
+  constructor(public staticService: StaticService, private router: Router, private activatedRoute : ActivatedRoute, private loadingService: LoadingService) { 
+    this.loading$ = this.loadingService.loading$;
     this.activatedRoute.paramMap.subscribe(params => {
       this.tripId = params.get('id');
       console.log('adadasdsa', this.tripId)
@@ -69,6 +72,10 @@ export class BookingComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.loadingService.show();
+    setTimeout(() => {
+      this.loadingService.hide();
+    }, 1500);
   }
 
   getTripDetails() {

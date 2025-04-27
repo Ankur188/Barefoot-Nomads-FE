@@ -1,4 +1,7 @@
-<div *ngIf="details" class="main-container">
+<div *ngIf="loading$ | async" class="loader-overlay">
+  <app-loader></app-loader>
+</div>
+<div *ngIf="details && !(loading$ | async)" class="main-container">
   <div class="sub-header d-flex align-items-center justify-content-between">
     <mat-icon
     aria-hidden="false"
@@ -285,10 +288,10 @@
 
       <div id="inclusions" class="inclusions">
         <div class="switch d-flex">
-          <div class="text-uppercase selected">Incluision</div>
-          <div class="text-uppercase">Exclusions</div>
+          <div class="text-uppercase" [ngClass]="inclusionSelected ? 'selected' : ''" (click)="inclusionSelected = true">Incluision</div>
+          <div class="text-uppercase" [ngClass]="inclusionSelected ? '' : 'selected'" (click)="inclusionSelected = false">Exclusions</div>
         </div>
-        <div class="mt-4">
+        <div *ngIf="inclusionSelected" class="mt-4 inclusions-content">
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
             aria-hidden="false"
@@ -362,6 +365,85 @@
               aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="done"
+              class="me-2"
+            ></mat-icon>
+            <span class="para-font-style"> First Aid Kits. </span>
+          </div>
+        </div>
+        <div *ngIf="!inclusionSelected" class="mt-4 exclusions-content">
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+              fontIcon="close"
+              class="me-2"
+              ></mat-icon>
+              <span class="para-font-style">
+                Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="close"
+            class="me-2"
+            ></mat-icon>
+            <span class="para-font-style">
+              Transportation in Tempo Traveler for local sightseeing.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+              class="me-2"
+              ></mat-icon>
+              <span class="para-font-style">
+                Accommodations on sharing basis as per Itinerary.
+              </span>
+            </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+              class="me-2"
+              ></mat-icon>
+            <span class="para-font-style">
+              A female Trip Captain will be present at all times during the
+              tour.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+            aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+              class="me-2"
+              ></mat-icon>
+            <span class="para-font-style">
+              Zipline and Rocket Bungee in Solang Valley, If any of the
+              mentioned activities (Zipline and Rocket Bungee) are
+              <br />unavailable on the day of your tour, you will be compensated
+              with two additional activities.
+            </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+              class="me-2"
+              ></mat-icon>
+              <span class="para-font-style"> All kinds of Permits. </span>
+          </div>
+          <div class="content d-flex align-content-center mt-2">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
               class="me-2"
             ></mat-icon>
             <span class="para-font-style"> First Aid Kits. </span>
