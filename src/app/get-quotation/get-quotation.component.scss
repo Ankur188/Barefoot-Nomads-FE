@@ -56,3 +56,34 @@ mat-radio-group mat-radio-button {
   letter-spacing: 0.03125rem;
   color: rgba(255, 255, 255, 0.75);
 }
+
+@media only screen and (max-width: 427px) {
+  .main-container {
+    padding: 2rem;
+    .sub-heading {
+      margin-top: 1.5rem;
+    }
+  }
+  .form-container {
+    margin: 0;
+    .form-details {
+      div {
+        flex-direction: column;
+        input,
+        select {
+          width: 100%;
+        }
+        input:first-child {
+          margin-bottom: 2rem;
+        }
+        textarea {
+          margin-top: 1rem;
+        }
+      }
+      .cstmSubmitBtn {
+        width: 100%;
+        margin-bottom: 3rem;
+      }
+    }
+  }
+}

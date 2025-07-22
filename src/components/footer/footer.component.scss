@@ -1,187 +1,162 @@
-@import '../../styles.scss';
+@import "../../styles.scss";
 
 footer {
-    padding: 5rem 12rem;
-    position: relative;
-    background-color: $lf-off-white;
-    border-top: 1px solid $lf-light-grey;
+  padding: 5rem 12rem;
+  position: relative;
+  background-color: $lf-off-white;
+  border-top: 1px solid $lf-light-grey;
 }
 
 .contact-icons {
-    width: 2.5rem !important;
-    height: 2.5rem;
-    background: $lf-black;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  width: 2.5rem !important;
+  height: 2.5rem;
+  background: $lf-black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .heading {
-    p {
-        color: $lf-black;
-        font-size: 2.27244rem;
-        font-weight: 800;
-        line-height: 3.02994rem; /* 133.333% */
-        letter-spacing: -0.15906rem;
-        margin: 0;
-    }
-    margin-bottom: 2rem;
+  p {
+    color: $lf-black;
+    font-size: 2.27244rem;
+    font-weight: 800;
+    line-height: 3.02994rem; /* 133.333% */
+    letter-spacing: -0.15906rem;
+    margin: 0;
+  }
+  margin-bottom: 2rem;
 }
 
 .content-container {
-    div {
-        width: 45%;
-    }
+  div {
+    width: 45%;
+  }
 }
 
 .content {
-    color: $lf-black;
+  color: $lf-black;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 144%; /* 1.44rem */
+  opacity: 0.8;
+  span {
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 600;
     line-height: 144%; /* 1.44rem */
-    opacity: .8;
-    span {
-        font-size: 1rem;
-        font-weight: 600;
-        line-height: 144%; /* 1.44rem */
-        color: $lf-black;
-    }
+    color: $lf-black;
+  }
 }
 
 .contact {
-    width: 100% !important;
-    margin-top: 2rem;
-    .conact-icons {
-        cursor: pointer;
-    }
+  width: 100% !important;
+  margin-top: 2rem;
+  .conact-icons {
+    cursor: pointer;
+  }
 }
 
 .main-input-div {
-    position: relative;
-    width: 100% !important;
-    mat-icon {
-        color: $lf-black ;
-        position: absolute;
-        right: 2.5rem;
-        top: 1.9rem;
-        cursor: pointer;
-        font-family: 'Material Icons';
-    }
+  position: relative;
+  width: 100% !important;
+  mat-icon {
+    color: $lf-black;
+    position: absolute;
+    right: 2.5rem;
+    top: 1.9rem;
+    cursor: pointer;
+    font-family: "Material Icons";
+  }
 }
 .input-div {
-    position: relative;
-    width: 100% !important;
-    span {
-        color: $lf-black;
-        font-size: .9rem;
-        font-weight: bold;
-    }
-    border: 2px $lf-black solid;
-    margin-top: 3rem;
-    height: 5rem;
-    border-radius: .4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: .5rem 2rem;
-    .input {
-        height: 4rem;
-        border: none;
-        margin-bottom: 2px;
-    }
+  position: relative;
+  width: 100% !important;
+  span {
+    color: $lf-black;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  border: 2px $lf-black solid;
+  margin-top: 3rem;
+  height: 5rem;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  .input {
+    height: 4rem;
+    border: none;
+    margin-bottom: 2px;
+  }
 }
 
-// .input {
-//     width: 100%;
-//     max-width: 26rem;
-//     height: 45px;
-//     padding: 12px;
-//     outline: none;
-//     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-//     box-shadow: 0px 0px 20px -18px;
-//     margin-top: 3rem;
-//     color: $lf-black;
-//     font-size: 1rem;
-//     font-weight: 300;
-//     line-height: 144%;
-//     border-radius: 0.75rem;
-//     border: 1.5px solid $lf-black;
-//   }
-  
-//   .input:hover {
-//     border: 2px solid $lf-light-grey;
-//     box-shadow: 0px 0px 20px -17px;
-//   }
-  
-//   .input:active {
-//     transform: scale(0.95);
-//   }
-  
-//   .input:focus {
-//     border: 2px solid grey;
-//   }
-
-  .copywrite {
-      background: $lf-black;
-      padding: 0.5rem 0rem;
-      p {
-        font-size: 0.75rem;
-        font-weight: 400;
-        line-height: 140%; /* 1.05rem */
-        letter-spacing: 0.015rem;
-        opacity: 0.6;
-        text-align: center;
-        margin: 0;
-    }
+.copywrite {
+  background: $lf-black;
+  padding: 0.5rem 0rem;
+  p {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 140%; /* 1.05rem */
+    letter-spacing: 0.015rem;
+    opacity: 0.6;
+    text-align: center;
+    margin: 0;
   }
+}
 
+.track {
+  width: 35rem;
+  position: absolute;
+  top: -4rem;
+  left: 0;
+}
+
+.quick-links {
+  span,
+  a,
+  p {
+    color: $lf-black;
+  }
+  span {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+  }
+  a,
+  p {
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+  }
+}
+
+@media only screen and (max-width: 427px) {
+  footer {
+    padding: 5rem 2rem;
+  }
   .track {
-    width: 35rem;
-    position: absolute;
-    top: -4rem;
-    left: 0;
+    top: 0;
+    width: 100%;
+    left: -9rem;
   }
-
-  .quick-links {
-    span, a, p {
-        color: $lf-black;
+  .content-container {
+    flex-direction: column;
+    align-items: flex-start !important;
+    div {
+      width: 100%;
     }
-    span {
-        margin-bottom: 1rem;
-        font-weight: 600;
-        letter-spacing: .1rem;
+    #input-main-container {
+      margin-top: 2rem;
     }
-    a, p {
-        margin-bottom: .5rem;
-        opacity: .7;
+    .contact {
+      width: 60%;
     }
   }
-
-  @media only screen and (max-width: 427px) {
-    footer {
-        padding: 5rem 2rem;
-    }
-    .track {
-        top: 12rem;
-    }
-    .content-container {
-        flex-direction: column;
-        align-items: flex-start !important;
-        div {
-            width: 100%;
-        }
-        #input-main-container {
-            margin-top: 15rem;
-        }
-        .contact {
-            width: 60%;
-        }
-    }
-    .input-div {
-        mat-icon {
-            right: 1.5rem;
-        }
+  .input-div {
+    mat-icon {
+      right: 1.5rem;
     }
   }
+}

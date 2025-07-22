@@ -1,72 +1,82 @@
-<div *ngIf="loading$ | async" class="loader-overlay">
+<!-- <div *ngIf="loading$ | async" class="loader-overlay">
   <app-loader></app-loader>
-</div>
+</div> -->
 <div *ngIf="details && !(loading$ | async)" class="main-container">
   <div class="sub-header d-flex align-items-center justify-content-between">
-    <mat-icon
-    aria-hidden="false"
-    aria-label="Example home icon"
-    fontIcon="arrow_backward"
-    ></mat-icon>
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-center">
       <mat-icon
-      aria-hidden="false"
-      aria-label="Example home icon"
-      fontIcon="share"
-      class="me-2"
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="arrow_backward"
       ></mat-icon>
-      <span>Share</span>
+    </div>
+    <div class="d-flex align-items-center justify-content-center">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="share"
+        class="me-2"
+      ></mat-icon>
+      <span *ngIf="viewPort > 427">Share</span>
     </div>
   </div>
   <div class="title mt-4">
-    <span>{{details.destination_name}}</span>
+    <span>{{ details.destination_name }}</span>
   </div>
   <div class="d-flex mt-3 main-content">
     <div class="d-flex align-items-center justify-content-between me-4">
       <mat-icon
-      aria-hidden="false"
-      aria-label="Example home icon"
-      fontIcon="schedule"
-      class="me-2"
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="schedule"
+        class="me-2"
       ></mat-icon>
-      <span class="para-font-style">{{details.days}} days - {{details.nights}} nights</span>
+      <span class="para-font-style"
+        >{{ details.days }} days - {{ details.nights }} nights</span
+      >
     </div>
     <div class="d-flex align-items-center justify-content-between">
       <mat-icon
-      aria-hidden="false"
-      aria-label="Example home icon"
-      fontIcon="location_on"
-      class="me-2"
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="location_on"
+        class="me-2"
       ></mat-icon>
       <span class="para-font-style">Kashmir, India</span>
     </div>
   </div>
-  
+
   <div class="d-flex justify-content-between w-100">
     <div class="left-div">
       <div class="d-flex justify-content-between">
         <div class="details w-100">
           <div
-          class="trip-img d-flex align-items-center justify-content-between"
+            class="trip-img d-flex align-items-center justify-content-between"
           >
-          <img
-          class="primary-img"
+            <img
+              class="primary-img"
               src="../../assets/kashmir_Gallery.png"
               alt=""
-              />
-              <div class="months-tag">
-                <img src="../../assets/calendar_small.png" alt="" class="me-2">
-                <span>{{details.from_month | timestampToDate}} - {{details.to_month | timestampToDate}}</span>
+            />
+            <div class="months-tag">
+              <img src="../../assets/calendar_small.png" alt="" class="me-2" />
+              <span
+                >{{ details.from_month | timestampToDate }} -
+                {{ details.to_month | timestampToDate }}</span
+              >
             </div>
-            <div class="secondary-img">
+            <div *ngIf="viewPort > 427" class="secondary-img">
               <img src="../../assets//Kashmir_Gallery_1.png" alt="" />
               <img src="../../assets//Kashmir_Gallery_2.png" alt="" />
-              <div class="show-all d-flex align-items-center" (click)="openLightbox()">
+              <div
+                class="show-all d-flex align-items-center"
+                (click)="openLightbox()"
+              >
                 <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="apps"
-                class="me-2"
+                  aria-hidden="false"
+                  aria-label="Example home icon"
+                  fontIcon="apps"
+                  class="me-2"
                 ></mat-icon>
                 <span class="text-uppercase">show all</span>
               </div>
@@ -74,28 +84,107 @@
           </div>
         </div>
       </div>
-      
+
+      <div *ngIf="viewPort < 427" class="right-sub-div">
+        <div>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column duration">
+              <span>{{ details.days }} Days</span>
+              <span class="mt-3">{{ details.nights }} Nights</span>
+            </div>
+            <div class="d-flex flex-column visitors align-items-end">
+              <img src="../../assets/visitors.png" alt="" />
+              <span class="para-font-style">+10 Already Visited</span>
+            </div>
+          </div>
+          <div class="locations w-100 mt-3">
+            <span
+              *ngFor="let destination of destinations"
+              class="para-font-style text-uppercase"
+            >
+              {{ destination }} •
+            </span>
+          </div>
+        </div>
+        <div class="batches">
+          <div class="header d-flex align-items-center justify-content-between">
+            <div>Batch Dates</div>
+            <div class="status">Status</div>
+          </div>
+          <div class="dates">
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <span>JAN 12 - 16, 2025</span>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <span>JAN 12 - 16, 2025</span>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <span>JAN 12 - 16, 2025</span>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <span>JAN 12 - 16, 2025</span>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="d-flex justify-content-between">
         <div class="overview w-100">
           <div class="header d-flex justify-content-between">
             <div
-              (click)="scrollToContent('overview')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'overview' ? 'tab-selected' : ''"
+              (click)="scrollToContent('overview')"
+              class="text-uppercase d-flex align-items-center justify-content-center"
+              [ngClass]="selectedTab === 'overview' ? 'tab-selected' : ''"
             >
               Overview
             </div>
             <div
-              (click)="scrollToContent('itinerary')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'itinerary' ? 'tab-selected' : ''"
-              >
+              (click)="scrollToContent('itinerary')"
+              class="text-uppercase d-flex align-items-center justify-content-center"
+              [ngClass]="selectedTab === 'itinerary' ? 'tab-selected' : ''"
+            >
               Itinerary
             </div>
             <div
-            (click)="scrollToContent('reviews')" class="text-uppercase d-flex align-items-center justify-content-center" [ngClass]="selectedTab === 'reviews' ? 'tab-selected' : ''"
+              (click)="scrollToContent('reviews')"
+              class="text-uppercase d-flex align-items-center justify-content-center"
+              [ngClass]="selectedTab === 'reviews' ? 'tab-selected' : ''"
             >
-            Reviews
-          </div>
-          <div
-              (click)="scrollToContent('inclusions')" class="text-uppercase d-flex align-items-center justify-content-center text-center" [ngClass]="selectedTab === 'inclusions' ? 'tab-selected' : ''"
-              >
+              Reviews
+            </div>
+            <div
+              (click)="scrollToContent('inclusions')"
+              class="text-uppercase d-flex align-items-center justify-content-center text-center"
+              [ngClass]="selectedTab === 'inclusions' ? 'tab-selected' : ''"
+            >
               Inclusions / Exclusions
             </div>
           </div>
@@ -104,34 +193,45 @@
 
       <div id="overview-points" class="overview-points">
         <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-start">
-            <img src="../../assets/calendar.png" alt="" class="me-3">
+          <div class="sub-tag d-flex align-items-start">
+            <img src="../../assets/calendar.png" alt="" class="me-3" />
             <div class="d-flex flex-column">
               <div>Travel Style: 1-4 People Together</div>
-              <span class="para-font-style mt-2">Fast, fresh, and fun adventures that never slow down, made for young, budget-minded travellers.</span>
+              <span class="para-font-style mt-2"
+                >Fast, fresh, and fun adventures that never slow down, made for
+                young, budget-minded travellers.</span
+              >
             </div>
           </div>
-          <div class="d-flex align-items-start">
-            <img src="../../assets/service.png" alt="" class="me-3">
+          <div class="sub-tag d-flex align-items-start">
+            <img src="../../assets/service.png" alt="" class="me-3" />
             <div class="d-flex flex-column">
               <div>Service Level: Basic</div>
-              <span class="para-font-style mt-2">Simple and clean hotels and hostels; affordable public and private transport; lots of optional activities.</span>
+              <span class="para-font-style mt-2"
+                >Simple and clean hotels and hostels; affordable public and
+                private transport; lots of optional activities.</span
+              >
             </div>
           </div>
         </div>
         <div class="d-flex justify-content-between mt-4">
-          <div class="d-flex align-items-start">
-            <img src="../../assets/physical.png" alt="" class="me-3">
+          <div class="sub-tag d-flex align-items-start">
+            <img src="../../assets/physical.png" alt="" class="me-3" />
             <div class="d-flex flex-column">
               <div>Physical Rating: 2 -Light</div>
-              <span class="para-font-style mt-2">Light walking and hiking suitable for most fitness levels. Nothing too challenging.</span>
+              <span class="para-font-style mt-2"
+                >Light walking and hiking suitable for most fitness levels.
+                Nothing too challenging.</span
+              >
             </div>
           </div>
-          <div class="d-flex align-items-start">
-            <img src="../../assets/group.png" alt="" class="me-3">
+          <div class="sub-tag d-flex align-items-start">
+            <img src="../../assets/group.png" alt="" class="me-3" />
             <div class="d-flex flex-column">
               <div>Trip Type: Small Group</div>
-              <span class="para-font-style mt-2">Small group experience; Max 20, avg 12.</span>
+              <span class="para-font-style mt-2"
+                >Small group experience; Max 20, avg 12.</span
+              >
             </div>
           </div>
         </div>
@@ -142,15 +242,13 @@
           <div class="heading">Is this Adventure for me?</div>
           <div class="mt-4 mb-4">
             <div class="content para-font-style">
-              {{details.description}}
+              {{ details.description }}
             </div>
-            <!-- <div class="content para-font-style mt-3">
-            </div> -->
           </div>
           <span class="read-more text-uppercase fw-bold">Read more</span>
         </div>
       </div>
-      
+
       <div id="itinerary" class="itinerary">
         <div class="d-flex justify-content-between">
           <div class="heading d-flex align-items-center">
@@ -158,88 +256,32 @@
             <span>Itinerary</span>
           </div>
           <div
-          class="download d-flex align-items-center justify-content-center"
+            class="download d-flex align-items-center justify-content-center"
           >
-          <img src="../../assets/download.png" alt="" />
+            <img src="../../assets/download.png" alt="" />
           </div>
         </div>
-        
+
         <div class="accordian-main-container">
           <mat-accordion *ngFor="let key of keys" multi>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
-                <div class="day-container me-4 text-uppercase">Day {{key}}</div>
+                <div class="day-container me-4 text-uppercase">
+                  Day {{ key }}
+                </div>
                 <div class="description">
-                  {{itinerary[key].title}}
+                  {{ itinerary[key].title }}
                 </div>
               </mat-expansion-panel-header>
               <span class="content para-font-style">
-                {{itinerary[key].content}}
+                {{ itinerary[key].content }}
               </span>
             </mat-expansion-panel>
           </mat-accordion>
-          <!-- <mat-accordion multi>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <div class="day-container me-4 text-uppercase">Day 2</div>
-                <div class="description">
-                  Manali Arrival | Local Sightseeing
-                </div>
-              </mat-expansion-panel-header>
-              <span class="content para-font-style">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </span>
-            </mat-expansion-panel>
-          </mat-accordion>
-          <mat-accordion multi>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <div class="day-container me-4 text-uppercase">Day 3</div>
-                <div class="description">
-                  Manali to Solang Valley (13 Kilometers, 1 hour) | Solang
-                  Valley Excursion
-                </div>
-              </mat-expansion-panel-header>
-              <span class="content para-font-style">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </span>
-            </mat-expansion-panel>
-          </mat-accordion>
-          <mat-accordion multi>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <div class="day-container me-4 text-uppercase">Day 4</div>
-                <div class="description">
-                  Manali to Kasol (75 Kilometers, 2 Hours) | Kasol Sightseeing
-                </div>
-              </mat-expansion-panel-header>
-              <span class="content para-font-style">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </span>
-            </mat-expansion-panel>
-          </mat-accordion> -->
         </div>
       </div>
 
-      <div id="reviews" class="reviews">
+      <!-- <div id="reviews" class="reviews">
         <div class="heading d-flex align-items-center">
           <mat-icon
             aria-hidden="false"
@@ -284,31 +326,43 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div id="inclusions" class="inclusions">
         <div class="switch d-flex">
-          <div class="text-uppercase" [ngClass]="inclusionSelected ? 'selected' : ''" (click)="inclusionSelected = true">Incluision</div>
-          <div class="text-uppercase" [ngClass]="inclusionSelected ? '' : 'selected'" (click)="inclusionSelected = false">Exclusions</div>
+          <div
+            class="text-uppercase"
+            [ngClass]="inclusionSelected ? 'selected' : ''"
+            (click)="inclusionSelected = true"
+          >
+            Incluision
+          </div>
+          <div
+            class="text-uppercase"
+            [ngClass]="inclusionSelected ? '' : 'selected'"
+            (click)="inclusionSelected = false"
+          >
+            Exclusions
+          </div>
         </div>
         <div *ngIf="inclusionSelected" class="mt-4 inclusions-content">
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-            aria-hidden="false"
-            aria-label="Example home icon"
+              aria-hidden="false"
+              aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-              ></mat-icon>
-              <span class="para-font-style">
-                Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
+            ></mat-icon>
+            <span class="para-font-style">
+              Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
             </span>
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-            aria-hidden="false"
-            aria-label="Example home icon"
-            fontIcon="done"
-            class="me-2"
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="done"
+              class="me-2"
             ></mat-icon>
             <span class="para-font-style">
               Transportation in Tempo Traveler for local sightseeing.
@@ -320,18 +374,18 @@
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-              ></mat-icon>
-              <span class="para-font-style">
-                Accommodations on sharing basis as per Itinerary.
-              </span>
-            </div>
+            ></mat-icon>
+            <span class="para-font-style">
+              Accommodations on sharing basis as per Itinerary.
+            </span>
+          </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-              ></mat-icon>
+            ></mat-icon>
             <span class="para-font-style">
               A female Trip Captain will be present at all times during the
               tour.
@@ -339,11 +393,11 @@
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-            aria-hidden="false"
+              aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-              ></mat-icon>
+            ></mat-icon>
             <span class="para-font-style">
               Zipline and Rocket Bungee in Solang Valley, If any of the
               mentioned activities (Zipline and Rocket Bungee) are
@@ -357,8 +411,8 @@
               aria-label="Example home icon"
               fontIcon="done"
               class="me-2"
-              ></mat-icon>
-              <span class="para-font-style"> All kinds of Permits. </span>
+            ></mat-icon>
+            <span class="para-font-style"> All kinds of Permits. </span>
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
@@ -373,21 +427,21 @@
         <div *ngIf="!inclusionSelected" class="mt-4 exclusions-content">
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-            aria-hidden="false"
-            aria-label="Example home icon"
+              aria-hidden="false"
+              aria-label="Example home icon"
               fontIcon="close"
               class="me-2"
-              ></mat-icon>
-              <span class="para-font-style">
-                Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
+            ></mat-icon>
+            <span class="para-font-style">
+              Volvo/ Bus Transfers from Delhi to Jibhi and Manali to Delhi.
             </span>
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-            aria-hidden="false"
-            aria-label="Example home icon"
-            fontIcon="close"
-            class="me-2"
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+              class="me-2"
             ></mat-icon>
             <span class="para-font-style">
               Transportation in Tempo Traveler for local sightseeing.
@@ -399,18 +453,18 @@
               aria-label="Example home icon"
               fontIcon="close"
               class="me-2"
-              ></mat-icon>
-              <span class="para-font-style">
-                Accommodations on sharing basis as per Itinerary.
-              </span>
-            </div>
+            ></mat-icon>
+            <span class="para-font-style">
+              Accommodations on sharing basis as per Itinerary.
+            </span>
+          </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="close"
               class="me-2"
-              ></mat-icon>
+            ></mat-icon>
             <span class="para-font-style">
               A female Trip Captain will be present at all times during the
               tour.
@@ -418,11 +472,11 @@
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
-            aria-hidden="false"
+              aria-hidden="false"
               aria-label="Example home icon"
               fontIcon="close"
               class="me-2"
-              ></mat-icon>
+            ></mat-icon>
             <span class="para-font-style">
               Zipline and Rocket Bungee in Solang Valley, If any of the
               mentioned activities (Zipline and Rocket Bungee) are
@@ -436,8 +490,8 @@
               aria-label="Example home icon"
               fontIcon="close"
               class="me-2"
-              ></mat-icon>
-              <span class="para-font-style"> All kinds of Permits. </span>
+            ></mat-icon>
+            <span class="para-font-style"> All kinds of Permits. </span>
           </div>
           <div class="content d-flex align-content-center mt-2">
             <mat-icon
@@ -451,12 +505,12 @@
         </div>
       </div>
     </div>
-    <div class="right-div" #stickyDiv>
+    <div *ngIf="viewPort > 427" class="right-div" #stickyDiv>
       <div class="pricing">
         <div class="d-flex justify-content-between">
           <div class="d-flex flex-column duration">
-            <span>{{details.days}} Days</span>
-            <span class="mt-3">{{details.nights}} Nights</span>
+            <span>{{ details.days }} Days</span>
+            <span class="mt-3">{{ details.nights }} Nights</span>
           </div>
           <div class="d-flex flex-column visitors align-items-end">
             <img src="../../assets/visitors.png" alt="" />
@@ -464,8 +518,11 @@
           </div>
         </div>
         <div class="locations w-100 mt-3">
-          <span *ngFor="let destination of destinations" class="para-font-style text-uppercase">
-            {{destination}} •
+          <span
+            *ngFor="let destination of destinations"
+            class="para-font-style text-uppercase"
+          >
+            {{ destination }} •
           </span>
         </div>
         <div class="mt-4">
@@ -486,7 +543,7 @@
         <div class="d-flex align-items-center justify-content-between mt-2">
           <span class="para-font-style">Starting from</span>
           <div class="price-tag d-flex align-items-center">
-            <span class="price me-2"> &#8377; {{details.price}}</span>
+            <span class="price me-2"> &#8377; {{ details.price }}</span>
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
@@ -498,7 +555,11 @@
         <div
           class="btnDiv d-flex align-items-center justify-content-center flex-column"
         >
-          <button class="cstmSubmitBtn text-uppercase" type="submit" (click)="bookNow()">
+          <button
+            class="cstmSubmitBtn text-uppercase"
+            type="submit"
+            (click)="bookNow()"
+          >
             Book now
           </button>
         </div>
@@ -635,9 +696,9 @@
     </div>
   </div>
 
-  <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" />
+  <!-- <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" /> -->
 
-  <div class="suggested-trips">
+  <!-- <div class="suggested-trips">
     <div class="heading d-flex align-items-center">
       <img src="../../assets/hashtag.png" alt="" class="me-3" />
       <span>Few handpicked Journeys for you!</span>
@@ -647,8 +708,14 @@
         <trip-card [card]="trip"></trip-card>
       </ng-container>
     </div>
-  </div>
+  </div> -->
 
-  <app-lightbox [galleryData]="galleryData" [showCount]="true" [previewImage]="previewImage" [showMask]="showMask" (closeLightBox)="closeLightBox($event)"></app-lightbox>
-
+  <app-lightbox
+    [galleryData]="galleryData"
+    [showCount]="true"
+    [previewImage]="previewImage"
+    [showMask]="showMask"
+    (closeLightBox)="closeLightBox($event)"
+  ></app-lightbox>
+  <app-draggable-bottom-sheet></app-draggable-bottom-sheet>
 </div>

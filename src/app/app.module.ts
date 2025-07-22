@@ -32,6 +32,7 @@ import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
 import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
 import { LoadingInterceptor } from 'src/interceptors/loading.interceptor';
 import { LoaderComponent } from './loader/loader.component';
+import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-sheet/draggable-bottom-sheet.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { LoaderComponent } from './loader/loader.component';
     BookingComponent,
     TripDurationPipe,
     LightboxComponent,
-    LoaderComponent
+    LoaderComponent,
+    DraggableBottomSheetComponent,
   ],
   imports: [
     BrowserModule,

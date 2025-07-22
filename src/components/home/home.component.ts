@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.staticService.getBanner('home_page_banner').subscribe((data) => {
       this.bannerUrl = data.imageUrl;
-      console.log(111, this.bannerUrl);
     });
   }
 }

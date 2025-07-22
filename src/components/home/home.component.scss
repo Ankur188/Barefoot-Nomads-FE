@@ -3,7 +3,7 @@
 .hero-banner {
   height: 47rem;
   background-image: linear-gradient(180deg, rgba(12, 12, 12, 0), $lf-black);
-    // url(../../assets/banner-img.png);
+  // url(../../assets/banner-img.png);
   // background-repeat: no-repeat;
   // background-size: cover;
   padding: 5rem 12rem 5rem 12rem;
@@ -190,7 +190,7 @@ p {
     }
     .video-container {
       background-image: linear-gradient(180deg, rgba(12, 12, 12, 0), $lf-black);
-      border-radius: .4rem;
+      border-radius: 0.4rem;
     }
   }
 }
@@ -218,7 +218,7 @@ p {
   }
 }
 
-@media only screen and (max-width: 427px) {
+@media only screen and (max-width: 460px) {
   .hero-banner {
     padding: 2rem;
     padding-top: 5rem;
@@ -230,6 +230,7 @@ p {
   .sub-tag-line {
     font-size: 2rem;
     margin-top: 2rem;
+    line-height: 3rem;
   }
   .banner-points {
     flex-direction: column;
@@ -239,24 +240,24 @@ p {
     #banner-point-1,
     #banner-point-2,
     #banner-point-3 {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
     }
   }
   .who-are-we-main-div {
     padding: 5rem 2rem 7rem 2rem;
     .sub-heading > span {
       &:first-child {
-        font-size: 1.95rem;
+        font-size: 1.5rem;
       }
       &:nth-child(2) {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
     }
     .content {
       line-height: 2rem;
     }
     .logo-watermark {
-      top: 22rem;
+      top: 17rem;
     }
   }
 
@@ -265,22 +266,45 @@ p {
     .heading {
       font-size: 0.9rem;
     }
-    #laptop-view-icon {
-      display: none;
-    }
-    #mobile-view-icon {
-      display: block;
-      margin: 4rem 0;
+
+    .sub-heading {
+      font-size: 2rem;
+      line-height: 2.5rem;
     }
     .main-content {
       flex-direction: column;
       align-items: flex-start !important;
       .reviews {
         width: 100%;
+        .review {
+          p > span {
+            line-height: 1.25rem;
+            margin-top: 0.5rem !important;
+          }
+        }
       }
       video {
         width: 23rem;
         margin-top: 4rem;
+      }
+    }
+  }
+
+  .banner {
+    img {
+      width: 100vw !important;
+    }
+  }
+
+  .brands {
+    padding: 5rem 2rem;
+    span {
+      font-size: 1rem;
+    }
+    div {
+      overflow-x: auto;
+      img {
+        margin-right: 2rem;
       }
     }
   }

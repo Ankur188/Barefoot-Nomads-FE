@@ -60,3 +60,47 @@ mat-radio-group mat-radio-button {
   letter-spacing: 0.03125rem;
   color: rgba(255, 255, 255, 0.75);
 }
+
+.mb-2rem {
+  margin-bottom: 2rem;
+}
+
+@media only screen and (max-width: 427px) {
+  .main-container {
+    padding: 2rem;
+    .sub-heading {
+      line-height: 2.5rem;
+      margin-top: 1rem;
+    }
+  }
+
+  .form-container {
+    mat-radio-button {
+      &:nth-child(2) {
+        margin-top: 1rem;
+      }
+    }
+
+    .form-details {
+      div {
+        flex-direction: column;
+
+        input:first-child {
+          margin-bottom: 2rem;
+        }
+        input,
+        select {
+          width: 100% !important;
+        }
+        textarea {
+          margin-top: 1rem;
+        }
+      }
+
+      .cstmSubmitBtn {
+        width: 100%;
+        margin-bottom: 3rem;
+      }
+    }
+  }
+}

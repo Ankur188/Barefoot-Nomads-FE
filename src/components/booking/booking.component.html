@@ -1,222 +1,309 @@
 <div *ngIf="loading$ | async" class="loader-overlay">
-    <app-loader></app-loader>
-  </div>
+  <app-loader></app-loader>
+</div>
 <div *ngIf="details && !(loading$ | async)" class="main-container">
-    <div class="navigate-back">
-        <mat-icon
-        aria-hidden="false"
-        aria-label="Example home icon"
-        fontIcon="arrow_back"
-        class="me-2 cursor-pointer"
-        (click)="navigateBack()"
-      ></mat-icon>
-    </div>
+  <div class="navigate-back">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="arrow_back"
+      class="me-2 cursor-pointer"
+      (click)="navigateBack()"
+    ></mat-icon>
+  </div>
 
-    <div class="header">
-        <div class="heading mb-3">Book Your adventure Today</div>
-        <span class="para-font-style">Fill in the details below, and the final bill amount will be calculated based on your selection.</span>
-    </div>
+  <div class="header">
+    <div class="heading mb-3">Book Your adventure Today</div>
+    <span class="para-font-style"
+      >Fill in the details below, and the final bill amount will be calculated
+      based on your selection.</span
+    >
+  </div>
 
-    <div class="d-flex justify-content-between">
-        <div class="left-div">
-            <div class="contact-details">
-                <div class="heading">
-                    <p><span class="text-uppercase">Booking contact information</span><span>*</span></p>
-                    <form action="">
-                        <form class="form-detail">
-                            <input type="text" placeholder="Full Name">
-                            <input type="text" placeholder="Phone Number">
-                            <input type="text" placeholder="Emergency / Guardian Contact Number">
-                            <input type="text" placeholder="Email">
-                        </form>
-                    </form>
-                </div>
-            </div>
-            <div class="travellers d-flex justify-content-between mb-4">
-                <span class="text-uppercase">No. of traveller(s)</span>
-                <div class="number">
-                    <button class="IncDecBtn" aria-label="Decrease number of travelers" (click)="updateCounter('decrease')">-</button>
-                    <p id="travelerCount" class="traveler-count">{{numberOfTravellers}}</p>
-                    <button class="IncDecBtn" aria-label="Increase number of travelers" (click)="updateCounter('increase')">+</button>
-                </div>
-            </div>
-            <span class="para-font-style mt-3">Once your booking is complete, government-issued ID proofs will be required for you as well as all travelers added to the trip. We will connect with you after the booking to provide instructions on how to submit these documents.</span>
-            <div class="batches-container">
-                <div class="header d-flex justify-content-between">
-                    <div class="heading text-uppercase">select the batch</div>
-                    <div class="text-uppercase">ALL | Jan | Feb | Mar</div>
-                </div>
-
-                <div class="batches">
-                    <div class="header d-flex align-items-center justify-content-between">
-                        <mat-radio-button value="true" disabled>
-                        </mat-radio-button>
-                      <div>Batch Dates</div>
-                      <div class="status">Status</div>
-                      <div>Starting Price</div>
-                    </div>
-                    <div class="dates">
-                      <div
-                        class="d-flex align-items-center justify-content-between content"
-                      >
-                        <mat-radio-button value="true">
-                        </mat-radio-button>
-                        <span>JAN 12 - 16, 2025</span>
-                        <div
-                          class="availablity text-uppercase d-flex align-items-center justify-content-center"
-                        >
-                          Available
-                        </div>
-                        <span> &#8377; 7400</span>
-                      </div>
-                      <div
-                        class="d-flex align-items-center justify-content-between content"
-                      >
-                        <mat-radio-button value="true">
-                        </mat-radio-button>
-                        <span>JAN 12 - 16, 2025</span>
-                        <div
-                          class="availablity text-uppercase d-flex align-items-center justify-content-center"
-                        >
-                          Available
-                        </div>
-                        <span> &#8377; 7400</span>
-                      </div>
-                      <div
-                        class="d-flex align-items-center justify-content-between content"
-                      >
-                        <mat-radio-button value="true">
-                        </mat-radio-button>
-                        <span>JAN 12 - 16, 2025</span>
-                        <div
-                          class="availablity text-uppercase d-flex align-items-center justify-content-center"
-                        >
-                          Available
-                        </div>
-                        <span> &#8377; 7400</span>
-                      </div>
-                      <div
-                        class="d-flex align-items-center justify-content-between content"
-                      >
-                        <mat-radio-button value="true">
-                        </mat-radio-button>
-                        <span>JAN 12 - 16, 2025</span>
-                        <div
-                          class="availablity text-uppercase d-flex align-items-center justify-content-center"
-                        >
-                          Available
-                        </div>
-                        <span> &#8377; 7400</span>
-                      </div>
-                      
-                        <div
-                            class="d-flex align-items-center justify-content-center content pagination-div"
-                            >
-                            <button (click)="prevPage()" [disabled]="currentPage === 1" class="d-flex align-items-center justify-content-center me-3">
-                                <mat-icon>keyboard_arrow_left</mat-icon>
-                            </button>
-                            <div *ngFor="let page of pages" (click)="setPage(page)" [class.active]="currentPage === page" class="d-flex align-items-center justify-content-center me-3">
-                                {{ page }}
-                            </div>
-                            <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="d-flex align-items-center justify-content-center">
-                                <mat-icon>keyboard_arrow_right</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                  </div>
-            </div>
-            <div class="rooms-div">
-                <div class="text-uppercase d-flex align-items-center">
-                    <span class="me-2">Select the type of your room </span>
-                    <mat-icon
-                    aria-hidden="false"
-                    aria-label="Example home icon"
-                    fontIcon="info"
-                  ></mat-icon>
-                </div>
-                <div class="types d-flex justify-content-between">
-                    <div class="card d-flex flex-column" (click)="selectRoom(200)">
-                        <mat-radio-button value="true" [checked] = "roomPrice === 200">
-                        </mat-radio-button>
-                        <span class="para-font-style mt-3">
-                            Triple Occupancy
-                        </span>
-                    </div>
-                    <div class="card d-flex flex-column" (click)="selectRoom(400)">
-                        <mat-radio-button value="true" [checked] = "roomPrice === 400">
-                        </mat-radio-button>
-                        <span class="para-font-style mt-3">
-                            Double Occupancy
-                        </span>
-                        <div class="price mt-3">
-                            + &#8377; 400
-                        </div>
-                    </div>
-                    <div class="card d-flex flex-column" (click)="selectRoom(600)">
-                        <mat-radio-button value="true" [checked] = "roomPrice === 600">
-                        </mat-radio-button>
-                        <span class="para-font-style mt-3">
-                            Single Occupancy
-                        </span>
-                        <div class="price mt-3">
-                            + &#8377; 600
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+  <div class="d-flex justify-content-between">
+    <div class="left-div">
+      <div class="contact-details">
+        <div class="heading">
+          <p>
+            <span class="text-uppercase">Booking contact information</span
+            ><span>*</span>
+          </p>
+          <form action="">
+            <form class="form-detail">
+              <input type="text" placeholder="Full Name" />
+              <input type="text" placeholder="Phone Number" />
+              <input
+                type="text"
+                placeholder="Emergency / Guardian Contact Number"
+              />
+              <input type="text" placeholder="Email" />
+            </form>
+          </form>
         </div>
-        <div class="right-div">
-            <div class="cart">
-                <span class="title">{{details.destination_name}}</span>
-                <div class="trip-details d-flex justify-content-between mt-2">
-                    <div class="d-flex align-items-center">
-                        <img src="../../assets/calendar_small.png" alt="" class="me-2">
-                        <span class="date">{{details.from_date | tripDuration : details.to_date}}</span>
-                    </div>
-                    <div class="duration">
-                        {{details.days}} Days - {{details.nights}} Nights
-                    </div>
-                </div>
-                <div class="locations mt-4">
-                    <span *ngFor="let destination of destinations" class="para-font-style text-uppercase">
-                        {{destination}} •
-                    </span>
-                </div>
-                <div class="pricing mt-4">
-                    <div class="d-flex justify-content-between mt-3">
-                        <span class="para-font-style">Number of Travellers</span>
-                        <span class="para-font-style">{{numberOfTravellers}}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <span class="para-font-style">Standard Price</span>
-                        <span class="para-font-style">&#8377; {{(details.price - (details.price * .05) - 200) * numberOfTravellers}}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <span class="para-font-style">{{roomPrice === 200 ? 'Triple Room Occupancy / Per Person' : roomPrice === 400 ? 'Double Room Occupancy / Per Person' : 'Single Room Occupancy / Per Person'}} </span>
-                        <span class="para-font-style">&#8377; {{ roomPrice * numberOfTravellers}}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <span class="para-font-style">GST (5%)</span>
-                        <span class="para-font-style">&#8377; {{details.price * .05 * numberOfTravellers}}</span>
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <span class="para-font-style">Subtotal</span>
-                        <span class="para-font-style">&#8377; {{details.price * numberOfTravellers + ((roomPrice - 200) * numberOfTravellers )}}</span>
-                    </div>
-                </div>
-
-                <input type="text" placeholder="Enter Coupon Code" class="mt-4 w-100 coupon-input">
-                <div class="total mt-4 d-flex justify-content-between">
-                    <span>Amount to be paid</span>
-                    <span class="amount">&#8377; {{details.price * numberOfTravellers + ((roomPrice - 200) * numberOfTravellers )}}</span>
-                </div>
-
-                <div class="pay w-100 text-uppercase text-center align-content-center mt-4" (click)="payNow()">
-                    Pay now
-                </div>
-            </div>
+      </div>
+      <div class="travellers d-flex justify-content-between mb-4">
+        <span class="text-uppercase">No. of traveller(s)</span>
+        <div class="number">
+          <button
+            class="IncDecBtn"
+            aria-label="Decrease number of travelers"
+            (click)="updateCounter('decrease')"
+          >
+            -
+          </button>
+          <p id="travelerCount" class="traveler-count">
+            {{ numberOfTravellers }}
+          </p>
+          <button
+            class="IncDecBtn"
+            aria-label="Increase number of travelers"
+            (click)="updateCounter('increase')"
+          >
+            +
+          </button>
         </div>
+      </div>
+      <span class="para-font-style mt-3"
+        >Once your booking is complete, government-issued ID proofs will be
+        required for you as well as all travelers added to the trip. We will
+        connect with you after the booking to provide instructions on how to
+        submit these documents.</span
+      >
+      <div class="batches-container">
+        <div class="header d-flex justify-content-between">
+          <div class="heading text-uppercase">select the batch</div>
+          <div class="text-uppercase">ALL | Jan | Feb | Mar</div>
+        </div>
+
+        <div class="batches">
+          <div class="header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-end">
+              <mat-radio-button value="true" disabled class="me-3">
+              </mat-radio-button>
+              <div>Batch Dates</div>
+            </div>
+            <div class="status">Status</div>
+            <div>Starting Price</div>
+          </div>
+          <div class="dates">
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <div class="d-flex align-items-end">
+                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
+                <span>JAN 12 - 16, 2025</span>
+              </div>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+              <span> &#8377; 7400</span>
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <div class="d-flex align-items-end">
+                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
+                <span>JAN 12 - 16, 2025</span>
+              </div>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+              <span> &#8377; 7400</span>
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <div class="d-flex align-items-end">
+                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
+                <span>JAN 12 - 16, 2025</span>
+              </div>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+              <span> &#8377; 7400</span>
+            </div>
+            <div
+              class="d-flex align-items-center justify-content-between content"
+            >
+              <div class="d-flex align-items-end">
+                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
+                <span>JAN 12 - 16, 2025</span>
+              </div>
+              <div
+                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              >
+                Available
+              </div>
+              <span> &#8377; 7400</span>
+            </div>
+
+            <div
+              class="d-flex align-items-center justify-content-center content pagination-div"
+            >
+              <button
+                (click)="prevPage()"
+                [disabled]="currentPage === 1"
+                class="d-flex align-items-center justify-content-center me-3"
+              >
+                <mat-icon>keyboard_arrow_left</mat-icon>
+              </button>
+              <div
+                *ngFor="let page of pages"
+                (click)="setPage(page)"
+                [class.active]="currentPage === page"
+                class="d-flex align-items-center justify-content-center me-3"
+              >
+                {{ page }}
+              </div>
+              <button
+                (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+                class="d-flex align-items-center justify-content-center"
+              >
+                <mat-icon>keyboard_arrow_right</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rooms-div">
+        <div class="text-uppercase d-flex align-items-center">
+          <span class="me-2">Select the type of your room </span>
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="info"
+          ></mat-icon>
+        </div>
+        <div class="room-types-main-div">
+          <div class="types d-flex justify-content-between">
+            <div class="card d-flex flex-column" (click)="selectRoom(200)">
+              <mat-radio-button value="true" [checked]="roomPrice === 200">
+              </mat-radio-button>
+              <span class="para-font-style mt-3"> Triple Occupancy </span>
+            </div>
+            <div class="card d-flex flex-column" (click)="selectRoom(400)">
+              <mat-radio-button value="true" [checked]="roomPrice === 400">
+              </mat-radio-button>
+              <span class="para-font-style mt-3"> Double Occupancy </span>
+              <div class="price mt-3">+ &#8377; 400</div>
+            </div>
+            <div class="card d-flex flex-column" (click)="selectRoom(600)">
+              <mat-radio-button value="true" [checked]="roomPrice === 600">
+              </mat-radio-button>
+              <span class="para-font-style mt-3"> Single Occupancy </span>
+              <div class="price mt-3">+ &#8377; 600</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" />
+    <div *ngIf="viewPort > 427" class="right-div">
+      <div class="cart">
+        <span class="title">{{ details.destination_name }}</span>
+        <div class="trip-details d-flex justify-content-between mt-2">
+          <div class="d-flex align-items-center">
+            <img src="../../assets/calendar_small.png" alt="" class="me-2" />
+            <span class="date">{{
+              details.from_date | tripDuration : details.to_date
+            }}</span>
+          </div>
+          <div class="duration">
+            {{ details.days }} Days - {{ details.nights }} Nights
+          </div>
+        </div>
+        <div class="locations mt-4">
+          <span
+            *ngFor="let destination of destinations"
+            class="para-font-style text-uppercase"
+          >
+            {{ destination }} •
+          </span>
+        </div>
+        <div class="pricing mt-4">
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">Number of Travellers</span>
+            <span class="para-font-style">{{ numberOfTravellers }}</span>
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">Standard Price</span>
+            <span class="para-font-style"
+              >&#8377;
+              {{
+                (details.price - details.price * 0.05 - 200) *
+                  numberOfTravellers
+              }}</span
+            >
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style"
+              >{{
+                roomPrice === 200
+                  ? "Triple Room Occupancy / Per Person"
+                  : roomPrice === 400
+                  ? "Double Room Occupancy / Per Person"
+                  : "Single Room Occupancy / Per Person"
+              }}
+            </span>
+            <span class="para-font-style"
+              >&#8377; {{ roomPrice * numberOfTravellers }}</span
+            >
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">GST (5%)</span>
+            <span class="para-font-style"
+              >&#8377; {{ details.price * 0.05 * numberOfTravellers }}</span
+            >
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">Subtotal</span>
+            <span class="para-font-style"
+              >&#8377;
+              {{
+                details.price * numberOfTravellers +
+                  (roomPrice - 200) * numberOfTravellers
+              }}</span
+            >
+          </div>
+        </div>
+
+        <input
+          type="text"
+          placeholder="Enter Coupon Code"
+          class="mt-4 w-100 coupon-input"
+        />
+        <div class="total mt-4 d-flex justify-content-between">
+          <span>Amount to be paid</span>
+          <span class="amount"
+            >&#8377;
+            {{
+              details.price * numberOfTravellers +
+                (roomPrice - 200) * numberOfTravellers
+            }}</span
+          >
+        </div>
+
+        <div
+          class="pay w-100 text-uppercase text-center align-content-center mt-4"
+          (click)="payNow()"
+        >
+          Pay now
+        </div>
+      </div>
+    </div>
+  </div>
+  <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" />
+  <app-draggable-bottom-sheet
+    isBookingPage="true"
+    [details]="details"
+    [numberOfTravellers]="numberOfTravellers"
+    [roomPrice]="roomPrice"
+    [destinations]="destinations"
+  ></app-draggable-bottom-sheet>
 </div>

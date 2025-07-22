@@ -1,165 +1,165 @@
 @import "../../styles.scss";
 
 * {
-    color: $lf-black !important;
+  color: $lf-black !important;
 }
 
 .main-container {
-    padding: 10rem 12rem 5rem 12rem;
+  padding: 10rem 12rem 5rem 12rem;
 }
 
 .header {
-    margin-top: 2rem;
-    .heading {
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
+  margin-top: 2rem;
+  .heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 }
 
-.left-div, .right-div {
-    width: 45%;
-    margin-top: 3rem;
+.left-div,
+.right-div {
+  width: 45%;
+  margin-top: 3rem;
 }
 
 .left-div {
-    .contact-details {
-        .heading {
-            font-size: 1rem;
-            font-weight: 500;
-            p {
-                span :nth-child(1) {
-                    color: $lf-red;
-                }
-            }
+  .contact-details {
+    .heading {
+      font-size: 1rem;
+      font-weight: 500;
+      p {
+        span :nth-child(1) {
+          color: $lf-red;
         }
-        .form-detail {
-            input {
-                margin-top: 1rem;
-                background-color: #f1f1f1;
-                border: 2px solid rgba(0, 0, 0, 0.1);
-                width: 100%;
-                height: 3.5rem;
-                padding: 1rem 2rem;
-                color: $lf-light-grey;
-                font-size: 1.25rem;
-                border-radius: 0.4rem;
-            }
-    
-            input::placeholder {
-                font-size: .9rem;
-                line-height: 1.25rem;
-                color: $lf-black;
-                opacity: .5;
-                border: none;
-            }
-        }
+      }
+    }
+    .form-detail {
+      input {
+        margin-top: 1rem;
+        background-color: #f1f1f1;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: 3.5rem;
+        padding: 1rem 2rem;
+        color: $lf-light-grey;
+        font-size: 1.25rem;
+        border-radius: 0.4rem;
+      }
+
+      input::placeholder {
+        font-size: 0.9rem;
+        line-height: 1.25rem;
+        color: $lf-black;
+        opacity: 0.5;
+        border: none;
+      }
+    }
+  }
+
+  .travellers {
+    margin-top: 2rem;
+    span {
+      font-weight: 500;
+    }
+    .number {
+      display: flex;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 5px;
+      background: #f9f9f9;
+      .IncDecBtn {
+        border: none;
+        background-color: #f1f1f1;
+        color: #fff;
+        padding: 0.1rem 0.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+        border-radius: 3px;
+      }
+
+      .traveler-count {
+        padding: 0.05rem 0.75rem;
+        font-weight: 600;
+        margin: 0;
+      }
+    }
+  }
+
+  .batches-container {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.5);
+    .header > div {
+      font-size: 1rem;
+      font-weight: 500;
     }
 
-    .travellers {
-        margin-top: 2rem;
-        span {
-            font-weight: 500;
-        }
-        .number {
-            display: flex;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 5px;
-            background: #f9f9f9;
-            .IncDecBtn {
-                border: none;
-                background-color: #f1f1f1;
-                color: #fff;
-                padding: 0.1rem .5rem;
-                cursor: pointer;
-                font-size: 1rem;
-                border-radius: 3px;
-            }
-    
-            .traveler-count {
-                padding: 0.05rem .75rem;
-                font-weight: 600;
-                margin: 0;
-            }
-    
-    }
-    }
-
-    .batches-container {
-        margin-top: 3rem;
-        padding-top: 1rem;
-        border-top: 1px dashed rgba(0, 0, 0, 0.5);
-        .header > div {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .batches {
-            margin-top: 2rem;
-            border: 1px solid $lf-light-grey;
-            border-radius: .4rem;
-            font-weight: 500;
-            .header, .dates > .content{
-                margin-top: 0;
-                padding: 1.5rem 1rem;
-                background-color: $lf-light-grey;
-                color: $lf-black;
-                font-size: 1rem;
-                font-weight: normal;
-            }
-            .dates {
-                .content {
-                    padding: 1rem;
-                    background-color: $lf-white;
-                    border-bottom: 1px solid $lf-light-grey;
-                    .availablity {
-                        padding: .3rem 1.5rem;
-                        background-color: $lf-green;
-                        color: $lf-white !important;
-                        border-radius: 2rem;
-                        font-size: .75rem;
-                    }
-                }
-                .pagination-div {
-                    button, div {
-                        border: 1px solid rgba(0, 0, 0, 0.1);
-                        border-radius: .4rem;
-                        // padding: .35rem;
-                        width: 2rem;
-                        height: 2rem;
-                    }
-                }
-            }
+    .batches {
+      margin-top: 2rem;
+      border: 1px solid $lf-light-grey;
+      border-radius: 0.4rem;
+      font-weight: 500;
+      .header,
+      .dates > .content {
+        margin-top: 0;
+        padding: 1.5rem 1rem;
+        background-color: $lf-light-grey;
+        color: $lf-black;
+        font-size: 1rem;
+        font-weight: normal;
+      }
+      .dates {
+        .content {
+          padding: 1rem;
+          background-color: $lf-white;
+          border-bottom: 1px solid $lf-light-grey;
+          .availablity {
+            padding: 0.3rem 1.5rem;
+            background-color: $lf-green;
+            color: $lf-white !important;
+            border-radius: 2rem;
+            font-size: 0.75rem;
           }
-        
-    }
-
-    .rooms-div {
-        margin-top: 3rem;
-        div {
-            font-weight: 500;
-            font-size: 1rem;
         }
-        .types {
-            margin-top: 2rem;
-            .card {
-                padding: 1rem;
-                width: 10rem;
-                height: 11rem;
-                background-color: $lf-light-grey;
-                border: 1px solid rgba(0, 0, 0, 0.1);
-                cursor: pointer;
-            }
-            .price {
-                padding-top: 1rem;
-                border-top: 1px solid rgba(0, 0, 0, 0.1);
-            }
+        .pagination-div {
+          button,
+          div {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.4rem;
+            // padding: .35rem;
+            width: 2rem;
+            height: 2rem;
+          }
         }
+      }
     }
+  }
 
+  .rooms-div {
+    margin-top: 3rem;
+    div {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .types {
+      margin-top: 2rem;
+      .card {
+        padding: 1rem;
+        width: 10rem;
+        height: 11rem;
+        background-color: $lf-light-grey;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+      .price {
+        padding-top: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
 }
 
 .banner {
-    margin-top: 5rem;
+  margin-top: 5rem;
 }
 
 ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle,
@@ -171,72 +171,98 @@
   background-color: $lf-gold;
 }
 
-
 ::ng-deep
   .mat-radio-button.mat-accent.mat-radio-checked
   .mat-radio-outer-circle {
-  border-color: rgba(0,0,0,.54);
+  border-color: rgba(0, 0, 0, 0.54);
 }
 
 .right-div {
-    .cart {
-        border: 2px solid #c0c2c7;
-        padding: 2rem;
-        border-radius: .4rem;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        position: sticky;
-        top: 6rem;
+  .cart {
+    border: 2px solid #c0c2c7;
+    padding: 2rem;
+    border-radius: 0.4rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 6rem;
 
-        .title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .trip-details {
-            .date, .duration {
-                font-weight: 500;
-            }
-        }
-
-        .locations {
-            padding:    .75rem 1rem;
-            background-color: $lf-light-grey;
-            border-radius: .4rem;
-            text-align: center;
-            span {
-                font-size: .85rem;
-                font-weight: 400;
-            }
-        }
-
-        .coupon-input {
-            height: 3rem;
-            border-radius: .4rem;
-            border: 1px dashed rgba(0, 0, 0, 0.5);
-            padding: 1rem;
-            background-color: #f1f1f1;
-        }
-
-        .total {
-            padding-top: 2rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            span {
-                opacity: .8;
-                font-weight: 500;
-                font-size: 1rem;
-            }
-            .amount {
-                opacity: 1;
-                font-size: 2.5rem;
-                font-weight: 700;
-            }
-        }
-        .pay {
-            height: 3rem;
-            background-color: $lf-gold;
-            border-radius: .4rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
     }
+
+    .trip-details {
+      .date,
+      .duration {
+        font-weight: 500;
+      }
+    }
+
+    .locations {
+      padding: 0.75rem 1rem;
+      background-color: $lf-light-grey;
+      border-radius: 0.4rem;
+      text-align: center;
+      span {
+        font-size: 0.85rem;
+        font-weight: 400;
+      }
+    }
+
+    .coupon-input {
+      height: 3rem;
+      border-radius: 0.4rem;
+      border: 1px dashed rgba(0, 0, 0, 0.5);
+      padding: 1rem;
+      background-color: #f1f1f1;
+    }
+
+    .total {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      span {
+        opacity: 0.8;
+        font-weight: 500;
+        font-size: 1rem;
+      }
+      .amount {
+        opacity: 1;
+        font-size: 2.5rem;
+        font-weight: 700;
+      }
+    }
+    .pay {
+      height: 3rem;
+      background-color: $lf-gold;
+      border-radius: 0.4rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 427px) {
+  .main-container {
+    padding: 7rem 2rem;
+    .left-div {
+      width: 100%;
+      .availablity,
+      .status {
+        display: none !important;
+      }
+      .room-types-main-div {
+        overflow: auto;
+        .types {
+          width: 135%;
+          .card {
+            width: 9rem;
+          }
+        }
+      }
+    }
+    .banner {
+      height: 7rem;
+      margin-top: 3rem;
+    }
+  }
 }

@@ -1,0 +1,157 @@
+<div
+  class="bottom-sheet-scrollable"
+  [ngStyle]="{ transform: 'translateY(' + translateY + 'px)' }"
+  [ngClass]="{ reciept: isBookingPage }"
+  (touchstart)="onTouchStart($event)"
+  (touchmove)="onTouchMove($event)"
+  (touchend)="onTouchEnd()"
+>
+  <div class="handle"></div>
+
+  <div class="sheet-content">
+    <div *ngIf="!isBookingPage">
+      <div class="d-flex align-content-center">
+        <img class="me-2" src="../../assets/right tick.svg" alt="" />
+        <span class="para-font-style">Flexible Cancellation Policy</span>
+      </div>
+      <div class="d-flex align-content-center mt-3">
+        <img class="me-2" src="../../assets/right tick.svg" alt="" />
+        <span class="para-font-style">24/7 Customer Support</span>
+      </div>
+      <div class="d-flex align-content-center mt-3">
+        <img class="me-2" src="../../assets/right tick.svg" alt="" />
+        <span class="para-font-style">Secure Payment Options</span>
+      </div>
+    </div>
+    <div *ngIf="isBookingPage">
+      <div *ngIf="details" class="cart">
+        <span class="title">{{ details.destination_name }}</span>
+        <div class="trip-details d-flex justify-content-between mt-2">
+          <div class="d-flex align-items-center">
+            <img src="../../assets/calendar_small.png" alt="" class="me-2" />
+            <span class="date">{{
+              details.from_date | tripDuration : details.to_date
+            }}</span>
+          </div>
+          <div class="duration">
+            {{ details.days }} Days - {{ details.nights }} Nights
+          </div>
+        </div>
+        <div class="locations mt-4">
+          <span
+            *ngFor="let destination of destinations"
+            class="para-font-style text-uppercase"
+          >
+            {{ destination }} •
+          </span>
+        </div>
+        <div class="pricing mt-4">
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">Number of Travellers</span>
+            <span class="para-font-style">{{ numberOfTravellers }}</span>
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">Standard Price</span>
+            <span class="para-font-style"
+              >&#8377;
+              {{
+                (details.price - details.price * 0.05 - 200) *
+                  numberOfTravellers
+              }}</span
+            >
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style"
+              >{{
+                roomPrice === 200
+                  ? "Triple Room Occupancy / Per Person"
+                  : roomPrice === 400
+                  ? "Double Room Occupancy / Per Person"
+                  : "Single Room Occupancy / Per Person"
+              }}
+            </span>
+            <span class="para-font-style"
+              >&#8377; {{ roomPrice * numberOfTravellers }}</span
+            >
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">GST (5%)</span>
+            <span class="para-font-style"
+              >&#8377; {{ details.price * 0.05 * numberOfTravellers }}</span
+            >
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <span class="para-font-style">Subtotal</span>
+            <span class="para-font-style"
+              >&#8377;
+              {{
+                details.price * numberOfTravellers +
+                  (roomPrice - 200) * numberOfTravellers
+              }}</span
+            >
+          </div>
+        </div>
+
+        <input
+          type="text"
+          placeholder="Enter Coupon Code"
+          class="mt-4 w-100 coupon-input"
+        />
+        <!-- <div class="total mt-4 d-flex justify-content-between">
+          <span>Amount to be paid</span>
+          <span class="amount"
+            >&#8377;
+            {{
+              details.price * numberOfTravellers +
+                (roomPrice - 200) * numberOfTravellers
+            }}</span
+          >
+        </div> -->
+
+        <!-- <div
+          class="pay w-100 text-uppercase text-center align-content-center mt-4"
+          (click)="payNow()"
+        >
+          Pay now
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed preview area always at bottom -->
+<div *ngIf="!isBookingPage" class="bottom-sheet-preview">
+  <p class="para-font-style mb-4">Starting from</p>
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="price-tag d-flex align-items-center">
+      <span class="price me-2"> &#8377; 7400</span>
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="info"
+        class="material-symbols-outlined"
+      ></mat-icon>
+    </div>
+    <div class="book-now text-uppercase">Book Now</div>
+  </div>
+</div>
+
+<div *ngIf="isBookingPage" class="bottom-sheet-preview pt-0">
+  <div class="total mt-4 d-flex justify-content-between">
+    <span>Amount to be paid</span>
+    <span class="amount"
+      >&#8377;
+      {{
+        details.price * numberOfTravellers +
+          (roomPrice - 200) * numberOfTravellers
+      }}</span
+    >
+  </div>
+
+  <div
+    class="pay w-100 text-uppercase text-center align-content-center mt-4"
+    (click)="payNow()"
+  >
+    Pay now
+  </div>
+</div>

@@ -1,403 +1,539 @@
 @import "../../styles.scss";
 
-*{
-    color: $lf-black;
+* {
+  color: $lf-black;
 }
 .main-container {
-    padding: 10rem 12rem 5rem 12rem;
+  padding: 10rem 12rem 5rem 12rem;
 }
 .sub-header {
-    span {
-        opacity: .7;
-    }
+  span {
+    opacity: 0.7;
+  }
 }
 .title {
-    font-weight:bold;
-    font-size: 2rem;
+  font-weight: bold;
+  font-size: 2rem;
 }
 .para-font-style {
-    color: $lf-black;
-    opacity: .7;
+  color: $lf-black;
+  opacity: 0.7;
 }
 
 .main-content {
-    margin-bottom: 3rem;
+  margin-bottom: 3rem;
 }
 
-.left-div{
-    width: 65%;
-    overflow-y: auto; /* Enables vertical scrolling */
+.left-div {
+  width: 65%;
+  overflow-y: auto; /* Enables vertical scrolling */
 }
-.right-div{
-    width: 33%;
+.right-div {
+  width: 33%;
 }
 
 .pricing {
-    border: 2px solid #c0c2c7;
-    padding: 2rem;
-    border-radius: .4rem;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  border: 2px solid #c0c2c7;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .trip-img {
-    position: relative;
-    .primary-img {
-        width: 40rem;
-        height: 29.7rem;
-        border-radius: .4rem;
-    }
+  position: relative;
+  .primary-img {
+    width: 40rem;
+    height: 29.7rem;
+    border-radius: 0.4rem;
+  }
 }
 
 .months-tag {
-    position: absolute;
-    top: 1rem;
-    left: 52%;
-    border-radius: 2rem;
-    background: $lf-white;
-    padding: .25rem .75rem;
-    // margin-right: 1rem;
-    span {
-      color: $lf-black
-    }
+  position: absolute;
+  top: 1rem;
+  left: 52%;
+  border-radius: 2rem;
+  background: $lf-white;
+  padding: 0.25rem 0.75rem;
+  // margin-right: 1rem;
+  span {
+    color: $lf-black;
   }
+}
 
 .show-all {
-    position: absolute;
-    right: 1rem;
-    bottom: .5rem;
-    background: $lf-black;
-    padding: .25rem .75rem;
-    border-radius: .4rem;
-    cursor: pointer;
-    mat-icon, span {
-        color: $lf-white;
-    }
+  position: absolute;
+  right: 1rem;
+  bottom: 0.5rem;
+  background: $lf-black;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  mat-icon,
+  span {
+    color: $lf-white;
+  }
 }
 
 .secondary-img {
-    position: relative;
-    width: min-content;
-    // height: 100%;
-    // width: 21rem;
-    img {
-        width: 19.6rem;
-        border-radius: .4rem;
-        &:nth-child(2) {
-            margin-top: 1.7rem;
-        }
+  position: relative;
+  width: min-content;
+  // height: 100%;
+  // width: 21rem;
+  img {
+    width: 19.6rem;
+    border-radius: 0.4rem;
+    &:nth-child(2) {
+      margin-top: 1.7rem;
     }
+  }
 }
 
 .duration {
-    span {
-        font-size: 1.25rem;
-        font-weight: bold;
-        opacity: .7;
-    }
+  span {
+    font-size: 1.25rem;
+    font-weight: bold;
+    opacity: 0.7;
+  }
 }
 .visitors {
-    img {
-        width: 6rem;
-    }
+  img {
+    width: 6rem;
+  }
 }
 
 .locations {
-    padding:    .75rem 1rem;
-    background-color: $lf-light-grey;
-    border-radius: .4rem;
-    span {
-        font-size: .85rem;
-        font-weight: 400;
-    }
+  padding: 0.75rem 1rem;
+  background-color: $lf-light-grey;
+  border-radius: 0.4rem;
+  span {
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
 }
 
 hr {
-    height: 1rem;
-    color: #808080;
-    opacity: .16;
+  height: 1rem;
+  color: #808080;
+  opacity: 0.16;
 }
 
 .price-tag {
-    .price {
-        font-size: 2.5rem;
-        font-weight: 700;
-    }
-    mat-icon  {
-        color: #d3d3d3;
-    }
+  .price {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  mat-icon {
+    color: #d3d3d3;
+  }
 }
 
 .btnDiv {
-    margin-top: 2rem;
-      color: $lf-gold;
-      text-decoration: none;
-  }
-  .cstmSubmitBtn {
-    width: 100%;
-    height: 4rem;
-    background-color: $lf-gold;
-    color: $lf-black;
-    font-weight: 600;
-    border-radius: 0.8rem;
-    font-size: 1.25rem;
-    letter-spacing: 0.15rem;
-    border: none;
-  }
+  margin-top: 1.225rem;
+  color: $lf-gold;
+  text-decoration: none;
+}
+.cstmSubmitBtn {
+  width: 100%;
+  height: 4rem;
+  background-color: $lf-gold;
+  color: $lf-black;
+  font-weight: 600;
+  border-radius: 0.8rem;
+  font-size: 1.25rem;
+  letter-spacing: 0.15rem;
+  border: none;
+}
 
-  .overview {
-    margin-top: 3rem;
-    .header {
-        border-radius: .4rem;
-        background-color: $lf-light-grey;
-        div {
-            padding: .7rem 1.5rem;
-            width: 25%;
-            background-color: $lf-light-grey;
-            font-size: 1rem;
-            border-right: 1px solid $lf-dark-grey;
-            cursor: pointer;
-            &:last-child {
-                border-right: none;
-            }
-        }
+.overview {
+  margin-top: 3rem;
+  .header {
+    border-radius: 0.4rem;
+    background-color: $lf-light-grey;
+    div {
+      padding: 0.7rem 1.5rem;
+      width: 25%;
+      background-color: $lf-light-grey;
+      font-size: 1rem;
+      border-right: 1px solid $lf-dark-grey;
+      cursor: pointer;
+      &:last-child {
+        border-right: none;
+      }
     }
+  }
 }
 .tab-selected {
-    border-bottom: .5rem solid $lf-gold;
-    color: $lf-gold;
-    font-weight: bold;
+  border-bottom: 0.5rem solid $lf-gold;
+  color: $lf-gold;
+  font-weight: bold;
 }
 
 .overview-points {
-    margin-top: 3rem;
-    div > div {
-        width: 85%;
-    }
+  margin-top: 3rem;
+  div > div {
+    width: 85%;
+  }
 }
 
-  .batches {
-    margin-top: 3rem;
-    border: 1px solid $lf-light-grey;
-    border-radius: .4rem;
-    font-weight: 500;
-    .header, .dates > .content{
-        padding: 1.3rem 1.5rem;
-        background-color: $lf-light-grey;
-        color: $lf-black;
-        font-size: 1rem;
-        font-weight: normal;
-    }
-    .status {
-        padding-right: 2.5rem;
-    }
-    .dates {
-        .content {
-            padding: 1rem;
-            background-color: $lf-white;
-            border-bottom: 1px solid $lf-light-grey;
-            div {
-                padding: .3rem 1.5rem;
-                background-color: $lf-green;
-                color: $lf-white;
-                border-radius: 2rem;
-                font-size: .75rem;
-            }
-        }
+.batches {
+  margin-top: 3rem;
+  border: 1px solid $lf-light-grey;
+  border-radius: 0.4rem;
+  font-weight: 500;
+  .header,
+  .dates > .content {
+    padding: 1.3rem 1.5rem;
+    background-color: $lf-light-grey;
+    color: $lf-black;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  .status {
+    padding-right: 2.5rem;
+  }
+  .dates {
+    .content {
+      padding: 1rem;
+      background-color: $lf-white;
+      border-bottom: 1px solid $lf-light-grey;
+      div {
+        padding: 0.3rem 1.5rem;
+        background-color: $lf-green;
+        color: $lf-white;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+      }
     }
   }
+}
 
-  .brief {
-    margin-top: 3rem;
-    border-top: 1px solid #c0c2c7;
-    border-bottom: 1px solid #c0c2c7;
-    padding: 4rem 0;
-    .brief-container {
-        background-color: $lf-off-white;
-        padding: 2rem;
-        border-radius: .4rem;
-        .heading {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .content {
-            opacity: .85;
-        }
-    }
-  }
-
-  .itinerary {
-    padding: 3rem 0;
+.brief {
+  margin-top: 3rem;
+  border-top: 1px solid #c0c2c7;
+  border-bottom: 1px solid #c0c2c7;
+  padding: 4rem 0;
+  .brief-container {
+    background-color: $lf-off-white;
+    padding: 2rem;
+    border-radius: 0.4rem;
     .heading {
-        img {
-            width: 2rem;
-        }
-        span {
-            color: $lf-gold;
-            font-size: 2rem;
-            font-weight:600;
-        }
-    }
-    .download {
-        img {
-            width: 1.5rem;
-        }
-        width: 3rem;
-        height: 3rem;
-        background-color: $lf-light-grey;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-  }
-
-  .accordian-main-container {
-    margin-top: 2rem;
-    .day-container {
-        padding: .75rem;
-        background-color: $lf-white;
-        border-radius: .4rem;
-        font-weight: 700;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
     .content {
-        color: $lf-black;
+      opacity: 0.85;
+    }
+  }
+}
+
+.itinerary {
+  padding: 3rem 0;
+  .heading {
+    img {
+      width: 2rem;
+    }
+    span {
+      color: $lf-gold;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  }
+  .download {
+    img {
+      width: 1.5rem;
+    }
+    width: 3rem;
+    height: 3rem;
+    background-color: $lf-light-grey;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.accordian-main-container {
+  margin-top: 2rem;
+  .day-container {
+    padding: 0.75rem;
+    background-color: $lf-white;
+    border-radius: 0.4rem;
+    font-weight: 700;
+  }
+  .content {
+    color: $lf-black;
+    font-size: 1rem;
+  }
+}
+
+.reviews {
+  margin-top: 3rem;
+  .heading {
+    mat-icon {
+      font-size: 2.25rem;
+      color: $lf-gold;
+      height: 2.25rem;
+      width: 2.25rem;
+    }
+    span {
+      color: $lf-gold;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  }
+
+  .card {
+    width: 30%;
+    padding: 2rem;
+    background-color: #f5f2ed;
+    img {
+      width: 5rem;
+    }
+    .profile {
+      img {
+        width: 2rem;
+      }
+      span {
+        font-weight: bold;
         font-size: 1rem;
+      }
+    }
+  }
+}
+
+.inclusions {
+  margin-top: 4rem;
+  .switch {
+    div {
+      padding: 1.5rem 2.5rem;
+      background-color: $lf-light-grey;
+      font-size: 1rem;
+      font-weight: bold;
+      &:first-child {
+        border-top-left-radius: 0.4rem;
+        border-bottom-left-radius: 0.4rem;
+      }
+      &:nth-child(2) {
+        border-top-right-radius: 0.4rem;
+        border-bottom-right-radius: 0.4rem;
+      }
+      cursor: pointer;
+    }
+    .selected {
+      background-color: $lf-gold;
+    }
+  }
+  .inclusions-content {
+    .content {
+      mat-icon {
+        color: $lf-green;
+      }
     }
   }
 
-  .reviews {
-    margin-top: 3rem;
+  .exclusions-content {
+    .content {
+      mat-icon {
+        color: red;
+      }
+    }
+  }
+}
+
+.packing {
+  margin-top: 3rem;
+  border-top: 1px solid #c0c2c7;
+  padding-top: 3rem;
+  .main-container {
+    background-color: #fbfcf8;
+    padding: 3rem 4rem;
+    position: relative;
+    .backpack {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
     .heading {
-        mat-icon {
-            font-size: 2.25rem;
-            color: $lf-gold;
-            height: 2.25rem;
-            width: 2.25rem;
-        }
-        span {
-            color: $lf-gold;
-            font-size: 2rem;
-            font-weight:600;
-        }
+      img {
+        width: 1.5rem;
+      }
+      span {
+        color: $lf-gold;
+        font-size: 2rem;
+        font-weight: 600;
+      }
     }
-
-    .card {
+    .items-main-container {
+      margin-top: 3rem;
+      .items {
         width: 30%;
-        padding: 2rem;
-        background-color: #F5F2ED;
         img {
-            width: 5rem;
+          width: 1.75rem;
         }
-        .profile {
-            img {
-                width: 2rem;
-            }
-            span {
-                font-weight: bold;
-                font-size: 1rem;
-            }
+        div > div {
+          font-size: 1.25rem;
+          font-weight: 500;
         }
+      }
+    }
+    .view-more {
+      font-size: 1rem;
+      font-weight: bold;
     }
   }
+}
 
-  .inclusions {
-    margin-top: 4rem;
-    .switch {
-        div {
-            padding: 1.5rem 2.5rem;
-            background-color: $lf-light-grey;
-            font-size: 1rem;
-            font-weight: bold;
-            &:first-child {
-                border-top-left-radius: .4rem;
-                border-bottom-left-radius: .4rem;
-            }
-            &:nth-child(2) {
-                border-top-right-radius: .4rem;
-                border-bottom-right-radius: .4rem;
-            }
-            cursor: pointer;
-        }
-        .selected {
-            background-color: $lf-gold;
-        }
-    }
-    .inclusions-content {
-        .content {
-            mat-icon {
-                color: $lf-green;
-            }
-        }
-    }
+.banner {
+  margin-top: 3rem;
+}
 
-    .exclusions-content {
-        .content {
-            mat-icon {
-                color: red;
-            }
-        }
+.suggested-trips {
+  margin-top: 5rem;
+  .heading {
+    img {
+      width: 1.5rem;
+    }
+    span {
+      color: $lf-gold;
+      font-size: 2rem;
+      font-weight: 600;
     }
   }
-
-  .packing {
+  .trips {
     margin-top: 3rem;
-    border-top: 1px solid #c0c2c7;
-    padding-top: 3rem;
-    .main-container {
-        background-color: #FBFCF8;
-        padding: 3rem 4rem;
-        position: relative;
-        .backpack {
-            position: absolute;
-            right: 0;
-            bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 427px) {
+  .main-container {
+    padding: 7rem 2rem;
+    .sub-header {
+      div {
+        border-radius: 50%;
+        background-color: $lf-light-grey;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+    .title {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+    }
+    .left-div {
+      width: 100%;
+      .trip-img > img {
+        width: 100%;
+        height: 20rem;
+      }
+      .months-tag {
+        top: 1rem;
+        left: 64%;
+      }
+      .right-sub-div {
+        margin-top: 2rem;
+        .duration {
+          flex-direction: row !important;
+          span {
+            font-size: 1rem;
+            &:nth-child(2) {
+              margin-top: 0 !important;
+              margin-left: 0.5rem;
+            }
+          }
         }
-        .heading {
-            img {
-                width: 1.5rem;
+        .visitors {
+          flex-direction: row !important;
+          align-items: center !important;
+          img {
+            width: 3.5rem;
+          }
+          span {
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+          }
+        }
+        .batches {
+          margin-top: 1.5rem;
+        }
+      }
+      .overview {
+        overflow: auto;
+        .header {
+          width: 150%;
+        }
+      }
+      .overview-points {
+        div {
+          flex-direction: column !important;
+          .sub-tag {
+            &:nth-child(2) {
+              margin-top: 1rem;
             }
+            width: 100%;
+            flex-direction: row !important;
+            div {
+              width: 100%;
+            }
+          }
+        }
+      }
+      .brief {
+        .brief-container {
+          .heading {
+            font-size: 1.25rem;
+          }
+        }
+      }
+      .itinerary {
+        div {
+          .heading {
+            width: 1.25rem;
             span {
-                color: $lf-gold;
-                font-size: 2rem;
-                font-weight:600;
+              font-size: 1.5rem;
             }
+          }
+        }
+      }
+      .accordian-main-container {
+        .day-container {
+          text-wrap-mode: nowrap;
+        }
+        .description {
+          font-size: 0.95rem;
+          margin-right: 1rem;
+        }
+      }
+    }
+    .packing {
+      .main-container {
+        padding: 2rem;
+        .heading {
+          img {
+            width: 1.25rem;
+          }
+          span {
+            font-size: 1.5rem;
+          }
         }
         .items-main-container {
-            margin-top: 3rem;
-            .items {
-                width: 30%;
-                img {
-                    width: 1.75rem;
-                }
-                div > div {
-                    font-size: 1.25rem;
-                    font-weight:500;
-                }
+          &:nth-child(2) {
+            margin-top: 2rem;
+          }
+          div {
+            flex-direction: column;
+            div {
+              &:nth-child(2),
+              &:nth-child(3) {
+                margin-top: 2rem;
+              }
+              div {
+                margin-top: 0;
+              }
+              width: 100%;
+              flex-direction: row;
             }
+          }
         }
-        .view-more {
-            font-size: 1rem;
-            font-weight: bold;
-        }
+      }
     }
   }
-
-  .banner {
-    margin-top: 3rem;
-  }
-
-  .suggested-trips {
-    margin-top: 5rem;
-    .heading {
-        img {
-            width: 1.5rem;
-        }
-        span {
-            color: $lf-gold;
-            font-size: 2rem;
-            font-weight:600;
-        }
-    }
-    .trips {
-        margin-top: 3rem;
-    }
-  }
-
+}
