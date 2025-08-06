@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +9,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   isScroll: boolean = true;
-
-  constructor() { }
+  constructor(public authService: AuthService) { 
+  }
 
   ngOnInit(): void {
   }

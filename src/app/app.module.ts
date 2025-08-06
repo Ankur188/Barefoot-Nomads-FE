@@ -11,6 +11,7 @@ import { TripCardComponent } from 'src/components/trip-card/trip-card.component'
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimestampToDatePipe } from 'src/utils/timestamp-to-date.pipe';
+import { NameToInitialsPipe } from 'src/utils/name-to-initials.pipe';
 import { FooterComponent } from 'src/components/footer/footer.component';
 import { AboutComponent } from 'src/components/about/about.component';
 import { ImageSliderComponent } from 'src/components/image-slider/image-slider.component';
@@ -22,16 +23,16 @@ import { LoginComponent } from 'src/components/login/login.component';
 import { EnquireComponent } from 'src/components/enquire/enquire.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatRadioModule } from '@angular/material/radio';
-import { GetQuotationComponent } from './get-quotation/get-quotation.component';
+import { GetQuotationComponent } from '../components/get-quotation/get-quotation.component';
 import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
-import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
+import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
 import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
 import { LoadingInterceptor } from 'src/interceptors/loading.interceptor';
-import { LoaderComponent } from './loader/loader.component';
+import { LoaderComponent } from '../components/loader/loader.component';
 import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-sheet/draggable-bottom-sheet.component';
 
 @NgModule({
@@ -56,6 +57,7 @@ import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-s
     LightboxComponent,
     LoaderComponent,
     DraggableBottomSheetComponent,
+    NameToInitialsPipe
   ],
   imports: [
     BrowserModule,

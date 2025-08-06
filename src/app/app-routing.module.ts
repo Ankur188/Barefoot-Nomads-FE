@@ -5,10 +5,11 @@ import { EnquireComponent } from 'src/components/enquire/enquire.component';
 import { HomeComponent } from 'src/components/home/home.component';
 import { LoginComponent } from 'src/components/login/login.component';
 import { UploadFileComponent } from 'src/components/upload-file/upload-file.component';
-import { GetQuotationComponent } from './get-quotation/get-quotation.component';
+import { GetQuotationComponent } from '../components/get-quotation/get-quotation.component';
 import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
-import { BookingConfirmationComponent } from './booking-confirmation/booking-confirmation.component';
+import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
+import { LoginAuthGuard } from 'src/auth-guards/login.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,8 +18,8 @@ const routes: Routes = [
   { path: 'about', pathMatch: 'full', component: AboutComponent },
   { path: 'upload', pathMatch: 'full', component: UploadFileComponent },
   { path: 'trip/:id', pathMatch: 'full', component: TripDetailsComponent },
-  { path: 'trip/:id/booking', pathMatch: 'full', component: BookingComponent },
-  { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent },
+  { path: 'trip/:id/booking', pathMatch: 'full', component: BookingComponent, canActivate: [LoginAuthGuard] },
+  { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent, canActivate: [LoginAuthGuard] },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: '**', component: HomeComponent },
 ];

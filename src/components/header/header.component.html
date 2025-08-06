@@ -12,8 +12,11 @@
         <div [routerLink]="'/enquire'" [routerLinkActive]="'is-active'">
             Enquire
         </div>
-        <div  [routerLink]="'/login'" [routerLinkActive]="'is-active'">
+        <div *ngIf="!authService.isUserLoggedIn"  [routerLink]="'/login'" [routerLinkActive]="'is-active'">
             Sign Up/Login
+        </div>
+        <div *ngIf="authService.isUserLoggedIn" class="initials">
+            {{authService.userName | nameToInitials}}
         </div>
     </div>
     <div class="nav-menu">

@@ -45,6 +45,13 @@ header {
     font-weight: 700;
     color: $lf-gold;
 }
+.initials {
+    border-radius: 50%;
+    background: $lf-gold;
+    color: black;
+    padding: .5rem;
+    font-weight: 600;
+}
 
 @media only screen and (max-width: 427px) {
     header {

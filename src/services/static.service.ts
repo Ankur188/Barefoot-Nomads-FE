@@ -7,13 +7,15 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class StaticService {
+  
   private tripDetailsSubject = new BehaviorSubject<any>(null);
   tripDetails$ = this.tripDetailsSubject.asObservable();
 
   private tripsSubject = new BehaviorSubject<any>(null);
   trips$ = this.tripsSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getTrips(): Observable<any> {
     if (this.tripsSubject.value) return of(this.tripsSubject.value);
@@ -23,13 +25,6 @@ export class StaticService {
         .pipe(tap((data) => this.tripsSubject.next(data)));
   }
 
-  signUpUser(postData: any): Observable<any> {
-    return this.http.post(`${environment.localhost}users/signup`, postData);
-  }
-
-  loginUser(postData: any): Observable<any> {
-    return this.http.post(`${environment.localhost}user/login`, postData);
-  }
 
   getBanner(bannerName: string): Observable<any> {
     return this.http.get(
