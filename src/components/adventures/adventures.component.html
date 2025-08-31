@@ -1,0 +1,172 @@
+<!-- Intro Section -->
+<section class="intro-container">
+  <div class="introduction d-flex align-items-center justify-content-between">
+    <div class="intro-text">
+      <p class="heading text-uppercase">Why Barefoot Nomads</p>
+      <p class="sub-heading">The perfect travel companion</p>
+      <p class="para-font-style">
+        For we go beyond just booking your next trip. We’re here to make every
+        journey effortless, exciting, and transformative. From expertly crafted
+        itineraries to a community of fellow adventurers, we ensure your travels
+        are filled with meaningful experiences.
+      </p>
+    </div>
+    <img src="../../assets/adventureImages/groupTrip.svg" alt="Group Trip" class="intro-image" />
+  </div>
+
+  <div class="characteristics d-flex align-items-center justify-content-between">
+    <div class="characteristic d-flex flex-column align-items-center">
+      <img src="../../assets/adventureImages/prohibit.svg" alt="No Third Party" />
+      <p class="para-font-style">No Third <br />Party Mess</p>
+    </div>
+    <div class="characteristic d-flex flex-column align-items-center">
+      <img src="../../assets/adventureImages/transparency.svg" alt="Transparency" />
+      <p class="para-font-style">Transparency <br />& Security</p>
+    </div>
+    <div class="characteristic d-flex flex-column align-items-center">
+      <img src="../../assets/adventureImages/filter.svg" alt="Co-Travel Filter" />
+      <p class="para-font-style">Co-Traveler <br />Filtering</p>
+    </div>
+    <div class="characteristic d-flex flex-column align-items-center">
+      <img src="../../assets/adventureImages/smile.svg" alt="One Stop Experience" />
+      <p class="para-font-style">One Stop <br />Experience</p>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<main class="main-container">
+  <div class="banner-section">
+    <img [src]="bannerUrl" alt="S3 Banner" class="w-100 banner" />
+  </div>
+
+  <section class="card-section">
+    <div class="section-header">
+      <p class="cardSectionHeading text-uppercase">
+        Embark on the Adventure of a Lifetime
+      </p>
+      <p class="cardSectionSub-heading">
+        Exclusive Trips & Custom Travel Packages
+      </p>
+    </div>
+
+    <div class="filter-carousel-wrapper">
+      <!-- Filter -->
+      <div class="d-flex justify-content-between mt-4">
+        <!-- Filter -->
+        <div class="filter-container position-relative" #filterContainer>
+          <div class="filter-toggle d-flex align-items-center justify-content-around" [class.expanded]="filterVisible"
+            (click)="toggleFilter($event)">
+            <img src="../../assets/adventureImages/filter_trips.svg" alt="Filter Icon" class="filter-icon" />
+            <div class="clear-all" *ngIf="filterVisible" (click)="clearAll($event)">
+              Clear All
+            </div>
+          </div>
+
+          <div class="filter-dropdown" *ngIf="filterVisible" (click)="$event.stopPropagation()">
+            <div *ngFor="let details of filterDetails; let i = index" class="select-wrapper">
+              <div class="select-container">
+                <select [(ngModel)]="selectedValues[i]">
+                  <option [ngValue]="undefined" disabled selected hidden>
+                    {{ details.filterCriteria }}
+                  </option>
+                  <option class="filterData" *ngFor="let item of details.filterData" [value]="item">
+                    {{ item.name || item }}
+                  </option>
+                </select>
+                <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="select-arrow" />
+              </div>
+            </div>
+            <button class="filter-apply mt-3" (click)="onApplyFilter()">
+              APPLY
+            </button>
+          </div>
+        </div>
+
+        <!-- left section filter and icon -->
+
+        <div class="dropdown position-relative d-flex justify-content-between mr-3">
+          <div class="select-wrapper mr-3">
+            <div class="select-container">
+              <select>
+                <option *ngFor="let pref of searchPreference" [value]="pref">
+                  {{ pref }}
+                </option>
+              </select>
+              <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="custom-arrow" />
+            </div>
+          </div>
+          <div class="search-icon">
+            <img src="../../assets/adventureImages/searchIcon.svg" alt="Search" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards + Dropdown + Search-->
+      <div class="card-carousel-filter mt-3 d-flex flex-column" [class.shifted]="filterVisible">
+        <div class="applied-filters d-flex justify-content-between mb-3">
+          <ng-container *ngIf="appliedFilterSectionVisible">
+            <div #appliedFilterSection class="appliedFilterSection d-flex align-items-center justify-content-around"
+              *ngFor="let filter of appliedFiltersArray">
+              {{ filter.value }}
+              <img src="../../assets/adventureImages/close.svg" alt="close" class="custom-close" (click)="removeFilter($event, i)" />
+            </div>
+          </ng-container>
+
+          <div class="d-flex align-items-center justify-content-end" style="margin-left: auto"></div>
+        </div>
+        <div #tripSection class="cardTripDetailsSection d-flex flex-wrap">
+          <div class="card d-flex justify-content-evenly align-items-center" [@slideAnimation]="{
+              value: animationDirection,
+              params: {
+                transform:
+                  animationDirection === 'right'
+                    ? 'translateX(100%)'
+                    : 'translateX(-100%)'
+              }
+            }" *ngFor="let trip of paginatedBatches">
+            <div class="img-container">
+              <img [src]="trip.img" class="card-img-top" alt="{{ trip.tripName }}" />
+              <div class="topDetailsSection">
+                <div class="recentAddedSection" [style.visibility]="trip.recentlyAdded ? 'visible' : 'hidden'">
+                  <p>RECENTLY ADDED</p>
+                </div>
+                <div class="monthDetails">
+                  <img src="../../assets/adventureImages/calendarTrip.svg" alt="calendar icon" />
+                  <p>{{ trip.duration }}</p>
+                </div>
+              </div>
+              <div class="overlay-title">{{ trip.tripName | uppercase }}</div>
+              <div class="bottomDetailsSection">
+                <div>
+                  <img src="../../assets/adventureImages/moneyTrip.svg" alt="price icon" />
+                  <p>&#8377; {{ trip.price }}</p>
+                </div>
+                <div>
+                  <img src="../../assets/adventureImages/stayTrip.svg" alt="stay icon" />
+                  <p>{{ trip.stay }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-div d-flex align-items-center justify-content-center content mt-4">
+          <button (click)="prevPage()" [disabled]="currentPage === 1"
+            class="d-flex align-items-center justify-content-center me-3">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
+          <div *ngFor="let page of pages" (click)="setPage(page)" [class.active]="currentPage === page"
+            class="pageNumber d-flex align-items-center justify-content-center me-3">
+            {{ page }}
+          </div>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+            class="d-flex align-items-center justify-content-center">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

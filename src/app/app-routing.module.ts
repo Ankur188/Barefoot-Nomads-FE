@@ -10,6 +10,7 @@ import { TripDetailsComponent } from 'src/components/trip-details/trip-details.c
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { LoginAuthGuard } from 'src/auth-guards/login.guard';
+import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'trip/:id/booking', pathMatch: 'full', component: BookingComponent, canActivate: [LoginAuthGuard] },
   { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent, canActivate: [LoginAuthGuard] },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
+  { path: 'adventures', pathMatch: 'full', component: AdventuresComponent },
   { path: '**', component: HomeComponent },
 ];
 

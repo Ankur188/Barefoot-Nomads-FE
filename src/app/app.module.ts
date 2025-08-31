@@ -36,6 +36,7 @@ import { LoaderComponent } from '../components/loader/loader.component';
 import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-sheet/draggable-bottom-sheet.component';
 import { BookingService } from 'src/services/booking.service';
 import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.component';
+import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.comp
     LoaderComponent,
     DraggableBottomSheetComponent,
     NameToInitialsPipe,
-    ErrorPopupComponent
+    ErrorPopupComponent,
+    AdventuresComponent
   ],
   imports: [
     BrowserModule,
