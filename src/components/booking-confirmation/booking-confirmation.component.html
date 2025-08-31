@@ -22,7 +22,7 @@
         </div>
         <div class="footer w-100 d-flex align-items-start justify-content-between">
             <div class="details d-flex flex-column align-items-start">
-                <div class="heading">Kashmir Valley Adventure</div>
+                <div class="heading">{{booking.destination_name}}</div>
                 <div class="footer-details mt-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center detail-points me-4">
                         <mat-icon
@@ -31,7 +31,7 @@
                         fontIcon="calendar_today"
                         class="me-2"
                       ></mat-icon>
-                      JAN 12-16, 2025
+                      {{booking.from_date | tripDuration : booking.to_date}}
                     </div>
                     <div class="d-flex align-items-center detail-points">
                         <mat-icon
@@ -40,7 +40,7 @@
                         fontIcon="person_outline"
                         class="me-2"
                       ></mat-icon>
-                      7 People
+                      {{booking.travellers}} People
                     </div>
                 </div>
             </div>

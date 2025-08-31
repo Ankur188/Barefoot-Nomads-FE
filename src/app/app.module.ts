@@ -34,6 +34,8 @@ import { LightboxComponent } from 'src/components/lightbox/lightbox.component';
 import { LoadingInterceptor } from 'src/interceptors/loading.interceptor';
 import { LoaderComponent } from '../components/loader/loader.component';
 import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-sheet/draggable-bottom-sheet.component';
+import { BookingService } from 'src/services/booking.service';
+import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-s
     LightboxComponent,
     LoaderComponent,
     DraggableBottomSheetComponent,
-    NameToInitialsPipe
+    NameToInitialsPipe,
+    ErrorPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-s
   ],
   providers: [
     StaticService,
+    BookingService,
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

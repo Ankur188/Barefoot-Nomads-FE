@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { BookingService } from 'src/services/booking.service';
 import { LoadingService } from 'src/services/loading.service';
 import { StaticService } from 'src/services/static.service';
 
@@ -10,49 +12,19 @@ import { StaticService } from 'src/services/static.service';
   styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent implements OnInit {
-  batchInfo: any = [
-    {
-      dates: 'JAN 12 - 16, 2025',
-      status: 'AVAILABLE',
-      startingPrice: '10,50,000',
-    },
-    {
-      dates: 'JAN 22 - 27, 2025',
-      status: 'FULL',
-      startingPrice: '7400',
-    },
-    {
-      dates: 'FEB 04 - 08, 2025',
-      status: 'FILLING FAST',
-      startingPrice: '6400',
-    },
-    {
-      dates: 'MAR 07 - 11, 2025',
-      status: 'FILLING FAST',
-      startingPrice: '6000',
-    },
-  ];
+  batches: any[] = [];
 
-  occupancy: any = [
-    {
-      name: 'TRIPLE OCCUPANCY',
-      price: '',
-    },
-    {
-      name: 'DOUBLE OCCUPANCY',
-      price: '300',
-    },
-    {
-      name: 'SINGLE OCCUPANCY',
-      price: '600',
-    },
-  ];
+  occupancy: any = {
+    200: 'TRIPLE OCCUPANCY',
+    400: 'DOUBLE OCCUPANCY',
+    600: 'SINGLE OCCUPANCY',
+  };
 
   viewPort = window.innerWidth;
   currentPage = 1;
   itemsPerPage = 4;
   paginatedBatches = [];
-  totalPages = Math.ceil(this.batchInfo.length / this.itemsPerPage);
+  totalPages = 0;
   bannerUrl: any;
   tripId = '';
   details: any;
@@ -60,12 +32,38 @@ export class BookingComponent implements OnInit {
   destinations: any;
   roomPrice = 200;
   loading$: Observable<boolean>;
+  bookingForm: FormGroup = new FormGroup({
+    fullName: new FormControl(''),
+    number: new FormControl(''),
+    guardianNumber: new FormControl(''),
+    email: new FormControl(''),
+  });
+  batchSelected: any;
+  totalPrice = 0;
+  batchFilter = 'All';
+  monthObj = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+  };
+  currentMonth = new Date().getMonth() + 1;
+  monthObjKeys = this.currentMonth <=10 ? [this.currentMonth, this.currentMonth+1, this.currentMonth+2] : this.currentMonth === 11 ? [this.currentMonth, this.currentMonth +1, 1] : this.currentMonth === 12 ? [this.currentMonth, 1, 2] : [];
 
   constructor(
     public staticService: StaticService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private bookingService: BookingService
   ) {
     this.loading$ = this.loadingService.loading$;
     this.activatedRoute.paramMap.subscribe((params) => {
@@ -73,23 +71,71 @@ export class BookingComponent implements OnInit {
       console.log('adadasdsa', this.tripId);
     });
     this.getTripDetails();
-    this.updatePagination();
     this.getBanner();
   }
 
-  ngOnInit(): void {
-    this.loadingService.show();
-    setTimeout(() => {
-      this.loadingService.hide();
-    }, 1500);
-  }
+  ngOnInit(): void {}
 
   getTripDetails() {
     this.staticService.getTripDetails(this.tripId).subscribe((data) => {
+      this.getBatches(data.destination_name);
       this.details = data;
       this.destinations = data.desitnations.split(',');
       console.log('details', this.details);
     });
+  }
+
+  getBatches(destination: string, page: number = 1, filter?) {
+    console.log('2424234234234');
+    this.staticService.getBatches(destination, page, filter).subscribe((data) => {
+      this.batches = data.data;
+      this.batchSelected = this.batches[0];
+      this.totalPrice = this.batches[0].price - 200 + this.roomPrice;
+      this.totalPages = data.totalPages;
+      this.updatePagination();
+    });
+  }
+
+  getBanner() {
+    this.staticService.getBanner('home_page_banner').subscribe((data) => {
+      this.bannerUrl = data.imageUrl;
+    });
+  }
+
+  payNow() {
+    let payload = this.bookingForm.getRawValue();
+    payload['userId'] = localStorage.getItem('id');
+    payload['tripId'] = this.batchSelected.id;
+    payload['payment'] =
+      this.totalPrice * this.numberOfTravellers +
+      0.05 * (this.totalPrice * this.numberOfTravellers);
+    payload['travellers'] = this.numberOfTravellers;
+    payload['roomType'] = this.occupancy[this.roomPrice];
+    this.bookingService.bookTrip(payload).subscribe((data) => {
+      if (data) {
+        this.router.navigate([
+          `trip/${data.booking[0].trip_id}/booking/${data.booking[0].id}`,
+        ]);
+      }
+    });
+  }
+
+  navigateBack() {
+    this.router.navigate(['../']);
+  }
+
+  selectRoom(price) {
+    event.stopPropagation();
+    this.totalPrice -= this.roomPrice;
+    this.totalPrice += price;
+    this.roomPrice = price;
+    console.log('rrom', this.occupancy[this.roomPrice]);
+  }
+
+  selectBatch(batch) {
+    this.totalPrice -= this.batchSelected.price;
+    this.totalPrice += batch.price;
+    this.batchSelected = batch;
   }
 
   updateCounter(type) {
@@ -100,9 +146,11 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  //pagination methods
+
   updatePagination() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    this.paginatedBatches = this.batchInfo.slice(
+    this.paginatedBatches = this.batches.slice(
       start,
       start + this.itemsPerPage
     );
@@ -110,12 +158,14 @@ export class BookingComponent implements OnInit {
 
   setPage(page: number) {
     this.currentPage = page;
+    this.getBatches(this.details.destination_name, this.currentPage);
     this.updatePagination();
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.getBatches(this.details.destination_name, this.currentPage);
       this.updatePagination();
     }
   }
@@ -123,33 +173,29 @@ export class BookingComponent implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
+      this.getBatches(this.details.destination_name, this.currentPage);
       this.updatePagination();
     }
   }
 
   get pages() {
+    console.log(
+      'total pages',
+      Math.ceil(this.batches.length / this.itemsPerPage),
+      this.totalPages
+    );
     return Array(this.totalPages)
       .fill(0)
       .map((_, i) => i + 1);
   }
 
-  getBanner() {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
-    });
-  }
-
-  payNow() {
-    this.router.navigate([
-      'trip/1-91-87-185-984-48/booking/81-4518451-87185-7714',
-    ]);
-  }
-
-  navigateBack() {
-    this.router.navigate(['./']);
-  }
-
-  selectRoom(price) {
-    this.roomPrice = price;
+  selectFilter(filter) {
+    if(filter === 'All') {
+      this.getBatches(this.details.destination_name, 1);
+    }
+    else {
+      this.getBatches(this.details.destination_name, 1, filter-1)
+    }
+    this.batchFilter = filter
   }
 }

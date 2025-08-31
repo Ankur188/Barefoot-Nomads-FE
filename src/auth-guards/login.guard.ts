@@ -17,7 +17,7 @@ export class LoginAuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (this.authService.isUserLoggedIn) {
+    if (localStorage['isUserLoggedIn'] && sessionStorage['bn_access']) {
       return true;
     } else {
       // Redirect to login page with returnUrl

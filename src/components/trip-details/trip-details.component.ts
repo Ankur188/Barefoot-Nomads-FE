@@ -108,6 +108,11 @@ export class TripDetailsComponent implements OnInit {
       imageAlt: '13',
     },
   ];
+  batches: any[] = [];
+  totalPages = 0;
+    currentPage = 1;
+  itemsPerPage = 4;
+  paginatedBatches = [];
 
   ngOnInit(): void {
     this.getTripDetials();
@@ -121,12 +126,23 @@ export class TripDetailsComponent implements OnInit {
 
   getTripDetials() {
     this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
+      this.getBatches(data.destination_name);
       this.details = data;
       this.itinerary = JSON.parse(data.itinerary);
       this.keys = Object.keys(this.itinerary);
       this.destinations = data.desitnations.split(',');
     });
   }
+
+    getBatches(destination: string, page: number = 1, filter?) {
+    console.log('2424234234234');
+    this.staticService.getBatches(destination, page, filter).subscribe((data) => {
+      this.batches = data.data;
+      this.totalPages = data.totalPages;
+      this.updatePagination();
+    });
+  }
+
 
   getBanner() {
     this.staticService.getBanner('home_page_banner').subscribe((data) => {
@@ -171,5 +187,47 @@ export class TripDetailsComponent implements OnInit {
   closeLightBox(event) {
     this.showMask = false;
     this.previewImage = false;
+  }
+
+  //pagination methods
+    updatePagination() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedBatches = this.batches.slice(
+      start,
+      start + this.itemsPerPage
+    );
+  }
+
+  setPage(page: number) {
+    this.currentPage = page;
+    this.getBatches(this.details.destination_name, this.currentPage);
+    this.updatePagination();
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.getBatches(this.details.destination_name, this.currentPage);
+      this.updatePagination();
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.getBatches(this.details.destination_name, this.currentPage);
+      this.updatePagination();
+    }
+  }
+
+  get pages() {
+    console.log(
+      'total pages',
+      Math.ceil(this.batches.length / this.itemsPerPage),
+      this.totalPages
+    );
+    return Array(this.totalPages)
+      .fill(0)
+      .map((_, i) => i + 1);
   }
 }

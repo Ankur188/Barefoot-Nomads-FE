@@ -11,6 +11,7 @@ export class AuthService {
   userName = '';
 
   constructor(private http: HttpClient) {
+    console.log(localStorage['isUserLoggedIn'], sessionStorage['bn_access'])
     if (localStorage['isUserLoggedIn'] && sessionStorage['bn_access']) {
       this.userName = localStorage['userName'];
       this.isUserLoggedIn = true;

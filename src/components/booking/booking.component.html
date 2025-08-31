@@ -28,16 +28,23 @@
             <span class="text-uppercase">Booking contact information</span
             ><span>*</span>
           </p>
-          <form action="">
-            <form class="form-detail">
-              <input type="text" placeholder="Full Name" />
-              <input type="text" placeholder="Phone Number" />
-              <input
-                type="text"
-                placeholder="Emergency / Guardian Contact Number"
-              />
-              <input type="text" placeholder="Email" />
-            </form>
+          <form [formGroup]="bookingForm" class="form-detail">
+            <input
+              type="text"
+              formControlName="fullName"
+              placeholder="Full Name"
+            />
+            <input
+              type="number"
+              formControlName="number"
+              placeholder="Phone Number"
+            />
+            <input
+              type="number"
+              formControlName="guardianNumber"
+              placeholder="Emergency / Guardian Contact Number"
+            />
+            <input type="text" formControlName="email" placeholder="Email" />
           </form>
         </div>
       </div>
@@ -72,7 +79,22 @@
       <div class="batches-container">
         <div class="header d-flex justify-content-between">
           <div class="heading text-uppercase">select the batch</div>
-          <div class="text-uppercase">ALL | Jan | Feb | Mar</div>
+          <div class="text-uppercase">
+            <span
+              class="cursor-pointer"
+              [class.selected]="batchFilter === 'All'"
+              (click)="selectFilter('All')"
+              >All</span
+            >
+            |
+            <span
+              *ngFor="let key of monthObjKeys; let isLast = last"
+              class="cursor-pointer"
+              [class.selected]="batchFilter === key"
+              (click)="selectFilter(key)"
+              >{{ monthObj[key] }} {{ isLast ? "" : "|" }}
+            </span>
+          </div>
         </div>
 
         <div class="batches">
@@ -85,71 +107,56 @@
             <div class="status">Status</div>
             <div>Starting Price</div>
           </div>
-          <div class="dates">
+          <div *ngIf="batches && batches.length" class="dates">
             <div
+              *ngFor="let batch of batches"
               class="d-flex align-items-center justify-content-between content"
             >
               <div class="d-flex align-items-end">
-                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
-                <span>JAN 12 - 16, 2025</span>
+                <mat-radio-button
+                  class="me-3"
+                  name="batch"
+                  [checked]="batchSelected.id === batch.id"
+                  (change)="selectBatch(batch)"
+                >
+                </mat-radio-button>
+                <span>{{
+                  batch.from_date | tripDuration : batch.to_date
+                }}</span>
               </div>
               <div
                 class="availablity text-uppercase d-flex align-items-center justify-content-center"
+                [ngClass]="{
+                  available: batch.booked <= (1 / 4) * batch.max_adventurers,
+                  'filling-fast':
+                    batch.max_adventurers >
+                    batch.booked >
+                    (1 / 4) * batch.max_adventurers,
+                  full: batch.booked === batch.max_adventurers
+                }"
               >
-                Available
+                {{
+                  batch.booked <= (1 / 4) * batch.max_adventurers
+                    ? "Available"
+                    : batch.max_adventurers >
+                      batch.booked >
+                      (1 / 4) * batch.max_adventurers
+                    ? "Filling Fast"
+                    : batch.booked === batch.max_adventurers
+                    ? "Full"
+                    : ""
+                }}
               </div>
-              <span> &#8377; 7400</span>
+              <span> &#8377; {{ batch.price }}</span>
             </div>
-            <div
-              class="d-flex align-items-center justify-content-between content"
-            >
-              <div class="d-flex align-items-end">
-                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
-                <span>JAN 12 - 16, 2025</span>
-              </div>
-              <div
-                class="availablity text-uppercase d-flex align-items-center justify-content-center"
-              >
-                Available
-              </div>
-              <span> &#8377; 7400</span>
-            </div>
-            <div
-              class="d-flex align-items-center justify-content-between content"
-            >
-              <div class="d-flex align-items-end">
-                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
-                <span>JAN 12 - 16, 2025</span>
-              </div>
-              <div
-                class="availablity text-uppercase d-flex align-items-center justify-content-center"
-              >
-                Available
-              </div>
-              <span> &#8377; 7400</span>
-            </div>
-            <div
-              class="d-flex align-items-center justify-content-between content"
-            >
-              <div class="d-flex align-items-end">
-                <mat-radio-button value="true" class="me-3"> </mat-radio-button>
-                <span>JAN 12 - 16, 2025</span>
-              </div>
-              <div
-                class="availablity text-uppercase d-flex align-items-center justify-content-center"
-              >
-                Available
-              </div>
-              <span> &#8377; 7400</span>
-            </div>
-
             <div
               class="d-flex align-items-center justify-content-center content pagination-div"
             >
               <button
                 (click)="prevPage()"
                 [disabled]="currentPage === 1"
-                class="d-flex align-items-center justify-content-center me-3"
+                [class.disabled]="currentPage === 1"
+                class="d-flex align-items-center justify-content-center me-3 cursor-pointer"
               >
                 <mat-icon>keyboard_arrow_left</mat-icon>
               </button>
@@ -157,14 +164,15 @@
                 *ngFor="let page of pages"
                 (click)="setPage(page)"
                 [class.active]="currentPage === page"
-                class="d-flex align-items-center justify-content-center me-3"
+                class="d-flex align-items-center justify-content-center me-3 cursor-pointer"
               >
                 {{ page }}
               </div>
               <button
                 (click)="nextPage()"
                 [disabled]="currentPage === totalPages"
-                class="d-flex align-items-center justify-content-center"
+                [class.disabled]="currentPage === totalPages"
+                class="d-flex align-items-center justify-content-center cursor-pointer"
               >
                 <mat-icon>keyboard_arrow_right</mat-icon>
               </button>
@@ -183,19 +191,31 @@
         </div>
         <div class="room-types-main-div">
           <div class="types d-flex justify-content-between">
-            <div class="card d-flex flex-column" (click)="selectRoom(200)">
-              <mat-radio-button value="true" [checked]="roomPrice === 200">
+            <div class="card d-flex flex-column">
+              <mat-radio-button
+                [checked]="roomPrice === 200"
+                name="room"
+                (change)="selectRoom(200)"
+              >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Triple Occupancy </span>
             </div>
-            <div class="card d-flex flex-column" (click)="selectRoom(400)">
-              <mat-radio-button value="true" [checked]="roomPrice === 400">
+            <div class="card d-flex flex-column">
+              <mat-radio-button
+                [checked]="roomPrice === 400"
+                name="room"
+                (change)="selectRoom(400)"
+              >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Double Occupancy </span>
               <div class="price mt-3">+ &#8377; 400</div>
             </div>
-            <div class="card d-flex flex-column" (click)="selectRoom(600)">
-              <mat-radio-button value="true" [checked]="roomPrice === 600">
+            <div class="card d-flex flex-column">
+              <mat-radio-button
+                [checked]="roomPrice === 600"
+                name="room"
+                (change)="selectRoom(600)"
+              >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Single Occupancy </span>
               <div class="price mt-3">+ &#8377; 600</div>
@@ -206,16 +226,16 @@
     </div>
     <div *ngIf="viewPort > 427" class="right-div">
       <div class="cart">
-        <span class="title">{{ details.destination_name }}</span>
+        <span class="title">{{ batchSelected.destination_name }}</span>
         <div class="trip-details d-flex justify-content-between mt-2">
           <div class="d-flex align-items-center">
             <img src="../../assets/calendar_small.png" alt="" class="me-2" />
             <span class="date">{{
-              details.from_date | tripDuration : details.to_date
+              batchSelected.from_date | tripDuration : batchSelected.to_date
             }}</span>
           </div>
           <div class="duration">
-            {{ details.days }} Days - {{ details.nights }} Nights
+            {{ batchSelected.days }} Days - {{ batchSelected.nights }} Nights
           </div>
         </div>
         <div class="locations mt-4">
@@ -235,10 +255,7 @@
             <span class="para-font-style">Standard Price</span>
             <span class="para-font-style"
               >&#8377;
-              {{
-                (details.price - details.price * 0.05 - 200) *
-                  numberOfTravellers
-              }}</span
+              {{ (batchSelected.price - 200) * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
@@ -266,8 +283,8 @@
             <span class="para-font-style"
               >&#8377;
               {{
-                details.price * numberOfTravellers +
-                  (roomPrice - 200) * numberOfTravellers
+                totalPrice * numberOfTravellers +
+                  0.05 * (totalPrice * numberOfTravellers)
               }}</span
             >
           </div>
@@ -283,8 +300,8 @@
           <span class="amount"
             >&#8377;
             {{
-              details.price * numberOfTravellers +
-                (roomPrice - 200) * numberOfTravellers
+              totalPrice * numberOfTravellers +
+                0.05 * (totalPrice * numberOfTravellers)
             }}</span
           >
         </div>

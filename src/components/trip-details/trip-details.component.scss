@@ -205,6 +205,20 @@ hr {
         font-size: 0.75rem;
       }
     }
+    .pagination-div {
+      button,
+      div {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.4rem;
+        padding: 0;
+        width: 2rem;
+        height: 2rem;
+      }
+      .index-btn {
+        background-color: inherit;
+        color: $lf-black;
+      }
+    }
   }
 }
 
@@ -403,6 +417,21 @@ hr {
   }
 }
 
+.active {
+  background-color: $lf-gold !important;
+  color: $lf-black !important;
+  font-weight: 600;
+}
+.disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.selected-txt {
+  color: $lf-gold !important;
+  font-weight: 700;
+}
+
+
 @media only screen and (max-width: 427px) {
   .main-container {
     padding: 7rem 2rem;
@@ -452,7 +481,52 @@ hr {
           }
         }
         .batches {
-          margin-top: 1.5rem;
+          margin-top: 2rem;
+          border: 1px solid $lf-light-grey;
+          border-radius: 0.4rem;
+          font-weight: 500;
+          .header,
+          .dates > .content {
+            margin-top: 0;
+            padding: 1.5rem 1rem;
+            background-color: $lf-light-grey;
+            color: $lf-black;
+            font-size: 1rem;
+            font-weight: normal;
+          }
+          .dates {
+            .content {
+              padding: 1rem;
+              background-color: $lf-white;
+              border-bottom: 1px solid $lf-light-grey;
+              .availablity {
+                padding: 0.3rem 1.5rem;
+                color: $lf-white !important;
+                border-radius: 2rem;
+                font-size: 0.75rem;
+                width: 7rem;
+              }
+              .available {
+                background-color: $lf-green;
+              }
+              .filling-fast {
+                background-color: #f0bb1f;
+              }
+              .full {
+                background-color: #ff5a5f;
+              }
+            }
+            .pagination-div {
+              button,
+              div {
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                border-radius: 0.4rem;
+                // padding: .35rem;
+                width: 2rem;
+                height: 2rem;
+              }
+            }
+          }
         }
       }
       .overview {

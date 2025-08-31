@@ -40,29 +40,42 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   submitSignUpform() {
     console.log(this.signUpform.value);
     let postData = this.signUpform.getRawValue();
     postData['role'] = 'user';
-    postData['createdAt'] = new Date();
+    postData['createdAt'] = new Date().getTime();
     this.authService.signUpUser(postData).subscribe((data) => {
-      this.signUpform.reset();
-      this.password = null;
-      this.isSignUp = false;
+      if (data) {
+        localStorage.setItem('isUserLoggedIn', 'true');
+        localStorage.setItem('userName', data.details.name);
+        localStorage.setItem('email', data.details.email);
+        localStorage.setItem('role', data.details.role);
+        localStorage.setItem('id', data.details.id);
+        this.authService.isUserLoggedIn = true;
+        this.authService.userName = data.details.name;
+        sessionStorage.setItem('bn_access', data.tokens.accessToken);
+        sessionStorage.setItem('bn_refresh', data.tokens.refreshToken);
+        this.router.navigateByUrl(this.returnUrl);
+        this.signUpform.reset();
+        this.password = null;
+        this.isSignUp = false;
+      }
     });
   }
 
   submitLoginForm() {
     let postData = this.loginForm.getRawValue();
     this.authService.loginUser(postData).subscribe((data) => {
-      if(data) {
+      if (data) {
         localStorage.setItem('isUserLoggedIn', 'true');
         localStorage.setItem('userName', data.details.name);
         localStorage.setItem('email', data.details.email);
         localStorage.setItem('role', data.details.role);
+        localStorage.setItem('id', data.details.id);
         this.authService.isUserLoggedIn = true;
         this.authService.userName = data.details.name;
         sessionStorage.setItem('bn_access', data.tokens.accessToken);

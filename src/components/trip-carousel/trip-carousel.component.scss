@@ -1,6 +1,86 @@
 @import "../../styles.scss";
 
-.slider-container {
+// .slider-container {
+//   padding: 10rem 12rem 2rem 12rem;
+//   font-weight: 600;
+//   .heading {
+//     color: $lf-black;
+//     font-size: 1.25rem;
+//     letter-spacing: 0.125rem;
+//     opacity: 0.6;
+//   }
+//   .sub-heading {
+//     p {
+//       color: $lf-black;
+//       font-size: 2.5rem;
+//       margin-bottom: 2rem;
+//     }
+//     span {
+//       color: $lf-gold;
+//     }
+//     .view-all {
+//       font-size: 1.25rem;
+//     }
+//   }
+// }
+
+// trip-card {
+//   cursor: pointer;
+// }
+
+// .slider {
+//   position: relative;
+//   width: 100%;
+//   overflow: hidden;
+// }
+
+// .card-slider {
+//   display: flex;
+//   transition: transform 0.5s ease;
+// }
+
+// .pagination {
+//   margin-top: 3rem;
+// }
+
+// button {
+//   cursor: pointer;
+//   border: none;
+//   background: none;
+//   mat-icon {
+//     color: black;
+//   }
+//   &:first-child {
+//     margin-right: 1.5rem;
+//   }
+// }
+
+// button:disabled {
+//   opacity: 0.5;
+//   cursor: not-allowed;
+// }
+
+// @media only screen and (max-width: 427px) {
+//   .slider-container {
+//     padding: 5rem 2rem;
+//     .sub-heading {
+//       font-size: 2rem;
+//     }
+//   }
+//   .chips-list {
+//     overflow: auto;
+//     &::-webkit-scrollbar {
+//       display: none;
+//     }
+//   }
+//   .chip {
+//     height: 2.5rem;
+//     padding: 1rem 2rem;
+//     margin-right: 2rem;
+//   }
+// }
+
+.main-container {
   padding: 10rem 12rem 2rem 12rem;
   font-weight: 600;
   .heading {
@@ -23,118 +103,105 @@
     }
   }
 }
-
-trip-card {
-  cursor: pointer;
-}
-// .chips-list {
-//   margin: 1.5rem 0 3rem;
-// }
-// .chip {
-//   height: 3rem;
-//   padding: 1rem 3rem;
-//   border-radius: 3rem;
-//   background: rgba(12, 12, 12, 0.20);
-//   font-size: 0.875rem;
-//   font-weight: 500;
-//   letter-spacing: 0.035rem;
-//   cursor: pointer;
-
-//   &:hover {
-//     color: $lf-black;
-//     font-weight: 500;
-//   }
-// }
-// .chip-active {
-//   background: rgba(12, 12, 12, 1);
-//   color: $lf-white !important;
-// }
-.slider {
-  position: relative;
+.carousel-container {
   width: 100%;
   overflow: hidden;
+  position: relative;
 }
 
-.card-slider {
+.carousel-wrapper {
   display: flex;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
 }
 
-// .card {
-//   flex: 0 0 auto;
-//   width: 300px; /* Adjust based on your card size */
-//   margin-right: 20px; /* Adjust based on your card margin */
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.carousel-page {
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 10px;
+}
+
+// .trip-card {
+//   background: #f4f4f4;
 //   border-radius: 8px;
-//   overflow: hidden;
+//   padding: 15px;
+//   text-align: center;
+//   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 // }
 
-// .card img {
-//   width: 100%;
-//   height: 200px; /* Adjust based on your image size */
-//   object-fit: cover;
-// }
-
-// .card-body {
-//   padding: 10px;
-// }
-
-// .fade-left,
-// .fade-right {
-//   position: absolute;
-//   top: 0;
-//   bottom: 0;
-//   width: 100px; /* Adjust based on your fade width */
-//   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-//   pointer-events: none;
-// }
-
-// .fade-left {
-//   left: 0;
-// }
-
-// .fade-right {
-//   right: 0;
-//   transform: scaleX(-1);
-// }
-
-.pagination {
-  margin-top: 3rem;
+.carousel-controls {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
-button {
+.carousel-controls .action-btn button {
   cursor: pointer;
-  border: none;
+  transition: background 0.3s;
   background: none;
+  border: none;
+  margin-left: 1rem;
   mat-icon {
-    color: black;
-  }
-  &:first-child {
-    margin-right: 1.5rem;
+    color: $lf-black;
   }
 }
 
-button:disabled {
-  opacity: 0.5;
+.carousel-controls .action-btn button:disabled {
+  // background: #ccc;
   cursor: not-allowed;
+  mat-icon {
+    color: #ccc;
+  }
+}
+
+.dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dots span {
+  width: 0.6rem;
+  height: 0.6rem;
+  background: #ccc;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dots span.active {
+  background: $lf-black;
+  width: 1.5rem;
+  height: 0.3rem;
+  border-radius: 0;
 }
 
 @media only screen and (max-width: 427px) {
-  .slider-container {
+  .main-container {
     padding: 5rem 2rem;
+    .heading {
+      font-size: 1rem;
+      letter-spacing: 0.1rem;
+    }
     .sub-heading {
-      font-size: 2rem;
+      flex-direction: column;
+      p {
+        font-size: 1.65rem;
+        line-height: 2rem;
+      }
+      .view-all {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
     }
-  }
-  .chips-list {
-    overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .chip {
-    height: 2.5rem;
-    padding: 1rem 2rem;
-    margin-right: 2rem;
+    .carousel-page {
+  grid-template-columns: repeat(1, 4fr);
+
+}
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BookingService } from 'src/services/booking.service';
 
 @Component({
   selector: 'app-booking-confirmation',
@@ -7,7 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookingConfirmationComponent implements OnInit {
 
-  constructor() { }
+  tripId = '';
+  bookingId = '';
+  booking: any;
+  constructor(private activatedRoute: ActivatedRoute, private bookingService: BookingService) { 
+    this.tripId = this .activatedRoute.snapshot.paramMap.get('id');
+    this.bookingId = this .activatedRoute.snapshot.paramMap.get('bookingId');
+    this.bookingService.getBookingDetails(this.bookingId).subscribe(data => {
+      this.booking = data;
+    })
+  }
   loadingGif: string = 'assets/your-loading.gif';
   gifCompleted: boolean = false;
 

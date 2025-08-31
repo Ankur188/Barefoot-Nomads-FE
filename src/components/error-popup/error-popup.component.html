@@ -1,0 +1,6 @@
+<div
+  *ngIf="errorService.errorMessage$ | async as message"
+  class="popup"
+  [@fadeInOut]>
+  {{ message }}
+</div>

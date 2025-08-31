@@ -1,15 +1,4 @@
-<!-- <div>
-
-	<swiper [slidesPerView]="3" [spaceBetween]="50" (swiper)="setControlledSwiper($event)" [navigation]="{}"
-		[pagination]="{ clickable: true }" [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true">
-		<ng-template swiperSlide>Slide 1</ng-template>
-		<ng-template swiperSlide>Slide 2</ng-template>
-		<ng-template swiperSlide>Slide 3</ng-template>
-		<ng-template swiperSlide>Slide 4</ng-template>
-		<ng-template swiperSlide>Slide 5</ng-template>
-		<ng-template swiperSlide>Slide 6</ng-template>
-	</swiper>
-</div> -->
+<!-- 
 
 <div class="slider-container">
   <div class="heading text-uppercase">Trending & New Adventures Await</div>
@@ -19,9 +8,6 @@
       >View All</span
     >
   </div>
-  <!-- <div class="d-flex align-items-center justify-content-between chips-list">
-		<div *ngFor="let trip of tripsList" class="chip flex-center" [ngClass]="trip.selected ? 'chip-active' : ''">{{trip.name  | uppercase}}</div>
-	</div> -->
   <div *ngIf="trips && trips.length" class="slider" id="slider-main">
     <div class="slider">
       <div class="fade-left"></div>
@@ -58,4 +44,50 @@
       </div>
     </div>
   </div>
+</div> -->
+
+
+
+
+
+
+
+<div class="main-container">
+    <div class="heading text-uppercase">Trending & New Adventures Await</div>
+  <div class="sub-heading d-flex align-items-baseline justify-content-between mt-4">
+    <p>Discover the latest and most sought-after <span>Adventures</span></p>
+    <span class="text-uppercase text-decoration-underline view-all cursor-pointer"
+      >View All</span
+    >
+  </div>
+  <div class="carousel-container">
+    <!-- Carousel Slides -->
+    <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentPage * 100 + '%)'">
+      <div class="carousel-page" *ngFor="let page of pages">
+        <div class="trip-card" *ngFor="let trip of page">
+  <trip-card [card]="trip" (click)="navigateToTrip(trip)" class="cursor-pointer"></trip-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Controls -->
+  <div class="carousel-controls">
+        <div class="dots">
+      <span *ngFor="let page of pages; let i = index"
+            [class.active]="i === currentPage"
+            (click)="goToPage(i)"></span>
+    </div>
+    <div class="action-btn">
+      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
+<mat-icon>arrow_back</mat-icon>
+</button>
+<button mat-icon-button (click)="nextPage()" [disabled]="currentPage === pages.length - 1">
+<mat-icon>arrow_forward</mat-icon>
+</button>
+      <!-- <button (click)="prevPage()" [disabled]="currentPage === 0">◀</button>    
+      <button (click)="nextPage()" [disabled]="currentPage === pages.length - 1">▶</button> -->
+    </div>
+  </div>
 </div>
+

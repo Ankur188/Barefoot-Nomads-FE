@@ -114,10 +114,19 @@
           border-bottom: 1px solid $lf-light-grey;
           .availablity {
             padding: 0.3rem 1.5rem;
-            background-color: $lf-green;
             color: $lf-white !important;
             border-radius: 2rem;
             font-size: 0.75rem;
+            width: 7rem;
+          }
+          .available {
+            background-color: $lf-green;
+          }
+          .filling-fast {
+            background-color: #F0BB1F;
+          }
+          .full {
+            background-color: #FF5A5F;
           }
         }
         .pagination-div {
@@ -202,7 +211,6 @@
       padding: 0.75rem 1rem;
       background-color: $lf-light-grey;
       border-radius: 0.4rem;
-      text-align: center;
       span {
         font-size: 0.85rem;
         font-weight: 400;
@@ -241,6 +249,19 @@
   }
 }
 
+.active {
+  background-color: $lf-gold;
+  color: $lf-black;
+}
+.disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.selected {
+  color: $lf-gold !important;
+  font-weight: 700;
+}
+
 @media only screen and (max-width: 427px) {
   .main-container {
     padding: 7rem 2rem;
@@ -259,6 +280,9 @@
           }
         }
       }
+    }
+    .locations{
+      text-align: center;
     }
     .banner {
       height: 7rem;
