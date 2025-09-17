@@ -140,4 +140,25 @@ mat-icon {
   cursor: pointer;
 }
 
+// input.ng-touched.ng-valid {
+//   border: none;
+// }
+
+// input.ng-touched.ng-invalid {
+//   border: 2px solid #d32f2f !important;
+//   background-color: #fff5f5 !important; /* subtle red background */
+// }
+
+/* Hide number input spinners (Chrome/Edge/Safari) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Hide number input spinners (Firefox) */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
 

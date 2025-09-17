@@ -1,85 +1,5 @@
 @import "../../styles.scss";
 
-// .slider-container {
-//   padding: 10rem 12rem 2rem 12rem;
-//   font-weight: 600;
-//   .heading {
-//     color: $lf-black;
-//     font-size: 1.25rem;
-//     letter-spacing: 0.125rem;
-//     opacity: 0.6;
-//   }
-//   .sub-heading {
-//     p {
-//       color: $lf-black;
-//       font-size: 2.5rem;
-//       margin-bottom: 2rem;
-//     }
-//     span {
-//       color: $lf-gold;
-//     }
-//     .view-all {
-//       font-size: 1.25rem;
-//     }
-//   }
-// }
-
-// trip-card {
-//   cursor: pointer;
-// }
-
-// .slider {
-//   position: relative;
-//   width: 100%;
-//   overflow: hidden;
-// }
-
-// .card-slider {
-//   display: flex;
-//   transition: transform 0.5s ease;
-// }
-
-// .pagination {
-//   margin-top: 3rem;
-// }
-
-// button {
-//   cursor: pointer;
-//   border: none;
-//   background: none;
-//   mat-icon {
-//     color: black;
-//   }
-//   &:first-child {
-//     margin-right: 1.5rem;
-//   }
-// }
-
-// button:disabled {
-//   opacity: 0.5;
-//   cursor: not-allowed;
-// }
-
-// @media only screen and (max-width: 427px) {
-//   .slider-container {
-//     padding: 5rem 2rem;
-//     .sub-heading {
-//       font-size: 2rem;
-//     }
-//   }
-//   .chips-list {
-//     overflow: auto;
-//     &::-webkit-scrollbar {
-//       display: none;
-//     }
-//   }
-//   .chip {
-//     height: 2.5rem;
-//     padding: 1rem 2rem;
-//     margin-right: 2rem;
-//   }
-// }
-
 .main-container {
   padding: 10rem 12rem 2rem 12rem;
   font-weight: 600;
@@ -122,14 +42,6 @@
   gap: 15px;
   padding: 10px;
 }
-
-// .trip-card {
-//   background: #f4f4f4;
-//   border-radius: 8px;
-//   padding: 15px;
-//   text-align: center;
-//   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-// }
 
 .carousel-controls {
   margin-top: 15px;

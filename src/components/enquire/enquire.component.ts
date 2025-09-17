@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -8,30 +8,42 @@ import { StaticService } from 'src/services/static.service';
   styleUrls: ['./enquire.component.scss'],
 })
 export class EnquireComponent implements OnInit {
-  enquireForm: FormGroup;
+  enquireForm!: FormGroup;
   isTailorMadeSelected: string = 'false';
+  // get email() { return this.enquireForm.get('email')!; }
+  // get phone() { return this.enquireForm.get('phone')!; }
+  // get days()  { return this.enquireForm.get('days')!; }
+  // get travellers()  { return this.enquireForm.get('travellers')!; }
 
-  constructor(private staticService: StaticService) {
-    this.enquireForm = new FormGroup({
-      name: new FormControl(''),
-      location: new FormControl(''),
-      travellers: new FormControl(''),
-      days: new FormControl(''),
-      email: new FormControl(''),
-      phone: new FormControl(''),
-      message: new FormControl(''),
-      budget: new FormControl(''),
-    });
+  constructor(private staticService: StaticService, private fb: FormBuilder) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+        this.enquireForm = this.fb.group({
+      name: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      travellers: ['', [Validators.required, Validators.min(1)]],
+      days: ['', [Validators.required, Validators.min(1)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required,  Validators.min(1000000000), Validators.max(9999999999)]],
+      message: ['', [Validators.required]],
+      budget: ['', [Validators.required]],
+    });
+  }
 
   submitEnquireForm() {
     var postData = this.enquireForm.getRawValue();
     postData['type'] =
       this.isTailorMadeSelected === 'true' ? 'tailor-made' : 'pre-made';
-    this.staticService.postEnquiry(postData).subscribe((data) => {
-      this.enquireForm.reset();
-    });
+      if(this.enquireForm.valid) {
+        this.staticService.postEnquiry(postData).subscribe((data) => {
+          this.enquireForm.reset();
+        });
+      }
+      else {
+        console.log(11111122222)
+    this.enquireForm.markAllAsTouched(); // highlight all invalid fields
+  }
+    
   }
 }

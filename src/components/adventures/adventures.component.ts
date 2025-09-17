@@ -7,6 +7,7 @@ import {
   animate
 } from '@angular/animations';
 import { MatSelectModule } from '@angular/material/select';
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -277,6 +278,82 @@ handleClickOutside(event: MouseEvent) {
   }
 
 
+//  trips: any[] = [];
+//   pages: any[][] = [];
+//   currentPage = 0;
+//   filterOpen = false; // toggle when filter opens/closes
 
+//   constructor(public staticService: StaticService, private router: Router) {}
+
+//   ngOnInit(): void {
+//     this.staticService.getTrips().subscribe((data: any) => {
+//       this.trips = data.trips;
+//       this.groupTrips();
+//     });
+//   }
+
+//   toggleFilter(): void {
+//     this.filterOpen = !this.filterOpen;
+//     this.groupTrips();
+//     this.currentPage = 0; // reset page
+//   }
+
+//   groupTrips(): void {
+//     this.pages = [];
+
+//     if (!this.filterOpen) {
+//       // 2 rows x 4 cols = 8 trips per page
+//       for (let i = 0; i < this.trips.length; i += 8) {
+//         this.pages.push(this.trips.slice(i, i + 8));
+//       }
+//     } else {
+//       // Filter open: 2 rows, 3 columns per row (6 trips per page)
+//       const tripsPerPage = 6;
+//       for (let i = 0; i < this.trips.length; i += tripsPerPage) {
+//         this.pages.push(this.trips.slice(i, i + tripsPerPage));
+//       }
+//     }
+//   }
+
+//   getGridColumn(index: number): string {
+//     if (!this.filterOpen) return '';
+
+//     // First row: columns 2,3,4
+//     if (index === 0) return '2';
+//     if (index === 1) return '3';
+//     if (index === 2) return '4';
+
+//     // Second row: columns 2,3,4
+//     if (index === 3) return '2';
+//     if (index === 4) return '3';
+//     if (index === 5) return '4';
+
+//     return '';
+//   }
+
+//   getGridRow(index: number): string {
+//     if (!this.filterOpen) return '';
+//     return index < 3 ? '1' : '2';
+//   }
+
+//   nextPage(): void {
+//     if (this.currentPage < this.pages.length - 1) this.currentPage++;
+//   }
+
+//   prevPage(): void {
+//     if (this.currentPage > 0) this.currentPage--;
+//   }
+
+//   goToPage(index: number): void {
+//     this.currentPage = index;
+//   }
+
+//   navigateToTrip(trip: any) {
+//     this.router.navigate([`trip/${trip.id}`]);
+//   }
+
+//   navigateToAdventures() {
+//     this.router.navigate(['adventures']);
+//   }
 
 }

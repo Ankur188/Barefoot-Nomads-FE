@@ -1,9 +1,8 @@
-<!-- Intro Section -->
 <section class="intro-container">
   <div class="introduction d-flex align-items-center justify-content-between">
     <div class="intro-text">
       <p class="heading text-uppercase">Why Barefoot Nomads</p>
-      <p class="sub-heading">The perfect travel companion</p>
+      <p class="sub-heading">The Perfect Travel Companion</p>
       <p class="para-font-style">
         For we go beyond just booking your next trip. We’re here to make every
         journey effortless, exciting, and transformative. From expertly crafted
@@ -34,7 +33,6 @@
   </div>
 </section>
 
-<!-- Main Content -->
 <main class="main-container">
   <div class="banner-section">
     <img [src]="bannerUrl" alt="S3 Banner" class="w-100 banner" />
@@ -51,9 +49,7 @@
     </div>
 
     <div class="filter-carousel-wrapper">
-      <!-- Filter -->
       <div class="d-flex justify-content-between mt-4">
-        <!-- Filter -->
         <div class="filter-container position-relative" #filterContainer>
           <div class="filter-toggle d-flex align-items-center justify-content-around" [class.expanded]="filterVisible"
             (click)="toggleFilter($event)">
@@ -83,7 +79,6 @@
           </div>
         </div>
 
-        <!-- left section filter and icon -->
 
         <div class="dropdown position-relative d-flex justify-content-between mr-3">
           <div class="select-wrapper mr-3">
@@ -102,7 +97,6 @@
         </div>
       </div>
 
-      <!-- Cards + Dropdown + Search-->
       <div class="card-carousel-filter mt-3 d-flex flex-column" [class.shifted]="filterVisible">
         <div class="applied-filters d-flex justify-content-between mb-3">
           <ng-container *ngIf="appliedFilterSectionVisible">
@@ -151,7 +145,6 @@
           </div>
         </div>
 
-        <!-- Pagination -->
         <div class="pagination-div d-flex align-items-center justify-content-center content mt-4">
           <button (click)="prevPage()" [disabled]="currentPage === 1"
             class="d-flex align-items-center justify-content-center me-3">
@@ -170,3 +163,57 @@
     </div>
   </section>
 </main>
+
+
+
+
+
+
+
+<!-- <div class="main-container">
+  <div class="heading text-uppercase">Trending & New Adventures Await</div>
+
+  <div class="sub-heading d-flex align-items-baseline justify-content-between mt-4">
+    <p>
+      Discover the latest and most sought-after
+      <span>Adventures</span>
+    </p>
+    <span class="text-uppercase text-decoration-underline view-all cursor-pointer" (click)="navigateToAdventures()">
+      View All
+    </span>
+  </div>
+
+  <button (click)="toggleFilter()">Toggle Filter</button>
+
+  <div class="carousel-container">
+    <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentPage * 100 + '%)'">
+      <div class="carousel-page" *ngFor="let page of pages" [ngClass]="{'filter-open': filterOpen}">
+        <div class="filter-card" *ngIf="filterOpen">Filter Component</div>
+
+        <div
+          class="trip-card"
+          *ngFor="let trip of page; let i = index"
+          [style.gridColumn]="getGridColumn(i)"
+          [style.gridRow]="getGridRow(i)"
+          (click)="navigateToTrip(trip)"
+        >
+          <trip-card [card]="trip"></trip-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-controls">
+    <div class="dots">
+      <span *ngFor="let page of pages; let i = index" [class.active]="i === currentPage" (click)="goToPage(i)"></span>
+    </div>
+    <div class="action-btn">
+      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button mat-icon-button (click)="nextPage()" [disabled]="currentPage === pages.length - 1">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
+</div> -->
