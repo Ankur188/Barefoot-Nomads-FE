@@ -16,6 +16,7 @@ export class TripCarouselComponent implements OnInit {
     constructor (public staticService: StaticService, private router: Router) {    
     this.staticService.getTrips().subscribe(data => {
       this.trips = data.trips;
+      console.log('image url', this.trips[0]['imageUrl'])
     this.groupTrips();
 
     })

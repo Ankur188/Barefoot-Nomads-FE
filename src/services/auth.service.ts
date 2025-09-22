@@ -19,10 +19,10 @@ export class AuthService {
   }
 
   signUpUser(postData: any): Observable<any> {
-    return this.http.post(`${environment.localhost}users/signup`, postData);
+    return this.http.post(`${environment.apiURL}users/signup`, postData);
   }
 
   loginUser(postData: any): Observable<any> {
-    return this.http.post(`${environment.localhost}user/login`, postData);
+    return this.http.post(`${environment.apiURL}user/login`, postData);
   }
 }
