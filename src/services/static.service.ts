@@ -19,7 +19,7 @@ export class StaticService {
     if (this.tripsSubject.value) return of(this.tripsSubject.value);
     else
       return this.http
-        .get(`${environment.apiURL}trips`)
+        .get( environment.production ? '/api/trips' : `${environment.apiURL}trips`)
         .pipe(tap((data) => this.tripsSubject.next(data)));
   }
 
