@@ -11,10 +11,10 @@ export class BookingService {
   constructor(private http: HttpClient) { }
 
   bookTrip(details: any) : Observable<any> {
-    return this.http.post(`${environment.apiURL}booking`, details);
+    return this.http.post( environment.production ? '/api/booking' : `${environment.apiURL}booking`, details);
   }
 
   getBookingDetails(id: string): Observable<any> {
-    return this.http.get(`${environment.apiURL}booking/${id}`)
+    return this.http.get( environment.production ? `/api/booking/${id}` : `${environment.apiURL}booking/${id}`)
   }
 }

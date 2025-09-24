@@ -56,7 +56,7 @@ export class UploadFileComponent implements OnInit {
     const fileName = this.uploadForm.getRawValue().name
       ? this.uploadForm.getRawValue().name
       : this.uploadForm.getRawValue().categoryId;
-    const apiUrl = `${environment.apiURL}img/upload`; // Replace with your API endpoint
+    const apiUrl = environment.production ? '/api/img/upload' : `${environment.apiURL}img/upload`; // Replace with your API endpoint
 
     base64data.append('categoryId', fileName);
 
