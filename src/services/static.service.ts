@@ -25,29 +25,29 @@ export class StaticService {
 
   getBanner(bannerName: string): Observable<any> {
     return this.http.get(
-      `${environment.apiURL}img/banner?name=${bannerName}`
+      environment.production ? `/api/banner?name=${bannerName}` : `${environment.apiURL}img/banner?name=${bannerName}`
     );
   }
 
   postEnquiry(postData): Observable<any> {
-    return this.http.post(`${environment.apiURL}trips/enquire`, postData);
+    return this.http.post(environment.production ? `/api/trips/enquire` : `${environment.apiURL}trips/enquire`, postData);
   }
 
   getTripDetails(id: string) {
     if (this.tripDetailsSubject.value) return of(this.tripDetailsSubject.value);
     else
       return this.http
-        .get(`${environment.apiURL}trips/${id}`)
+        .get(environment.production ? `/api/trips/${id}` : `${environment.apiURL}trips/${id}`)
         .pipe(tap((data) => this.tripDetailsSubject.next(data)));
   }
 
   getBatches(destination: string, page:number = 1, filter='All'): Observable<any> {
     if(filter === 'All')
       return this.http
-        .get(`${environment.apiURL}trips/${destination}/batches?page=${page}`)
+        .get(environment.production ? `/api/trips/${destination}/batches?page=${page}` : `${environment.apiURL}trips/${destination}/batches?page=${page}`)
         else {
                 return this.http
-        .get(`${environment.apiURL}trips/${destination}/batches?page=${page}&month=${filter +1}`)
+        .get(environment.production ? `/api/trips/${destination}/batches?page=${page}&month=${filter +1}` : `${environment.apiURL}trips/${destination}/batches?page=${page}&month=${filter +1}`)
         }
   }
 }
