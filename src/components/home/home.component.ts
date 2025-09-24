@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(public staticService: StaticService) {}
 
   ngOnInit(): void {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
+    this.staticService.getBanner('home_page_banner.png').subscribe((data) => {
       this.bannerUrl = data.imageUrl;
     });
   }

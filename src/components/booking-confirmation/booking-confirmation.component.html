@@ -1,53 +1,60 @@
-  <div class="receipt-container  d-flex align-items-center justify-content-center">
-    <div *ngIf="!gifCompleted">
-        <img src="../../assets/airplane.gif" (load)="onGifLoad()" (ended)="onGifEnd()" />
-    </div>
+<div class="receipt-container d-flex align-items-center justify-content-center">
+  <div *ngIf="!gifCompleted">
+    <img src="../../assets/airplane.gif" />
+  </div>
 
-    <div *ngIf="gifCompleted" class="receipt d-flex align-items-center flex-column">
-        <div class="check d-flex align-items-center justify-content-center">
-            <mat-icon
+  <div
+    *ngIf="gifCompleted"
+    class="receipt d-flex align-items-center flex-column"
+  >
+    <div class="check d-flex align-items-center justify-content-center">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="done"
+        class="me-2"
+      ></mat-icon>
+    </div>
+    <img src="../../assets/truck.gif" />
+    <div class="header d-flex flex-column align-items-center">
+      <span class="heading">Congratulations!</span>
+      <span class="sub-heading mt-2">your adventure has been booked!</span>
+    </div>
+    <div class="content">
+      <span class="para-font-style"
+        >You'll recieve an email with your booking confirmation and itinerary
+        shorlty. <br />We can't wait to help you make amazing memories.</span
+      >
+    </div>
+    <div class="footer w-100">
+      <div class="details d-flex align-items-center justify-content-between">
+        <div class="heading">{{ booking.destination_name }}</div>
+        <div class="download d-flex align-items-center justify-content-center">
+          <img src="../../assets/download.png" alt="" />
+        </div>
+      </div>
+      <div
+        class="footer-details mt-3 d-flex align-items-center justify-content-between"
+      >
+        <div class="d-flex align-items-center detail-points me-4">
+          <mat-icon
             aria-hidden="false"
             aria-label="Example home icon"
-            fontIcon="done"
+            fontIcon="calendar_today"
             class="me-2"
           ></mat-icon>
+          {{ booking.from_date | tripDuration : booking.to_date }}
         </div>
-        <img src="../../assets/truck.gif"/>
-        <div class="header d-flex flex-column align-items-center">
-            <span class="heading">Congratulations!</span>
-            <span class="sub-heading mt-2">your adventure has been booked!</span>
+        <div class="d-flex align-items-center detail-points">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="person_outline"
+            class="me-2"
+          ></mat-icon>
+          {{ booking.travellers }} People
         </div>
-        <div class="content">
-            <span class="para-font-style">You'll recieve an email with your booking confirmation and itinerary shorlty. <br>We can't wait to help you make amazing memories.</span>
-        </div>
-        <div class="footer w-100 d-flex align-items-start justify-content-between">
-            <div class="details d-flex flex-column align-items-start">
-                <div class="heading">{{booking.destination_name}}</div>
-                <div class="footer-details mt-3 d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center detail-points me-4">
-                        <mat-icon
-                        aria-hidden="false"
-                        aria-label="Example home icon"
-                        fontIcon="calendar_today"
-                        class="me-2"
-                      ></mat-icon>
-                      {{booking.from_date | tripDuration : booking.to_date}}
-                    </div>
-                    <div class="d-flex align-items-center detail-points">
-                        <mat-icon
-                        aria-hidden="false"
-                        aria-label="Example home icon"
-                        fontIcon="person_outline"
-                        class="me-2"
-                      ></mat-icon>
-                      {{booking.travellers}} People
-                    </div>
-                </div>
-            </div>
-            <div class="download d-flex align-items-center justify-content-center">
-                <img src="../../assets/download.png" alt="">
-            </div>
-        </div>
+      </div>
     </div>
   </div>
-  
+</div>

@@ -423,14 +423,13 @@ hr {
   font-weight: 600;
 }
 .disabled {
-  opacity: .5;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 .selected-txt {
   color: $lf-gold !important;
   font-weight: 700;
 }
-
 
 @media only screen and (max-width: 427px) {
   .main-container {
@@ -446,6 +445,13 @@ hr {
     .title {
       margin-top: 2rem;
       font-size: 1.5rem;
+    }
+    .inclusions {
+      .switch {
+        div {
+          padding: 1.25rem 2.25rem;
+        }
+      }
     }
     .left-div {
       width: 100%;

@@ -103,7 +103,7 @@ p {
       font-weight: 600;
     }
     &:nth-child(2) {
-      font-family: "Playfair Display";
+      font-family: "Playfair Display" !important;
       font-size: 2.78263rem;
       font-weight: 800;
       line-height: 3.71013rem; /* 133.333% */
@@ -121,6 +121,7 @@ p {
       font-weight: bold;
       color: $lf-gold;
       position: relative;
+      white-space: nowrap;
       img {
         color: $lf-gold;
         position: absolute;
@@ -284,7 +285,7 @@ p {
         }
       }
       video {
-        width: 23rem;
+        width: 85vw;
         margin-top: 4rem;
       }
     }

@@ -110,7 +110,7 @@ export class TripDetailsComponent implements OnInit {
   ];
   batches: any[] = [];
   totalPages = 0;
-    currentPage = 1;
+  currentPage = 1;
   itemsPerPage = 4;
   paginatedBatches = [];
 
@@ -134,18 +134,18 @@ export class TripDetailsComponent implements OnInit {
     });
   }
 
-    getBatches(destination: string, page: number = 1, filter?) {
-    console.log('2424234234234');
-    this.staticService.getBatches(destination, page, filter).subscribe((data) => {
-      this.batches = data.data;
-      this.totalPages = data.totalPages;
-      this.updatePagination();
-    });
+  getBatches(destination: string, page: number = 1, filter?) {
+    this.staticService
+      .getBatches(destination, page, filter)
+      .subscribe((data) => {
+        this.batches = data.data;
+        this.totalPages = data.totalPages;
+        this.updatePagination();
+      });
   }
 
-
   getBanner() {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
+    this.staticService.getBanner('home_page_banner.png').subscribe((data) => {
       this.bannerUrl = data.imageUrl;
     });
   }
@@ -190,7 +190,7 @@ export class TripDetailsComponent implements OnInit {
   }
 
   //pagination methods
-    updatePagination() {
+  updatePagination() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     this.paginatedBatches = this.batches.slice(
       start,

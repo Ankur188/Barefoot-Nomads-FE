@@ -56,7 +56,14 @@ export class BookingComponent implements OnInit {
     12: 'Dec',
   };
   currentMonth = new Date().getMonth() + 1;
-  monthObjKeys = this.currentMonth <=10 ? [this.currentMonth, this.currentMonth+1, this.currentMonth+2] : this.currentMonth === 11 ? [this.currentMonth, this.currentMonth +1, 1] : this.currentMonth === 12 ? [this.currentMonth, 1, 2] : [];
+  monthObjKeys =
+    this.currentMonth <= 10
+      ? [this.currentMonth, this.currentMonth + 1, this.currentMonth + 2]
+      : this.currentMonth === 11
+      ? [this.currentMonth, this.currentMonth + 1, 1]
+      : this.currentMonth === 12
+      ? [this.currentMonth, 1, 2]
+      : [];
 
   constructor(
     public staticService: StaticService,
@@ -87,17 +94,19 @@ export class BookingComponent implements OnInit {
 
   getBatches(destination: string, page: number = 1, filter?) {
     console.log('2424234234234');
-    this.staticService.getBatches(destination, page, filter).subscribe((data) => {
-      this.batches = data.data;
-      this.batchSelected = this.batches[0];
-      this.totalPrice = this.batches[0].price - 200 + this.roomPrice;
-      this.totalPages = data.totalPages;
-      this.updatePagination();
-    });
+    this.staticService
+      .getBatches(destination, page, filter)
+      .subscribe((data) => {
+        this.batches = data.data;
+        this.batchSelected = this.batches[0];
+        this.totalPrice = this.batches[0].price - 200 + this.roomPrice;
+        this.totalPages = data.totalPages;
+        this.updatePagination();
+      });
   }
 
   getBanner() {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
+    this.staticService.getBanner('home_page_banner.png').subscribe((data) => {
       this.bannerUrl = data.imageUrl;
     });
   }
@@ -190,12 +199,11 @@ export class BookingComponent implements OnInit {
   }
 
   selectFilter(filter) {
-    if(filter === 'All') {
+    if (filter === 'All') {
       this.getBatches(this.details.destination_name, 1);
+    } else {
+      this.getBatches(this.details.destination_name, 1, filter - 1);
     }
-    else {
-      this.getBatches(this.details.destination_name, 1, filter-1)
-    }
-    this.batchFilter = filter
+    this.batchFilter = filter;
   }
 }

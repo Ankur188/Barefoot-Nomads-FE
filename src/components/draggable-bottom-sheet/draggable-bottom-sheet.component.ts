@@ -40,7 +40,8 @@
 //   }
 // }
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-draggable-bottom-sheet',
@@ -61,6 +62,11 @@ export class DraggableBottomSheetComponent implements OnInit {
   @Input() destinations: Array<string>;
   @Input() numberOfTravellers: number;
   @Input() roomPrice: number;
+  @Input() tripId: string;
+  @Input() totalPrice: number;
+  @Output() pay: EventEmitter<any> = new EventEmitter();
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     if (this.isBookingPage) {
@@ -90,5 +96,13 @@ export class DraggableBottomSheetComponent implements OnInit {
     this.isDragging = false;
     this.translateY =
       this.translateY < this.collapsedY / 2 ? this.expandedY : this.collapsedY;
+  }
+
+  bookNow() {
+    this.router.navigate([`trip/${this.tripId}/booking`]);
+  }
+
+  payNow() {
+    this.pay.emit();
   }
 }

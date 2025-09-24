@@ -132,7 +132,7 @@
         class="material-symbols-outlined"
       ></mat-icon>
     </div>
-    <div class="book-now text-uppercase">Book Now</div>
+    <div class="book-now text-uppercase" (click)="bookNow()">Book Now</div>
   </div>
 </div>
 
@@ -142,8 +142,7 @@
     <span class="amount"
       >&#8377;
       {{
-        details.price * numberOfTravellers +
-          (roomPrice - 200) * numberOfTravellers
+        totalPrice * numberOfTravellers + (roomPrice - 200) * numberOfTravellers
       }}</span
     >
   </div>
