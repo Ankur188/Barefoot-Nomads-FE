@@ -25,7 +25,7 @@ export class StaticService {
 
   getBanner(bannerName: string): Observable<any> {
     return this.http.get(
-      environment.production ? `/api/banner?name=${bannerName}` : `${environment.apiURL}img/banner?name=${bannerName}`
+      environment.production ? `/api/img/banner?name=${bannerName}` : `${environment.apiURL}img/banner?name=${bannerName}`
     );
   }
 
