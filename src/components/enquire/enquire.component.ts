@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -15,17 +20,23 @@ export class EnquireComponent implements OnInit {
   // get days()  { return this.enquireForm.get('days')!; }
   // get travellers()  { return this.enquireForm.get('travellers')!; }
 
-  constructor(private staticService: StaticService, private fb: FormBuilder) {
-  }
+  constructor(private staticService: StaticService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-        this.enquireForm = this.fb.group({
+    this.enquireForm = this.fb.group({
       name: ['', [Validators.required]],
       location: ['', [Validators.required]],
       travellers: ['', [Validators.required, Validators.min(1)]],
       days: ['', [Validators.required, Validators.min(1)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required,  Validators.min(1000000000), Validators.max(9999999999)]],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.min(1000000000),
+          Validators.max(9999999999),
+        ],
+      ],
       message: ['', [Validators.required]],
       budget: ['', [Validators.required]],
     });
@@ -35,15 +46,16 @@ export class EnquireComponent implements OnInit {
     var postData = this.enquireForm.getRawValue();
     postData['type'] =
       this.isTailorMadeSelected === 'true' ? 'tailor-made' : 'pre-made';
-      if(this.enquireForm.valid) {
-        this.staticService.postEnquiry(postData).subscribe((data) => {
-          this.enquireForm.reset();
-        });
-      }
-      else {
-        console.log(11111122222)
-    this.enquireForm.markAllAsTouched(); // highlight all invalid fields
+    if (this.enquireForm.valid) {
+      this.staticService.postEnquiry(postData).subscribe((data) => {
+        this.enquireForm.reset();
+      });
+    } else {
+      this.enquireForm.markAllAsTouched(); // highlight all invalid fields
+    }
   }
-    
+
+  formChanged() {
+    this.enquireForm.get('location')?.setValue('');
   }
 }

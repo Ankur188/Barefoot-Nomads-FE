@@ -7,10 +7,9 @@
   .bottom-sheet-scrollable {
     position: fixed;
     bottom: 9rem; // height of preview
-    height: 14vh !important;
+    height: 31vh;
     left: 0;
     right: 0;
-    height: calc(100vh - 60px);
     background: #fff;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -21,6 +20,8 @@
     flex-direction: column;
     touch-action: none;
   }
+  
+
   .reciept {
     height: 40vh !important;
   }
@@ -129,6 +130,42 @@
       cursor: pointer;
     }
     // box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (min-height: 700px) {
+  .my-div {
+    height: 25vh;
+  }
+}
+
+@media (min-height: 800px) {
+  .my-div {
+    height: 22vh;
+  }
+}
+
+@media (min-height: 900px) {
+  .my-div {
+    height: 20vh;
+  }
+}
+
+@media (min-height: 1000px) {
+  .my-div {
+    height: 17.5vh;
+  }
+}
+
+@media (min-height: 1100px) {
+  .my-div {
+    height: 16vh;
+  }
+}
+
+@media (min-height: 1200px) {
+  .my-div {
+    height: 14vh;
   }
 }
 

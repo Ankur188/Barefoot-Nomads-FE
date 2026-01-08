@@ -37,6 +37,7 @@ import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-s
 import { BookingService } from 'src/services/booking.service';
 import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.component';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
+import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,7 @@ import { AdventuresComponent } from 'src/components/adventures/adventures.compon
     DraggableBottomSheetComponent,
     NameToInitialsPipe,
     ErrorPopupComponent,
-    AdventuresComponent
+    AdventuresComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +82,11 @@ import { AdventuresComponent } from 'src/components/adventures/adventures.compon
   providers: [
     StaticService,
     BookingService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

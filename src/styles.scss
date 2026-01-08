@@ -160,5 +160,21 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+.custom-select {
+  appearance: none;          // remove default arrow (cross-browser)
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background: url('/assets/chevron-down-solid-full.svg') no-repeat right 1.5rem center;
+  background-size: 1rem;
+  padding-right: 2rem;       // make space for the icon
+
+  color: #7e7e7e !important; // initial (placeholder color)
+
+  &:not(:has(option:checked[value=""])) {
+    color: #fff !important; // when a non-placeholder is selected
+  }
+}
+
 
 

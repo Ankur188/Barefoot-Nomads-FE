@@ -69,12 +69,30 @@ export class DraggableBottomSheetComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    if (this.isBookingPage) {
-      this.collapsedY = 280;
-      this.translateY = 280;
-    }
+    // if (this.isBookingPage) {
+    //   this.collapsedY = 280;
+    //   this.translateY = 280;
+    // }
+
+      const vh = window.innerHeight;
+
+  // collapsed offset (around 15–25% of screen height)
+  this.collapsedY = vh * 0.2;   // 20% of device height
+  this.translateY = this.collapsedY;
+
+  this.expandedY = 0; // fully expanded
+
+    this.setHeights();
+  window.addEventListener("resize", this.setHeights.bind(this));
   }
 
+ setHeights() {
+  const vh = window.innerHeight;
+  this.collapsedY = vh * 0.2; // 20% screen height collapsed
+  if (this.translateY > this.collapsedY) {
+    this.translateY = this.collapsedY;
+  }
+  }
   onTouchStart(event: TouchEvent) {
     this.isDragging = true;
     this.startY = event.touches[0].clientY;
