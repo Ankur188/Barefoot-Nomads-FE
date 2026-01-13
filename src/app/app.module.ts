@@ -27,6 +27,10 @@ import { GetQuotationComponent } from '../components/get-quotation/get-quotation
 import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
+import { AgGridModule } from 'ag-grid-angular';
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
@@ -38,6 +42,7 @@ import { BookingService } from 'src/services/booking.service';
 import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.component';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
+import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +69,7 @@ import { TokenInterceptor } from 'src/interceptors/token.interceptor';
     NameToInitialsPipe,
     ErrorPopupComponent,
     AdventuresComponent,
+    AdminPanelComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +84,10 @@ import { TokenInterceptor } from 'src/interceptors/token.interceptor';
     MatRadioModule,
     MatTabsModule,
     MatExpansionModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    AgGridModule,
   ],
   providers: [
     StaticService,

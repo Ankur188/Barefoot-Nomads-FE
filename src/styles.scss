@@ -176,5 +176,17 @@ input[type="number"] {
   }
 }
 
+::ng-deep{
+  .ag-cell-value {
+    color: #222222 !important;
+  }
+}
+
+// AG Grid Styles
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+
+
 
 

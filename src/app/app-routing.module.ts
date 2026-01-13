@@ -11,6 +11,7 @@ import { BookingConfirmationComponent } from '../components/booking-confirmation
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { LoginAuthGuard } from 'src/auth-guards/login.guard';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
+import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent, canActivate: [LoginAuthGuard] },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: 'adventures', pathMatch: 'full', component: AdventuresComponent },
+  { path: 'admin', pathMatch: 'full', component: AdminPanelComponent },
   { path: '**', component: HomeComponent },
 ];
 
