@@ -133,6 +133,16 @@ footer {
   }
 }
 
+.admin-footer-spacer {
+  padding: 5px 3rem;
+  background-color: #FAFAFA;
+  p {
+    color: #222222;
+    margin: 0;
+    font-size: 12px;
+  }
+}
+
 @media only screen and (max-width: 427px) {
   footer {
     padding: 5rem 2rem;

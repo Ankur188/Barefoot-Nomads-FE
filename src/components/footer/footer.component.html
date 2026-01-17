@@ -1,4 +1,4 @@
-<footer>
+<footer *ngIf="showFooter">
     <div>
         <div class="heading d-flex align-items-center">
             <img src="../../assets/BarefootNomads (black).png" alt="">
@@ -51,8 +51,12 @@
     </div>
     <img class="track" src="../../assets//tracks2 1.svg" alt="">
 </footer>
-<div class="copywrite">
+<div *ngIf="showFooter" class="copywrite">
     <p>
-        All Rights Reserved — BarefootNomads© 2025
+        All Rights Reserved — BarefootNomads© {{year}}
     </p>
+</div>
+<div *ngIf="!showFooter" class="admin-footer-spacer d-flex align-items-center justify-content-between">
+    <p>BAREFOOTNOMADS | {{year}}</p>
+    <p>All Rights Reserved</p>
 </div>

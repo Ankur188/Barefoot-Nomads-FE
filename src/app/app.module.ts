@@ -30,6 +30,7 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AgGridModule } from 'ag-grid-angular';
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
@@ -43,6 +44,10 @@ import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.comp
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 import { TokenInterceptor } from 'src/interceptors/token.interceptor';
 import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
+import { CheckboxCellRendererComponent } from 'src/components/admin-panel/checkbox-cell-renderer.component';
+import { HeaderCheckboxRendererComponent } from 'src/components/admin-panel/header-checkbox-renderer.component';
+import { StatusToggleRendererComponent } from 'src/components/admin-panel/status-toggle-renderer.component';
+import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom-header-renderer.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +74,11 @@ import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.comp
     NameToInitialsPipe,
     ErrorPopupComponent,
     AdventuresComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    CheckboxCellRendererComponent,
+    HeaderCheckboxRendererComponent,
+    StatusToggleRendererComponent,
+    CustomHeaderRendererComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +96,7 @@ import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.comp
     MatButtonModule,
     MatCheckboxModule,
     MatMenuModule,
+    MatSlideToggleModule,
     AgGridModule,
   ],
   providers: [

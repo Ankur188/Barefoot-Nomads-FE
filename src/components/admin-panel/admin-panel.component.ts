@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ColDef, GridReadyEvent, GridApi, IDateFilterParams } from 'ag-grid-community';
+import { CheckboxCellRendererComponent } from './checkbox-cell-renderer.component';
+import { HeaderCheckboxRendererComponent } from './header-checkbox-renderer.component';
+import { StatusToggleRendererComponent } from './status-toggle-renderer.component';
+import { CustomHeaderRendererComponent } from './custom-header-renderer.component';
 
 interface Trip {
   name: string;
@@ -13,32 +17,35 @@ interface Trip {
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.scss']
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent implements OnInit, OnDestroy {
   selectedTab = 0;
   private gridApi!: GridApi;
+  selectedRowCount = 0;
 
   // Column Definitions
   columnDefs: ColDef[] = [
     {
       headerName: '',
       field: 'checkbox',
-      checkboxSelection: true,
-      headerCheckboxSelection: true,
       width: 50,
       sortable: false,
       filter: false,
       resizable: false,
       suppressMenu: true,
-      pinned: 'left' 
+      pinned: 'left',
+      cellRenderer: CheckboxCellRendererComponent,
+      headerComponent: HeaderCheckboxRendererComponent,
+      suppressSizeToFit: true
     },
     {
       headerName: 'Name',
       field: 'name',
-      flex: 2,
+      flex: 1,
+      minWidth: 200,
       filter: 'agTextColumnFilter',
-      floatingFilter: true,
       sortable: true,
       resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true,
@@ -58,11 +65,12 @@ export class AdminPanelComponent implements OnInit {
     {
       headerName: 'Start Date',
       field: 'startDate',
-      flex: 1,
+      width: 250,
+      suppressSizeToFit: true,
       filter: 'agDateColumnFilter',
-      floatingFilter: true,
       sortable: true,
       resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true,
@@ -94,11 +102,12 @@ export class AdminPanelComponent implements OnInit {
     {
       headerName: 'End Date',
       field: 'endDate',
-      flex: 1,
+      width: 250,
+      suppressSizeToFit: true,
       filter: 'agDateColumnFilter',
-      floatingFilter: true,
       sortable: true,
       resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true,
@@ -130,18 +139,13 @@ export class AdminPanelComponent implements OnInit {
     {
       headerName: 'Status',
       field: 'status',
-      flex: 1,
+      width: 100,
       filter: 'agSetColumnFilter',
-      floatingFilter: true,
       sortable: true,
       resizable: true,
-      cellRenderer: (params: any) => {
-        const status = params.value;
-        const isActive = status === 'active';
-        return `<div style="display: flex; align-items: center;">
-          <span style="width: 10px; height: 10px; border-radius: 50%; background-color: ${isActive ? '#1976d2' : '#999'}; display: inline-block; margin-right: 8px;"></span>
-        </div>`;
-      },
+      suppressSizeToFit: true,
+      cellRenderer: StatusToggleRendererComponent,
+      headerComponent: CustomHeaderRendererComponent,
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true,
@@ -151,23 +155,18 @@ export class AdminPanelComponent implements OnInit {
     {
       headerName: 'Actions',
       field: 'actions',
-      flex: 0.8,
+      width: 100,
+      suppressSizeToFit: true,
       sortable: false,
       filter: false,
       resizable: false,
       cellRenderer: (params: any) => {
         return `<div style="display: flex; gap: 8px; align-items: center;">
           <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1976d2" stroke-width="2">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
+            <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
           </button>
           <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d32f2f" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
           </button>
         </div>`;
       }
@@ -195,7 +194,7 @@ export class AdminPanelComponent implements OnInit {
     { name: 'Honeydukes', startDate: 'April 12, 2019', endDate: 'April 12, 2019', status: 'active' },
     { name: 'Zonko\'s Joke Shop', startDate: 'December 5, 2013', endDate: 'December 5, 2013', status: 'active' },
     { name: 'The Hog\'s Head', startDate: 'February 14, 2015', endDate: 'February 14, 2015', status: 'inactive' },
-    { name: 'Knockturn Alley', startDate: 'October 31, 2017', endDate: 'October 31, 2017', status: 'active' }
+    { name: 'Knockturn Alley', startDate: 'October 31, 2017', endDate: 'October 31, 2017', status: 'active' },
   ];
 
   // Default column definitions
@@ -211,15 +210,23 @@ export class AdminPanelComponent implements OnInit {
     pagination: true,
     paginationPageSize: 20,
     suppressRowClickSelection: true,
-    rowSelection: 'multiple',
+    rowSelection: 'multiple' as const,
     animateRows: true,
     enableCellTextSelection: true,
-    ensureDomOrder: true
+    ensureDomOrder: true,
+    suppressCellFocus: true
   };
 
   constructor() { }
 
   ngOnInit(): void {
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  ngOnDestroy(): void {
+    // Restore body scroll when leaving admin page
+    document.body.style.overflow = 'auto';
   }
 
   onTabChange(index: number) {
@@ -230,6 +237,7 @@ export class AdminPanelComponent implements OnInit {
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
     params.api.sizeColumnsToFit();
+    this.adjustRowHeight();
   }
 
   onCellClicked(event: any) {
@@ -247,5 +255,39 @@ export class AdminPanelComponent implements OnInit {
 
   onFirstDataRendered(params: GridReadyEvent) {
     params.api.sizeColumnsToFit();
+    this.adjustRowHeight();
+  }
+
+  adjustRowHeight() {
+    if (!this.gridApi) return;
+
+    const gridElement = document.querySelector('.trips-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.gridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 56; // Approximate header height
+    const paginationHeight = 56; // Approximate pagination height
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40; // Minimum row height for readability
+    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+
+    // Set the row height
+    this.gridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.gridApi.onRowHeightChanged();
+  }
+
+  onSelectionChanged(event: any) {
+    const selectedRows = event.api.getSelectedRows();
+    this.selectedRowCount = selectedRows.length;
+    console.log('Selected rows count:', this.selectedRowCount);
   }
 }

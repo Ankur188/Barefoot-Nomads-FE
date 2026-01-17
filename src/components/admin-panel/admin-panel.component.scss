@@ -1,24 +1,51 @@
 @import "../../styles.scss";
 
+// Prevent page scroll on admin page
+:host {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 1.9rem);
+  overflow: hidden;
+}
+
+// Prevent body scroll
+:host ::ng-deep body {
+  overflow: hidden !important;
+}
+
 .admin-panel-container {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   background-color: #f5f5f5;
   padding: 0;
   margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
 
   // Tabs Styling
   .admin-tabs {
     background-color: white;
     border-bottom: 1px solid #e0e0e0;
     padding: 24px 24px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
   }
 
   // Tab Content
   .tab-content {
     background-color: white;
     padding: 24px;
-    min-height: 700px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+    box-sizing: border-box;
   }
 
   // Trips Header
@@ -26,11 +53,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding: 0 4px;
+    padding: 5px 17px;
+    flex-shrink: 0;
+    border: 1px solid #babfc7;
+    border-bottom: none;
+    background-color: #FAFAFA;
 
     h2 {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 600;
       color: #222222;
       margin: 0;
@@ -49,13 +79,23 @@
       cursor: pointer;
       transition: all 0.2s;
 
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: #f5f5f5;
         border-color: #999;
       }
 
-      svg {
-        margin-top: 2px;
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #f5f5f5;
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        color: #222222;
       }
     }
   }
@@ -63,11 +103,34 @@
   // Grid Wrapper
   .grid-wrapper {
     width: 100%;
+    flex: 0.92;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    .trips-grid {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   ::ng-deep {
     // Material Tabs Styling
+    .mat-tab-group {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .mat-tab-body-wrapper {
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
     .mat-tab-label {
       opacity: 1 !important;
     }
@@ -95,10 +158,14 @@
 
     .mat-tab-header {
       border-bottom: none;
+      flex-shrink: 0;
     }
 
     .mat-tab-body-content {
-      overflow: visible !important;
+      overflow: hidden !important;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     // AG Grid Styling
@@ -166,6 +233,65 @@
 
         &.ag-checked::after {
           color: #1976d2;
+        }
+      }
+
+      // Custom Material Checkbox styling for AG Grid
+      .ag-cell[col-id="checkbox"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      .ag-header-cell[col-id="checkbox"] {
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      // Ensure Material checkbox is centered
+      app-checkbox-cell-renderer,
+      app-header-checkbox-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // Status toggle styling
+      .ag-cell[col-id="status"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      app-status-toggle-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ::ng-deep {
+        .mat-slide-toggle-bar{
+          width: 53px;
+          height: 24px;
+          border-radius: 20px;
+          background-color: rgba(17,84,162,.30);
+        }
+        .mat-slide-toggle-thumb-container{
+          left: 11px;
+          top: 4px;
+        }
+        .mat-slide-toggle-thumb {
+          width: 15px;
+          height: 15px;
+          background-color: #1154A2;
         }
       }
 
@@ -282,13 +408,50 @@
         }
       }
 
-      // Sort indicators
+      // Hide default AG Grid icons
       .ag-header-icon {
-        color: #222222 !important;
+        display: none !important;
       }
 
       .ag-icon {
-        color: #222222 !important;
+        display: none !important;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Material icon styling in headers
+      .ag-header-cell-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+
+        .mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          color: #222222 !important;
+          cursor: pointer;
+
+          &:hover {
+            color: #1976d2 !important;
+          }
+        }
+      }
+
+      // Ensure header cells have proper layout
+      .ag-header-cell {
+        .ag-header-cell-comp-wrapper {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       // Pagination styling
@@ -298,7 +461,6 @@
         color: #222222 !important;
         font-size: 13px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
         background-color: white;
         
@@ -313,22 +475,83 @@
 
         // Pagination buttons
         .ag-paging-button {
-          border: 1px solid #d0d0d0;
-          background-color: white;
-          padding: 4px 8px;
-          margin: 0 2px;
-          border-radius: 4px;
+          border: none;
+          background-color: transparent;
+          padding: 0;
+          margin: 0 4px;
           cursor: pointer;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          // Hide default AG Grid icons
+          .ag-icon {
+            display: none !important;
+          }
+
+          // Add Material icons using CSS content
+          &[ref="btFirst"]::before {
+            content: 'first_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btPrevious"]::before {
+            content: 'chevron_left';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btNext"]::before {
+            content: 'chevron_right';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btLast"]::before {
+            content: 'last_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
 
           &:hover:not(.ag-disabled) {
-            background-color: #f5f5f5;
+            color: #1154A2;
+
+            &::before {
+              color: #1154A2;
+            }
           }
 
           &.ag-disabled {
             opacity: 0.4;
             cursor: not-allowed;
+
+            &::before {
+              opacity: 0.4;
+            }
           }
         }
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
       }
 
       // Action buttons
@@ -347,9 +570,52 @@
         border: 1px solid #1976d2 !important;
       }
 
-      // Status dots
+      // Status column - center aligned (override previous flex-start)
       .ag-cell[col-id="status"] {
-        justify-content: flex-start;
+        justify-content: center !important;
+      }
+    }
+    .mat-tab-list {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .ag-pinned-left-header {
+      border-right: none;
+    }
+  }
+
+  .header-actions-wrapper {
+    p {
+      color: #222222;
+    }
+
+    .addActionBtn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #1154A2;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background-color: #0d4280;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      mat-icon {
+        color: white;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
       }
     }
   }
