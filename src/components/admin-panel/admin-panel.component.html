@@ -128,7 +128,39 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="BANNERS"></mat-tab>
+    <mat-tab label="BANNERS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+        </div>
+        <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Banners</h2>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine banners-grid"
+            [rowData]="bannersRowData"
+            [columnDefs]="bannersColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="gridOptions.pagination"
+            [paginationPageSize]="gridOptions.paginationPageSize"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onBannersGridReady($event)"
+            (cellClicked)="onBannersCellClicked($event)"
+            (paginationChanged)="adjustBannersRowHeight()"
+            (firstDataRendered)="onBannersFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </mat-tab>
     <mat-tab label="COUPONS"></mat-tab>
     <mat-tab label="LEADS"></mat-tab>
   </mat-tab-group>

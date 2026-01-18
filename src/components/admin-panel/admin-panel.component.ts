@@ -37,6 +37,12 @@ interface User {
   role: string;
 }
 
+interface Banner {
+  bannerName: string;
+  description: string;
+  status: 'active' | 'inactive';
+}
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -47,6 +53,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private gridApi!: GridApi;
   private batchesGridApi!: GridApi;
   private usersGridApi!: GridApi;
+  private bannersGridApi!: GridApi;
   selectedRowCount = 0;
   batchesSelectedRowCount = 0;
   usersSelectedRowCount = 0;
@@ -605,6 +612,100 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     { name: 'Ronald Richards', email: 'felicia.reid@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'User' },
   ];
 
+  // Banners Column Definitions
+  bannersColumnDefs: ColDef[] = [
+    {
+      headerName: '#Banners',
+      field: 'bannerName',
+      width: 380,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Description',
+      field: 'description',
+      width: 1100,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Status',
+      field: 'status',
+      width: 180,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      suppressSizeToFit: true,
+      cellRenderer: StatusToggleRendererComponent,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['active', 'inactive']
+      }
+    },
+    {
+      headerName: 'Upload',
+      field: 'upload',
+      width: 150,
+      suppressSizeToFit: true,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      cellRenderer: (params: any) => {
+        return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+          <button class="action-btn upload-btn" data-action="upload" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <mat-icon style="font-size: 18px; width: 18px; height: 18px; color: #1154A2; transform: rotate(45deg);">attach_file</mat-icon>
+          </button>
+        </div>`;
+      }
+    }
+  ];
+
+  // Row Data for Banners
+  bannersRowData: Banner[] = [
+    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
+    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
+    { bannerName: 'Dianne Russell', description: 'Donec sed erat ut magna suscipiAliquam porta nisl dolor, molestiColumnse..t..', status: 'active' },
+    { bannerName: 'Darlene Robertson', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
+    { bannerName: 'Albert Flores', description: 'Vestibulum eu quam nec neque p.Aliquam porta nisl dolor, molestiColumnse...', status: 'inactive' },
+    { bannerName: 'Leslie Alexander', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
+    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
+    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
+    { bannerName: 'Dianne Russell', description: 'Donec sed erat ut magna suscipiAliquam porta nisl dolor, molestiColumnse..t..', status: 'active' },
+    { bannerName: 'Darlene Robertson', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
+    { bannerName: 'Albert Flores', description: 'Vestibulum eu quam nec neque p.Aliquam porta nisl dolor, molestiColumnse...', status: 'inactive' },
+    { bannerName: 'Leslie Alexander', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
+    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
+    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
+    { bannerName: 'Dianne Russell', description: 'Donec sed erat ut magna suscipiAliquam porta nisl dolor, molestiColumnse..t..', status: 'active' },
+    { bannerName: 'Darlene Robertson', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
+    { bannerName: 'Albert Flores', description: 'Vestibulum eu quam nec neque p.Aliquam porta nisl dolor, molestiColumnse...', status: 'inactive' },
+    { bannerName: 'Leslie Alexander', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
+    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
+    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
+  ];
+
   // Default column definitions
   defaultColDef: ColDef = {
     sortable: true,
@@ -808,5 +909,54 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     const selectedRows = event.api.getSelectedRows();
     this.usersSelectedRowCount = selectedRows.length;
     console.log('Selected users count:', this.usersSelectedRowCount);
+  }
+
+  // Banners Grid Event Handlers
+  onBannersGridReady(params: GridReadyEvent) {
+    this.bannersGridApi = params.api;
+    params.api.sizeColumnsToFit();
+    this.adjustBannersRowHeight();
+  }
+
+  onBannersCellClicked(event: any) {
+    if (event.event.target.closest('.action-btn')) {
+      const action = event.event.target.closest('.action-btn').dataset.action;
+      if (action === 'upload') {
+        console.log('Upload clicked for banner:', event.data);
+        // Handle upload action
+      }
+    }
+  }
+
+  onBannersFirstDataRendered(params: GridReadyEvent) {
+    params.api.sizeColumnsToFit();
+    this.adjustBannersRowHeight();
+  }
+
+  adjustBannersRowHeight() {
+    if (!this.bannersGridApi) return;
+
+    const gridElement = document.querySelector('.banners-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.bannersGridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 48;
+    const paginationHeight = 48;
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40;
+    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+
+    // Set the row height
+    this.bannersGridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.bannersGridApi.onRowHeightChanged();
   }
 }
