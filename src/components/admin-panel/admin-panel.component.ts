@@ -5,6 +5,7 @@ import { HeaderCheckboxRendererComponent } from './header-checkbox-renderer.comp
 import { StatusToggleRendererComponent } from './status-toggle-renderer.component';
 import { CustomHeaderRendererComponent } from './custom-header-renderer.component';
 import { AvailabilityDropdownRendererComponent } from './availability-dropdown-renderer.component';
+import { RoleDropdownRendererComponent } from './role-dropdown-renderer.component';
 
 interface Trip {
   name: string;
@@ -28,6 +29,14 @@ interface Batch {
   status: 'active' | 'inactive';
 }
 
+interface User {
+  name: string;
+  email: string;
+  associatedTrips: string;
+  phoneNumber: string;
+  role: string;
+}
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -37,8 +46,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   selectedTab = 0;
   private gridApi!: GridApi;
   private batchesGridApi!: GridApi;
+  private usersGridApi!: GridApi;
   selectedRowCount = 0;
   batchesSelectedRowCount = 0;
+  usersSelectedRowCount = 0;
 
   // Column Definitions for Trips
   columnDefs: ColDef[] = [
@@ -448,6 +459,152 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     { batchName: 'BATCH4952', assignedTrip: 'Olivanders', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
   ];
 
+  // Users Column Definitions
+  usersColumnDefs: ColDef[] = [
+    {
+      headerName: '',
+      field: 'checkbox',
+      width: 50,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      suppressMenu: true,
+      pinned: 'left',
+      cellRenderer: CheckboxCellRendererComponent,
+      headerComponent: HeaderCheckboxRendererComponent,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: 'Name',
+      field: 'name',
+      width: 380,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Email',
+      field: 'email',
+      width: 450,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Associated Trips',
+      field: 'associatedTrips',
+      width: 300,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellRenderer: (params: any) => {
+        if (params.value === '—' || params.value === '-' || !params.value) {
+          return `<span style="color: #222222;">—</span>`;
+        }
+        return `<a href="#" style="color: #1154A2; text-decoration: none;">${params.value}</a>`;
+      },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Phone Number',
+      field: 'phoneNumber',
+      width: 250,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Role',
+      field: 'role',
+      width: 220,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellRenderer: RoleDropdownRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['Admin', 'User']
+      }
+    },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 170,
+      suppressSizeToFit: true,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      cellRenderer: (params: any) => {
+        return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
+          </button>
+        </div>`;
+      }
+    }
+  ];
+
+  // Row Data for Users
+  usersRowData: User[] = [
+    { name: 'Darrell Steward', email: 'michelle.rivera@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'Admin' },
+    { name: 'Jerome Bell', email: 'jessica.hanson@example.com', associatedTrips: 'Little Hangleton', phoneNumber: '91-8837372732', role: 'User' },
+    { name: 'Dianne Russell', email: 'tanya.hill@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
+    { name: 'Darlene Robertson', email: 'bill.sanders@example.com', associatedTrips: 'Forest of Dean +03', phoneNumber: '91-8837372732', role: 'User' },
+    { name: 'Albert Flores', email: 'tim.jennings@example.com', associatedTrips: 'Forest of Dean', phoneNumber: '91-8862466329', role: 'User' },
+    { name: 'Leslie Alexander', email: 'nathan.roberts@example.com', associatedTrips: 'Little Hangleton +02', phoneNumber: '91- 9838313132', role: 'User' },
+    { name: 'Kathryn Murphy', email: 'georgia.young@example.com', associatedTrips: 'House of Gaunt +05', phoneNumber: '91-8862466329', role: 'User' },
+    { name: 'Floyd Miles', email: 'jackson.graham@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
+    { name: 'Devon Lane', email: 'sara.cruz@example.com', associatedTrips: 'Forest of Dean +01', phoneNumber: '91-9935648723', role: 'User' },
+    { name: 'Ronald Richards', email: 'felicia.reid@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'User' },
+    { name: 'Darrell Steward', email: 'michelle.rivera@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'Admin' },
+    { name: 'Jerome Bell', email: 'jessica.hanson@example.com', associatedTrips: 'Little Hangleton', phoneNumber: '91-8837372732', role: 'User' },
+    { name: 'Dianne Russell', email: 'tanya.hill@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
+    { name: 'Darlene Robertson', email: 'bill.sanders@example.com', associatedTrips: 'Forest of Dean +03', phoneNumber: '91-8837372732', role: 'User' },
+    { name: 'Albert Flores', email: 'tim.jennings@example.com', associatedTrips: 'Forest of Dean', phoneNumber: '91-8862466329', role: 'User' },
+    { name: 'Leslie Alexander', email: 'nathan.roberts@example.com', associatedTrips: 'Little Hangleton +02', phoneNumber: '91- 9838313132', role: 'User' },
+    { name: 'Kathryn Murphy', email: 'georgia.young@example.com', associatedTrips: 'House of Gaunt +05', phoneNumber: '91-8862466329', role: 'User' },
+    { name: 'Floyd Miles', email: 'jackson.graham@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
+    { name: 'Devon Lane', email: 'sara.cruz@example.com', associatedTrips: 'Forest of Dean +01', phoneNumber: '91-9935648723', role: 'User' },
+    { name: 'Ronald Richards', email: 'felicia.reid@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'User' },
+  ];
+
   // Default column definitions
   defaultColDef: ColDef = {
     sortable: true,
@@ -596,5 +753,60 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     const selectedRows = event.api.getSelectedRows();
     this.batchesSelectedRowCount = selectedRows.length;
     console.log('Selected batches count:', this.batchesSelectedRowCount);
+  }
+
+  // Users Grid Event Handlers
+  onUsersGridReady(params: GridReadyEvent) {
+    this.usersGridApi = params.api;
+    params.api.sizeColumnsToFit();
+    this.adjustUsersRowHeight();
+  }
+
+  onUsersCellClicked(event: any) {
+    if (event.event.target.closest('.action-btn')) {
+      const action = event.event.target.closest('.action-btn').dataset.action;
+      if (action === 'delete') {
+        console.log('Delete user clicked for:', event.data);
+        // Handle delete action
+      }
+    }
+  }
+
+  onUsersFirstDataRendered(params: GridReadyEvent) {
+    params.api.sizeColumnsToFit();
+    this.adjustUsersRowHeight();
+  }
+
+  adjustUsersRowHeight() {
+    if (!this.usersGridApi) return;
+
+    const gridElement = document.querySelector('.users-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.usersGridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 48; // Reduced header height estimate
+    const paginationHeight = 48; // Reduced pagination height estimate
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40; // Minimum row height for readability
+    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+
+    // Set the row height
+    this.usersGridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.usersGridApi.onRowHeightChanged();
+  }
+
+  onUsersSelectionChanged(event: any) {
+    const selectedRows = event.api.getSelectedRows();
+    this.usersSelectedRowCount = selectedRows.length;
+    console.log('Selected users count:', this.usersSelectedRowCount);
   }
 }

@@ -87,7 +87,47 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="USERS"></mat-tab>
+    <mat-tab label="USERS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Users</h2>
+          <button class="bulk-actions-btn" [disabled]="usersSelectedRowCount === 0">
+            Bulk Actions
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine users-grid"
+            [rowData]="usersRowData"
+            [columnDefs]="usersColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="gridOptions.pagination"
+            [paginationPageSize]="gridOptions.paginationPageSize"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onUsersGridReady($event)"
+            (cellClicked)="onUsersCellClicked($event)"
+            (selectionChanged)="onUsersSelectionChanged($event)"
+            (paginationChanged)="adjustUsersRowHeight()"
+            (firstDataRendered)="onUsersFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </mat-tab>
     <mat-tab label="BANNERS"></mat-tab>
     <mat-tab label="COUPONS"></mat-tab>
     <mat-tab label="LEADS"></mat-tab>

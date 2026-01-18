@@ -49,6 +49,7 @@ import { HeaderCheckboxRendererComponent } from 'src/components/admin-panel/head
 import { StatusToggleRendererComponent } from 'src/components/admin-panel/status-toggle-renderer.component';
 import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom-header-renderer.component';
 import { AvailabilityDropdownRendererComponent } from 'src/components/admin-panel/availability-dropdown-renderer.component';
+import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-dropdown-renderer.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { AvailabilityDropdownRendererComponent } from 'src/components/admin-pane
     HeaderCheckboxRendererComponent,
     StatusToggleRendererComponent,
     CustomHeaderRendererComponent,
-    AvailabilityDropdownRendererComponent
+    AvailabilityDropdownRendererComponent,
+    RoleDropdownRendererComponent
   ],
   imports: [
     BrowserModule,
