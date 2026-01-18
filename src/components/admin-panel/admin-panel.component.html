@@ -46,7 +46,47 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="BATCHES"></mat-tab>
+    <mat-tab label="BATCHES">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Batches</h2>
+          <button class="bulk-actions-btn" [disabled]="batchesSelectedRowCount === 0">
+            Bulk Actions
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine batches-grid"
+            [rowData]="batchesRowData"
+            [columnDefs]="batchesColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="gridOptions.pagination"
+            [paginationPageSize]="gridOptions.paginationPageSize"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onBatchesGridReady($event)"
+            (cellClicked)="onBatchesCellClicked($event)"
+            (selectionChanged)="onBatchesSelectionChanged($event)"
+            (paginationChanged)="adjustBatchesRowHeight()"
+            (firstDataRendered)="onBatchesFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </mat-tab>
     <mat-tab label="USERS"></mat-tab>
     <mat-tab label="BANNERS"></mat-tab>
     <mat-tab label="COUPONS"></mat-tab>

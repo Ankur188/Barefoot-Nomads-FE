@@ -48,6 +48,7 @@ import { CheckboxCellRendererComponent } from 'src/components/admin-panel/checkb
 import { HeaderCheckboxRendererComponent } from 'src/components/admin-panel/header-checkbox-renderer.component';
 import { StatusToggleRendererComponent } from 'src/components/admin-panel/status-toggle-renderer.component';
 import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom-header-renderer.component';
+import { AvailabilityDropdownRendererComponent } from 'src/components/admin-panel/availability-dropdown-renderer.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom
     CheckboxCellRendererComponent,
     HeaderCheckboxRendererComponent,
     StatusToggleRendererComponent,
-    CustomHeaderRendererComponent
+    CustomHeaderRendererComponent,
+    AvailabilityDropdownRendererComponent
   ],
   imports: [
     BrowserModule,

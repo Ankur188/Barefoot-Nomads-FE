@@ -4,11 +4,27 @@ import { CheckboxCellRendererComponent } from './checkbox-cell-renderer.componen
 import { HeaderCheckboxRendererComponent } from './header-checkbox-renderer.component';
 import { StatusToggleRendererComponent } from './status-toggle-renderer.component';
 import { CustomHeaderRendererComponent } from './custom-header-renderer.component';
+import { AvailabilityDropdownRendererComponent } from './availability-dropdown-renderer.component';
 
 interface Trip {
   name: string;
   startDate: string;
   endDate: string;
+  status: 'active' | 'inactive';
+}
+
+interface Batch {
+  batchName: string;
+  assignedTrip: string;
+  standardPrice: number;
+  singleRoom: number;
+  doubleRoom: number;
+  tripleRoom: number;
+  tax: string;
+  travelers: string;
+  tripProgress: string;
+  count: number;
+  availability: string;
   status: 'active' | 'inactive';
 }
 
@@ -20,9 +36,11 @@ interface Trip {
 export class AdminPanelComponent implements OnInit, OnDestroy {
   selectedTab = 0;
   private gridApi!: GridApi;
+  private batchesGridApi!: GridApi;
   selectedRowCount = 0;
+  batchesSelectedRowCount = 0;
 
-  // Column Definitions
+  // Column Definitions for Trips
   columnDefs: ColDef[] = [
     {
       headerName: '',
@@ -197,6 +215,239 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     { name: 'Knockturn Alley', startDate: 'October 31, 2017', endDate: 'October 31, 2017', status: 'active' },
   ];
 
+  // Batches Column Definitions
+  batchesColumnDefs: ColDef[] = [
+    {
+      headerName: '',
+      field: 'checkbox',
+      width: 50,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      suppressMenu: true,
+      pinned: 'left',
+      cellRenderer: CheckboxCellRendererComponent,
+      headerComponent: HeaderCheckboxRendererComponent,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: 'Batch Name',
+      field: 'batchName',
+      width: 180,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Assigned Trip',
+      field: 'assignedTrip',
+      width: 220,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Standard Price',
+      field: 'standardPrice',
+      width: 180,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Single Room',
+      field: 'singleRoom',
+      width: 170,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Double Room',
+      field: 'doubleRoom',
+      width: 170,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Triple Room',
+      field: 'tripleRoom',
+      width: 170,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Tax%',
+      field: 'tax',
+      width: 130,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Travelers',
+      field: 'travelers',
+      width: 200,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellRenderer: (params: any) => {
+        return `<a href="#" style="color: #1154A2; text-decoration: none;">${params.value}</a>`;
+      },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Trip Progress',
+      field: 'tripProgress',
+      width: 180,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['Completed', 'Upcoming']
+      }
+    },
+    {
+      headerName: 'Count',
+      field: 'count',
+      width: 130,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Availability',
+      field: 'availability',
+      width: 180,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellRenderer: AvailabilityDropdownRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['Available', 'Filling Fast', 'Sold Out']
+      }
+    },
+    {
+      headerName: 'Status',
+      field: 'status',
+      width: 140,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      suppressSizeToFit: true,
+      cellRenderer: StatusToggleRendererComponent,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['active', 'inactive']
+      }
+    },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 140,
+      suppressSizeToFit: true,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      cellRenderer: (params: any) => {
+        return `<div style="display: flex; gap: 8px; align-items: center;">
+          <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
+          </button>
+          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
+          </button>
+        </div>`;
+      }
+    }
+  ];
+
+  // Row Data for Batches
+  batchesRowData: Batch[] = [
+    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
+  ];
+
   // Default column definitions
   defaultColDef: ColDef = {
     sortable: true,
@@ -289,5 +540,61 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     const selectedRows = event.api.getSelectedRows();
     this.selectedRowCount = selectedRows.length;
     console.log('Selected rows count:', this.selectedRowCount);
+  }
+
+  // Batches Grid Event Handlers
+  onBatchesGridReady(params: GridReadyEvent) {
+    this.batchesGridApi = params.api;
+    this.adjustBatchesRowHeight();
+  }
+
+  onBatchesCellClicked(event: any) {
+    if (event.event.target.closest('.action-btn')) {
+      const action = event.event.target.closest('.action-btn').dataset.action;
+      if (action === 'edit') {
+        console.log('Edit batch clicked for:', event.data);
+        // Handle edit action
+      } else if (action === 'delete') {
+        console.log('Delete batch clicked for:', event.data);
+        // Handle delete action
+      }
+    }
+  }
+
+  onBatchesFirstDataRendered(params: GridReadyEvent) {
+    this.adjustBatchesRowHeight();
+  }
+
+  adjustBatchesRowHeight() {
+    if (!this.batchesGridApi) return;
+
+    const gridElement = document.querySelector('.batches-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.batchesGridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 48; // Reduced header height estimate
+    const paginationHeight = 48; // Reduced pagination height estimate
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40; // Minimum row height for readability
+    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+
+    // Set the row height
+    this.batchesGridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.batchesGridApi.onRowHeightChanged();
+  }
+
+  onBatchesSelectionChanged(event: any) {
+    const selectedRows = event.api.getSelectedRows();
+    this.batchesSelectedRowCount = selectedRows.length;
+    console.log('Selected batches count:', this.batchesSelectedRowCount);
   }
 }
