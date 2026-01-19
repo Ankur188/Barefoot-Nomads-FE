@@ -51,6 +51,18 @@ interface Coupon {
   status: 'active' | 'inactive';
 }
 
+interface Lead {
+  name: string;
+  location: string;
+  tripDate: string;
+  people: number;
+  days: number;
+  approxBudget: number;
+  email: string;
+  phoneNumber: string;
+  message: string;
+}
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -63,10 +75,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private usersGridApi!: GridApi;
   private bannersGridApi!: GridApi;
   private couponsGridApi!: GridApi;
+  private leadsGridApi!: GridApi;
   selectedRowCount = 0;
   batchesSelectedRowCount = 0;
   usersSelectedRowCount = 0;
   couponsSelectedRowCount = 0;
+  leadsSelectedRowCount = 0;
 
   // Column Definitions for Trips
   columnDefs: ColDef[] = [
@@ -878,6 +892,231 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     { couponCode: 'SHADI12', deduction: '12%', startDate: 'September 9, 2013', endDate: 'September 9, 2013', status: 'active' },
   ];
 
+  // Leads Column Definitions
+  leadsColumnDefs: ColDef[] = [
+    {
+      headerName: '',
+      field: 'checkbox',
+      width: 54,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      suppressMenu: true,
+      pinned: 'left',
+      cellRenderer: CheckboxCellRendererComponent,
+      headerComponent: HeaderCheckboxRendererComponent,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: 'Name',
+      field: 'name',
+      width: 250,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Location',
+      field: 'location',
+      width: 300,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Trip Date',
+      field: 'tripDate',
+      width: 180,
+      filter: 'agDateColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        comparator: (filterLocalDateAtMidnight: Date, cellValue: string) => {
+          const dateAsString = cellValue;
+          if (dateAsString == null) return -1;
+          const dateParts = dateAsString.split(' ');
+          const monthMap: { [key: string]: number } = {
+            'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
+            'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
+          };
+          const month = monthMap[dateParts[0]];
+          const day = Number(dateParts[1].replace(',', ''));
+          const year = Number(dateParts[2]);
+          const cellDate = new Date(year, month, day);
+          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+            return 0;
+          }
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          }
+          if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          }
+          return 0;
+        }
+      } as IDateFilterParams
+    },
+    {
+      headerName: '#People',
+      field: 'people',
+      width: 170,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellStyle: { textAlign: 'center' },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: '#Days',
+      field: 'days',
+      width: 120,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellStyle: { textAlign: 'center' },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Approx. Budget',
+      field: 'approxBudget',
+      width: 200,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      valueFormatter: (params: any) => {
+        return '₹' + params.value;
+      },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'Email',
+      field: 'email',
+      width: 300,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Phone Number',
+      field: 'phoneNumber',
+      width: 250,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Message',
+      field: 'message',
+      width: 450,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: false,
+        maxNumConditions: 2
+      }
+    },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 100,
+      suppressSizeToFit: true,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      cellRenderer: (params: any) => {
+        return `<div style="display: flex; gap: 8px; align-items: center;">
+          <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
+          </button>
+          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
+          </button>
+        </div>`;
+      }
+    }
+  ];
+
+  // Row Data for Leads
+  leadsRowData: Lead[] = [
+    { name: 'Darrell Steward', location: 'Little Hangleton', tripDate: 'May 12, 2019', people: 15, days: 4, approxBudget: 4000, email: 'michelle.rivera@example.com', phoneNumber: '91-8862466329', message: 'Aliquam porta nisl dolor, molestie...' },
+    { name: 'Jerome Bell', location: 'Florean Fortes...', tripDate: 'December 19, 2013', people: 15, days: 3, approxBudget: 3000, email: 'jessica.hanson@example.com', phoneNumber: '91-8837372732', message: 'Donec sed erat ut magna suscipit...' },
+    { name: 'Dianne Russell', location: 'Godric\'s Hollow', tripDate: 'February 29, 2012', people: 12, days: 6, approxBudget: 5045, email: 'tanya.hill@example.com', phoneNumber: '91-9838313132', message: 'Donec sed erat ut magna suscipit...' },
+    { name: 'Darlene Robertson', location: 'Olivanders', tripDate: 'October 30, 2017', people: 24, days: 4, approxBudget: 9261, email: 'bill.sanders@example.com', phoneNumber: '91-8837372732', message: 'Vestibulum eu quam nec neque p...' },
+    { name: 'Albert Flores', location: 'House of Gaunt', tripDate: 'February 28, 2018', people: 23, days: 2, approxBudget: 1784, email: 'tim.jennings@example.com', phoneNumber: '91-8862466329', message: 'Vestibulum eu quam nec neque p...' },
+    { name: 'Leslie Alexander', location: 'House of Gaunt', tripDate: 'May 31, 2015', people: 21, days: 2, approxBudget: 5560, email: 'nathan.roberts@example.com', phoneNumber: '91-9838313132', message: 'Vestibulum eu quam nec neque p...' },
+    { name: 'Kathryn Murphy', location: 'Florean Fortes...', tripDate: 'May 9, 2014', people: 24, days: 1, approxBudget: 1148, email: 'georgia.young@example.com', phoneNumber: '91-8837372732', message: 'Aliquam palutac vestibulum sem ...' },
+    { name: 'Floyd Miles', location: 'Olivanders', tripDate: 'March 6, 2018', people: 21, days: 5, approxBudget: 5946, email: 'jackson.graham@example.com', phoneNumber: '91-9838313132', message: 'Aliquam palutac vestibulum sem ...' },
+    { name: 'Devon Lane', location: 'Florean Fortes...', tripDate: 'March 23, 2013', people: 12, days: 7, approxBudget: 6025, email: 'sara.cruz@example.com', phoneNumber: '91-9935648723', message: 'In a Iorpret puros. Integer ligure c...' },
+    { name: 'Ronald Richards', location: 'Olivanders', tripDate: 'September 9, 2013', people: 15, days: 7, approxBudget: 9359, email: 'felicia.reid@example.com', phoneNumber: '91-8862466329', message: 'felicia.reid@example.com' },
+    { name: 'Darrell Steward', location: 'Little Hangleton', tripDate: 'May 12, 2019', people: 15, days: 4, approxBudget: 4000, email: 'michelle.rivera@example.com', phoneNumber: '91-8862466329', message: 'Aliquam porta nisl dolor, molestie...' },
+    { name: 'Jerome Bell', location: 'Florean Fortes...', tripDate: 'December 19, 2013', people: 15, days: 3, approxBudget: 3000, email: 'jessica.hanson@example.com', phoneNumber: '91-8837372732', message: 'Donec sed erat ut magna suscipit...' },
+    { name: 'Dianne Russell', location: 'Godric\'s Hollow', tripDate: 'February 29, 2012', people: 12, days: 6, approxBudget: 5045, email: 'tanya.hill@example.com', phoneNumber: '91-9838313132', message: 'Donec sed erat ut magna suscipit...' },
+    { name: 'Darlene Robertson', location: 'Olivanders', tripDate: 'October 30, 2017', people: 24, days: 4, approxBudget: 9261, email: 'bill.sanders@example.com', phoneNumber: '91-8837372732', message: 'Vestibulum eu quam nec neque p...' },
+    { name: 'Albert Flores', location: 'House of Gaunt', tripDate: 'February 28, 2018', people: 23, days: 2, approxBudget: 1784, email: 'tim.jennings@example.com', phoneNumber: '91-8862466329', message: 'Vestibulum eu quam nec neque p...' },
+    { name: 'Leslie Alexander', location: 'House of Gaunt', tripDate: 'May 31, 2015', people: 21, days: 2, approxBudget: 5560, email: 'nathan.roberts@example.com', phoneNumber: '91-9838313132', message: 'Vestibulum eu quam nec neque p...' },
+    { name: 'Kathryn Murphy', location: 'Florean Fortes...', tripDate: 'May 9, 2014', people: 24, days: 1, approxBudget: 1148, email: 'georgia.young@example.com', phoneNumber: '91-8837372732', message: 'Aliquam palutac vestibulum sem ...' },
+    { name: 'Floyd Miles', location: 'Olivanders', tripDate: 'March 6, 2018', people: 21, days: 5, approxBudget: 5946, email: 'jackson.graham@example.com', phoneNumber: '91-9838313132', message: 'Aliquam palutac vestibulum sem ...' },
+    { name: 'Devon Lane', location: 'Florean Fortes...', tripDate: 'March 23, 2013', people: 12, days: 7, approxBudget: 6025, email: 'sara.cruz@example.com', phoneNumber: '91-9935648723', message: 'In a Iorpret puros. Integer ligure c...' },
+    { name: 'Ronald Richards', location: 'Olivanders', tripDate: 'September 9, 2013', people: 15, days: 7, approxBudget: 9359, email: 'felicia.reid@example.com', phoneNumber: '91-8862466329', message: 'felicia.reid@example.com' },
+  ];
+
   // Default column definitions
   defaultColDef: ColDef = {
     sortable: true,
@@ -1187,5 +1426,63 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       node.setRowHeight(rowHeight);
     });
     this.couponsGridApi.onRowHeightChanged();
+  }
+
+  // Leads Grid Event Handlers
+  onLeadsGridReady(params: GridReadyEvent) {
+    this.leadsGridApi = params.api;
+    params.api.sizeColumnsToFit();
+    this.adjustLeadsRowHeight();
+  }
+
+  onLeadsCellClicked(event: any) {
+    if (event.event.target.closest('.action-btn')) {
+      const action = event.event.target.closest('.action-btn').dataset.action;
+      if (action === 'edit') {
+        console.log('Edit clicked for lead:', event.data);
+        // Handle edit action
+      } else if (action === 'delete') {
+        console.log('Delete clicked for lead:', event.data);
+        // Handle delete action
+      }
+    }
+  }
+
+  onLeadsSelectionChanged(event: any) {
+    const selectedRows = event.api.getSelectedRows();
+    this.leadsSelectedRowCount = selectedRows.length;
+    console.log('Selected leads count:', this.leadsSelectedRowCount);
+  }
+
+  onLeadsFirstDataRendered(params: GridReadyEvent) {
+    params.api.sizeColumnsToFit();
+    this.adjustLeadsRowHeight();
+  }
+
+  adjustLeadsRowHeight() {
+    if (!this.leadsGridApi) return;
+
+    const gridElement = document.querySelector('.leads-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.leadsGridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 48;
+    const paginationHeight = 48;
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40;
+    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+
+    // Set the row height
+    this.leadsGridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.leadsGridApi.onRowHeightChanged();
   }
 }

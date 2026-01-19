@@ -14,6 +14,12 @@ import { IHeaderParams } from 'ag-grid-community';
     </div>
   `,
   styles: [`
+    :host {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
     .custom-header-container {
       display: flex;
       align-items: center;
