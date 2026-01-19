@@ -43,6 +43,14 @@ interface Banner {
   status: 'active' | 'inactive';
 }
 
+interface Coupon {
+  couponCode: string;
+  deduction: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'inactive';
+}
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -54,9 +62,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private batchesGridApi!: GridApi;
   private usersGridApi!: GridApi;
   private bannersGridApi!: GridApi;
+  private couponsGridApi!: GridApi;
   selectedRowCount = 0;
   batchesSelectedRowCount = 0;
   usersSelectedRowCount = 0;
+  couponsSelectedRowCount = 0;
 
   // Column Definitions for Trips
   columnDefs: ColDef[] = [
@@ -706,6 +716,168 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
   ];
 
+  // Column Definitions for Coupons
+  couponsColumnDefs: ColDef[] = [
+    {
+      headerName: '',
+      field: 'checkbox',
+      width: 50,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      suppressMenu: true,
+      pinned: 'left',
+      cellRenderer: CheckboxCellRendererComponent,
+      headerComponent: HeaderCheckboxRendererComponent,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: 'Coupon Code',
+      field: 'couponCode',
+      width: 400,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Deduction %',
+      field: 'deduction',
+      width: 300,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Start Date',
+      field: 'startDate',
+      width: 370,
+      filter: 'agDateColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        comparator: (filterLocalDateAtMidnight: Date, cellValue: string) => {
+          const cellDate = new Date(cellValue);
+          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+            return 0;
+          }
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          }
+          if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          }
+          return 0;
+        }
+      } as IDateFilterParams
+    },
+    {
+      headerName: 'End Date',
+      field: 'endDate',
+      width: 370,
+      filter: 'agDateColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        comparator: (filterLocalDateAtMidnight: Date, cellValue: string) => {
+          const cellDate = new Date(cellValue);
+          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+            return 0;
+          }
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          }
+          if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          }
+          return 0;
+        }
+      } as IDateFilterParams
+    },
+    {
+      headerName: 'Status',
+      field: 'status',
+      width: 180,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      suppressSizeToFit: true,
+      cellRenderer: StatusToggleRendererComponent,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['active', 'inactive']
+      }
+    },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 150,
+      suppressSizeToFit: true,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      cellRenderer: (params: any) => {
+        return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+          <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
+          </button>
+          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
+          </button>
+        </div>`;
+      }
+    }
+  ];
+
+  // Row Data for Coupons
+  couponsRowData: Coupon[] = [
+    { couponCode: 'LOREM12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'May 12, 2019', status: 'active' },
+    { couponCode: 'JONAS12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'December 19, 2013', status: 'inactive' },
+    { couponCode: 'DIWALI10', deduction: '10%', startDate: 'February 29, 2012', endDate: 'February 29, 2012', status: 'active' },
+    { couponCode: 'HOLI20', deduction: '20%', startDate: 'October 30, 2017', endDate: 'October 30, 2017', status: 'active' },
+    { couponCode: 'EID05', deduction: '5%', startDate: 'February 28, 2018', endDate: 'February 28, 2018', status: 'inactive' },
+    { couponCode: 'HANUKKAH02', deduction: '02%', startDate: 'May 31, 2015', endDate: 'May 31, 2015', status: 'active' },
+    { couponCode: 'RAMNAVMI20', deduction: '20%', startDate: 'May 9, 2014', endDate: 'May 9, 2014', status: 'active' },
+    { couponCode: 'XMAS05', deduction: '5%', startDate: 'March 6, 2018', endDate: 'March 6, 2018', status: 'active' },
+    { couponCode: 'SHADI18', deduction: '18%', startDate: 'March 23, 2013', endDate: 'March 23, 2013', status: 'inactive' },
+    { couponCode: 'SHADI12', deduction: '12%', startDate: 'September 9, 2013', endDate: 'September 9, 2013', status: 'active' },
+    { couponCode: 'LOREM12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'May 12, 2019', status: 'active' },
+    { couponCode: 'JONAS12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'December 19, 2013', status: 'inactive' },
+    { couponCode: 'DIWALI10', deduction: '10%', startDate: 'February 29, 2012', endDate: 'February 29, 2012', status: 'active' },
+    { couponCode: 'HOLI20', deduction: '20%', startDate: 'October 30, 2017', endDate: 'October 30, 2017', status: 'active' },
+    { couponCode: 'EID05', deduction: '5%', startDate: 'February 28, 2018', endDate: 'February 28, 2018', status: 'inactive' },
+    { couponCode: 'HANUKKAH02', deduction: '02%', startDate: 'May 31, 2015', endDate: 'May 31, 2015', status: 'active' },
+    { couponCode: 'RAMNAVMI20', deduction: '20%', startDate: 'May 9, 2014', endDate: 'May 9, 2014', status: 'active' },
+    { couponCode: 'XMAS05', deduction: '5%', startDate: 'March 6, 2018', endDate: 'March 6, 2018', status: 'active' },
+    { couponCode: 'SHADI18', deduction: '18%', startDate: 'March 23, 2013', endDate: 'March 23, 2013', status: 'inactive' },
+    { couponCode: 'SHADI12', deduction: '12%', startDate: 'September 9, 2013', endDate: 'September 9, 2013', status: 'active' },
+  ];
+
   // Default column definitions
   defaultColDef: ColDef = {
     sortable: true,
@@ -958,5 +1130,62 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       node.setRowHeight(rowHeight);
     });
     this.bannersGridApi.onRowHeightChanged();
+  }
+
+  // Coupons Grid Event Handlers
+  onCouponsGridReady(params: GridReadyEvent) {
+    this.couponsGridApi = params.api;
+    params.api.sizeColumnsToFit();
+    this.adjustCouponsRowHeight();
+  }
+
+  onCouponsCellClicked(event: any) {
+    if (event.event.target.closest('.action-btn')) {
+      const action = event.event.target.closest('.action-btn').dataset.action;
+      if (action === 'edit') {
+        console.log('Edit clicked for coupon:', event.data);
+        // Handle edit action
+      } else if (action === 'delete') {
+        console.log('Delete clicked for coupon:', event.data);
+        // Handle delete action
+      }
+    }
+  }
+
+  onCouponsSelectionChanged(event: any) {
+    const selectedRows = event.api.getSelectedRows();
+    this.couponsSelectedRowCount = selectedRows.length;
+  }
+
+  onCouponsFirstDataRendered(params: GridReadyEvent) {
+    params.api.sizeColumnsToFit();
+    this.adjustCouponsRowHeight();
+  }
+
+  adjustCouponsRowHeight() {
+    if (!this.couponsGridApi) return;
+
+    const gridElement = document.querySelector('.coupons-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.couponsGridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 48;
+    const paginationHeight = 48;
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40;
+    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+
+    // Set the row height
+    this.couponsGridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.couponsGridApi.onRowHeightChanged();
   }
 }
