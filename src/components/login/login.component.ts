@@ -74,10 +74,11 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('isUserLoggedIn', 'true');
         localStorage.setItem('userName', data.details.name);
         localStorage.setItem('email', data.details.email);
-        localStorage.setItem('role', data.details.role);
+        localStorage.setItem('userRole', data.details.role);
         localStorage.setItem('id', data.details.id);
         this.authService.isUserLoggedIn = true;
         this.authService.userName = data.details.name;
+        this.authService.userRole = data.details.role;
         sessionStorage.setItem('bn_access', data.tokens.accessToken);
         sessionStorage.setItem('bn_refresh', data.tokens.refreshToken);
         this.router.navigateByUrl(this.returnUrl);

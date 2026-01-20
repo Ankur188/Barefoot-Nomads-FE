@@ -10,6 +10,7 @@ import { TripDetailsComponent } from 'src/components/trip-details/trip-details.c
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { LoginAuthGuard } from 'src/auth-guards/login.guard';
+import { AdminGuard } from 'src/auth-guards/admin.guard';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
 
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent, canActivate: [LoginAuthGuard] },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: 'adventures', pathMatch: 'full', component: AdventuresComponent },
-  { path: 'admin', pathMatch: 'full', component: AdminPanelComponent },
+  { path: 'admin', pathMatch: 'full', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: '**', component: HomeComponent },
 ];
 

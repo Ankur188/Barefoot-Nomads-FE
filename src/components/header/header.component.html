@@ -12,6 +12,9 @@
         <div [routerLink]="'/enquire'" [routerLinkActive]="'is-active'">
             Enquire
         </div>
+        <div *ngIf="authService.isAdmin()" [routerLink]="'/admin'" [routerLinkActive]="'is-active'">
+            Admin
+        </div>
         <div *ngIf="!authService.isUserLoggedIn"  [routerLink]="'/login'" [routerLinkActive]="'is-active'">
             Sign Up/Login
         </div>

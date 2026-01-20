@@ -9,13 +9,19 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   isUserLoggedIn = false;
   userName = '';
+  userRole = '';
 
   constructor(private http: HttpClient) {
     console.log(localStorage['isUserLoggedIn'], sessionStorage['bn_access'])
     if (localStorage['isUserLoggedIn'] && sessionStorage['bn_access']) {
       this.userName = localStorage['userName'];
+      this.userRole = localStorage['userRole'] || '';
       this.isUserLoggedIn = true;
     }
+  }
+
+  isAdmin(): boolean {
+    return this.userRole && this.userRole.toLowerCase() === 'admin';
   }
 
   signUpUser(postData: any): Observable<any> {
