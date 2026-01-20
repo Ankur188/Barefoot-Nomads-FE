@@ -193,6 +193,11 @@
       flex-direction: column;
     }
 
+    // Global AG Grid popup styling
+    .ag-popup {
+      color: #222222 !important;
+    }
+
     // AG Grid Styling
     .trips-grid {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -1900,6 +1905,54 @@
         background-color: #fff;
         border: 1px solid #e0e0e0;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
       }
 
       .ag-filter-apply-panel {
@@ -1907,6 +1960,16 @@
         justify-content: flex-end;
         padding: 8px;
         border-top: 1px solid #e0e0e0;
+
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+        }
       }
 
       // Action buttons styling
@@ -2072,6 +2135,78 @@
         font-family: 'Material Icons';
       }
 
+      // Filter styling
+      .ag-filter {
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      .ag-filter-apply-panel {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px;
+        border-top: 1px solid #e0e0e0;
+
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+        }
+      }
+
       // Action buttons styling
       .action-btn {
         mat-icon {
@@ -2103,6 +2238,14 @@
       // Actions column - center aligned
       .ag-cell[col-id="actions"] {
         justify-content: center !important;
+      }
+
+      // Center aligned cells
+      .center-aligned-cell {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
       }
     }
 

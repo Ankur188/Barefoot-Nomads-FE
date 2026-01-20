@@ -118,8 +118,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           'endsWith'
         ],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -285,8 +285,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -302,8 +302,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -518,8 +518,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -535,8 +535,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -558,8 +558,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -575,8 +575,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -651,8 +651,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
@@ -910,23 +910,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       headerName: 'Name',
       field: 'name',
-      width: 250,
-      filter: 'agTextColumnFilter',
-      sortable: true,
-      resizable: true,
-      headerComponent: CustomHeaderRendererComponent,
-      filterParams: {
-        buttons: ['reset', 'apply'],
-        closeOnApply: true,
-        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
-        defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
-      }
-    },
-    {
-      headerName: 'Location',
-      field: 'location',
       width: 300,
       filter: 'agTextColumnFilter',
       sortable: true,
@@ -937,14 +920,31 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Location',
+      field: 'location',
+      width: 400,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
       headerName: 'Trip Date',
       field: 'tripDate',
-      width: 180,
+      width: 200,
       filter: 'agDateColumnFilter',
       sortable: true,
       resizable: true,
@@ -980,12 +980,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       headerName: '#People',
       field: 'people',
-      width: 170,
+      width: 180,
       filter: 'agNumberColumnFilter',
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
-      cellStyle: { textAlign: 'center' },
+      cellStyle: { textAlign: 'center', justifyContent: 'center' },
+      cellClass: 'center-aligned-cell',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -994,12 +995,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       headerName: '#Days',
       field: 'days',
-      width: 120,
+      width: 160,
       filter: 'agNumberColumnFilter',
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
-      cellStyle: { textAlign: 'center' },
+      cellStyle: { textAlign: 'center', justifyContent: 'center' },
+      cellClass: 'center-aligned-cell',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -1008,7 +1010,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       headerName: 'Approx. Budget',
       field: 'approxBudget',
-      width: 200,
+      width: 250,
       filter: 'agNumberColumnFilter',
       sortable: true,
       resizable: true,
@@ -1024,6 +1026,23 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       headerName: 'Email',
       field: 'email',
+      width: 400,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Phone Number',
+      field: 'phoneNumber',
       width: 300,
       filter: 'agTextColumnFilter',
       sortable: true,
@@ -1034,31 +1053,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
-      }
-    },
-    {
-      headerName: 'Phone Number',
-      field: 'phoneNumber',
-      width: 250,
-      filter: 'agTextColumnFilter',
-      sortable: true,
-      resizable: true,
-      headerComponent: CustomHeaderRendererComponent,
-      filterParams: {
-        buttons: ['reset', 'apply'],
-        closeOnApply: true,
-        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
-        defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
       headerName: 'Message',
       field: 'message',
-      width: 450,
+      width: 600,
       filter: 'agTextColumnFilter',
       sortable: true,
       resizable: true,
@@ -1068,8 +1070,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         closeOnApply: true,
         filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
         defaultOption: 'contains',
-        suppressAndOrCondition: false,
-        maxNumConditions: 2
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
       }
     },
     {
