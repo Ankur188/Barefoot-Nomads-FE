@@ -6,6 +6,8 @@ import { StatusToggleRendererComponent } from './status-toggle-renderer.componen
 import { CustomHeaderRendererComponent } from './custom-header-renderer.component';
 import { AvailabilityDropdownRendererComponent } from './availability-dropdown-renderer.component';
 import { RoleDropdownRendererComponent } from './role-dropdown-renderer.component';
+import { StaticService } from 'src/services/static.service';
+import { AdminService } from 'src/services/admin.service';
 
 interface Trip {
   name: string;
@@ -1139,11 +1141,47 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     suppressCellFocus: true
   };
 
-  constructor() { }
+  constructor(
+    private staticService: StaticService,
+    private adminService: AdminService
+  ) { }
 
   ngOnInit(): void {
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
+    
+    // Fetch trips data from API
+    this.staticService.getTrips().subscribe({
+      next: (response) => {
+        if (response && response.trips && Array.isArray(response.trips)) {
+          this.rowData = response.trips.map((trip: any) => ({
+            name: trip.destination_name || '',
+            startDate: this.formatDate(trip.from_month),
+            endDate: this.formatDate(trip.to_month),
+            status: trip.isActive ? 'active' : 'inactive'
+          }));
+          
+          // Refresh the grid if it's already initialized
+          if (this.gridApi) {
+            this.gridApi.setRowData(this.rowData);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching trips:', error);
+      }
+    });
+  }
+
+  // Helper method to format date from API response
+  private formatDate(dateString: string): string {
+    if (!dateString) return '';
+    
+    const date = new Date(Number(dateString) * 1000);
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   }
 
   ngOnDestroy(): void {
@@ -1154,6 +1192,42 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   onTabChange(index: number) {
     this.selectedTab = index;
     console.log('Tab changed to:', index);
+    
+    // Fetch batches data when switching to batches tab (index 1)
+    if (index === 1) {
+      this.loadBatchesData();
+    }
+  }
+
+  private loadBatchesData() {
+    this.adminService.getBatches().subscribe({
+      next: (response) => {
+        if (response && response.batches && Array.isArray(response.batches)) {
+          this.batchesRowData = response.batches.map((batch: any) => ({
+            batchName: batch.batch_name || '',
+            assignedTrip: batch.destination_name || batch.tripName || '',
+            standardPrice: batch.price || 0,
+            singleRoom: batch.single_room || 0,
+            doubleRoom: batch.double_room || 0,
+            tripleRoom: batch.triple_room || 0,
+            tax: batch.tax + '%' || '0%',
+            travelers: (batch.users.length > 0 ? batch.users[0] : '') + (batch.users.length > 1 ? ' + ' + batch.users.length : '') || '',
+            tripProgress: batch.tripProgress || batch.status || '',
+            count: batch.max_adventurers|| 0,
+            availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
+            status: batch.isActive ? 'active' : 'inactive'
+          }));
+          
+          // Refresh the batches grid if it's already initialized
+          if (this.batchesGridApi) {
+            this.batchesGridApi.setRowData(this.batchesRowData);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching batches:', error);
+      }
+    });
   }
 
   onGridReady(params: GridReadyEvent) {
