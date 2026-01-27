@@ -126,7 +126,7 @@ export class TripDetailsComponent implements OnInit {
 
   getTripDetials() {
     this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
-      this.getBatches(data.destination_name);
+      this.getBatches(data.id);
       this.details = data;
       this.itinerary = JSON.parse(data.itinerary);
       this.keys = Object.keys(this.itinerary);
@@ -134,9 +134,9 @@ export class TripDetailsComponent implements OnInit {
     });
   }
 
-  getBatches(destination: string, page: number = 1, filter?) {
+  getBatches(id: string, page: number = 1, filter?) {
     this.staticService
-      .getBatches(destination, page, filter)
+      .getBatches(id, page, filter)
       .subscribe((data) => {
         this.batches = data.data;
         this.totalPages = data.totalPages;
@@ -200,14 +200,14 @@ export class TripDetailsComponent implements OnInit {
 
   setPage(page: number) {
     this.currentPage = page;
-    this.getBatches(this.details.destination_name, this.currentPage);
+    this.getBatches(this.details.id, this.currentPage);
     this.updatePagination();
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.details.id, this.currentPage);
       this.updatePagination();
     }
   }
@@ -215,7 +215,7 @@ export class TripDetailsComponent implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.details.id, this.currentPage);
       this.updatePagination();
     }
   }

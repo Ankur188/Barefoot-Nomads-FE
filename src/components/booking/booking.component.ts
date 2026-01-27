@@ -85,17 +85,16 @@ export class BookingComponent implements OnInit {
 
   getTripDetails() {
     this.staticService.getTripDetails(this.tripId).subscribe((data) => {
-      this.getBatches(data.destination_name);
+      this.getBatches(this.tripId);
       this.details = data;
       this.destinations = data.desitnations.split(',');
       console.log('details', this.details);
     });
   }
 
-  getBatches(destination: string, page: number = 1, filter?) {
-    console.log('2424234234234');
+  getBatches(id: string, page: number = 1, filter?) {
     this.staticService
-      .getBatches(destination, page, filter)
+      .getBatches(id, page, filter)
       .subscribe((data) => {
         this.batches = data.data;
         this.batchSelected = this.batches[0];
@@ -114,7 +113,7 @@ export class BookingComponent implements OnInit {
   payNow() {
     let payload = this.bookingForm.getRawValue();
     payload['userId'] = localStorage.getItem('id');
-    payload['tripId'] = this.batchSelected.id;
+    payload['batch_id'] = this.batchSelected.id;
     payload['payment'] =
       this.totalPrice * this.numberOfTravellers +
       0.05 * (this.totalPrice * this.numberOfTravellers);
@@ -167,14 +166,14 @@ export class BookingComponent implements OnInit {
 
   setPage(page: number) {
     this.currentPage = page;
-    this.getBatches(this.details.destination_name, this.currentPage);
+    this.getBatches(this.tripId, this.currentPage);
     this.updatePagination();
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.tripId, this.currentPage);
       this.updatePagination();
     }
   }
@@ -182,7 +181,7 @@ export class BookingComponent implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.tripId, this.currentPage);
       this.updatePagination();
     }
   }
@@ -200,9 +199,9 @@ export class BookingComponent implements OnInit {
 
   selectFilter(filter) {
     if (filter === 'All') {
-      this.getBatches(this.details.destination_name, 1);
+      this.getBatches(this.tripId, 1);
     } else {
-      this.getBatches(this.details.destination_name, 1, filter - 1);
+      this.getBatches(this.tripId, 1, filter - 1);
     }
     this.batchFilter = filter;
   }

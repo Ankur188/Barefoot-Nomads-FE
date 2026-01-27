@@ -28,7 +28,7 @@
     </div>
     <div class="footer w-100">
       <div class="details d-flex align-items-center justify-content-between">
-        <div class="heading">{{ booking.destination_name }}</div>
+        <div class="heading">{{ booking.batch.trip.destination_name }}</div>
         <div class="download d-flex align-items-center justify-content-center">
           <img src="../../assets/download.png" alt="" />
         </div>
@@ -43,7 +43,7 @@
             fontIcon="calendar_today"
             class="me-2"
           ></mat-icon>
-          {{ booking.from_date | tripDuration : booking.to_date }}
+          {{ booking.batch.from_date | tripDuration : booking.batch.to_date }}
         </div>
         <div class="d-flex align-items-center detail-points">
           <mat-icon

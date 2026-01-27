@@ -6,8 +6,8 @@
     <div
       class="top-container d-flex align-items-between justify-content-between w-100"
     >
-      <div class="new-add flex-center">
-        <span class="text-uppercase">Recently added</span>
+      <div class="flex-center" [ngClass]="{'new-add': isRecentlyAdded()}">
+        <span *ngIf="isRecentlyAdded()" class="text-uppercase">Recently added</span>
       </div>
       <div class="months-tag new-add flex-center">
           <span class="text-uppercase">{{(card.from_month ? card.from_month : card.from_date) | timestampToDate}} - {{(card.to_month ? card.to_month : card.to_date) | timestampToDate}}</span>
@@ -21,7 +21,7 @@
         <img class="calendar-img" src="../../assets/money.png" alt="" />
         <div class="trip-date d-flex flex-column">
           <span>Starting from</span>
-          <span><b>&#8377; {{card.price}}</b></span>
+          <span><b>&#8377; {{card.lowestPriceBatch.price}}</b></span>
         </div>
       </div>
       <div>
@@ -32,10 +32,10 @@
         />
         <div class="trip-date duration d-flex flex-column">
           <span
-            ><b>{{ card.days }}</b> Days</span
+            ><b>{{ card.lowestPriceBatch.days }}</b> Days</span
           >
           <span
-            ><b>{{ card.nights }}</b> Nights</span
+            ><b>{{ card.lowestPriceBatch.nights }}</b> Nights</span
           >
         </div>
       </div>

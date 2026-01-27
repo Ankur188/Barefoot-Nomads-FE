@@ -226,7 +226,7 @@
     </div>
     <div *ngIf="viewPort > 427" class="right-div">
       <div class="cart">
-        <span class="title">{{ batchSelected.destination_name }}</span>
+        <span class="title">{{ details.destination_name }}</span>
         <div class="trip-details d-flex justify-content-between mt-2">
           <div class="d-flex align-items-center">
             <img src="../../assets/calendar_small.png" alt="" class="me-2" />
@@ -275,7 +275,7 @@
           <div class="d-flex justify-content-between mt-3">
             <span class="para-font-style">GST (5%)</span>
             <span class="para-font-style"
-              >&#8377; {{ details.price * 0.05 * numberOfTravellers }}</span
+              >&#8377; {{ batchSelected.price * 0.05 * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
