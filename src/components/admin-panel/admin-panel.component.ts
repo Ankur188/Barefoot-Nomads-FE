@@ -19,6 +19,8 @@ interface Trip {
 interface Batch {
   batchName: string;
   assignedTrip: string;
+  startDate: string;
+  endDate: string;
   standardPrice: number;
   singleRoom: number;
   doubleRoom: number;
@@ -79,7 +81,15 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private couponsGridApi!: GridApi;
   private leadsGridApi!: GridApi;
   selectedRowCount = 0;
+  tripsCurrentPage = 1;
+  tripsPageSize = 20;
+  tripsTotalCount = 0;
+  tripsTotalPages = 0;
   batchesSelectedRowCount = 0;
+  batchesCurrentPage = 1;
+  batchesPageSize = 20;
+  batchesTotalCount = 0;
+  batchesTotalPages = 0;
   usersSelectedRowCount = 0;
   couponsSelectedRowCount = 0;
   leadsSelectedRowCount = 0;
@@ -309,6 +319,32 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       }
     },
     {
+      headerName: 'Start Date',
+      field: 'startDate',
+      width: 150,
+      filter: 'agDateColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
+      headerName: 'End Date',
+      field: 'endDate',
+      width: 150,
+      filter: 'agDateColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
       headerName: 'Standard Price',
       field: 'standardPrice',
       width: 180,
@@ -470,26 +506,26 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   // Row Data for Batches
   batchesRowData: Batch[] = [
-    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', startDate: 'January 15, 2025', endDate: 'January 20, 2025', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', startDate: 'February 15, 2026', endDate: 'February 20, 2026', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', startDate: 'December 10, 2025', endDate: 'December 15, 2025', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', startDate: 'March 5, 2026', endDate: 'March 10, 2026', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', startDate: 'November 20, 2025', endDate: 'November 25, 2025', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', startDate: 'February 10, 2026', endDate: 'February 15, 2026', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', startDate: 'October 5, 2025', endDate: 'October 10, 2025', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', startDate: 'March 1, 2026', endDate: 'March 6, 2026', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', startDate: 'September 25, 2025', endDate: 'September 30, 2025', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', startDate: 'August 15, 2025', endDate: 'August 20, 2025', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', startDate: 'January 15, 2025', endDate: 'January 20, 2025', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', startDate: 'February 15, 2026', endDate: 'February 20, 2026', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', startDate: 'December 10, 2025', endDate: 'December 15, 2025', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', startDate: 'March 5, 2026', endDate: 'March 10, 2026', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', startDate: 'November 20, 2025', endDate: 'November 25, 2025', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', startDate: 'February 10, 2026', endDate: 'February 15, 2026', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', startDate: 'October 5, 2025', endDate: 'October 10, 2025', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', startDate: 'March 1, 2026', endDate: 'March 6, 2026', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
+    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', startDate: 'September 25, 2025', endDate: 'September 30, 2025', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
+    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', startDate: 'August 15, 2025', endDate: 'August 20, 2025', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
   ];
 
   // Users Column Definitions
@@ -1150,10 +1186,18 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
     
-    // Fetch trips data from API
-    this.staticService.getTrips().subscribe({
+    // Fetch trips data from API with pagination
+    this.loadTripsData();
+  }
+
+  private loadTripsData(page: number = 1) {
+    this.adminService.getTrips(page, this.tripsPageSize).subscribe({
       next: (response) => {
         if (response && response.trips && Array.isArray(response.trips)) {
+          this.tripsCurrentPage = response.page || page;
+          this.tripsTotalCount = response.total || 0;
+          this.tripsTotalPages = response.totalPages || 0;
+          
           this.rowData = response.trips.map((trip: any) => ({
             name: trip.destination_name || '',
             startDate: this.formatDate(trip.from_month),
@@ -1199,24 +1243,52 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadBatchesData() {
-    this.adminService.getBatches().subscribe({
+  private loadBatchesData(page: number = 1) {
+    this.adminService.getBatches(page, this.batchesPageSize).subscribe({
       next: (response) => {
         if (response && response.batches && Array.isArray(response.batches)) {
-          this.batchesRowData = response.batches.map((batch: any) => ({
-            batchName: batch.batch_name || '',
-            assignedTrip: batch.destination_name || batch.tripName || '',
-            standardPrice: batch.price || 0,
-            singleRoom: batch.single_room || 0,
-            doubleRoom: batch.double_room || 0,
-            tripleRoom: batch.triple_room || 0,
-            tax: batch.tax + '%' || '0%',
-            travelers: (batch.users.length > 0 ? batch.users[0] : '') + (batch.users.length > 1 ? ' + ' + batch.users.length : '') || '',
-            tripProgress: batch.tripProgress || batch.status || '',
-            count: batch.max_adventurers|| 0,
-            availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
-            status: batch.isActive ? 'active' : 'inactive'
-          }));
+          this.batchesCurrentPage = response.page || page;
+          this.batchesTotalCount = response.total || 0;
+          this.batchesTotalPages = response.totalPages || 0;
+          
+          this.batchesRowData = response.batches.map((batch: any) => {
+            // Calculate tripProgress based on dates
+            let tripProgress = '';
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Reset time for date-only comparison
+            
+            if (batch.from_date && batch.to_date) {
+              const fromDate = new Date(batch.from_date);
+              fromDate.setHours(0, 0, 0, 0);
+              const toDate = new Date(batch.to_date);
+              toDate.setHours(0, 0, 0, 0);
+              
+              if (currentDate < fromDate) {
+                tripProgress = 'Upcoming';
+              } else if (currentDate >= fromDate && currentDate <= toDate) {
+                tripProgress = 'In Progress';
+              } else if (currentDate > toDate) {
+                tripProgress = 'Completed';
+              }
+            }
+            
+            return {
+              batchName: batch.batch_name || '',
+              assignedTrip: batch.destination_name || batch.tripName || '',
+              startDate: batch.from_date ? new Date(batch.from_date * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
+              endDate: batch.to_date ? new Date(batch.to_date * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
+              standardPrice: batch.price || 0,
+              singleRoom: batch.single_room || 0,
+              doubleRoom: batch.double_room || 0,
+              tripleRoom: batch.triple_room || 0,
+              tax: batch.tax + '%' || '0%',
+              travelers: (batch.users.length > 0 ? batch.users[0] : '') + (batch.users.length > 1 ? ' + ' + batch.users.length : '') || '',
+              tripProgress: tripProgress,
+              count: batch.max_adventurers|| 0,
+              availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
+              status: batch.isActive ? 'active' : 'inactive'
+            };
+          });
           
           // Refresh the batches grid if it's already initialized
           if (this.batchesGridApi) {
@@ -1292,6 +1364,21 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     this.batchesGridApi = params.api;
     this.adjustBatchesRowHeight();
   }
+
+  goToBatchesPage(page: number) {
+    if (page >= 1 && page <= this.batchesTotalPages) {
+      this.loadBatchesData(page);
+    }
+  }
+
+  goToTripsPage(page: number) {
+    if (page >= 1 && page <= this.tripsTotalPages) {
+      this.loadTripsData(page);
+    }
+  }
+
+  // Make Math available in template
+  Math = Math;
 
   onBatchesCellClicked(event: any) {
     if (event.event.target.closest('.action-btn')) {

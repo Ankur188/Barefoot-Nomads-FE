@@ -116,7 +116,8 @@
 
     .batches-grid {
       width: 100%;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
     }
 
     .users-grid {
@@ -137,6 +138,65 @@
     .leads-grid {
       width: 100%;
       height: 100%;
+    }
+
+    // Custom Pagination Styling
+    .custom-pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: white;
+      border-top: 1px solid #e0e0e0;
+      min-height: 56px;
+
+      .pagination-info {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .pagination-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background-color: white;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            color: #666;
+          }
+
+          &:hover:not(:disabled) {
+            background-color: #f5f5f5;
+            border-color: #999;
+          }
+
+          &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+          }
+        }
+
+        .page-info {
+          margin: 0 8px;
+          font-size: 14px;
+          color: #333;
+          font-weight: 500;
+        }
+      }
     }
   }
 

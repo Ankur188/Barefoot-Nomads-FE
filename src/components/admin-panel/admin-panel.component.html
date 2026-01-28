@@ -29,8 +29,7 @@
             [rowData]="rowData"
             [columnDefs]="columnDefs"
             [defaultColDef]="defaultColDef"
-            [pagination]="gridOptions.pagination"
-            [paginationPageSize]="gridOptions.paginationPageSize"
+            [pagination]="false"
             [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
             [rowSelection]="gridOptions.rowSelection"
             [animateRows]="gridOptions.animateRows"
@@ -39,10 +38,42 @@
             (gridReady)="onGridReady($event)"
             (cellClicked)="onCellClicked($event)"
             (selectionChanged)="onSelectionChanged($event)"
-            (paginationChanged)="adjustRowHeight()"
             (firstDataRendered)="onFirstDataRendered($event)"
           >
           </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (tripsCurrentPage - 1) * tripsPageSize + 1 }} to {{ Math.min(tripsCurrentPage * tripsPageSize, tripsTotalCount) }} of {{ tripsTotalCount }} trips
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === 1"
+                (click)="goToTripsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === 1"
+                (click)="goToTripsPage(tripsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ tripsCurrentPage }} of {{ tripsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === tripsTotalPages"
+                (click)="goToTripsPage(tripsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === tripsTotalPages"
+                (click)="goToTripsPage(tripsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>
@@ -70,8 +101,7 @@
             [rowData]="batchesRowData"
             [columnDefs]="batchesColumnDefs"
             [defaultColDef]="defaultColDef"
-            [pagination]="gridOptions.pagination"
-            [paginationPageSize]="gridOptions.paginationPageSize"
+            [pagination]="false"
             [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
             [rowSelection]="gridOptions.rowSelection"
             [animateRows]="gridOptions.animateRows"
@@ -80,10 +110,42 @@
             (gridReady)="onBatchesGridReady($event)"
             (cellClicked)="onBatchesCellClicked($event)"
             (selectionChanged)="onBatchesSelectionChanged($event)"
-            (paginationChanged)="adjustBatchesRowHeight()"
             (firstDataRendered)="onBatchesFirstDataRendered($event)"
           >
           </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (batchesCurrentPage - 1) * batchesPageSize + 1 }} to {{ Math.min(batchesCurrentPage * batchesPageSize, batchesTotalCount) }} of {{ batchesTotalCount }} batches
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === 1"
+                (click)="goToBatchesPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === 1"
+                (click)="goToBatchesPage(batchesCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ batchesCurrentPage }} of {{ batchesTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === batchesTotalPages"
+                (click)="goToBatchesPage(batchesCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === batchesTotalPages"
+                (click)="goToBatchesPage(batchesTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>
