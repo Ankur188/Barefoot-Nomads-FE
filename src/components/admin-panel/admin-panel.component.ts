@@ -91,7 +91,15 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   batchesTotalCount = 0;
   batchesTotalPages = 0;
   usersSelectedRowCount = 0;
+  usersCurrentPage = 1;
+  usersPageSize = 20;
+  usersTotalCount = 0;
+  usersTotalPages = 0;
   couponsSelectedRowCount = 0;
+  couponsCurrentPage = 1;
+  couponsPageSize = 20;
+  couponsTotalCount = 0;
+  couponsTotalPages = 0;
   leadsSelectedRowCount = 0;
 
   // Column Definitions for Trips
@@ -1203,6 +1211,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     else if (index === 2) {
       this.loadUsersData();
     }
+    // Fetch coupons data when switching to coupons tab (index 4)
+    else if (index === 4) {
+      this.loadCouponsData();
+    }
   }
 
   private loadBatchesData(page: number = 1) {
@@ -1264,10 +1276,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadUsersData() {
-    this.adminService.getUsers().subscribe({
+  private loadUsersData(page: number = 1) {
+    this.adminService.getUsers(page, this.usersPageSize).subscribe({
       next: (response) => {
         if (response && response.users && Array.isArray(response.users)) {
+          this.usersCurrentPage = response.page || page;
+          this.usersTotalCount = response.total || 0;
+          this.usersTotalPages = response.totalPages || 0;
+          
           this.usersRowData = response.users.map((user: any) => {
             // Format associated trips
             let associatedTrips = '—';
@@ -1298,6 +1314,36 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error fetching users:', error);
+      }
+    });
+  }
+
+  private loadCouponsData(page: number = 1) {
+    this.adminService.getCoupons(page, this.couponsPageSize).subscribe({
+      next: (response) => {
+        if (response && response.coupons && Array.isArray(response.coupons)) {
+          this.couponsCurrentPage = response.page || page;
+          this.couponsTotalCount = response.total || 0;
+          this.couponsTotalPages = response.totalPages || 0;
+          
+          this.couponsRowData = response.coupons.map((coupon: any) => {
+            return {
+              couponCode: coupon.code || '',
+              deduction: coupon.deduction ? `${coupon.deduction}%` : '',
+              startDate: this.formatDate(coupon.start_date),
+              endDate: this.formatDate(coupon.end_date),
+              status: coupon.status ? 'active' : 'inactive'
+            };
+          });
+          
+          // Refresh the coupons grid if it's already initialized
+          if (this.couponsGridApi) {
+            this.couponsGridApi.setRowData(this.couponsRowData);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching coupons:', error);
       }
     });
   }
@@ -1375,6 +1421,18 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   goToTripsPage(page: number) {
     if (page >= 1 && page <= this.tripsTotalPages) {
       this.loadTripsData(page);
+    }
+  }
+
+  goToCouponsPage(page: number) {
+    if (page >= 1 && page <= this.couponsTotalPages) {
+      this.loadCouponsData(page);
+    }
+  }
+
+  goToUsersPage(page: number) {
+    if (page >= 1 && page <= this.usersTotalPages) {
+      this.loadUsersData(page);
     }
   }
 

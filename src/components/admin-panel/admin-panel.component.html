@@ -173,8 +173,7 @@
             [rowData]="usersRowData"
             [columnDefs]="usersColumnDefs"
             [defaultColDef]="defaultColDef"
-            [pagination]="gridOptions.pagination"
-            [paginationPageSize]="gridOptions.paginationPageSize"
+            [pagination]="false"
             [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
             [rowSelection]="gridOptions.rowSelection"
             [animateRows]="gridOptions.animateRows"
@@ -183,10 +182,42 @@
             (gridReady)="onUsersGridReady($event)"
             (cellClicked)="onUsersCellClicked($event)"
             (selectionChanged)="onUsersSelectionChanged($event)"
-            (paginationChanged)="adjustUsersRowHeight()"
             (firstDataRendered)="onUsersFirstDataRendered($event)"
           >
           </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (usersCurrentPage - 1) * usersPageSize + 1 }} to {{ Math.min(usersCurrentPage * usersPageSize, usersTotalCount) }} of {{ usersTotalCount }} users
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === 1"
+                (click)="goToUsersPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === 1"
+                (click)="goToUsersPage(usersCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ usersCurrentPage }} of {{ usersTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === usersTotalPages"
+                (click)="goToUsersPage(usersCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === usersTotalPages"
+                (click)="goToUsersPage(usersTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>
@@ -247,8 +278,7 @@
             [rowData]="couponsRowData"
             [columnDefs]="couponsColumnDefs"
             [defaultColDef]="defaultColDef"
-            [pagination]="gridOptions.pagination"
-            [paginationPageSize]="gridOptions.paginationPageSize"
+            [pagination]="false"
             [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
             [rowSelection]="gridOptions.rowSelection"
             [animateRows]="gridOptions.animateRows"
@@ -257,10 +287,42 @@
             (gridReady)="onCouponsGridReady($event)"
             (cellClicked)="onCouponsCellClicked($event)"
             (selectionChanged)="onCouponsSelectionChanged($event)"
-            (paginationChanged)="adjustCouponsRowHeight()"
             (firstDataRendered)="onCouponsFirstDataRendered($event)"
           >
           </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (couponsCurrentPage - 1) * couponsPageSize + 1 }} to {{ Math.min(couponsCurrentPage * couponsPageSize, couponsTotalCount) }} of {{ couponsTotalCount }} coupons
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === 1"
+                (click)="goToCouponsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === 1"
+                (click)="goToCouponsPage(couponsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ couponsCurrentPage }} of {{ couponsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === couponsTotalPages"
+                (click)="goToCouponsPage(couponsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === couponsTotalPages"
+                (click)="goToCouponsPage(couponsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>

@@ -23,9 +23,17 @@ export class AdminService {
     );
   }
 
-  getUsers(): Observable<any> {
+  getUsers(page: number = 1, limit: number = 20): Observable<any> {
     return this.http.get(
-      environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`
+      environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`,
+      { params: { page: page.toString(), limit: limit.toString() } }
+    );
+  }
+
+  getCoupons(page: number = 1, limit: number = 20): Observable<any> {
+    return this.http.get(
+      environment.production ? '/api/admin/coupons' : `${environment.apiURL}admin/coupons`,
+      { params: { page: page.toString(), limit: limit.toString() } }
     );
   }
 }
