@@ -22,4 +22,10 @@ export class AdminService {
       { params: { page: page.toString(), limit: limit.toString() } }
     );
   }
+
+  getUsers(): Observable<any> {
+    return this.http.get(
+      environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`
+    );
+  }
 }

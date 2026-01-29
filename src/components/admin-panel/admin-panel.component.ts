@@ -246,28 +246,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ];
 
   // Row Data
-  rowData: Trip[] = [
-    { name: 'Little Hangleton', startDate: 'May 12, 2019', endDate: 'May 12, 2019', status: 'active' },
-    { name: 'Gambol and Japes Wizarding Joke Shop', startDate: 'December 19, 2013', endDate: 'December 19, 2013', status: 'inactive' },
-    { name: 'Florean Fortescue\'s Ice Cream Parlor', startDate: 'February 29, 2012', endDate: 'February 29, 2012', status: 'active' },
-    { name: 'House of Gaunt', startDate: 'October 30, 2017', endDate: 'October 30, 2017', status: 'active' },
-    { name: 'House of Gaunt -2', startDate: 'February 28, 2018', endDate: 'February 28, 2018', status: 'inactive' },
-    { name: 'Hagrid\'s Hut', startDate: 'May 31, 2015', endDate: 'May 31, 2015', status: 'active' },
-    { name: 'Godric\'s Hollow', startDate: 'May 9, 2014', endDate: 'May 9, 2014', status: 'active' },
-    { name: 'Forest of Dean', startDate: 'March 6, 2018', endDate: 'March 6, 2018', status: 'active' },
-    { name: 'Madam Malkin\'s Robes for All Occasions', startDate: 'March 23, 2013', endDate: 'March 23, 2013', status: 'inactive' },
-    { name: 'Olivanders: Makers of Fine Wands since 382 BC', startDate: 'September 9, 2013', endDate: 'September 9, 2013', status: 'active' },
-    { name: 'Diagon Alley', startDate: 'June 15, 2016', endDate: 'June 15, 2016', status: 'active' },
-    { name: 'Hogsmeade Village', startDate: 'August 22, 2014', endDate: 'August 22, 2014', status: 'active' },
-    { name: 'The Leaky Cauldron', startDate: 'January 10, 2015', endDate: 'January 10, 2015', status: 'inactive' },
-    { name: 'Gringotts Wizarding Bank', startDate: 'July 4, 2017', endDate: 'July 4, 2017', status: 'active' },
-    { name: 'Shrieking Shack', startDate: 'November 18, 2016', endDate: 'November 18, 2016', status: 'active' },
-    { name: 'Three Broomsticks', startDate: 'September 30, 2018', endDate: 'September 30, 2018', status: 'inactive' },
-    { name: 'Honeydukes', startDate: 'April 12, 2019', endDate: 'April 12, 2019', status: 'active' },
-    { name: 'Zonko\'s Joke Shop', startDate: 'December 5, 2013', endDate: 'December 5, 2013', status: 'active' },
-    { name: 'The Hog\'s Head', startDate: 'February 14, 2015', endDate: 'February 14, 2015', status: 'inactive' },
-    { name: 'Knockturn Alley', startDate: 'October 31, 2017', endDate: 'October 31, 2017', status: 'active' },
-  ];
+  rowData: Trip[] = [];
 
   // Batches Column Definitions
   batchesColumnDefs: ColDef[] = [
@@ -505,28 +484,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ];
 
   // Row Data for Batches
-  batchesRowData: Batch[] = [
-    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', startDate: 'January 15, 2025', endDate: 'January 20, 2025', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', startDate: 'February 15, 2026', endDate: 'February 20, 2026', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', startDate: 'December 10, 2025', endDate: 'December 15, 2025', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', startDate: 'March 5, 2026', endDate: 'March 10, 2026', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', startDate: 'November 20, 2025', endDate: 'November 25, 2025', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', startDate: 'February 10, 2026', endDate: 'February 15, 2026', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', startDate: 'October 5, 2025', endDate: 'October 10, 2025', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', startDate: 'March 1, 2026', endDate: 'March 6, 2026', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', startDate: 'September 25, 2025', endDate: 'September 30, 2025', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', startDate: 'August 15, 2025', endDate: 'August 20, 2025', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH2334', assignedTrip: 'Little Hangleton', startDate: 'January 15, 2025', endDate: 'January 20, 2025', standardPrice: 7791, singleRoom: 5626, doubleRoom: 4349, tripleRoom: 4600, tax: '8%', travelers: 'Ankur Sood +12', tripProgress: 'Completed', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH2335', assignedTrip: 'Florean Forkes', startDate: 'February 15, 2026', endDate: 'February 20, 2026', standardPrice: 8801, singleRoom: 0, doubleRoom: 9059, tripleRoom: 4179, tax: '8%', travelers: 'Ankur Tyagi +50', tripProgress: 'Upcoming', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2577', assignedTrip: 'Godrick Hollow', startDate: 'December 10, 2025', endDate: 'December 15, 2025', standardPrice: 5550, singleRoom: 1784, doubleRoom: 9462, tripleRoom: 5045, tax: '8%', travelers: 'Ankush Tiwari +19', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'Olivanders', startDate: 'March 5, 2026', endDate: 'March 10, 2026', standardPrice: 8829, singleRoom: 0, doubleRoom: 8829, tripleRoom: 9261, tax: '8%', travelers: 'Dean Morris +12', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH4125', assignedTrip: 'House of Gaunt', startDate: 'November 20, 2025', endDate: 'November 25, 2025', standardPrice: 9402, singleRoom: 4122, doubleRoom: 5774, tripleRoom: 1784, tax: '8%', travelers: 'Lil Wayne +98', tripProgress: 'Completed', count: 20, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH2345', assignedTrip: 'House of Gaunt', startDate: 'February 10, 2026', endDate: 'February 15, 2026', standardPrice: 1784, singleRoom: 7791, doubleRoom: 6055, tripleRoom: 5560, tax: '8%', travelers: 'Tanya Mittal +2', tripProgress: 'Upcoming', count: 16, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH5642', assignedTrip: 'Florean Forkes', startDate: 'October 5, 2025', endDate: 'October 10, 2025', standardPrice: 8811, singleRoom: 1577, doubleRoom: 0, tripleRoom: 1148, tax: '8%', travelers: 'Gaurav Singh +50', tripProgress: 'Completed', count: 10, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH8864', assignedTrip: 'Olivanders', startDate: 'March 1, 2026', endDate: 'March 6, 2026', standardPrice: 1577, singleRoom: 0, doubleRoom: 4846, tripleRoom: 5946, tax: '8%', travelers: 'Monica Sadler +1', tripProgress: 'Upcoming', count: 20, availability: 'Filling Fast', status: 'active' },
-    { batchName: 'BATCH6784', assignedTrip: 'Florean Forkes', startDate: 'September 25, 2025', endDate: 'September 30, 2025', standardPrice: 3948, singleRoom: 3536, doubleRoom: 0, tripleRoom: 6025, tax: '8%', travelers: 'Chandler Bing +12', tripProgress: 'Completed', count: 13, availability: 'Sold Out', status: 'active' },
-    { batchName: 'BATCH4952', assignedTrip: 'Olivanders', startDate: 'August 15, 2025', endDate: 'August 20, 2025', standardPrice: 1148, singleRoom: 0, doubleRoom: 6690, tripleRoom: 9359, tax: '8%', travelers: 'Jim Halpert +16', tripProgress: 'Completed', count: 10, availability: 'Filling Fast', status: 'active' },
-  ];
+  batchesRowData: Batch[] = [];
 
   // Users Column Definitions
   usersColumnDefs: ColDef[] = [
@@ -1241,6 +1199,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (index === 1) {
       this.loadBatchesData();
     }
+    // Fetch users data when switching to users tab (index 2)
+    else if (index === 2) {
+      this.loadUsersData();
+    }
   }
 
   private loadBatchesData(page: number = 1) {
@@ -1302,6 +1264,44 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     });
   }
 
+  private loadUsersData() {
+    this.adminService.getUsers().subscribe({
+      next: (response) => {
+        if (response && response.users && Array.isArray(response.users)) {
+          this.usersRowData = response.users.map((user: any) => {
+            // Format associated trips
+            let associatedTrips = '—';
+            if (user.trips && Array.isArray(user.trips) && user.trips.length > 0) {
+              // Remove duplicates and get unique trip names
+              const uniqueTrips = [...new Set(user.trips)] as string[];
+              if (uniqueTrips.length === 1) {
+                associatedTrips = uniqueTrips[0];
+              } else if (uniqueTrips.length > 1) {
+                associatedTrips = `${uniqueTrips[0]} +${String(uniqueTrips.length - 1).padStart(2, '0')}`;
+              }
+            }
+            
+            return {
+              name: user.name || '',
+              email: user.email || '',
+              associatedTrips: associatedTrips,
+              phoneNumber: user.phone_number ? String(user.phone_number) : '',
+              role: user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase() : 'User'
+            };
+          });
+          
+          // Refresh the users grid if it's already initialized
+          if (this.usersGridApi) {
+            this.usersGridApi.setRowData(this.usersRowData);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching users:', error);
+      }
+    });
+  }
+
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
     params.api.sizeColumnsToFit();
@@ -1344,7 +1344,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Calculate row height to fill available space
     const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
     const minRowHeight = 40; // Minimum row height for readability
-    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+    const maxRowHeight = 80; // Maximum row height of 5rem (80px)
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
 
     // Set the row height
     this.gridApi.forEachNode((node) => {
@@ -1415,7 +1416,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Calculate row height to fill available space
     const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
     const minRowHeight = 40; // Minimum row height for readability
-    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+    const maxRowHeight = 80; // Maximum row height of 5rem (80px)
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
 
     // Set the row height
     this.batchesGridApi.forEachNode((node) => {
@@ -1470,7 +1472,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Calculate row height to fill available space
     const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
     const minRowHeight = 40; // Minimum row height for readability
-    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+    const maxRowHeight = 80; // Maximum row height of 5rem (80px)
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
 
     // Set the row height
     this.usersGridApi.forEachNode((node) => {
@@ -1525,7 +1528,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Calculate row height to fill available space
     const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
     const minRowHeight = 40;
-    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+    const maxRowHeight = 80; // Maximum row height of 5rem (80px)
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
 
     // Set the row height
     this.bannersGridApi.forEachNode((node) => {
@@ -1582,7 +1586,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Calculate row height to fill available space
     const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
     const minRowHeight = 40;
-    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+    const maxRowHeight = 80; // Maximum row height of 5rem (80px)
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
 
     // Set the row height
     this.couponsGridApi.forEachNode((node) => {
@@ -1640,7 +1645,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Calculate row height to fill available space
     const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
     const minRowHeight = 40;
-    const rowHeight = Math.max(calculatedRowHeight, minRowHeight);
+    const maxRowHeight = 80; // Maximum row height of 5rem (80px)
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
 
     // Set the row height
     this.leadsGridApi.forEachNode((node) => {

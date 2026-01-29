@@ -2354,3 +2354,10 @@
     }
   }
 }
+
+// Global max-height constraint for all ag-grid rows
+::ng-deep {
+  .ag-row {
+    max-height: 5rem !important;
+  }
+}
