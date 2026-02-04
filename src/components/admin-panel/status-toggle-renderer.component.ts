@@ -62,18 +62,20 @@ export class StatusToggleRendererComponent implements ICellRendererAngularComp {
   constructor(private cdr: ChangeDetectorRef) {}
 
   agInit(params: ICellRendererParams): void {
+    console.log('StatusToggleRendererComponent agInit params:', params)
     this.params = params;
-    this.isActive = params.value === 'active';
+    this.isActive = params.value === true || params.value === 'active';
   }
 
   refresh(params: ICellRendererParams): boolean {
+    console.log('StatusToggleRendererComponent refresh params:', params)
     this.params = params;
-    this.isActive = params.value === 'active';
+    this.isActive = params.value === true || params.value === 'active';
     return true;
   }
 
   onToggleChange(event: any): void {
-    const newStatus = event.checked ? 'active' : 'inactive';
+    const newStatus = event.checked;
     
     // Update the data in AG Grid
     this.params.node.setDataValue(this.params.column?.getColId() || 'status', newStatus);

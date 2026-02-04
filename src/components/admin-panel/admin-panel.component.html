@@ -238,8 +238,7 @@
             [rowData]="bannersRowData"
             [columnDefs]="bannersColumnDefs"
             [defaultColDef]="defaultColDef"
-            [pagination]="gridOptions.pagination"
-            [paginationPageSize]="gridOptions.paginationPageSize"
+            [pagination]="false"
             [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
             [rowSelection]="gridOptions.rowSelection"
             [animateRows]="gridOptions.animateRows"
@@ -247,10 +246,42 @@
             [ensureDomOrder]="gridOptions.ensureDomOrder"
             (gridReady)="onBannersGridReady($event)"
             (cellClicked)="onBannersCellClicked($event)"
-            (paginationChanged)="adjustBannersRowHeight()"
             (firstDataRendered)="onBannersFirstDataRendered($event)"
           >
           </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (bannersCurrentPage - 1) * bannersPageSize + 1 }} to {{ Math.min(bannersCurrentPage * bannersPageSize, bannersTotalCount) }} of {{ bannersTotalCount }} banners
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === 1"
+                (click)="goToBannersPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === 1"
+                (click)="goToBannersPage(bannersCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ bannersCurrentPage }} of {{ bannersTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === bannersTotalPages"
+                (click)="goToBannersPage(bannersCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === bannersTotalPages"
+                (click)="goToBannersPage(bannersTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>

@@ -100,6 +100,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   couponsPageSize = 20;
   couponsTotalCount = 0;
   couponsTotalPages = 0;
+  bannersCurrentPage = 1;
+  bannersPageSize = 5;
+  bannersTotalCount = 0;
+  bannersTotalPages = 0;
+  allBannersData: any[] = [];
   leadsSelectedRowCount = 0;
 
   // Column Definitions for Trips
@@ -617,28 +622,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ];
 
   // Row Data for Users
-  usersRowData: User[] = [
-    { name: 'Darrell Steward', email: 'michelle.rivera@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'Admin' },
-    { name: 'Jerome Bell', email: 'jessica.hanson@example.com', associatedTrips: 'Little Hangleton', phoneNumber: '91-8837372732', role: 'User' },
-    { name: 'Dianne Russell', email: 'tanya.hill@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
-    { name: 'Darlene Robertson', email: 'bill.sanders@example.com', associatedTrips: 'Forest of Dean +03', phoneNumber: '91-8837372732', role: 'User' },
-    { name: 'Albert Flores', email: 'tim.jennings@example.com', associatedTrips: 'Forest of Dean', phoneNumber: '91-8862466329', role: 'User' },
-    { name: 'Leslie Alexander', email: 'nathan.roberts@example.com', associatedTrips: 'Little Hangleton +02', phoneNumber: '91- 9838313132', role: 'User' },
-    { name: 'Kathryn Murphy', email: 'georgia.young@example.com', associatedTrips: 'House of Gaunt +05', phoneNumber: '91-8862466329', role: 'User' },
-    { name: 'Floyd Miles', email: 'jackson.graham@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
-    { name: 'Devon Lane', email: 'sara.cruz@example.com', associatedTrips: 'Forest of Dean +01', phoneNumber: '91-9935648723', role: 'User' },
-    { name: 'Ronald Richards', email: 'felicia.reid@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'User' },
-    { name: 'Darrell Steward', email: 'michelle.rivera@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'Admin' },
-    { name: 'Jerome Bell', email: 'jessica.hanson@example.com', associatedTrips: 'Little Hangleton', phoneNumber: '91-8837372732', role: 'User' },
-    { name: 'Dianne Russell', email: 'tanya.hill@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
-    { name: 'Darlene Robertson', email: 'bill.sanders@example.com', associatedTrips: 'Forest of Dean +03', phoneNumber: '91-8837372732', role: 'User' },
-    { name: 'Albert Flores', email: 'tim.jennings@example.com', associatedTrips: 'Forest of Dean', phoneNumber: '91-8862466329', role: 'User' },
-    { name: 'Leslie Alexander', email: 'nathan.roberts@example.com', associatedTrips: 'Little Hangleton +02', phoneNumber: '91- 9838313132', role: 'User' },
-    { name: 'Kathryn Murphy', email: 'georgia.young@example.com', associatedTrips: 'House of Gaunt +05', phoneNumber: '91-8862466329', role: 'User' },
-    { name: 'Floyd Miles', email: 'jackson.graham@example.com', associatedTrips: '—', phoneNumber: '91- 9838313132', role: 'User' },
-    { name: 'Devon Lane', email: 'sara.cruz@example.com', associatedTrips: 'Forest of Dean +01', phoneNumber: '91-9935648723', role: 'User' },
-    { name: 'Ronald Richards', email: 'felicia.reid@example.com', associatedTrips: '—', phoneNumber: '91-8862466329', role: 'User' },
-  ];
+  usersRowData: User[] = [];
 
   // Banners Column Definitions
   bannersColumnDefs: ColDef[] = [
@@ -711,28 +695,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ];
 
   // Row Data for Banners
-  bannersRowData: Banner[] = [
-    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
-    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
-    { bannerName: 'Dianne Russell', description: 'Donec sed erat ut magna suscipiAliquam porta nisl dolor, molestiColumnse..t..', status: 'active' },
-    { bannerName: 'Darlene Robertson', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
-    { bannerName: 'Albert Flores', description: 'Vestibulum eu quam nec neque p.Aliquam porta nisl dolor, molestiColumnse...', status: 'inactive' },
-    { bannerName: 'Leslie Alexander', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
-    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
-    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
-    { bannerName: 'Dianne Russell', description: 'Donec sed erat ut magna suscipiAliquam porta nisl dolor, molestiColumnse..t..', status: 'active' },
-    { bannerName: 'Darlene Robertson', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
-    { bannerName: 'Albert Flores', description: 'Vestibulum eu quam nec neque p.Aliquam porta nisl dolor, molestiColumnse...', status: 'inactive' },
-    { bannerName: 'Leslie Alexander', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
-    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
-    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
-    { bannerName: 'Dianne Russell', description: 'Donec sed erat ut magna suscipiAliquam porta nisl dolor, molestiColumnse..t..', status: 'active' },
-    { bannerName: 'Darlene Robertson', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
-    { bannerName: 'Albert Flores', description: 'Vestibulum eu quam nec neque p.Aliquam porta nisl dolor, molestiColumnse...', status: 'inactive' },
-    { bannerName: 'Leslie Alexander', description: 'Vestibulum eu quam nec neque pAliquam porta nisl dolor, molestiColumnse....', status: 'active' },
-    { bannerName: 'Home Page banner', description: 'Aliquam porta nisl dolor, molestiColumnseAliquam porta nisl dolor, molestiColumnse..e..', status: 'active' },
-    { bannerName: 'Jerome Bell', description: 'Donec sed erat ut magna suscipitAliquam porta nisl dolor, molestiColumnse....', status: 'inactive' },
-  ];
+  bannersRowData: Banner[] = [];
 
   // Column Definitions for Coupons
   couponsColumnDefs: ColDef[] = [
@@ -873,28 +836,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ];
 
   // Row Data for Coupons
-  couponsRowData: Coupon[] = [
-    { couponCode: 'LOREM12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'May 12, 2019', status: 'active' },
-    { couponCode: 'JONAS12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'December 19, 2013', status: 'inactive' },
-    { couponCode: 'DIWALI10', deduction: '10%', startDate: 'February 29, 2012', endDate: 'February 29, 2012', status: 'active' },
-    { couponCode: 'HOLI20', deduction: '20%', startDate: 'October 30, 2017', endDate: 'October 30, 2017', status: 'active' },
-    { couponCode: 'EID05', deduction: '5%', startDate: 'February 28, 2018', endDate: 'February 28, 2018', status: 'inactive' },
-    { couponCode: 'HANUKKAH02', deduction: '02%', startDate: 'May 31, 2015', endDate: 'May 31, 2015', status: 'active' },
-    { couponCode: 'RAMNAVMI20', deduction: '20%', startDate: 'May 9, 2014', endDate: 'May 9, 2014', status: 'active' },
-    { couponCode: 'XMAS05', deduction: '5%', startDate: 'March 6, 2018', endDate: 'March 6, 2018', status: 'active' },
-    { couponCode: 'SHADI18', deduction: '18%', startDate: 'March 23, 2013', endDate: 'March 23, 2013', status: 'inactive' },
-    { couponCode: 'SHADI12', deduction: '12%', startDate: 'September 9, 2013', endDate: 'September 9, 2013', status: 'active' },
-    { couponCode: 'LOREM12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'May 12, 2019', status: 'active' },
-    { couponCode: 'JONAS12', deduction: '12%', startDate: 'December 19, 2013', endDate: 'December 19, 2013', status: 'inactive' },
-    { couponCode: 'DIWALI10', deduction: '10%', startDate: 'February 29, 2012', endDate: 'February 29, 2012', status: 'active' },
-    { couponCode: 'HOLI20', deduction: '20%', startDate: 'October 30, 2017', endDate: 'October 30, 2017', status: 'active' },
-    { couponCode: 'EID05', deduction: '5%', startDate: 'February 28, 2018', endDate: 'February 28, 2018', status: 'inactive' },
-    { couponCode: 'HANUKKAH02', deduction: '02%', startDate: 'May 31, 2015', endDate: 'May 31, 2015', status: 'active' },
-    { couponCode: 'RAMNAVMI20', deduction: '20%', startDate: 'May 9, 2014', endDate: 'May 9, 2014', status: 'active' },
-    { couponCode: 'XMAS05', deduction: '5%', startDate: 'March 6, 2018', endDate: 'March 6, 2018', status: 'active' },
-    { couponCode: 'SHADI18', deduction: '18%', startDate: 'March 23, 2013', endDate: 'March 23, 2013', status: 'inactive' },
-    { couponCode: 'SHADI12', deduction: '12%', startDate: 'September 9, 2013', endDate: 'September 9, 2013', status: 'active' },
-  ];
+  couponsRowData: Coupon[] = [];
 
   // Leads Column Definitions
   leadsColumnDefs: ColDef[] = [
@@ -1168,7 +1110,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             name: trip.destination_name || '',
             startDate: this.formatDate(trip.from_month),
             endDate: this.formatDate(trip.to_month),
-            status: trip.isActive ? 'active' : 'inactive'
+            status: trip.status ? 'active' : 'inactive'
           }));
           
           // Refresh the grid if it's already initialized
@@ -1210,6 +1152,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Fetch users data when switching to users tab (index 2)
     else if (index === 2) {
       this.loadUsersData();
+    }
+    // Fetch banners data when switching to banners tab (index 3)
+    else if (index === 3) {
+      this.loadBannersData();
     }
     // Fetch coupons data when switching to coupons tab (index 4)
     else if (index === 4) {
@@ -1260,7 +1206,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
               tripProgress: tripProgress,
               count: batch.max_adventurers|| 0,
               availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
-              status: batch.isActive ? 'active' : 'inactive'
+              status: batch.status ? 'active' : 'inactive'
             };
           });
           
@@ -1316,6 +1262,57 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         console.error('Error fetching users:', error);
       }
     });
+  }
+
+  private loadBannersData() {
+    this.adminService.getBanners().subscribe({
+      next: (response) => {
+        if (response && response.banners && Array.isArray(response.banners)) {
+          // Store all banners data
+          this.allBannersData = response.banners.map((banner: any) => {
+            return {
+              bannerName: this.toTitleCase(banner.banner_name || ''),
+              description: banner.description || '',
+              status: banner.status ? 'active' : 'inactive'
+            };
+          });
+          
+          // Calculate pagination
+          this.bannersTotalCount = this.allBannersData.length;
+          this.bannersTotalPages = Math.ceil(this.bannersTotalCount / this.bannersPageSize);
+          
+          // Get current page data
+          this.updateBannersPageData();
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching banners:', error);
+      }
+    });
+  }
+
+  private updateBannersPageData() {
+    const startIndex = (this.bannersCurrentPage - 1) * this.bannersPageSize;
+    const endIndex = startIndex + this.bannersPageSize;
+    this.bannersRowData = this.allBannersData.slice(startIndex, endIndex);
+    
+    // Refresh the banners grid if it's already initialized
+    if (this.bannersGridApi) {
+      this.bannersGridApi.setRowData(this.bannersRowData);
+    }
+  }
+
+  goToBannersPage(page: number) {
+    if (page >= 1 && page <= this.bannersTotalPages) {
+      this.bannersCurrentPage = page;
+      this.updateBannersPageData();
+    }
+  }
+
+  private toTitleCase(str: string): string {
+    return str.replace(/_/g, ' ').toLowerCase().split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
   }
 
   private loadCouponsData(page: number = 1) {

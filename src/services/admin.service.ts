@@ -36,4 +36,10 @@ export class AdminService {
       { params: { page: page.toString(), limit: limit.toString() } }
     );
   }
+
+  getBanners(): Observable<any> {
+    return this.http.get(
+      environment.production ? '/api/admin/banners' : `${environment.apiURL}admin/banners`
+    );
+  }
 }
