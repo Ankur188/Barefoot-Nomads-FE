@@ -1775,6 +1775,16 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   // Handle entity save based on type
   private handleEntitySave(entityType: string, data: any) {
+    console.log('handleEntitySave called with:', { entityType, data });
+    
+    // Log FormData contents if it's a FormData object
+    if (data instanceof FormData) {
+      console.log('FormData contents:');
+      data.forEach((value, key) => {
+        console.log(`  ${key}:`, value);
+      });
+    }
+    
     switch (entityType) {
       case 'trips':
         // Call API to create trip

@@ -48,6 +48,7 @@ export class AddEntityFormComponent implements OnInit {
       case 'trips':
         this.entityForm = this.fb.group({
           name: ['', Validators.required],
+          description: ['', Validators.required],
           itinerary: [''],
           numberOfDays: [1, [Validators.required, Validators.min(1)]],
           days: this.fb.array([this.createDayFormGroup()]), // FormArray for day-specific data
@@ -125,6 +126,7 @@ export class AddEntityFormComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         if (this.uploadedImages.length < 8) {
           this.uploadedImages.push(files[i]);
+          this.imagesArray.push(this.fb.control(files[i].name));
         }
       }
     }
@@ -132,6 +134,7 @@ export class AddEntityFormComponent implements OnInit {
 
   removeImage(index: number): void {
     this.uploadedImages.splice(index, 1);
+    this.imagesArray.removeAt(index);
   }
 
   // Itinerary file handling
@@ -185,6 +188,11 @@ export class AddEntityFormComponent implements OnInit {
   // FormArray helpers for days
   get daysArray(): FormArray {
     return this.entityForm.get('days') as FormArray;
+  }
+
+  // FormArray helper for images
+  get imagesArray(): FormArray {
+    return this.entityForm.get('images') as FormArray;
   }
 
   createDayFormGroup(): FormGroup {
@@ -253,6 +261,7 @@ export class AddEntityFormComponent implements OnInit {
       return;
     }
 
+    console.log('Form Data:', this.entityForm.value);
     const formData = this.prepareFormData();
     this.formSubmit.emit({ action: 'save', data: formData });
   }
@@ -261,11 +270,20 @@ export class AddEntityFormComponent implements OnInit {
     if (this.entityType === 'trips') {
       const formData = new FormData();
       formData.append('name', this.entityForm.value.name);
+      formData.append('description', this.entityForm.value.description);
       formData.append('numberOfDays', this.entityForm.value.numberOfDays.toString());
 
-      // Add days data as JSON
-      const daysData = this.entityForm.value.days;
-      formData.append('daysData', JSON.stringify(daysData));
+      // Transform days array to the required format
+      const daysArray = this.entityForm.value.days;
+      const daysObject: any = {};
+      daysArray.forEach((day: any, index: number) => {
+        daysObject[(index + 1).toString()] = {
+          title: day.heading,
+          content: day.description
+        };
+      });
+      
+      formData.append('daysData', JSON.stringify(daysObject));
 
       if (this.itineraryFile) {
         formData.append('itinerary', this.itineraryFile);
