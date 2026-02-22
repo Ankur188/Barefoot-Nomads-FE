@@ -7,20 +7,31 @@
   >
     <mat-tab label="TRIPS">
       <div class="tab-content">
-        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showTripsForm">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
-          <button class="addActionBtn">
+          <button class="addActionBtn" (click)="openAddEntityForm('trips')">
             <mat-icon>add</mat-icon>
           </button>
         </div>
-        <!-- Header Section -->
-        <div class="trips-header">
-          <h2>List of all the Trips</h2>
-          <button class="bulk-actions-btn" [disabled]="selectedRowCount === 0">
-            Bulk Actions
-            <mat-icon>keyboard_arrow_down</mat-icon>
-          </button>
-        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showTripsForm"
+          [entityType]="'trips'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showTripsForm">
+          <!-- Header Section -->
+          <div class="trips-header">
+            <h2>List of all the Trips</h2>
+            <button class="bulk-actions-btn" [disabled]="selectedRowCount === 0">
+              Bulk Actions
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+          </div>
 
         <!-- AG Grid -->
         <div class="grid-wrapper">
@@ -75,17 +86,29 @@
             </div>
           </div>
         </div>
+        </ng-container>
       </div>
     </mat-tab>
     <mat-tab label="BATCHES">
       <div class="tab-content">
-        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showBatchesForm">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
-          <button class="addActionBtn">
+          <button class="addActionBtn" (click)="openAddEntityForm('batches')">
             <mat-icon>add</mat-icon>
           </button>
         </div>
-        <!-- Header Section -->
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showBatchesForm"
+          [entityType]="'batches'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showBatchesForm">
+          <!-- Header Section -->
         <div class="trips-header">
           <h2>List of all the Batches</h2>
           <button class="bulk-actions-btn" [disabled]="batchesSelectedRowCount === 0">
@@ -147,17 +170,29 @@
             </div>
           </div>
         </div>
+        </ng-container>
       </div>
     </mat-tab>
     <mat-tab label="USERS">
       <div class="tab-content">
-        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showUsersForm">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
-          <button class="addActionBtn">
+          <button class="addActionBtn" (click)="openAddEntityForm('users')">
             <mat-icon>add</mat-icon>
           </button>
         </div>
-        <!-- Header Section -->
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showUsersForm"
+          [entityType]="'users'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showUsersForm">
+          <!-- Header Section -->
         <div class="trips-header">
           <h2>List of all the Users</h2>
           <button class="bulk-actions-btn" [disabled]="usersSelectedRowCount === 0">
@@ -219,6 +254,7 @@
             </div>
           </div>
         </div>
+        </ng-container>
       </div>
     </mat-tab>
     <mat-tab label="BANNERS">
@@ -287,13 +323,24 @@
     </mat-tab>
     <mat-tab label="COUPONS">
       <div class="tab-content">
-        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showCouponsForm">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
-          <button class="addActionBtn">
+          <button class="addActionBtn" (click)="openAddEntityForm('coupons')">
             <mat-icon>add</mat-icon>
           </button>
         </div>
-        <!-- Header Section -->
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showCouponsForm"
+          [entityType]="'coupons'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showCouponsForm">
+          <!-- Header Section -->
         <div class="trips-header">
           <h2>List of all the Coupons</h2>
           <button class="bulk-actions-btn" [disabled]="couponsSelectedRowCount === 0">
@@ -355,17 +402,29 @@
             </div>
           </div>
         </div>
+        </ng-container>
       </div>
     </mat-tab>
     <mat-tab label="LEADS">
       <div class="tab-content">
-        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showLeadsForm">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
-          <button class="addActionBtn">
+          <button class="addActionBtn" (click)="openAddEntityForm('leads')">
             <mat-icon>add</mat-icon>
           </button>
         </div>
-        <!-- Header Section -->
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showLeadsForm"
+          [entityType]="'leads'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showLeadsForm">
+          <!-- Header Section -->
         <div class="trips-header">
           <h2>List of all the Leads</h2>
           <button class="bulk-actions-btn" [disabled]="leadsSelectedRowCount === 0">
@@ -396,7 +455,9 @@
           >
           </ag-grid-angular>
         </div>
+        </ng-container>
       </div>
     </mat-tab>
   </mat-tab-group>
+    <img *ngIf="showLeadsForm || showTripsForm || showCouponsForm || showBatchesForm || showTripsForm" src="../../assets/barefoot-logo-admin-form.png" alt="" class="barefoot-logo-admin">
 </div>

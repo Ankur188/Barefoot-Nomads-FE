@@ -31,6 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import { AgGridModule } from 'ag-grid-angular';
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
@@ -50,6 +51,7 @@ import { StatusToggleRendererComponent } from 'src/components/admin-panel/status
 import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom-header-renderer.component';
 import { AvailabilityDropdownRendererComponent } from 'src/components/admin-panel/availability-dropdown-renderer.component';
 import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-dropdown-renderer.component';
+import { AddEntityFormComponent } from 'src/components/add-entity-form/add-entity-form.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,8 @@ import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-d
     StatusToggleRendererComponent,
     CustomHeaderRendererComponent,
     AvailabilityDropdownRendererComponent,
-    RoleDropdownRendererComponent
+    RoleDropdownRendererComponent,
+    AddEntityFormComponent
   ],
   imports: [
     BrowserModule,
@@ -101,6 +104,7 @@ import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-d
     MatCheckboxModule,
     MatMenuModule,
     MatSlideToggleModule,
+    MatDialogModule,
     AgGridModule,
   ],
   providers: [

@@ -23,6 +23,15 @@
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
+  position: relative;
+
+  .barefoot-logo-admin {
+    position: absolute;
+    bottom: 45%;
+    right: 0;
+    opacity: 0.1;
+    z-index: 1;
+  }
 
   // Tabs Styling
   .admin-tabs {

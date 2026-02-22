@@ -81,6 +81,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private couponsGridApi!: GridApi;
   private leadsGridApi!: GridApi;
   selectedRowCount = 0;
+  
+  // Form visibility flags
+  showTripsForm = false;
+  showBatchesForm = false;
+  showUsersForm = false;
+  showCouponsForm = false;
+  showLeadsForm = false;
+  currentEntityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' = 'trips';
   tripsCurrentPage = 1;
   tripsPageSize = 20;
   tripsTotalCount = 0;
@@ -1708,5 +1716,87 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       node.setRowHeight(rowHeight);
     });
     this.leadsGridApi.onRowHeightChanged();
+  }
+
+  // Toggle form visibility
+  openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
+    this.currentEntityType = entityType;
+    
+    switch(entityType) {
+      case 'trips':
+        this.showTripsForm = true;
+        break;
+      case 'batches':
+        this.showBatchesForm = true;
+        break;
+      case 'users':
+        this.showUsersForm = true;
+        break;
+      case 'coupons':
+        this.showCouponsForm = true;
+        break;
+      case 'leads':
+        this.showLeadsForm = true;
+        break;
+    }
+  }
+
+  // Close form and return to table view
+  closeEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
+    switch(entityType) {
+      case 'trips':
+        this.showTripsForm = false;
+        break;
+      case 'batches':
+        this.showBatchesForm = false;
+        break;
+      case 'users':
+        this.showUsersForm = false;
+        break;
+      case 'coupons':
+        this.showCouponsForm = false;
+        break;
+      case 'leads':
+        this.showLeadsForm = false;
+        break;
+    }
+  }
+
+  // Handle form submission
+  onFormSubmit(event: { action: string, data: any }) {
+    if (event.action === 'save') {
+      console.log('Form submitted with data:', event.data);
+      this.handleEntitySave(this.currentEntityType, event.data);
+      this.closeEntityForm(this.currentEntityType);
+    } else if (event.action === 'cancel') {
+      this.closeEntityForm(this.currentEntityType);
+    }
+  }
+
+  // Handle entity save based on type
+  private handleEntitySave(entityType: string, data: any) {
+    switch (entityType) {
+      case 'trips':
+        // Call API to create trip
+        console.log('Creating trip:', data);
+        // Example: this.adminService.createTrip(data).subscribe(...);
+        break;
+      case 'batches':
+        // Call API to create batch
+        console.log('Creating batch:', data);
+        break;
+      case 'users':
+        // Call API to create user
+        console.log('Creating user:', data);
+        break;
+      case 'coupons':
+        // Call API to create coupon
+        console.log('Creating coupon:', data);
+        break;
+      case 'leads':
+        // Call API to create lead
+        console.log('Creating lead:', data);
+        break;
+    }
   }
 }

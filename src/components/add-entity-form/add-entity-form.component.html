@@ -1,0 +1,648 @@
+<div class="entity-form-dialog">
+  <div class="dialog-header">
+    <button class="back-btn" (click)="onCancel()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <div class="header-actions">
+      <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+      <button class="save-btn" (click)="onSubmit()" [disabled]="!isFormValid()">Save</button>
+    </div>
+  </div>
+
+  <div class="dialog-content">
+    <form [formGroup]="entityForm">
+      <!-- TRIPS FORM -->
+      <div *ngIf="entityType === 'trips'" class="form-grid trips-grid">
+        <!-- Row 1, Col 1: Trip Name -->
+        <div class="form-group grid-item-r1-c1">
+          <label for="tripName">Trip name<span class="required">*</span></label>
+          <input
+            id="tripName"
+            type="text"
+            formControlName="name"
+            placeholder="Enter Trip Name"
+            [class.error]="shouldShowError('name')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('name')">
+            {{ getFieldError("name") }}
+          </span>
+        </div>
+
+        <!-- Row 1, Col 2: Itinerary -->
+        <div class="form-group grid-item-r1-c2">
+          <div class="label-with-action">
+            <label for="itinerary"
+              >Itinerary<span class="required">*</span></label
+            >
+            <input
+              type="file"
+              #itineraryInput
+              accept=".pdf,.doc,.docx"
+              (change)="onItinerarySelected($event)"
+              style="display: none"
+            />
+            <button
+              type="button"
+              class="browse-text-btn"
+              (click)="itineraryInput.click()"
+            >
+              Browse
+            </button>
+          </div>
+          <div class="file-input-wrapper" [class.has-file]="itineraryFile">
+            <div class="file-chip" *ngIf="itineraryFile">
+              <span>{{ itineraryFile.name }}</span>
+              <button
+                type="button"
+                class="remove-file-btn"
+                (click)="removeItinerary()"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <input
+              id="itinerary"
+              type="text"
+              *ngIf="!itineraryFile"
+              placeholder="No file chosen"
+              readonly
+            />
+          </div>
+        </div>
+
+        <!-- Row 2, Col 1: Description -->
+        <div class="form-group grid-item-r2-c1">
+          <label for="description"
+            >Description<span class="required">*</span></label
+          >
+          <textarea
+            id="description"
+            class="description-first"
+            formControlName="description"
+            placeholder="Enter Description"
+            rows="4"
+            [class.error]="shouldShowError('description')"
+          ></textarea>
+          <span class="error-message" *ngIf="shouldShowError('description')">
+            {{ getFieldError("description") }}
+          </span>
+        </div>
+
+        <!-- Row 2-3, Col 2: Days/Heading/Description (spans 2 rows) -->
+        <div class="form-group grid-item-r2-c2-span">
+          <div class="days-selector">
+            <div class="days-header d-flex align-items-center justify-content-between">
+              <label
+                >Number of days in itinerary<span class="required">*</span></label
+              >
+              <div class="days-display">
+                <input
+                  type="number"
+                  formControlName="numberOfDays"
+                  [(ngModel)]="numberOfDays"
+                  min="1"
+                  (ngModelChange)="updateDaysArray()"
+                />
+                <div class="spinner-buttons">
+                  <button
+                    type="button"
+                    class="increment-btn"
+                    (click)="incrementDays()"
+                  >
+                    <mat-icon>keyboard_arrow_up</mat-icon>
+                  </button>
+                  <button
+                    type="button"
+                    class="decrement-btn"
+                    (click)="decrementDays()"
+                  >
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="days-buttons-container">
+              <button
+                type="button"
+                class="arrow-btn arrow-left"
+                (click)="slidePrev()"
+                [disabled]="!canSlidePrev()"
+              >
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <div class="days-buttons">
+                <button
+                  type="button"
+                  *ngFor="let dayNum of getVisibleDayNumbers(); let i = index"
+                  [class.active]="selectedDayIndex === (currentPageStart + i)"
+                  (click)="selectDay(currentPageStart + i)"
+                >
+                  {{ dayNum }}
+                </button>
+              </div>
+              <button
+                type="button"
+                class="arrow-btn arrow-right"
+                (click)="slideNext()"
+                [disabled]="!canSlideNext()"
+              >
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Day-specific content (pagination style) -->
+          <div formArrayName="days">
+            <div *ngFor="let dayForm of daysArray.controls; let i = index" [formGroupName]="i">
+              <div *ngIf="selectedDayIndex === i" class="day-content">
+                <div class="d-flex flex-column">
+                  <label [for]="'heading-day-' + i">Day {{ i + 1 }} Heading<span class="required">*</span></label>
+                  <input
+                    [id]="'heading-day-' + i"
+                    type="text"
+                    formControlName="heading"
+                    placeholder="Enter Heading for Day {{ i + 1 }}"
+                    [class.error]="dayForm.get('heading')?.invalid && (dayForm.get('heading')?.touched || dayForm.get('heading')?.dirty)"
+                  />
+                  <span class="error-message" *ngIf="dayForm.get('heading')?.invalid && (dayForm.get('heading')?.touched || dayForm.get('heading')?.dirty)">
+                    This field is required
+                  </span>
+                </div>
+
+                <div class="d-flex flex-column">
+                  <label [for]="'description-day-' + i">Day {{ i + 1 }} Description<span class="required">*</span></label>
+                  <textarea
+                    [id]="'description-day-' + i"
+                    class="description-second"
+                    formControlName="description"
+                    placeholder="Enter Description for Day {{ i + 1 }}"
+                    rows="4"
+                    [class.error]="dayForm.get('description')?.invalid && (dayForm.get('description')?.touched || dayForm.get('description')?.dirty)"
+                  ></textarea>
+                  <span class="error-message" *ngIf="dayForm.get('description')?.invalid && (dayForm.get('description')?.touched || dayForm.get('description')?.dirty)">
+                    This field is required
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3, Col 1: Images -->
+        <div class="form-group grid-item-r3-c1">
+          <div class="d-flex align-items-center justify-content-between">
+            <label>Images for the trip<span class="required">*</span></label>
+            <div class="image-count">{{ uploadedImages.length }}/8</div>
+          </div>
+          <div class="image-upload-area">
+            <div 
+              class="drag-drop-zone" 
+              [class.disabled]="uploadedImages.length >= 8"
+              (click)="uploadedImages.length < 8 && imageInput.click()">
+              <p>Drag or Browse the images for the trip</p>
+            </div>
+            <input
+              type="file"
+              #imageInput
+              accept="image/*"
+              multiple
+              [disabled]="uploadedImages.length >= 8"
+              (change)="onImagesSelected($event)"
+              style="display: none"
+            />
+            <div class="uploaded-images" *ngIf="uploadedImages.length > 0">
+              <div
+                class="image-chip"
+                *ngFor="let image of uploadedImages; let i = index"
+              >
+                <span>{{ image.name }}</span>
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeImage(i)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BATCHES FORM -->
+      <div *ngIf="entityType === 'batches'" class="form-grid">
+        <div class="form-group">
+          <label for="batchName"
+            >Batch Name<span class="required">*</span></label
+          >
+          <input
+            id="batchName"
+            type="text"
+            formControlName="batchName"
+            placeholder="Enter Batch Name"
+            [class.error]="shouldShowError('batchName')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('batchName')">
+            {{ getFieldError("batchName") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="assignedTrip"
+            >Assigned Trip<span class="required">*</span></label
+          >
+          <input
+            id="assignedTrip"
+            type="text"
+            formControlName="assignedTrip"
+            placeholder="Enter Trip Name"
+            [class.error]="shouldShowError('assignedTrip')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('assignedTrip')">
+            {{ getFieldError("assignedTrip") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="startDate"
+            >Start Date<span class="required">*</span></label
+          >
+          <input
+            id="startDate"
+            type="date"
+            formControlName="startDate"
+            [class.error]="shouldShowError('startDate')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('startDate')">
+            {{ getFieldError("startDate") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">End Date<span class="required">*</span></label>
+          <input
+            id="endDate"
+            type="date"
+            formControlName="endDate"
+            [class.error]="shouldShowError('endDate')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('endDate')">
+            {{ getFieldError("endDate") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="standardPrice"
+            >Standard Price<span class="required">*</span></label
+          >
+          <input
+            id="standardPrice"
+            type="number"
+            formControlName="standardPrice"
+            placeholder="0"
+            [class.error]="shouldShowError('standardPrice')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('standardPrice')">
+            {{ getFieldError("standardPrice") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="singleRoom"
+            >Single Room<span class="required">*</span></label
+          >
+          <input
+            id="singleRoom"
+            type="number"
+            formControlName="singleRoom"
+            placeholder="0"
+            [class.error]="shouldShowError('singleRoom')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('singleRoom')">
+            {{ getFieldError("singleRoom") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="doubleRoom"
+            >Double Room<span class="required">*</span></label
+          >
+          <input
+            id="doubleRoom"
+            type="number"
+            formControlName="doubleRoom"
+            placeholder="0"
+            [class.error]="shouldShowError('doubleRoom')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('doubleRoom')">
+            {{ getFieldError("doubleRoom") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="tripleRoom"
+            >Triple Room<span class="required">*</span></label
+          >
+          <input
+            id="tripleRoom"
+            type="number"
+            formControlName="tripleRoom"
+            placeholder="0"
+            [class.error]="shouldShowError('tripleRoom')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('tripleRoom')">
+            {{ getFieldError("tripleRoom") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="tax">Tax (%)<span class="required">*</span></label>
+          <input
+            id="tax"
+            type="number"
+            formControlName="tax"
+            placeholder="0"
+            [class.error]="shouldShowError('tax')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('tax')">
+            {{ getFieldError("tax") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="availability"
+            >Availability<span class="required">*</span></label
+          >
+          <select id="availability" formControlName="availability">
+            <option value="available">Available</option>
+            <option value="sold-out">Sold Out</option>
+            <option value="few-left">Few Left</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- USERS FORM -->
+      <div *ngIf="entityType === 'users'" class="form-grid">
+        <div class="form-group">
+          <label for="userName">Name<span class="required">*</span></label>
+          <input
+            id="userName"
+            type="text"
+            formControlName="name"
+            placeholder="Enter Name"
+            [class.error]="shouldShowError('name')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('name')">
+            {{ getFieldError("name") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="userEmail">Email<span class="required">*</span></label>
+          <input
+            id="userEmail"
+            type="email"
+            formControlName="email"
+            placeholder="Enter Email"
+            [class.error]="shouldShowError('email')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('email')">
+            {{ getFieldError("email") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="phoneNumber"
+            >Phone Number<span class="required">*</span></label
+          >
+          <input
+            id="phoneNumber"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="Enter Phone Number"
+            [class.error]="shouldShowError('phoneNumber')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('phoneNumber')">
+            {{ getFieldError("phoneNumber") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role<span class="required">*</span></label>
+          <select id="role" formControlName="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="guide">Guide</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="associatedTrips">Associated Trips</label>
+          <input
+            id="associatedTrips"
+            type="text"
+            formControlName="associatedTrips"
+            placeholder="Enter Associated Trips (comma-separated)"
+          />
+        </div>
+      </div>
+
+      <!-- COUPONS FORM -->
+      <div *ngIf="entityType === 'coupons'" class="form-grid">
+        <div class="form-group">
+          <label for="couponCode"
+            >Coupon Code<span class="required">*</span></label
+          >
+          <input
+            id="couponCode"
+            type="text"
+            formControlName="couponCode"
+            placeholder="Enter Coupon Code"
+            [class.error]="shouldShowError('couponCode')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('couponCode')">
+            {{ getFieldError("couponCode") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="deduction"
+            >Deduction (%)<span class="required">*</span></label
+          >
+          <input
+            id="deduction"
+            type="number"
+            formControlName="deduction"
+            placeholder="0"
+            [class.error]="shouldShowError('deduction')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('deduction')">
+            {{ getFieldError("deduction") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="couponStartDate"
+            >Start Date<span class="required">*</span></label
+          >
+          <input
+            id="couponStartDate"
+            type="date"
+            formControlName="startDate"
+            [class.error]="shouldShowError('startDate')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('startDate')">
+            {{ getFieldError("startDate") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="couponEndDate"
+            >End Date<span class="required">*</span></label
+          >
+          <input
+            id="couponEndDate"
+            type="date"
+            formControlName="endDate"
+            [class.error]="shouldShowError('endDate')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('endDate')">
+            {{ getFieldError("endDate") }}
+          </span>
+        </div>
+      </div>
+
+      <!-- LEADS FORM -->
+      <div *ngIf="entityType === 'leads'" class="form-grid">
+        <div class="form-group">
+          <label for="leadName">Name<span class="required">*</span></label>
+          <input
+            id="leadName"
+            type="text"
+            formControlName="name"
+            placeholder="Enter Name"
+            [class.error]="shouldShowError('name')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('name')">
+            {{ getFieldError("name") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location<span class="required">*</span></label>
+          <input
+            id="location"
+            type="text"
+            formControlName="location"
+            placeholder="Enter Location"
+            [class.error]="shouldShowError('location')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('location')">
+            {{ getFieldError("location") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="tripDate">Trip Date<span class="required">*</span></label>
+          <input
+            id="tripDate"
+            type="date"
+            formControlName="tripDate"
+            [class.error]="shouldShowError('tripDate')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('tripDate')">
+            {{ getFieldError("tripDate") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="people"
+            >Number of People<span class="required">*</span></label
+          >
+          <input
+            id="people"
+            type="number"
+            formControlName="people"
+            placeholder="0"
+            [class.error]="shouldShowError('people')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('people')">
+            {{ getFieldError("people") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="days"
+            >Number of Days<span class="required">*</span></label
+          >
+          <input
+            id="days"
+            type="number"
+            formControlName="days"
+            placeholder="0"
+            [class.error]="shouldShowError('days')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('days')">
+            {{ getFieldError("days") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="approxBudget"
+            >Approx. Budget<span class="required">*</span></label
+          >
+          <input
+            id="approxBudget"
+            type="number"
+            formControlName="approxBudget"
+            placeholder="0"
+            [class.error]="shouldShowError('approxBudget')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('approxBudget')">
+            {{ getFieldError("approxBudget") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="leadEmail">Email<span class="required">*</span></label>
+          <input
+            id="leadEmail"
+            type="email"
+            formControlName="email"
+            placeholder="Enter Email"
+            [class.error]="shouldShowError('email')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('email')">
+            {{ getFieldError("email") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="leadPhone"
+            >Phone Number<span class="required">*</span></label
+          >
+          <input
+            id="leadPhone"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="Enter Phone Number"
+            [class.error]="shouldShowError('phoneNumber')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('phoneNumber')">
+            {{ getFieldError("phoneNumber") }}
+          </span>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            formControlName="message"
+            placeholder="Enter Message"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
