@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,16 @@ export class AdminService {
     return this.http.get(
       environment.production ? '/api/admin/trips' : `${environment.apiURL}admin/trips`,
       { params: { page: page.toString(), limit: limit.toString() } }
+    );
+  }
+
+  searchTrips(searchTerm: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'X-Skip-Loader': 'true'
+    });
+    return this.http.get(
+      environment.production ? '/api/admin/trips' : `${environment.apiURL}admin/trips`,
+      { params: { search: searchTerm }, headers }
     );
   }
 

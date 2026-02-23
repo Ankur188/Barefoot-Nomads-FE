@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { AdminService } from 'src/services/admin.service';
+import { debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 
 export interface EntityFormConfig {
   entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads';
@@ -31,16 +32,102 @@ export class AddEntityFormComponent implements OnInit {
   maxVisibleDays = 6;
   currentPageStart = 0;
 
+  // Trip autocomplete
+  tripSearchControl = new FormControl('');
+  filteredTrips: any[] = [];
+  selectedTrip: any = null;
+
+  // Date validation
+  minStartDate: string = '';
+  minEndDate: string = '';
+
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService
-  ) {}
+  ) {
+    // Set minimum start date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    this.minStartDate = this.formatDateForInput(tomorrow);
+    this.minEndDate = this.minStartDate;
+  }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.setupTripAutocomplete();
+    this.setupDateValidation();
     if (this.mode === 'edit' && this.data) {
       this.patchFormData(this.data);
     }
+  }
+
+  setupTripAutocomplete(): void {
+    this.tripSearchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(value => {
+          if (typeof value === 'string' && value.length >= 3) {
+            return this.adminService.searchTrips(value);
+          }
+          return of({ trips: [] });
+        })
+      )
+      .subscribe(response => {
+        this.filteredTrips = response.trips || [];
+      });
+  }
+
+  setupDateValidation(): void {
+    if (this.entityType === 'batches') {
+      // Listen to start date changes to update end date minimum
+      this.entityForm.get('startDate')?.valueChanges.subscribe(startDate => {
+        if (startDate) {
+          const startDateObj = new Date(startDate);
+          startDateObj.setDate(startDateObj.getDate() + 1);
+          this.minEndDate = this.formatDateForInput(startDateObj);
+          
+          // Validate end date if it exists
+          const endDate = this.entityForm.get('endDate')?.value;
+          if (endDate && new Date(endDate) <= new Date(startDate)) {
+            this.entityForm.get('endDate')?.setErrors({ invalidEndDate: true });
+          } else if (endDate) {
+            // Clear the error if end date is now valid
+            const endDateControl = this.entityForm.get('endDate');
+            if (endDateControl?.hasError('invalidEndDate')) {
+              endDateControl.setErrors(null);
+            }
+          }
+        }
+      });
+
+      // Validate end date when it changes
+      this.entityForm.get('endDate')?.valueChanges.subscribe(endDate => {
+        const startDate = this.entityForm.get('startDate')?.value;
+        if (startDate && endDate && new Date(endDate) <= new Date(startDate)) {
+          this.entityForm.get('endDate')?.setErrors({ invalidEndDate: true });
+        }
+      });
+    }
+  }
+
+  formatDateForInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  selectTrip(trip: any): void {
+    this.selectedTrip = trip;
+    this.entityForm.patchValue({ assignedTrip: trip.id });
+    this.tripSearchControl.setValue('');
+    this.filteredTrips = [];
+  }
+
+  removeSelectedTrip(): void {
+    this.selectedTrip = null;
+    this.entityForm.patchValue({ assignedTrip: '' });
   }
 
   initializeForm(): void {
@@ -57,21 +144,24 @@ export class AddEntityFormComponent implements OnInit {
         break;
 
       case 'batches':
+        const batchName = this.mode === 'add' ? this.generateBatchName() : '';
         this.entityForm = this.fb.group({
-          batchName: ['', Validators.required],
+          batchName: [batchName, Validators.required],
           assignedTrip: ['', Validators.required],
           startDate: ['', Validators.required],
           endDate: ['', Validators.required],
           standardPrice: ['', [Validators.required, Validators.min(0)]],
-          singleRoom: ['', [Validators.required, Validators.min(0)]],
-          doubleRoom: ['', [Validators.required, Validators.min(0)]],
+          singleRoom: ['', Validators.min(0)],
+          doubleRoom: ['', Validators.min(0)],
           tripleRoom: ['', [Validators.required, Validators.min(0)]],
           tax: ['', [Validators.required, Validators.min(0)]],
           travelers: [''],
           tripProgress: ['not-started'],
           count: [0, Validators.min(0)],
-          availability: ['available', Validators.required]
+          maxAdventurers: ['', [Validators.required, Validators.min(1)]]
         });
+        // Disable batch name field to prevent user editing
+        this.entityForm.get('batchName')?.disable();
         break;
 
       case 'users':
@@ -294,9 +384,29 @@ export class AddEntityFormComponent implements OnInit {
       });
 
       return formData;
+    } else if (this.entityType === 'batches') {
+      // Use getRawValue() to include disabled fields (like batchName)
+      const formData = this.entityForm.getRawValue();
+      
+      // Convert dates to timestamps
+      if (formData.startDate) {
+        formData.startDate = new Date(formData.startDate).getTime();
+      }
+      if (formData.endDate) {
+        formData.endDate = new Date(formData.endDate).getTime();
+      }
+      
+      return formData;
     } else {
-      return this.entityForm.value;
+      // Use getRawValue() to include disabled fields
+      return this.entityForm.getRawValue();
     }
+  }
+
+  // Generate unique batch name with 6-digit random ID
+  generateBatchName(): string {
+    const randomId = Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit number
+    return `BATCH${randomId}`;
   }
 
   onCancel(): void {
@@ -314,6 +424,9 @@ export class AddEntityFormComponent implements OnInit {
     }
     if (control?.hasError('min')) {
       return `Minimum value is ${control.errors?.['min'].min}`;
+    }
+    if (control?.hasError('invalidEndDate')) {
+      return 'End date must be after start date';
     }
     return '';
   }

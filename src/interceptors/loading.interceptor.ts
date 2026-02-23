@@ -20,10 +20,24 @@ export class LoadingInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.loadingService.show(); // Show loader on request start
+    // Check if request should skip loader
+    const skipLoader = req.headers.has('X-Skip-Loader');
+    
+    // Remove the custom header before sending the request
+    const newReq = skipLoader ? req.clone({
+      headers: req.headers.delete('X-Skip-Loader')
+    }) : req;
 
-    return next.handle(req).pipe(
-      finalize(() => this.loadingService.hide()),
+    if (!skipLoader) {
+      this.loadingService.show(); // Show loader on request start
+    }
+
+    return next.handle(newReq).pipe(
+      finalize(() => {
+        if (!skipLoader) {
+          this.loadingService.hide();
+        }
+      }),
       catchError((error: HttpErrorResponse) => {
         console.log(11111, error)
         if (

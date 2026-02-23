@@ -1153,6 +1153,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     this.selectedTab = index;
     console.log('Tab changed to:', index);
     
+    // Close all forms when tab changes
+    this.showTripsForm = false;
+    this.showBatchesForm = false;
+    this.showUsersForm = false;
+    this.showCouponsForm = false;
+    this.showLeadsForm = false;
+    
     // Fetch batches data when switching to batches tab (index 1)
     if (index === 1) {
       this.loadBatchesData();
