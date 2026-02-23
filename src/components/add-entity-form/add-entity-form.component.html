@@ -469,18 +469,46 @@
           <select id="role" formControlName="role">
             <option value="user">User</option>
             <option value="admin">Admin</option>
-            <option value="guide">Guide</option>
           </select>
         </div>
 
         <div class="form-group full-width">
           <label for="associatedTrips">Associated Trips</label>
-          <input
-            id="associatedTrips"
-            type="text"
-            formControlName="associatedTrips"
-            placeholder="Enter Associated Trips (comma-separated)"
-          />
+          
+          <div class="autocomplete-container">
+            <div class="autocomplete-wrapper">
+              <!-- Show chips for selected trips -->
+              <div *ngIf="selectedUserTrips.length > 0" class="selected-trip-chip">
+                <div class="trip-chip" *ngFor="let trip of selectedUserTrips">
+                  <span>{{ trip.destination_name }}</span>
+                  <button
+                    type="button"
+                    class="remove-trip-btn"
+                    (click)="removeUserTrip(trip)"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Autocomplete input -->
+              <input
+                id="associatedTrips"
+                type="text"
+                [formControl]="userTripSearchControl"
+                placeholder="Type at least 3 characters to search"
+              />
+              <div class="autocomplete-dropdown" *ngIf="userFilteredTrips.length > 0">
+                <div 
+                  class="autocomplete-option"
+                  *ngFor="let trip of userFilteredTrips"
+                  (click)="selectUserTrip(trip)"
+                >
+                  {{ trip.destination_name }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

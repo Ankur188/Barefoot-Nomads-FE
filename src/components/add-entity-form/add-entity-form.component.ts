@@ -32,10 +32,15 @@ export class AddEntityFormComponent implements OnInit {
   maxVisibleDays = 6;
   currentPageStart = 0;
 
-  // Trip autocomplete
+  // Trip autocomplete for batches
   tripSearchControl = new FormControl('');
   filteredTrips: any[] = [];
   selectedTrip: any = null;
+
+  // Trip autocomplete for users (associated trips)
+  userTripSearchControl = new FormControl('');
+  userFilteredTrips: any[] = [];
+  selectedUserTrips: any[] = [];
 
   // Date validation
   minStartDate: string = '';
@@ -55,6 +60,7 @@ export class AddEntityFormComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.setupTripAutocomplete();
+    this.setupUserTripAutocomplete();
     this.setupDateValidation();
     if (this.mode === 'edit' && this.data) {
       this.patchFormData(this.data);
@@ -75,6 +81,23 @@ export class AddEntityFormComponent implements OnInit {
       )
       .subscribe(response => {
         this.filteredTrips = response.trips || [];
+      });
+  }
+
+  setupUserTripAutocomplete(): void {
+    this.userTripSearchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(value => {
+          if (typeof value === 'string' && value.length >= 3) {
+            return this.adminService.searchTrips(value);
+          }
+          return of({ trips: [] });
+        })
+      )
+      .subscribe(response => {
+        this.userFilteredTrips = response.trips || [];
       });
   }
 
@@ -130,6 +153,26 @@ export class AddEntityFormComponent implements OnInit {
     this.entityForm.patchValue({ assignedTrip: '' });
   }
 
+  selectUserTrip(trip: any): void {
+    // Check if trip is already selected
+    if (!this.selectedUserTrips.find(t => t.id === trip.id)) {
+      this.selectedUserTrips.push(trip);
+      this.updateAssociatedTripsFormValue();
+    }
+    this.userTripSearchControl.setValue('');
+    this.userFilteredTrips = [];
+  }
+
+  removeUserTrip(trip: any): void {
+    this.selectedUserTrips = this.selectedUserTrips.filter(t => t.id !== trip.id);
+    this.updateAssociatedTripsFormValue();
+  }
+
+  updateAssociatedTripsFormValue(): void {
+    const tripIds = this.selectedUserTrips.map(t => t.id.toString());
+    this.entityForm.patchValue({ associatedTrips: tripIds });
+  }
+
   initializeForm(): void {
     switch (this.entityType) {
       case 'trips':
@@ -168,7 +211,7 @@ export class AddEntityFormComponent implements OnInit {
         this.entityForm = this.fb.group({
           name: ['', Validators.required],
           email: ['', [Validators.required, Validators.email]],
-          phoneNumber: ['', Validators.required],
+          phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
           role: ['user', Validators.required],
           associatedTrips: ['']
         });
@@ -427,6 +470,9 @@ export class AddEntityFormComponent implements OnInit {
     }
     if (control?.hasError('invalidEndDate')) {
       return 'End date must be after start date';
+    }
+    if (control?.hasError('pattern') && fieldName === 'phoneNumber') {
+      return 'Phone number must be exactly 10 digits';
     }
     return '';
   }
