@@ -181,7 +181,9 @@ export class AddEntityFormComponent implements OnInit {
           description: ['', Validators.required],
           itinerary: [''],
           numberOfDays: [1, [Validators.required, Validators.min(1)]],
-          days: this.fb.array([this.createDayFormGroup()]), // FormArray for day-specific data
+          days: ['', [Validators.required, Validators.min(1)]],
+          nights: ['', [Validators.required, Validators.min(1)]],
+          daysForms: this.fb.array([this.createDayFormGroup()]), // FormArray for day-specific data
           images: this.fb.array([])
         });
         break;
@@ -320,7 +322,7 @@ export class AddEntityFormComponent implements OnInit {
 
   // FormArray helpers for days
   get daysArray(): FormArray {
-    return this.entityForm.get('days') as FormArray;
+    return this.entityForm.get('daysForms') as FormArray;
   }
 
   // FormArray helper for images
@@ -405,9 +407,11 @@ export class AddEntityFormComponent implements OnInit {
       formData.append('name', this.entityForm.value.name);
       formData.append('description', this.entityForm.value.description);
       formData.append('numberOfDays', this.entityForm.value.numberOfDays.toString());
+      formData.append('days', this.entityForm.value.days.toString());
+      formData.append('nights', this.entityForm.value.nights.toString());
 
       // Transform days array to the required format
-      const daysArray = this.entityForm.value.days;
+      const daysArray = this.entityForm.value.daysForms;
       const daysObject: any = {};
       daysArray.forEach((day: any, index: number) => {
         daysObject[(index + 1).toString()] = {

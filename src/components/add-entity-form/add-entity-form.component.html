@@ -88,6 +88,36 @@
           </span>
         </div>
 
+        <!-- Days Field -->
+        <div class="form-group">
+          <label for="tripDays">Days<span class="required">*</span></label>
+          <input
+            id="tripDays"
+            type="number"
+            formControlName="days"
+            placeholder="0"
+            [class.error]="shouldShowError('days')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('days')">
+            {{ getFieldError("days") }}
+          </span>
+        </div>
+
+        <!-- Nights Field -->
+        <div class="form-group">
+          <label for="tripNights">Nights<span class="required">*</span></label>
+          <input
+            id="tripNights"
+            type="number"
+            formControlName="nights"
+            placeholder="0"
+            [class.error]="shouldShowError('nights')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('nights')">
+            {{ getFieldError("nights") }}
+          </span>
+        </div>
+
         <!-- Row 2-3, Col 2: Days/Heading/Description (spans 2 rows) -->
         <div class="form-group grid-item-r2-c2-span">
           <div class="days-selector">
@@ -152,7 +182,7 @@
           </div>
 
           <!-- Day-specific content (pagination style) -->
-          <div formArrayName="days">
+          <div formArrayName="daysForms">
             <div *ngFor="let dayForm of daysArray.controls; let i = index" [formGroupName]="i">
               <div *ngIf="selectedDayIndex === i" class="day-content">
                 <div class="d-flex flex-column">
