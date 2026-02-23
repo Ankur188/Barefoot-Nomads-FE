@@ -53,4 +53,11 @@ export class AdminService {
       environment.production ? '/api/admin/banners' : `${environment.apiURL}admin/banners`
     );
   }
+
+  createTrip(tripData: FormData): Observable<any> {
+    return this.http.post(
+      environment.production ? '/api/admin/trips' : `${environment.apiURL}admin/trips`,
+      tripData
+    );
+  }
 }

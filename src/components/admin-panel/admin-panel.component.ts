@@ -1796,7 +1796,17 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       case 'trips':
         // Call API to create trip
         console.log('Creating trip:', data);
-        // Example: this.adminService.createTrip(data).subscribe(...);
+        this.adminService.createTrip(data).subscribe({
+          next: (response) => {
+            console.log('Trip created successfully:', response);
+            // Reload trips data to show the new trip
+            this.loadTripsData(1);
+          },
+          error: (error) => {
+            console.error('Error creating trip:', error);
+            // TODO: Show error message to user
+          }
+        });
         break;
       case 'batches':
         // Call API to create batch
