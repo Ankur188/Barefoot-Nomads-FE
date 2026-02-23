@@ -102,7 +102,7 @@ export class AddEntityFormComponent implements OnInit {
   }
 
   setupDateValidation(): void {
-    if (this.entityType === 'batches') {
+    if (this.entityType === 'batches' || this.entityType === 'coupons') {
       // Listen to start date changes to update end date minimum
       this.entityForm.get('startDate')?.valueChanges.subscribe(startDate => {
         if (startDate) {
@@ -429,6 +429,19 @@ export class AddEntityFormComponent implements OnInit {
       return formData;
     } else if (this.entityType === 'batches') {
       // Use getRawValue() to include disabled fields (like batchName)
+      const formData = this.entityForm.getRawValue();
+      
+      // Convert dates to timestamps
+      if (formData.startDate) {
+        formData.startDate = new Date(formData.startDate).getTime();
+      }
+      if (formData.endDate) {
+        formData.endDate = new Date(formData.endDate).getTime();
+      }
+      
+      return formData;
+    } else if (this.entityType === 'coupons') {
+      // Use getRawValue() to include disabled fields
       const formData = this.entityForm.getRawValue();
       
       // Convert dates to timestamps

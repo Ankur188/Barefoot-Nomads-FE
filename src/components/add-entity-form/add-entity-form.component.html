@@ -554,6 +554,7 @@
             id="couponStartDate"
             type="date"
             formControlName="startDate"
+            [min]="minStartDate"
             [class.error]="shouldShowError('startDate')"
           />
           <span class="error-message" *ngIf="shouldShowError('startDate')">
@@ -569,6 +570,7 @@
             id="couponEndDate"
             type="date"
             formControlName="endDate"
+            [min]="minEndDate"
             [class.error]="shouldShowError('endDate')"
           />
           <span class="error-message" *ngIf="shouldShowError('endDate')">
