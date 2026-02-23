@@ -615,6 +615,7 @@
             id="tripDate"
             type="date"
             formControlName="tripDate"
+            [min]="minStartDate"
             [class.error]="shouldShowError('tripDate')"
           />
           <span class="error-message" *ngIf="shouldShowError('tripDate')">

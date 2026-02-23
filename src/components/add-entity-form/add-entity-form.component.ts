@@ -235,7 +235,7 @@ export class AddEntityFormComponent implements OnInit {
           days: ['', [Validators.required, Validators.min(1)]],
           approxBudget: ['', [Validators.required, Validators.min(0)]],
           email: ['', [Validators.required, Validators.email]],
-          phoneNumber: ['', Validators.required],
+          phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
           message: ['']
         });
         break;
@@ -450,6 +450,16 @@ export class AddEntityFormComponent implements OnInit {
       }
       if (formData.endDate) {
         formData.endDate = new Date(formData.endDate).getTime();
+      }
+      
+      return formData;
+    } else if (this.entityType === 'leads') {
+      // Use getRawValue() to include disabled fields
+      const formData = this.entityForm.getRawValue();
+      
+      // Convert trip date to timestamp
+      if (formData.tripDate) {
+        formData.tripDate = new Date(formData.tripDate).getTime();
       }
       
       return formData;
