@@ -18,11 +18,12 @@
   flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
+  max-height: 90%;
 
   // Greeting Section
   .greeting-section {
     background-color: white;
-    padding: 2rem 12rem;
+    padding: 0 12rem;
     margin-bottom: 0;
     flex-shrink: 0;
 
@@ -45,7 +46,7 @@
   .profile-tabs {
     background-color: white;
     border-bottom: 1px solid #e0e0e0;
-    padding: 2rem 12rem;
+    padding: 0 12rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -56,7 +57,7 @@
   // Tab Content
   .tab-content {
     background-color: white;
-    padding: 24px;
+    padding: 24px 0;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -240,6 +241,111 @@
       color: #999999;
     }
   }
+
+  // Bookings Header
+  .bookings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 17px;
+    flex-shrink: 0;
+    border: 1px solid #babfc7;
+    border-bottom: none;
+    background-color: #FAFAFA;
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222222;
+      margin: 0;
+    }
+  }
+
+  // Grid Wrapper for Bookings
+  .grid-wrapper {
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    .bookings-grid {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+    }
+
+    // Custom Pagination Styling
+    .custom-pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: white;
+      border-top: 1px solid #e0e0e0;
+      min-height: 56px;
+
+      .pagination-info {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .pagination-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background-color: white;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            color: #666;
+          }
+
+          &:hover:not(:disabled) {
+            background-color: #f5f5f5;
+          }
+
+          &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+          }
+        }
+
+        .page-info {
+          margin: 0 8px;
+          font-size: 14px;
+          color: #333;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .empty-state {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      
+      p {
+        font-size: 1rem;
+        color: #999999;
+      }
+    }
+  }
 }
 
 // Material Tab Overrides
@@ -285,6 +391,93 @@
       overflow: hidden;
       min-height: 0;
       height: 100%;
+    }
+  }
+
+  // AG Grid Styling for Bookings
+  .bookings-grid {
+    .ag-header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #babfc7;
+      font-family: inherit;
+    }
+
+    .ag-header-cell {
+      padding: 12px 16px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #222222;
+      border-right: none;
+    }
+
+    .ag-header-cell-text {
+      color: #222222;
+      font-weight: 600;
+    }
+
+    .ag-cell {
+      padding: 12px 16px;
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 0.875rem;
+      color: #222222;
+      display: flex;
+      align-items: center;
+    }
+
+    .ag-row {
+      border: none;
+    }
+
+    .ag-row:hover {
+      background-color: #f5f5f5;
+    }
+
+    // Status badges
+    .status-badge {
+      padding: 2px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: nowrap;
+      line-height: 25px;
+    }
+
+    .status-completed {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-cancelled {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-upcoming {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    // Action buttons
+    .action-btn {
+      mat-icon {
+        transition: opacity 0.2s;
+      }
+
+      &:hover mat-icon {
+        opacity: 0.7;
+      }
+    }
+
+    // Center aligned cells for actions, itinerary, and status
+    .ag-cell[col-id="actions"],
+    .ag-cell[col-id="itinerary"],
+    .ag-cell[col-id="status"] {
+      justify-content: center !important;
     }
   }
 }

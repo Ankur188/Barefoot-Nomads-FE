@@ -168,8 +168,67 @@
 
     <mat-tab label="MY TRIPS">
       <div class="tab-content">
-        <div class="coming-soon">
-          <p>My Trips Coming Soon...</p>
+        <div class="bookings-header">
+          <h2>List of all the Trips</h2>
+        </div>
+
+        <!-- AG Grid for Bookings -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine bookings-grid"
+            [rowData]="bookingsRowData"
+            [columnDefs]="bookingsColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            [domLayout]="gridOptions.domLayout"
+            (gridReady)="onBookingsGridReady($event)"
+            (cellClicked)="onBookingCellClicked($event)"
+          >
+          </ag-grid-angular>
+          
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination" *ngIf="bookingsTotalCount > 0">
+            <div class="pagination-info">
+              Showing {{ (bookingsCurrentPage - 1) * bookingsPageSize + 1 }} to {{ Math.min(bookingsCurrentPage * bookingsPageSize, bookingsTotalCount) }} of {{ bookingsTotalCount }} trips
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === 1"
+                (click)="goToBookingsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === 1"
+                (click)="goToBookingsPage(bookingsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ bookingsCurrentPage }} of {{ bookingsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === bookingsTotalPages"
+                (click)="goToBookingsPage(bookingsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === bookingsTotalPages"
+                (click)="goToBookingsPage(bookingsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="bookingsTotalCount === 0">
+            <p>No bookings found</p>
+          </div>
         </div>
       </div>
     </mat-tab>

@@ -17,4 +17,8 @@ export class BookingService {
   getBookingDetails(id: string): Observable<any> {
     return this.http.get( environment.production ? `/api/booking/${id}` : `${environment.apiURL}booking/${id}`)
   }
+
+  getUserBookings(userId: string): Observable<any> {
+    return this.http.get( environment.production ? `/api/booking?userId=${userId}` : `${environment.apiURL}booking?userId=${userId}`);
+  }
 }
