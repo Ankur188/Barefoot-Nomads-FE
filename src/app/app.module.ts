@@ -52,6 +52,7 @@ import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom
 import { AvailabilityDropdownRendererComponent } from 'src/components/admin-panel/availability-dropdown-renderer.component';
 import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-dropdown-renderer.component';
 import { AddEntityFormComponent } from 'src/components/add-entity-form/add-entity-form.component';
+import { ProfileComponent } from 'src/components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { AddEntityFormComponent } from 'src/components/add-entity-form/add-entit
     CustomHeaderRendererComponent,
     AvailabilityDropdownRendererComponent,
     RoleDropdownRendererComponent,
-    AddEntityFormComponent
+    AddEntityFormComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

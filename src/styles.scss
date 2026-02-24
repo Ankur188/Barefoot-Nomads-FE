@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // @import "~swiper/swiper-bundle";
 
 $lf-black: #121212;
@@ -9,27 +9,27 @@ $lf-red: #ff5a5f;
 $lf-green: #16b464;
 $lf-white: #ffffff;
 $lf-dark-grey: #252525;
-$lf-off-white: #FBFCF8;
+$lf-off-white: #fbfcf8;
 
 body,
 html {
   padding: 0;
   margin: 0;
   position: relative;
-  background-color: #000; 
+  background-color: #000;
   height: 100%;
 }
 .wrapper {
-  max-width: 1920px;   /* fixed width */
-  margin: 0 auto;  /* centers the content horizontally */
-  background: $lf-white; 
+  max-width: 1920px; /* fixed width */
+  margin: 0 auto; /* centers the content horizontally */
+  background: $lf-white;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
   color: $lf-white;
 }
 
@@ -99,7 +99,7 @@ html {
 }
 
 mat-icon {
-  font-family: 'Material Icons' !important;
+  font-family: "Material Icons" !important;
 }
 
 .mat-expansion-panel {
@@ -108,7 +108,7 @@ mat-icon {
   margin-top: 2rem !important;
 }
 .mat-expansion-panel-header {
-  background: #D3D8E5 !important;
+  background: #d3d8e5 !important;
   height: 5rem;
   .mat-content {
     color: $lf-black;
@@ -117,7 +117,7 @@ mat-icon {
     font-size: 1rem;
   }
 }
-.mat-expansion-panel-content  {
+.mat-expansion-panel-content {
   .mat-expansion-panel-body {
     padding: 2rem 1rem;
   }
@@ -161,13 +161,14 @@ input[type="number"] {
 }
 
 .custom-select {
-  appearance: none;          // remove default arrow (cross-browser)
+  appearance: none; // remove default arrow (cross-browser)
   -webkit-appearance: none;
   -moz-appearance: none;
 
-  background: url('/assets/chevron-down-solid-full.svg') no-repeat right 1.5rem center;
+  background: url("/assets/chevron-down-solid-full.svg") no-repeat right 1.5rem
+    center;
   background-size: 1rem;
-  padding-right: 2rem;       // make space for the icon
+  padding-right: 2rem; // make space for the icon
 
   color: #7e7e7e !important; // initial (placeholder color)
 
@@ -176,17 +177,2147 @@ input[type="number"] {
   }
 }
 
-::ng-deep{
+::ng-deep {
   .ag-cell-value {
     color: #222222 !important;
+  }
+
+  // Material Tabs Styling
+  .mat-tab-group {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .mat-tab-body-wrapper {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .mat-tab-label {
+    opacity: 1 !important;
+  }
+
+  .mat-tab-label-content {
+    color: #3d3d3d;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0 32px;
+    min-width: 120px;
+    opacity: 1;
+  }
+
+  .mat-tab-label-active {
+    .mat-tab-label-content {
+      color: #3d3d3d !important;
+      font-weight: 700;
+    }
+  }
+
+  .mat-ink-bar {
+    background-color: #1976d2;
+    height: 3px;
+  }
+
+  .mat-tab-header {
+    border-bottom: none;
+    flex-shrink: 0;
+  }
+
+  .mat-tab-body-content {
+    overflow: hidden !important;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Global AG Grid popup styling
+  .ag-popup {
+    color: #222222 !important;
+  }
+
+  // AG Grid Styling
+  .trips-grid {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, sans-serif;
+
+    // All text in the grid should be #222222
+    .ag-root-wrapper {
+      color: #222222;
+    }
+
+    // Header styling - BOLD and #222222
+    .ag-header {
+      background-color: #fafafa;
+      border-bottom: 1px solid #e0e0e0;
+      font-weight: 700 !important;
+
+      .ag-header-cell {
+        border-right: 1px solid #e0e0e0;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        color: #222222 !important;
+        font-weight: 700 !important;
+      }
+    }
+
+    // Row styling
+    .ag-row {
+      border-bottom: 1px solid #e0e0e0;
+      color: #222222;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+
+    .ag-cell {
+      display: flex;
+      align-items: center;
+      color: #222222 !important;
+      font-size: 13px;
+      line-height: 1.5;
+      border-right: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    // Checkbox styling
+    .ag-checkbox-input-wrapper {
+      width: 18px;
+      height: 18px;
+
+      &.ag-checked::after {
+        color: #1976d2;
+      }
+    }
+
+    // Custom Material Checkbox styling for AG Grid
+    .ag-cell[col-id="checkbox"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    .ag-header-cell[col-id="checkbox"] {
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    // Ensure Material checkbox is centered
+    app-checkbox-cell-renderer,
+    app-header-checkbox-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    // Status toggle styling
+    .ag-cell[col-id="status"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    app-status-toggle-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ::ng-deep {
+      .mat-slide-toggle-bar {
+        width: 53px;
+        height: 24px;
+        border-radius: 20px;
+        background-color: rgba(17, 84, 162, 0.3);
+      }
+      .mat-slide-toggle-thumb-container {
+        left: 11px;
+        top: 4px;
+      }
+      .mat-slide-toggle-thumb {
+        width: 15px;
+        height: 15px;
+        background-color: #1154a2;
+      }
+    }
+
+    // Floating Filter styling - #222222 text
+    .ag-floating-filter-body {
+      input {
+        color: #222222 !important;
+        font-size: 13px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+    }
+
+    .ag-floating-filter-button {
+      color: #222222 !important;
+    }
+
+    .ag-floating-filter-button-button {
+      color: #222222 !important;
+    }
+
+    // Filter Menu styling - ALL TEXT #222222
+    .ag-filter {
+      color: #222222 !important;
+
+      .ag-filter-body {
+        color: #222222 !important;
+      }
+
+      .ag-filter-condition {
+        color: #222222 !important;
+      }
+
+      input,
+      select,
+      textarea {
+        color: #222222 !important;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+
+      // Filter options text
+      .ag-select {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-wrapper {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-display {
+        color: #222222 !important;
+      }
+
+      // Date filter
+      .ag-filter-filter {
+        color: #222222 !important;
+      }
+
+      // Set filter checkboxes
+      .ag-set-filter-item {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-list {
+        color: #222222 !important;
+      }
+    }
+
+    // Filter buttons
+    .ag-filter-apply-panel {
+      button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #222222 !important;
+
+        &.ag-standard-button {
+          background-color: #1976d2;
+          color: white !important;
+          border: none;
+
+          &:hover {
+            background-color: #1565c0;
+          }
+        }
+
+        &.ag-standard-button:last-child {
+          background-color: transparent;
+          border: 1px solid #d0d0d0;
+          color: #222222 !important;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+        }
+      }
+    }
+
+    // Hide default AG Grid icons
+    .ag-header-icon {
+      display: none !important;
+    }
+
+    .ag-icon {
+      display: none !important;
+    }
+
+    // Custom header component styling
+    app-custom-header-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Material icon styling in headers
+    .ag-header-cell-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+
+      .mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        color: #222222 !important;
+        cursor: pointer;
+
+        &:hover {
+          color: #1976d2 !important;
+        }
+      }
+    }
+
+    // Ensure header cells have proper layout
+    .ag-header-cell {
+      .ag-header-cell-comp-wrapper {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    // Pagination styling
+    .ag-paging-panel {
+      border-top: 1px solid #e0e0e0;
+      padding: 16px 24px;
+      color: #222222 !important;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      background-color: white;
+
+      .ag-paging-button,
+      .ag-paging-description,
+      .ag-paging-page-summary-panel,
+      .ag-paging-row-summary-panel,
+      span {
+        color: #222222 !important;
+        font-size: 13px;
+      }
+
+      // Pagination buttons
+      .ag-paging-button {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0 4px;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Hide default AG Grid icons
+        .ag-icon {
+          display: none !important;
+        }
+
+        // Add Material icons using CSS content
+        &[ref="btFirst"]::before {
+          content: "first_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btPrevious"]::before {
+          content: "chevron_left";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btNext"]::before {
+          content: "chevron_right";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btLast"]::before {
+          content: "last_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &:hover:not(.ag-disabled) {
+          color: #1154a2;
+
+          &::before {
+            color: #1154a2;
+          }
+        }
+
+        &.ag-disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+
+          &::before {
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    // Actions column - center aligned
+    .ag-cell[col-id="actions"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+    }
+
+    // Action buttons
+    .action-btn {
+      &:hover svg {
+        opacity: 0.7;
+      }
+    }
+
+    // Remove default AG Grid borders and styling
+    .ag-cell-focus {
+      border: 1px solid #1976d2 !important;
+    }
+
+    .ag-cell-inline-editing {
+      border: 1px solid #1976d2 !important;
+    }
+
+    // Status column - center aligned (override previous flex-start)
+    .ag-cell[col-id="status"] {
+      justify-content: center !important;
+    }
+  }
+
+  // Batches Grid Styling (same as trips-grid)
+  .batches-grid {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, sans-serif;
+
+    // All text in the grid should be #222222
+    .ag-root-wrapper {
+      color: #222222;
+    }
+
+    // Header styling - BOLD and #222222
+    .ag-header {
+      background-color: #fafafa;
+      border-bottom: 1px solid #e0e0e0;
+      font-weight: 700 !important;
+
+      .ag-header-cell {
+        border-right: 1px solid #e0e0e0;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        color: #222222 !important;
+        font-weight: 700 !important;
+      }
+    }
+
+    // Row styling
+    .ag-row {
+      border-bottom: 1px solid #e0e0e0;
+      color: #222222;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+
+    .ag-cell {
+      display: flex;
+      align-items: center;
+      color: #222222 !important;
+      font-size: 13px;
+      line-height: 1.5;
+      border-right: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    // Checkbox styling
+    .ag-checkbox-input-wrapper {
+      width: 18px;
+      height: 18px;
+
+      &.ag-checked::after {
+        color: #1976d2;
+      }
+    }
+
+    // Custom Material Checkbox styling for AG Grid
+    .ag-cell[col-id="checkbox"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    .ag-header-cell[col-id="checkbox"] {
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    // Ensure Material checkbox is centered
+    app-checkbox-cell-renderer,
+    app-header-checkbox-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    // Status toggle styling
+    .ag-cell[col-id="status"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    app-status-toggle-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ::ng-deep {
+      .mat-slide-toggle-bar {
+        width: 53px;
+        height: 24px;
+        border-radius: 20px;
+        background-color: rgba(17, 84, 162, 0.3);
+      }
+      .mat-slide-toggle-thumb-container {
+        left: 11px;
+        top: 4px;
+      }
+      .mat-slide-toggle-thumb {
+        width: 15px;
+        height: 15px;
+        background-color: #1154a2;
+      }
+    }
+
+    // Floating Filter styling - #222222 text
+    .ag-floating-filter-body {
+      input {
+        color: #222222 !important;
+        font-size: 13px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+    }
+
+    .ag-floating-filter-button {
+      color: #222222 !important;
+    }
+
+    .ag-floating-filter-button-button {
+      color: #222222 !important;
+    }
+
+    // Filter Menu styling - ALL TEXT #222222
+    .ag-filter {
+      color: #222222 !important;
+
+      .ag-filter-body {
+        color: #222222 !important;
+      }
+
+      .ag-filter-condition {
+        color: #222222 !important;
+      }
+
+      input,
+      select,
+      textarea {
+        color: #222222 !important;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+
+      // Filter options text
+      .ag-select {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-wrapper {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-display {
+        color: #222222 !important;
+      }
+
+      // Date filter
+      .ag-filter-filter {
+        color: #222222 !important;
+      }
+
+      // Set filter checkboxes
+      .ag-set-filter-item {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-list {
+        color: #222222 !important;
+      }
+    }
+
+    // Filter buttons
+    .ag-filter-apply-panel {
+      button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #222222 !important;
+
+        &.ag-standard-button {
+          background-color: #1976d2;
+          color: white !important;
+          border: none;
+
+          &:hover {
+            background-color: #1565c0;
+          }
+        }
+
+        &.ag-standard-button:last-child {
+          background-color: transparent;
+          border: 1px solid #d0d0d0;
+          color: #222222 !important;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+        }
+      }
+    }
+
+    // Hide default AG Grid icons
+    .ag-header-icon {
+      display: none !important;
+    }
+
+    .ag-icon {
+      display: none !important;
+    }
+
+    // Custom header component styling
+    app-custom-header-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Material icon styling in headers
+    .ag-header-cell-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+
+      .mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        color: #222222 !important;
+        cursor: pointer;
+
+        &:hover {
+          color: #1976d2 !important;
+        }
+      }
+    }
+
+    // Ensure header cells have proper layout
+    .ag-header-cell {
+      .ag-header-cell-comp-wrapper {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    // Pagination styling
+    .ag-paging-panel {
+      border-top: 1px solid #e0e0e0;
+      padding: 16px 24px;
+      color: #222222 !important;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      background-color: white;
+
+      .ag-paging-button,
+      .ag-paging-description,
+      .ag-paging-page-summary-panel,
+      .ag-paging-row-summary-panel,
+      span {
+        color: #222222 !important;
+        font-size: 13px;
+      }
+
+      // Pagination buttons
+      .ag-paging-button {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0 4px;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Hide default AG Grid icons
+        .ag-icon {
+          display: none !important;
+        }
+
+        // Add Material icons using CSS content
+        &[ref="btFirst"]::before {
+          content: "first_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btPrevious"]::before {
+          content: "chevron_left";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btNext"]::before {
+          content: "chevron_right";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btLast"]::before {
+          content: "last_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &:hover:not(.ag-disabled) {
+          color: #1154a2;
+
+          &::before {
+            color: #1154a2;
+          }
+        }
+
+        &.ag-disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+
+          &::before {
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    // Actions column - center aligned
+    .ag-cell[col-id="actions"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+    }
+
+    // Action buttons
+    .action-btn {
+      &:hover svg {
+        opacity: 0.7;
+      }
+    }
+
+    // Remove default AG Grid borders and styling
+    .ag-cell-focus {
+      border: 1px solid #1976d2 !important;
+    }
+
+    .ag-cell-inline-editing {
+      border: 1px solid #1976d2 !important;
+    }
+
+    // Status column - center aligned (override previous flex-start)
+    .ag-cell[col-id="status"] {
+      justify-content: center !important;
+    }
+
+    // Availability column - space between with center alignment
+    .ag-cell[col-id="availability"] {
+      padding: 0 8px !important;
+
+      div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+
+  // Users Grid Styling (same as batches-grid)
+  .users-grid {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, sans-serif;
+
+    // All text in the grid should be #222222
+    .ag-root-wrapper {
+      color: #222222;
+    }
+
+    // Header styling - BOLD and #222222
+    .ag-header {
+      background-color: #fafafa;
+      border-bottom: 1px solid #e0e0e0;
+      font-weight: 700 !important;
+
+      .ag-header-cell {
+        border-right: 1px solid #e0e0e0;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        color: #222222 !important;
+        font-weight: 700 !important;
+      }
+    }
+
+    // Row styling
+    .ag-row {
+      border-bottom: 1px solid #e0e0e0;
+      color: #222222;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+
+    .ag-cell {
+      display: flex;
+      align-items: center;
+      color: #222222 !important;
+      font-size: 13px;
+      line-height: 1.5;
+      border-right: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    // Checkbox styling
+    .ag-checkbox-input-wrapper {
+      width: 18px;
+      height: 18px;
+
+      &.ag-checked::after {
+        color: #1976d2;
+      }
+    }
+
+    // Custom Material Checkbox styling for AG Grid
+    .ag-cell[col-id="checkbox"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    .ag-header-cell[col-id="checkbox"] {
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    // Ensure Material checkbox is centered
+    app-checkbox-cell-renderer,
+    app-header-checkbox-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    // Floating Filter styling - #222222 text
+    .ag-floating-filter-body {
+      input {
+        color: #222222 !important;
+        font-size: 13px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+    }
+
+    .ag-floating-filter-button {
+      color: #222222 !important;
+    }
+
+    .ag-floating-filter-button-button {
+      color: #222222 !important;
+    }
+
+    // Filter Menu styling - ALL TEXT #222222
+    .ag-filter {
+      color: #222222 !important;
+
+      .ag-filter-body {
+        color: #222222 !important;
+      }
+
+      .ag-filter-condition {
+        color: #222222 !important;
+      }
+
+      input,
+      select,
+      textarea {
+        color: #222222 !important;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+
+      // Filter options text
+      .ag-select {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-wrapper {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-display {
+        color: #222222 !important;
+      }
+
+      // Date filter
+      .ag-filter-filter {
+        color: #222222 !important;
+      }
+
+      // Set filter checkboxes
+      .ag-set-filter-item {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-list {
+        color: #222222 !important;
+      }
+    }
+
+    // Filter buttons
+    .ag-filter-apply-panel {
+      button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #222222 !important;
+
+        &.ag-standard-button {
+          background-color: #1976d2;
+          color: white !important;
+          border: none;
+
+          &:hover {
+            background-color: #1565c0;
+          }
+        }
+
+        &.ag-standard-button:last-child {
+          background-color: transparent;
+          border: 1px solid #d0d0d0;
+          color: #222222 !important;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+        }
+      }
+    }
+
+    // Hide default AG Grid icons
+    .ag-header-icon {
+      display: none !important;
+    }
+
+    .ag-icon {
+      display: none !important;
+    }
+
+    // Custom header component styling
+    app-custom-header-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Material icon styling in headers
+    .ag-header-cell-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+
+      .mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        color: #222222 !important;
+        cursor: pointer;
+
+        &:hover {
+          color: #1976d2 !important;
+        }
+      }
+    }
+
+    // Ensure header cells have proper layout
+    .ag-header-cell {
+      .ag-header-cell-comp-wrapper {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    // Pagination styling
+    .ag-paging-panel {
+      border-top: 1px solid #e0e0e0;
+      padding: 16px 24px;
+      color: #222222 !important;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      background-color: white;
+
+      .ag-paging-button,
+      .ag-paging-description,
+      .ag-paging-page-summary-panel,
+      .ag-paging-row-summary-panel,
+      span {
+        color: #222222 !important;
+        font-size: 13px;
+      }
+
+      // Pagination buttons
+      .ag-paging-button {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0 4px;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Hide default AG Grid icons
+        .ag-icon {
+          display: none !important;
+        }
+
+        // Add Material icons using CSS content
+        &[ref="btFirst"]::before {
+          content: "first_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btPrevious"]::before {
+          content: "chevron_left";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btNext"]::before {
+          content: "chevron_right";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btLast"]::before {
+          content: "last_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &:hover:not(.ag-disabled) {
+          color: #1154a2;
+
+          &::before {
+            color: #1154a2;
+          }
+        }
+
+        &.ag-disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+
+          &::before {
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    // Actions column - center aligned
+    .ag-cell[col-id="actions"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+    }
+
+    // Action buttons
+    .action-btn {
+      &:hover svg {
+        opacity: 0.7;
+      }
+    }
+
+    // Remove default AG Grid borders and styling
+    .ag-cell-focus {
+      border: 1px solid #1976d2 !important;
+    }
+
+    .ag-cell-inline-editing {
+      border: 1px solid #1976d2 !important;
+    }
+
+    // Role column - space between with center alignment
+    .ag-cell[col-id="role"] {
+      padding: 0 8px !important;
+
+      div {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+  }
+
+  // Banners Grid Styling
+  .banners-grid {
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+      Cantarell, sans-serif;
+
+    // All text in the grid should be #222222
+    .ag-root-wrapper {
+      color: #222222;
+    }
+
+    // Header styling - BOLD and #222222
+    .ag-header {
+      background-color: #fafafa;
+      border-bottom: 1px solid #e0e0e0;
+      font-weight: 700 !important;
+
+      .ag-header-cell {
+        border-right: 1px solid #e0e0e0;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        color: #222222 !important;
+        font-weight: 700 !important;
+      }
+    }
+
+    // Row styling
+    .ag-row {
+      border-bottom: 1px solid #e0e0e0;
+      color: #222222;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+
+    .ag-cell {
+      display: flex;
+      align-items: center;
+      color: #222222 !important;
+      font-size: 13px;
+      line-height: 1.5;
+      border-right: 1px solid #f0f0f0;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    // Status toggle styling
+    .ag-cell[col-id="status"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    app-status-toggle-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ::ng-deep {
+      .mat-slide-toggle-bar {
+        width: 53px;
+        height: 24px;
+        border-radius: 20px;
+        background-color: rgba(17, 84, 162, 0.3);
+      }
+      .mat-slide-toggle-thumb-container {
+        left: 11px;
+        top: 4px;
+      }
+      .mat-slide-toggle-thumb {
+        width: 15px;
+        height: 15px;
+        background-color: #1154a2;
+      }
+    }
+
+    // Floating Filter styling
+    .ag-floating-filter-body {
+      input {
+        color: #222222 !important;
+        font-size: 13px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &::placeholder {
+          color: #999;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+    }
+
+    .ag-floating-filter-button {
+      color: #222222 !important;
+    }
+
+    .ag-floating-filter-button-button {
+      color: #222222 !important;
+    }
+
+    // Filter Menu styling
+    .ag-filter {
+      color: #222222 !important;
+
+      .ag-filter-body {
+        color: #222222 !important;
+      }
+
+      .ag-filter-condition {
+        color: #222222 !important;
+      }
+
+      input,
+      select,
+      textarea {
+        color: #222222 !important;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+
+      .ag-select {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-wrapper {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-display {
+        color: #222222 !important;
+      }
+
+      .ag-filter-filter {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-item {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-list {
+        color: #222222 !important;
+      }
+    }
+
+    // Filter buttons
+    .ag-filter-apply-panel {
+      button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #222222 !important;
+
+        &.ag-standard-button {
+          background-color: #1976d2;
+          color: white !important;
+          border: none;
+
+          &:hover {
+            background-color: #1565c0;
+          }
+        }
+
+        &.ag-standard-button:last-child {
+          background-color: transparent;
+          border: 1px solid #d0d0d0;
+          color: #222222 !important;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+        }
+      }
+    }
+
+    // Hide default AG Grid icons
+    .ag-header-icon {
+      display: none !important;
+    }
+
+    .ag-icon {
+      display: none !important;
+    }
+
+    // Custom header component styling
+    app-custom-header-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Material icon styling in headers
+    .ag-header-cell-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+
+      .mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        color: #222222 !important;
+        cursor: pointer;
+
+        &:hover {
+          color: #1976d2 !important;
+        }
+      }
+    }
+
+    // Ensure header cells have proper layout
+    .ag-header-cell {
+      .ag-header-cell-comp-wrapper {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    // Pagination styling
+    .ag-paging-panel {
+      border-top: 1px solid #e0e0e0;
+      padding: 16px 24px;
+      color: #222222 !important;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      background-color: white;
+
+      .ag-paging-button,
+      .ag-paging-description,
+      .ag-paging-page-summary-panel,
+      .ag-paging-row-summary-panel,
+      span {
+        color: #222222 !important;
+        font-size: 13px;
+      }
+
+      // Pagination buttons
+      .ag-paging-button {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0 4px;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Hide default AG Grid icons
+        .ag-icon {
+          display: none !important;
+        }
+
+        // Add Material icons using CSS content
+        &[ref="btFirst"]::before {
+          content: "first_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btPrevious"]::before {
+          content: "chevron_left";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btNext"]::before {
+          content: "chevron_right";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &[ref="btLast"]::before {
+          content: "last_page";
+          font-family: "Material Icons";
+          font-size: 20px;
+          color: #222222;
+          display: flex;
+          align-items: center;
+        }
+
+        &:hover:not(.ag-disabled) {
+          color: #1154a2;
+
+          &::before {
+            color: #1154a2;
+          }
+        }
+
+        &.ag-disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+
+          &::before {
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    // Upload column - center aligned
+    .ag-cell[col-id="upload"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+    }
+
+    // Upload button styling
+    .upload-btn {
+      &:hover mat-icon {
+        color: #0d4280 !important;
+      }
+    }
+
+    // Remove default AG Grid borders and styling
+    .ag-cell-focus {
+      border: 1px solid #1976d2 !important;
+    }
+
+    .ag-cell-inline-editing {
+      border: 1px solid #1976d2 !important;
+    }
+
+    // Status column - center aligned
+    .ag-cell[col-id="status"] {
+      justify-content: center !important;
+    }
+  }
+
+  .coupons-grid {
+    font-family: "Roboto", sans-serif;
+    height: 100%;
+    width: 100%;
+
+    // Header styling
+    .ag-header {
+      background-color: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      font-weight: 500;
+      color: #222222;
+    }
+
+    .ag-header-cell {
+      padding: 0 12px;
+      border-right: none;
+    }
+
+    .ag-header-cell-text {
+      color: #222222 !important;
+      font-weight: 700 !important;
+      font-size: 13px;
+    }
+
+    .ag-header-cell-label {
+      justify-content: space-between !important;
+      color: #222222;
+      font-weight: 500;
+    }
+
+    // Custom header component styling
+    app-custom-header-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Use Material icons in header
+    .ag-header-icon {
+      font-family: "Material Icons";
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .ag-icon-menu::before {
+      content: "menu";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-filter::before {
+      content: "filter_list";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-asc::before {
+      content: "arrow_upward";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-desc::before {
+      content: "arrow_downward";
+      font-family: "Material Icons";
+    }
+
+    // Row styling
+    .ag-row {
+      border-bottom: 1px solid #e0e0e0;
+      color: #222222;
+    }
+
+    .ag-row-hover {
+      background-color: #f5f5f5 !important;
+    }
+
+    .ag-cell {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-right: none;
+      line-height: normal;
+    }
+
+    // Pagination styling
+    .ag-paging-panel {
+      border-top: 1px solid #e0e0e0;
+      padding: 12px 16px;
+      background-color: #fff;
+      color: #222222;
+
+      .ag-paging-button,
+      .ag-paging-description,
+      .ag-paging-page-summary-panel,
+      .ag-paging-row-summary-panel,
+      span {
+        color: #222222 !important;
+        font-size: 13px;
+      }
+    }
+
+    // Use Material icons in pagination
+    .ag-icon-first::before {
+      content: "first_page";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-previous::before {
+      content: "chevron_left";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-next::before {
+      content: "chevron_right";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-last::before {
+      content: "last_page";
+      font-family: "Material Icons";
+    }
+
+    // Filter styling
+    .ag-filter {
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      color: #222222 !important;
+
+      .ag-filter-body {
+        color: #222222 !important;
+      }
+
+      .ag-filter-condition {
+        color: #222222 !important;
+      }
+
+      input,
+      select,
+      textarea {
+        color: #222222 !important;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+
+      // Filter options text
+      .ag-select {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-wrapper {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-display {
+        color: #222222 !important;
+      }
+
+      // Date filter
+      .ag-filter-filter {
+        color: #222222 !important;
+      }
+
+      // Set filter checkboxes
+      .ag-set-filter-item {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-list {
+        color: #222222 !important;
+      }
+    }
+
+    .ag-filter-apply-panel {
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px;
+      border-top: 1px solid #e0e0e0;
+
+      button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #222222 !important;
+      }
+    }
+
+    // Action buttons styling
+    .action-btn {
+      mat-icon {
+        transition: color 0.2s;
+      }
+
+      &:hover mat-icon {
+        color: #0d4280 !important;
+      }
+    }
+
+    // Checkbox column styling
+    .ag-cell[col-id="checkbox"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    // Remove default AG Grid borders and styling
+    .ag-cell-focus {
+      border: 1px solid #1976d2 !important;
+    }
+
+    .ag-cell-inline-editing {
+      border: 1px solid #1976d2 !important;
+    }
+
+    // Status toggle styling
+    .ag-cell[col-id="status"] {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    app-status-toggle-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    ::ng-deep {
+      .mat-slide-toggle-bar {
+        width: 53px;
+        height: 24px;
+        border-radius: 20px;
+        background-color: rgba(17, 84, 162, 0.3);
+      }
+      .mat-slide-toggle-thumb-container {
+        left: 11px;
+        top: 4px;
+      }
+      .mat-slide-toggle-thumb {
+        width: 15px;
+        height: 15px;
+        background-color: #1154a2;
+      }
+    }
+
+    // Actions column - center aligned
+    .ag-cell[col-id="actions"] {
+      justify-content: center !important;
+    }
+  }
+
+  .leads-grid {
+    font-family: "Roboto", sans-serif;
+    height: 100%;
+    width: 100%;
+
+    // Header styling
+    .ag-header {
+      background-color: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      font-weight: 500;
+      color: #222222;
+    }
+
+    .ag-header-cell {
+      padding: 0 12px;
+      border-right: none;
+    }
+
+    .ag-header-cell-text {
+      color: #222222 !important;
+      font-weight: 700 !important;
+      font-size: 13px;
+    }
+
+    .ag-header-cell-label {
+      justify-content: space-between !important;
+      color: #222222;
+      font-weight: 500;
+    }
+
+    // Custom header component styling
+    app-custom-header-renderer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    // Row styling
+    .ag-row {
+      border-bottom: 1px solid #e0e0e0;
+      color: #222222;
+    }
+
+    .ag-row-hover {
+      background-color: #f5f5f5 !important;
+    }
+
+    .ag-cell {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-right: none;
+      line-height: normal;
+    }
+
+    // Pagination styling
+    .ag-paging-panel {
+      border-top: 1px solid #e0e0e0;
+      padding: 12px 16px;
+      background-color: #fff;
+      color: #222222;
+
+      .ag-paging-button,
+      .ag-paging-description,
+      .ag-paging-page-summary-panel,
+      .ag-paging-row-summary-panel,
+      span {
+        color: #222222 !important;
+        font-size: 13px;
+      }
+    }
+
+    // Use Material icons in pagination
+    .ag-icon-first::before {
+      content: "first_page";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-previous::before {
+      content: "chevron_left";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-next::before {
+      content: "chevron_right";
+      font-family: "Material Icons";
+    }
+
+    .ag-icon-last::before {
+      content: "last_page";
+      font-family: "Material Icons";
+    }
+
+    // Filter styling
+    .ag-filter {
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      color: #222222 !important;
+
+      .ag-filter-body {
+        color: #222222 !important;
+      }
+
+      .ag-filter-condition {
+        color: #222222 !important;
+      }
+
+      input,
+      select,
+      textarea {
+        color: #222222 !important;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        padding: 6px 8px;
+
+        &:focus {
+          outline: none;
+          border-color: #1976d2;
+        }
+      }
+
+      // Filter options text
+      .ag-select {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-wrapper {
+        color: #222222 !important;
+      }
+
+      .ag-picker-field-display {
+        color: #222222 !important;
+      }
+
+      // Date filter
+      .ag-filter-filter {
+        color: #222222 !important;
+      }
+
+      // Set filter checkboxes
+      .ag-set-filter-item {
+        color: #222222 !important;
+      }
+
+      .ag-set-filter-list {
+        color: #222222 !important;
+      }
+    }
+
+    .ag-filter-apply-panel {
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px;
+      border-top: 1px solid #e0e0e0;
+
+      button {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #222222 !important;
+      }
+    }
+
+    // Action buttons styling
+    .action-btn {
+      mat-icon {
+        transition: color 0.2s;
+      }
+
+      &:hover mat-icon {
+        color: #0d4280 !important;
+      }
+    }
+
+    // Checkbox column styling
+    .ag-cell[col-id="checkbox"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    // Remove default AG Grid borders and styling
+    .ag-cell-focus {
+      border: 1px solid #1976d2 !important;
+    }
+
+    .ag-cell-inline-editing {
+      border: 1px solid #1976d2 !important;
+    }
+
+    // Actions column - center aligned
+    .ag-cell[col-id="actions"] {
+      justify-content: center !important;
+    }
+
+    // Center aligned cells
+    .center-aligned-cell {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      text-align: center !important;
+    }
+  }
+
+  .mat-tab-list {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .ag-pinned-left-header {
+    border-right: none;
   }
 }
 
 // AG Grid Styles
-@import 'ag-grid-community/styles/ag-grid.css';
-@import 'ag-grid-community/styles/ag-theme-alpine.css';
-
-
-
-
-
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-alpine.css";

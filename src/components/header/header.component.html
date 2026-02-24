@@ -18,7 +18,7 @@
         <div *ngIf="!authService.isUserLoggedIn"  [routerLink]="'/login'" [routerLinkActive]="'is-active'">
             Sign Up/Login
         </div>
-        <div *ngIf="authService.isUserLoggedIn" class="initials">
+        <div *ngIf="authService.isUserLoggedIn" class="initials" [routerLink]="'/profile'" [routerLinkActive]="'is-active'">
             {{authService.userName | nameToInitials}}
         </div>
     </div>

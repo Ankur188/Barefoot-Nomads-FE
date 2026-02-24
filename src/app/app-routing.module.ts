@@ -13,6 +13,7 @@ import { LoginAuthGuard } from 'src/auth-guards/login.guard';
 import { AdminGuard } from 'src/auth-guards/admin.guard';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
+import { ProfileComponent } from 'src/components/profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: 'adventures', pathMatch: 'full', component: AdventuresComponent },
   { path: 'admin', pathMatch: 'full', component: AdminPanelComponent, canActivate: [AdminGuard] },
+  { path: 'profile', pathMatch: 'full', component: ProfileComponent, canActivate: [LoginAuthGuard] },
   { path: '**', component: HomeComponent },
 ];
 

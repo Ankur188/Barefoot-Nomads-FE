@@ -1,0 +1,312 @@
+@import "../../styles.scss";
+
+// Prevent page scroll on profile page
+:host {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 28.3rem);
+  overflow: hidden;
+}
+
+.profile-container {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 0;
+  margin-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  // Greeting Section
+  .greeting-section {
+    background-color: white;
+    padding: 2rem 12rem;
+    margin-bottom: 0;
+    flex-shrink: 0;
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #222222;
+      margin: 0 0 1rem 0;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #666666;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+
+  // Tabs Styling
+  .profile-tabs {
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 2rem 12rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  // Tab Content
+  .tab-content {
+    background-color: white;
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    min-height: 0;
+    box-sizing: border-box;
+  }
+
+  // Section Header with Action Buttons
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    p {
+      font-size: 0.875rem;
+      color: #666666;
+      margin: 0;
+      flex: 1;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-left: 2rem;
+
+      button {
+        padding: 0.5rem 2rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+        min-width: 100px;
+
+        &.edit-btn {
+          background-color: #f5f5f5;
+          color: #222222;
+          border: 1px solid #d0d0d0;
+
+          &:hover {
+            background-color: #e0e0e0;
+          }
+        }
+
+        &.cancel-btn {
+          background-color: white;
+          color: #666666;
+          border: 1px solid #d0d0d0;
+
+          &:hover {
+            background-color: #f5f5f5;
+            border-color: #999;
+          }
+        }
+
+        &.save-btn {
+          background-color: #9BB5CE;
+          color: white;
+
+          &:hover {
+            background-color: #7A9AB8;
+          }
+        }
+      }
+    }
+  }
+
+  // Profile Form
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #222222;
+
+        .required {
+          color: #ff4444;
+          margin-left: 2px;
+        }
+      }
+
+      .display-value {
+        font-size: 0.875rem;
+        color: #222222;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 0.75rem;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        color: #222222;
+        outline: none;
+        transition: border-color 0.2s;
+        background-color: white;
+
+        &::placeholder {
+          color: #d0d0d0;
+        }
+
+        &:focus:not(:disabled) {
+          border-color: #9BB5CE;
+        }
+
+        &:disabled {
+          background-color: #f5f5f5;
+          cursor: not-allowed;
+          color: #999999;
+        }
+
+        &.disabled-field {
+          background-color: #e0e0e0;
+          cursor: not-allowed;
+          color: #666666;
+        }
+
+        &.error {
+          border-color: #ff4444;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+        font-family: inherit;
+      }
+
+      select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23222222' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        padding-right: 2.5rem;
+
+        &:disabled {
+          cursor: not-allowed;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999999' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        }
+      }
+
+      .error-message {
+        font-size: 0.75rem;
+        color: #ff4444;
+        margin-top: -0.25rem;
+      }
+    }
+  }
+
+  // Coming Soon
+  .coming-soon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    
+    p {
+      font-size: 1.25rem;
+      color: #999999;
+    }
+  }
+}
+
+// Material Tab Overrides
+::ng-deep {
+  .profile-tabs {
+    .mat-tab-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #666666;
+      opacity: 1 !important;
+      min-width: 120px;
+
+      &.mat-tab-label-active {
+        color: #222222;
+      }
+    }
+
+    .mat-ink-bar {
+      background-color: #222222;
+      height: 3px;
+    }
+
+    .mat-tab-body-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .mat-tab-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .mat-tab-body-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      height: 100%;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .profile-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .action-buttons {
+      margin-left: 0;
+      width: 100%;
+      
+      button {
+        flex: 1;
+      }
+    }
+  }
+}
