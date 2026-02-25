@@ -86,4 +86,10 @@ export class AdminService {
       batchData
     );
   }
+
+  deleteBatch(batchId: string): Observable<any> {
+    return this.http.delete(
+      environment.production ? `/api/admin/batches/${batchId}` : `${environment.apiURL}admin/batches/${batchId}`
+    );
+  }
 }

@@ -1491,7 +1491,24 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         }
       } else if (action === 'delete') {
         console.log('Delete batch clicked for:', event.data);
-        // Handle delete action
+        const batchId = event.data.id || event.data.batchId;
+        const batchName = event.data.batchName;
+        
+        if (batchId && confirm(`Are you sure you want to delete batch "${batchName}"?`)) {
+          this.adminService.deleteBatch(batchId).subscribe({
+            next: (response) => {
+              if (response && response.success) {
+                console.log('Batch deleted successfully');
+                // Reload the batches data to reflect the deletion
+                this.loadBatchesData(this.batchesCurrentPage);
+              }
+            },
+            error: (error) => {
+              console.error('Error deleting batch:', error);
+              alert(error.error?.error || 'Failed to delete batch. Please try again.');
+            }
+          });
+        }
       }
     }
   }
