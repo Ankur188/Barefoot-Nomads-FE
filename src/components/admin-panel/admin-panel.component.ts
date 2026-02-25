@@ -1774,7 +1774,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.action === 'save') {
       console.log('Form submitted with data:', event.data);
       this.handleEntitySave(this.currentEntityType, event.data);
-      this.closeEntityForm(this.currentEntityType);
     } else if (event.action === 'cancel') {
       this.closeEntityForm(this.currentEntityType);
     }
@@ -1801,10 +1800,13 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             console.log('Trip created successfully:', response);
             // Reload trips data to show the new trip
             this.loadTripsData(1);
+            // Close form only on success
+            this.closeEntityForm(entityType);
           },
           error: (error) => {
             console.error('Error creating trip:', error);
             // TODO: Show error message to user
+            // Form stays open on error
           }
         });
         break;

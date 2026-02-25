@@ -208,6 +208,10 @@
         select {
           cursor: pointer;
           background: white;
+
+          option {
+            color: #333;
+          }
         }
 
         .error-message {

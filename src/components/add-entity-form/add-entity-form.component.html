@@ -118,6 +118,40 @@
           </span>
         </div>
 
+        <!-- Destinations Field -->
+        <div class="form-group">
+          <label for="destinations">Destinations<span class="required">*</span></label>
+          <input
+            id="destinations"
+            type="text"
+            formControlName="destinations"
+            placeholder="Enter destinations"
+            [class.error]="shouldShowError('destinations')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('destinations')">
+            {{ getFieldError("destinations") }}
+          </span>
+        </div>
+
+        <!-- Physical Rating Field -->
+        <div class="form-group">
+          <label for="physicalRating">Physical Rating<span class="required">*</span></label>
+          <select
+            id="physicalRating"
+            formControlName="physicalRating"
+            [class.error]="shouldShowError('physicalRating')"
+          >
+            <option value="" disabled selected>Select rating</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <span class="error-message" *ngIf="shouldShowError('physicalRating')">
+            {{ getFieldError("physicalRating") }}
+          </span>
+        </div>
+
         <!-- Row 2-3, Col 2: Days/Heading/Description (spans 2 rows) -->
         <div class="form-group grid-item-r2-c2-span">
           <div class="days-selector">

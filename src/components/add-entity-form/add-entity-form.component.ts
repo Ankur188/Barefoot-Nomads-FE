@@ -183,6 +183,8 @@ export class AddEntityFormComponent implements OnInit {
           numberOfDays: [1, [Validators.required, Validators.min(1)]],
           days: ['', [Validators.required, Validators.min(1)]],
           nights: ['', [Validators.required, Validators.min(1)]],
+          destinations: ['', Validators.required],
+          physicalRating: ['', Validators.required],
           daysForms: this.fb.array([this.createDayFormGroup()]), // FormArray for day-specific data
           images: this.fb.array([])
         });
@@ -409,6 +411,8 @@ export class AddEntityFormComponent implements OnInit {
       formData.append('numberOfDays', this.entityForm.value.numberOfDays.toString());
       formData.append('days', this.entityForm.value.days.toString());
       formData.append('nights', this.entityForm.value.nights.toString());
+      formData.append('destinations', this.entityForm.value.destinations);
+      formData.append('physicalRating', this.entityForm.value.physicalRating.toString());
 
       // Transform days array to the required format
       const daysArray = this.entityForm.value.daysForms;
