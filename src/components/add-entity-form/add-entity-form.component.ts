@@ -488,11 +488,17 @@ export class AddEntityFormComponent implements OnInit {
       
       // Convert dates to timestamps
       if (formData.startDate) {
-        formData.startDate = new Date(formData.startDate).getTime();
+        formData.startDate = new Date(formData.startDate).getTime() / 1000;
       }
       if (formData.endDate) {
-        formData.endDate = new Date(formData.endDate).getTime();
+        formData.endDate = new Date(formData.endDate).getTime() / 1000;
       }
+      
+      // Add createdAt timestamp (current date in seconds)
+      formData.createdAt = Math.floor(new Date().getTime() / 1000);
+      
+      // Add status as true (active by default)
+      formData.status = true;
       
       return formData;
     } else if (this.entityType === 'coupons') {
@@ -501,10 +507,10 @@ export class AddEntityFormComponent implements OnInit {
       
       // Convert dates to timestamps
       if (formData.startDate) {
-        formData.startDate = new Date(formData.startDate).getTime();
+        formData.startDate = new Date(formData.startDate).getTime() / 1000;
       }
       if (formData.endDate) {
-        formData.endDate = new Date(formData.endDate).getTime();
+        formData.endDate = new Date(formData.endDate).getTime() / 1000;
       }
       
       return formData;
@@ -514,7 +520,7 @@ export class AddEntityFormComponent implements OnInit {
       
       // Convert trip date to timestamp
       if (formData.tripDate) {
-        formData.tripDate = new Date(formData.tripDate).getTime();
+        formData.tripDate = new Date(formData.tripDate).getTime() / 1000;
       }
       
       return formData;

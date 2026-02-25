@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     console.log(this.signUpform.value);
     let postData = this.signUpform.getRawValue();
     postData['role'] = 'user';
-    postData['createdAt'] = new Date().getTime();
+    postData['createdAt'] = Math.floor(new Date().getTime() / 1000);
     this.authService.signUpUser(postData).subscribe((data) => {
       if (data) {
         localStorage.setItem('isUserLoggedIn', 'true');

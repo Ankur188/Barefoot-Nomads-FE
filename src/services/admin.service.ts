@@ -66,4 +66,11 @@ export class AdminService {
       tripData
     );
   }
+
+  createBatch(batchData: any): Observable<any> {
+    return this.http.post(
+      environment.production ? '/api/admin/batches' : `${environment.apiURL}admin/batches`,
+      batchData
+    );
+  }
 }

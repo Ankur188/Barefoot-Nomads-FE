@@ -1195,11 +1195,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             currentDate.setHours(0, 0, 0, 0); // Reset time for date-only comparison
             
             if (batch.from_date && batch.to_date) {
-              const fromDate = new Date(batch.from_date);
+              const fromDate = new Date(batch.from_date * 1000);
               fromDate.setHours(0, 0, 0, 0);
-              const toDate = new Date(batch.to_date);
+              const toDate = new Date(batch.to_date * 1000);
               toDate.setHours(0, 0, 0, 0);
-              
+
               if (currentDate < fromDate) {
                 tripProgress = 'Upcoming';
               } else if (currentDate >= fromDate && currentDate <= toDate) {
@@ -1823,6 +1823,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       case 'batches':
         // Call API to create batch
         console.log('Creating batch:', data);
+        this.adminService.createBatch(data).subscribe({
+          next: (response) => {
+            console.log('Batch created successfully:', response);
+            // Reload batches data to show the new batch
+            this.loadBatchesData(1);
+            // Close form only on success
+            this.closeEntityForm(entityType);
+          },
+          error: (error) => {
+            console.error('Error creating batch:', error);
+            // TODO: Show error message to user
+            // Form stays open on error
+          }
+        });
         break;
       case 'users':
         // Call API to create user
