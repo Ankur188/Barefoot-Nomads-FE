@@ -291,6 +291,32 @@ export class AddEntityFormComponent implements OnInit {
           console.error('Error parsing itinerary data:', e);
         }
       }
+    } else if (this.entityType === 'batches' && data) {
+      // Handle batch-specific data
+      // Convert timestamps to date strings for input fields
+      const startDate = data.from_date ? this.formatDateForInput(new Date(data.from_date * 1000)) : '';
+      const endDate = data.to_date ? this.formatDateForInput(new Date(data.to_date * 1000)) : '';
+      
+      this.entityForm.patchValue({
+        batchName: data.batch_name || '',
+        assignedTrip: data.trip_id || '',
+        startDate: startDate,
+        endDate: endDate,
+        standardPrice: data.price || 0,
+        singleRoom: data.single_room || 0,
+        doubleRoom: data.double_room || 0,
+        tripleRoom: data.triple_room || 0,
+        tax: data.tax || 0,
+        maxAdventurers: data.max_adventurers || 0
+      });
+
+      // Set selected trip if trip data is available
+      if (data.trip_id && data.destination_name) {
+        this.selectedTrip = {
+          id: data.trip_id,
+          destination_name: data.destination_name
+        };
+      }
     } else {
       // For other entity types, use simple patch
       this.entityForm.patchValue(data);
@@ -494,8 +520,15 @@ export class AddEntityFormComponent implements OnInit {
         formData.endDate = new Date(formData.endDate).getTime() / 1000;
       }
       
-      // Add createdAt timestamp (current date in seconds)
-      formData.createdAt = Math.floor(new Date().getTime() / 1000);
+      // Add createdAt timestamp only for new batches (add mode)
+      if (this.mode === 'add') {
+        formData.createdAt = Math.floor(new Date().getTime() / 1000);
+      }
+      
+      // Add batch ID if in edit mode
+      if (this.mode === 'edit' && this.data && this.data.id) {
+        formData.id = this.data.id;
+      }
       
       // Add status as true (active by default)
       formData.status = true;

@@ -93,6 +93,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   // Edit mode tracking
   tripsFormMode: 'add' | 'edit' = 'add';
   editTripData: any = null;
+  batchesFormMode: 'add' | 'edit' = 'add';
+  editBatchData: any = null;
   tripsCurrentPage = 1;
   tripsPageSize = 20;
   tripsTotalCount = 0;
@@ -493,13 +495,23 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       filter: false,
       resizable: false,
       cellRenderer: (params: any) => {
+        const tripProgress = params.data.tripProgress;
+        const hasUsers = params.data.hasUsers;
+        const hideButtons = tripProgress === 'In Progress' || tripProgress === 'Completed';
+        
+        if (hideButtons) {
+          return '<div style="display: flex; gap: 8px; align-items: center;"></div>';
+        }
+        
+        const deleteButton = hasUsers ? '' : `
+          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
+          </button>`;
+        
         return `<div style="display: flex; gap: 8px; align-items: center;">
           <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
             <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
-          </button>
-          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
-            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
-          </button>
+          </button>${deleteButton}
         </div>`;
       }
     }
@@ -1210,6 +1222,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             }
             
             return {
+              id: batch.id || '',
               batchName: batch.batch_name || '',
               assignedTrip: batch.destination_name || batch.tripName || '',
               startDate: batch.from_date ? new Date(batch.from_date * 1000).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
@@ -1223,7 +1236,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
               tripProgress: tripProgress,
               count: batch.max_adventurers|| 0,
               availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
-              status: batch.status ? 'active' : 'inactive'
+              status: batch.status ? 'active' : 'inactive',
+              hasUsers: batch.users && batch.users.length > 0
             };
           });
           
@@ -1458,7 +1472,23 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
         console.log('Edit batch clicked for:', event.data);
-        // Handle edit action
+        // Get the batch ID from the row data
+        const batchId = event.data.id || event.data.batchId;
+        if (batchId) {
+          this.adminService.getBatchById(batchId).subscribe({
+            next: (response) => {
+              if (response && response.success && response.batch) {
+                this.currentEntityType = 'batches';
+                this.editBatchData = response.batch;
+                this.batchesFormMode = 'edit';
+                this.showBatchesForm = true;
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching batch details:', error);
+            }
+          });
+        }
       } else if (action === 'delete') {
         console.log('Delete batch clicked for:', event.data);
         // Handle delete action
@@ -1734,6 +1764,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (entityType === 'trips') {
       this.tripsFormMode = 'add';
       this.editTripData = null;
+    } else if (entityType === 'batches') {
+      this.batchesFormMode = 'add';
+      this.editBatchData = null;
     }
     
     switch(entityType) {
@@ -1766,6 +1799,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'batches':
         this.showBatchesForm = false;
+        // Reset edit mode
+        this.batchesFormMode = 'add';
+        this.editBatchData = null;
         break;
       case 'users':
         this.showUsersForm = false;
@@ -1821,22 +1857,43 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         });
         break;
       case 'batches':
-        // Call API to create batch
-        console.log('Creating batch:', data);
-        this.adminService.createBatch(data).subscribe({
-          next: (response) => {
-            console.log('Batch created successfully:', response);
-            // Reload batches data to show the new batch
-            this.loadBatchesData(1);
-            // Close form only on success
-            this.closeEntityForm(entityType);
-          },
-          error: (error) => {
-            console.error('Error creating batch:', error);
-            // TODO: Show error message to user
-            // Form stays open on error
-          }
-        });
+        // Check if we're in edit or add mode
+        if (this.batchesFormMode === 'edit' && data.id) {
+          console.log('Updating batch:', data);
+          const batchId = data.id;
+          // Remove id from data as it's passed as URL parameter
+          const { id, ...updateData } = data;
+          this.adminService.updateBatch(batchId, updateData).subscribe({
+            next: (response) => {
+              console.log('Batch updated successfully:', response);
+              // Reload batches data to show the updated batch
+              this.loadBatchesData(this.batchesCurrentPage);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error updating batch:', error);
+              // TODO: Show error message to user
+              // Form stays open on error
+            }
+          });
+        } else {
+          console.log('Creating batch:', data);
+          this.adminService.createBatch(data).subscribe({
+            next: (response) => {
+              console.log('Batch created successfully:', response);
+              // Reload batches data to show the new batch
+              this.loadBatchesData(1);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error creating batch:', error);
+              // TODO: Show error message to user
+              // Form stays open on error
+            }
+          });
+        }
         break;
       case 'users':
         // Call API to create user
@@ -1859,6 +1916,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     this.adminService.getTripById(tripData.id).subscribe({
       next: (response) => {
         console.log('Trip details fetched:', response);
+        this.currentEntityType = 'trips';
         this.editTripData = response.trip;
         this.tripsFormMode = 'edit';
         this.showTripsForm = true;

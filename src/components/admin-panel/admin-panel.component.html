@@ -103,7 +103,8 @@
         <app-add-entity-form 
           *ngIf="showBatchesForm"
           [entityType]="'batches'"
-          [mode]="'add'"
+          [mode]="batchesFormMode"
+          [data]="editBatchData"
           (formSubmit)="onFormSubmit($event)"
         ></app-add-entity-form>
         

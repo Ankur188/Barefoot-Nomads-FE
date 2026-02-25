@@ -40,6 +40,12 @@ export class AdminService {
     );
   }
 
+  getBatchById(batchId: string): Observable<any> {
+    return this.http.get(
+      environment.production ? `/api/admin/batches/${batchId}` : `${environment.apiURL}admin/batches/${batchId}`
+    );
+  }
+
   getUsers(page: number = 1, limit: number = 20): Observable<any> {
     return this.http.get(
       environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`,
@@ -70,6 +76,13 @@ export class AdminService {
   createBatch(batchData: any): Observable<any> {
     return this.http.post(
       environment.production ? '/api/admin/batches' : `${environment.apiURL}admin/batches`,
+      batchData
+    );
+  }
+
+  updateBatch(batchId: string, batchData: any): Observable<any> {
+    return this.http.put(
+      environment.production ? `/api/admin/batches/${batchId}` : `${environment.apiURL}admin/batches/${batchId}`,
       batchData
     );
   }
