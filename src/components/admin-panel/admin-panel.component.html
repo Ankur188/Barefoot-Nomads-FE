@@ -18,7 +18,8 @@
         <app-add-entity-form 
           *ngIf="showTripsForm"
           [entityType]="'trips'"
-          [mode]="'add'"
+          [mode]="tripsFormMode"
+          [data]="editTripData"
           (formSubmit)="onFormSubmit($event)"
         ></app-add-entity-form>
         

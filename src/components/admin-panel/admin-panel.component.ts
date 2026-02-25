@@ -89,6 +89,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   showCouponsForm = false;
   showLeadsForm = false;
   currentEntityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' = 'trips';
+  
+  // Edit mode tracking
+  tripsFormMode: 'add' | 'edit' = 'add';
+  editTripData: any = null;
   tripsCurrentPage = 1;
   tripsPageSize = 20;
   tripsTotalCount = 0;
@@ -257,9 +261,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         return `<div style="display: flex; gap: 8px; align-items: center;">
           <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
             <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
-          </button>
-          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
-            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
           </button>
         </div>`;
       }
@@ -1115,6 +1116,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           this.tripsTotalPages = response.totalPages || 0;
           
           this.rowData = response.trips.map((trip: any) => ({
+            id: trip.id,
             name: trip.destination_name || '',
             startDate: this.formatDate(trip.from_month),
             endDate: this.formatDate(trip.to_month),
@@ -1371,7 +1373,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
         console.log('Edit clicked for:', event.data);
-        // Handle edit action
+        this.handleEditTrip(event.data);
       } else if (action === 'delete') {
         console.log('Delete clicked for:', event.data);
         // Handle delete action
@@ -1728,6 +1730,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   // Toggle form visibility
   openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
     this.currentEntityType = entityType;
+    // Reset to add mode when opening form via add button
+    if (entityType === 'trips') {
+      this.tripsFormMode = 'add';
+      this.editTripData = null;
+    }
     
     switch(entityType) {
       case 'trips':
@@ -1753,6 +1760,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     switch(entityType) {
       case 'trips':
         this.showTripsForm = false;
+        // Reset edit mode
+        this.tripsFormMode = 'add';
+        this.editTripData = null;
         break;
       case 'batches':
         this.showBatchesForm = false;
@@ -1827,5 +1837,23 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         console.log('Creating lead:', data);
         break;
     }
+  }
+
+  // Handle edit trip
+  private handleEditTrip(tripData: any) {
+    // Fetch full trip details by ID
+    this.adminService.getTripById(tripData.id).subscribe({
+      next: (response) => {
+        console.log('Trip details fetched:', response);
+        this.editTripData = response.trip;
+        this.tripsFormMode = 'edit';
+        this.showTripsForm = true;
+      },
+      error: (error) => {
+        console.error('Error fetching trip details:', error);
+        const errorMessage = error.error?.error || 'Failed to fetch trip details. Please try again.';
+        alert(errorMessage);
+      }
+    });
   }
 }

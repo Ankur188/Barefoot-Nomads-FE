@@ -247,7 +247,54 @@ export class AddEntityFormComponent implements OnInit {
   }
 
   patchFormData(data: any): void {
-    this.entityForm.patchValue(data);
+    if (this.entityType === 'trips' && data) {
+      // Handle trip-specific data
+      this.entityForm.patchValue({
+        name: data.destination_name,
+        description: data.description,
+        days: data.days,
+        nights: data.nights,
+        destinations: data.desitnations, // Note: API uses 'desitnations' (typo in DB)
+        physicalRating: data.physical_rating?.toString()
+      });
+
+      // Parse and populate itinerary days if available
+      if (data.itinerary) {
+        try {
+          const itineraryData = typeof data.itinerary === 'string' 
+            ? JSON.parse(data.itinerary) 
+            : data.itinerary;
+          
+          if (typeof itineraryData === 'object' && !Array.isArray(itineraryData)) {
+            const dayNumbers = Object.keys(itineraryData).map(k => parseInt(k)).filter(n => !isNaN(n));
+            if (dayNumbers.length > 0) {
+              const maxDay = Math.max(...dayNumbers);
+              this.numberOfDays = maxDay;
+              this.entityForm.patchValue({ numberOfDays: maxDay });
+              
+              // Clear existing days array
+              while (this.daysArray.length > 0) {
+                this.daysArray.removeAt(0);
+              }
+              
+              // Add new days
+              for (let i = 1; i <= maxDay; i++) {
+                const dayData = itineraryData[i.toString()];
+                this.daysArray.push(this.fb.group({
+                  heading: [dayData?.title || '', Validators.required],
+                  description: [dayData?.content || '', Validators.required]
+                }));
+              }
+            }
+          }
+        } catch (e) {
+          console.error('Error parsing itinerary data:', e);
+        }
+      }
+    } else {
+      // For other entity types, use simple patch
+      this.entityForm.patchValue(data);
+    }
   }
 
   get formTitle(): string {

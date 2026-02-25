@@ -34,6 +34,12 @@ export class AdminService {
     );
   }
 
+  getTripById(tripId: string): Observable<any> {
+    return this.http.get(
+      environment.production ? `/api/admin/trips/${tripId}` : `${environment.apiURL}admin/trips/${tripId}`
+    );
+  }
+
   getUsers(page: number = 1, limit: number = 20): Observable<any> {
     return this.http.get(
       environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`,
