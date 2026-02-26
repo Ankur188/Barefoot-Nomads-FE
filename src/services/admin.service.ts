@@ -99,4 +99,11 @@ export class AdminService {
       environment.production ? `/api/admin/batches/${batchId}` : `${environment.apiURL}admin/batches/${batchId}`
     );
   }
+
+  createUser(userData: any): Observable<any> {
+    return this.http.post(
+      environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`,
+      userData
+    );
+  }
 }

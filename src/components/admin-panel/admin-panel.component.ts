@@ -34,11 +34,13 @@ interface Batch {
 }
 
 interface User {
+  id?: string;
   name: string;
   email: string;
   associatedTrips: string;
   phoneNumber: string;
   role: string;
+  hasTrips?: boolean;
 }
 
 interface Banner {
@@ -637,6 +639,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       filter: false,
       resizable: false,
       cellRenderer: (params: any) => {
+        // Only show delete button if user has no associated trips
+        if (params.data.hasTrips) {
+          return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+            <span style="color: #999;">—</span>
+          </div>`;
+        }
         return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
           <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
             <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
@@ -1318,22 +1326,30 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           this.usersRowData = response.users.map((user: any) => {
             // Format associated trips
             let associatedTrips = '—';
+            let hasTrips = false;
             if (user.trips && Array.isArray(user.trips) && user.trips.length > 0) {
-              // Remove duplicates and get unique trip names
-              const uniqueTrips = [...new Set(user.trips)] as string[];
-              if (uniqueTrips.length === 1) {
-                associatedTrips = uniqueTrips[0];
-              } else if (uniqueTrips.length > 1) {
-                associatedTrips = `${uniqueTrips[0]} +${String(uniqueTrips.length - 1).padStart(2, '0')}`;
+              // Filter out null values
+              const validTrips = user.trips.filter((trip: any) => trip !== null);
+              if (validTrips.length > 0) {
+                hasTrips = true;
+                // Remove duplicates and get unique trip names
+                const uniqueTrips = [...new Set(validTrips)] as string[];
+                if (uniqueTrips.length === 1) {
+                  associatedTrips = uniqueTrips[0];
+                } else if (uniqueTrips.length > 1) {
+                  associatedTrips = `${uniqueTrips[0]} +${String(uniqueTrips.length - 1).padStart(2, '0')}`;
+                }
               }
             }
             
             return {
+              id: user.id,
               name: user.name || '',
               email: user.email || '',
               associatedTrips: associatedTrips,
               phoneNumber: user.phone_number ? String(user.phone_number) : '',
-              role: user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase() : 'User'
+              role: user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase() : 'User',
+              hasTrips: hasTrips
             };
           });
           
@@ -1969,6 +1985,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       case 'users':
         // Call API to create user
         console.log('Creating user:', data);
+        this.adminService.createUser(data).subscribe({
+          next: (response) => {
+            console.log('User created successfully:', response);
+            // Reload users data to show the new user
+            this.loadUsersData(1);
+            // Close form only on success
+            this.closeEntityForm(entityType);
+          },
+          error: (error) => {
+            console.error('Error creating user:', error);
+            // TODO: Show error message to user
+            // Form stays open on error
+          }
+        });
         break;
       case 'coupons':
         // Call API to create coupon
