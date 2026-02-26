@@ -82,6 +82,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private leadsGridApi!: GridApi;
   selectedRowCount = 0;
   
+  // Grid contexts for cell renderers
+  tripsGridContext: any;
+  batchesGridContext: any;
+  
   // Form visibility flags
   showTripsForm = false;
   showBatchesForm = false;
@@ -1109,7 +1113,17 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   constructor(
     private staticService: StaticService,
     private adminService: AdminService
-  ) { }
+  ) {
+    // Initialize grid contexts
+    this.tripsGridContext = {
+      componentParent: this,
+      updateStatus: this.updateTripStatus
+    };
+    this.batchesGridContext = {
+      componentParent: this,
+      updateStatus: this.updateBatchStatus
+    };
+  }
 
   ngOnInit(): void {
     // Prevent body scroll
@@ -1249,6 +1263,46 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error fetching batches:', error);
+      }
+    });
+  }
+
+  updateTripStatus = (rowData: any, newStatus: string) => {
+    console.log('Updating trip status:', rowData, newStatus);
+    // Convert string status to boolean for backend
+    const statusBoolean = newStatus === 'active';
+    this.adminService.updateTrip(rowData.id, { status: statusBoolean }).subscribe({
+      next: (response) => {
+        console.log('Trip status updated successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error updating trip status:', error);
+        // Revert the status change in the grid on error
+        const node = this.gridApi.getRowNode(rowData.id);
+        if (node) {
+          const revertedStatus = newStatus === 'active' ? 'inactive' : 'active';
+          node.setDataValue('status', revertedStatus);
+        }
+      }
+    });
+  }
+
+  updateBatchStatus = (rowData: any, newStatus: string) => {
+    console.log('Updating batch status:', rowData, newStatus);
+    // Convert string status to boolean for backend
+    const statusBoolean = newStatus === 'active';
+    this.adminService.updateBatch(rowData.id, { status: statusBoolean }).subscribe({
+      next: (response) => {
+        console.log('Batch status updated successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error updating batch status:', error);
+        // Revert the status change in the grid on error
+        const node = this.batchesGridApi.getRowNode(rowData.id);
+        if (node) {
+          const revertedStatus = newStatus === 'active' ? 'inactive' : 'active';
+          node.setDataValue('status', revertedStatus);
+        }
       }
     });
   }

@@ -334,16 +334,16 @@ export class AddEntityFormComponent implements OnInit {
     const files: FileList = event.target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        if (this.uploadedImages.length < 8) {
+        const totalImages = this.uploadedImages.length + this.imagesArray.length;
+        if (totalImages < 8) {
           this.uploadedImages.push(files[i]);
-          this.imagesArray.push(this.fb.control(files[i].name));
         }
       }
     }
   }
 
   removeImage(index: number): void {
-    this.uploadedImages.splice(index, 1);
+      this.uploadedImages.splice(index, 1);
     this.imagesArray.removeAt(index);
   }
 
@@ -506,6 +506,9 @@ export class AddEntityFormComponent implements OnInit {
       this.uploadedImages.forEach((image, index) => {
         formData.append(`images`, image);
       });
+
+      // Add the number of images uploaded
+      formData.append('imageCount', this.uploadedImages.length.toString());
 
       return formData;
     } else if (this.entityType === 'batches') {

@@ -76,17 +76,19 @@ export class StatusToggleRendererComponent implements ICellRendererAngularComp {
 
   onToggleChange(event: any): void {
     const newStatus = event.checked;
+    const newStatusValue = newStatus ? 'active' : 'inactive';
     
     // Update the data in AG Grid
-    this.params.node.setDataValue(this.params.column?.getColId() || 'status', newStatus);
+    this.params.node.setDataValue(this.params.column?.getColId() || 'status', newStatusValue);
     
-    // Optional: Call an API or service to persist the change
     console.log('Status changed:', {
       rowData: this.params.data,
-      newStatus: newStatus
+      newStatus: newStatusValue
     });
     
-    // You can emit an event or call a service here
-    // For example: this.statusService.updateStatus(this.params.data.id, newStatus);
+    // Call the update function from context if provided
+    if (this.params.context && this.params.context.updateStatus) {
+      this.params.context.updateStatus(this.params.data, newStatusValue);
+    }
   }
 }

@@ -80,6 +80,13 @@ export class AdminService {
     );
   }
 
+  updateTrip(tripId: string, tripData: any): Observable<any> {
+    return this.http.put(
+      environment.production ? `/api/admin/trips/${tripId}` : `${environment.apiURL}admin/trips/${tripId}`,
+      tripData
+    );
+  }
+
   updateBatch(batchId: string, batchData: any): Observable<any> {
     return this.http.put(
       environment.production ? `/api/admin/batches/${batchId}` : `${environment.apiURL}admin/batches/${batchId}`,
