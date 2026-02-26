@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ColDef, GridReadyEvent, GridApi, IDateFilterParams } from 'ag-grid-community';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer.component';
 import { HeaderCheckboxRendererComponent } from './header-checkbox-renderer.component';
@@ -44,6 +44,7 @@ interface User {
 }
 
 interface Banner {
+  id?: string;
   bannerName: string;
   description: string;
   status: 'active' | 'inactive';
@@ -126,6 +127,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   bannersTotalPages = 0;
   allBannersData: any[] = [];
   leadsSelectedRowCount = 0;
+
+  // File input for banner image upload
+  @ViewChild('bannerImageInput') bannerImageInput!: ElementRef<HTMLInputElement>;
+  selectedBannerId: string | null = null;
 
   // Column Definitions for Trips
   columnDefs: ColDef[] = [
@@ -1372,6 +1377,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           // Store all banners data
           this.allBannersData = response.banners.map((banner: any) => {
             return {
+              id: banner.id,
               bannerName: this.toTitleCase(banner.banner_name || ''),
               description: banner.description || '',
               status: banner.status ? 'active' : 'inactive'
@@ -1689,8 +1695,51 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'upload') {
         console.log('Upload clicked for banner:', event.data);
-        // Handle upload action
+        this.selectedBannerId = event.data.id;
+        // Trigger file input click
+        this.bannerImageInput.nativeElement.click();
       }
+    }
+  }
+
+  onBannerImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file && this.selectedBannerId) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Please select a valid image file (JPEG, PNG, or WebP)');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+
+      // Upload the image
+      const formData = new FormData();
+      formData.append('image', file);
+
+      console.log('Uploading image for banner ID:', this.selectedBannerId);
+      this.adminService.uploadBannerImage(this.selectedBannerId, formData).subscribe({
+        next: (response) => {
+          console.log('Banner image uploaded successfully:', response);
+          alert('Image uploaded successfully!');
+          // Reset file input
+          this.bannerImageInput.nativeElement.value = '';
+          this.selectedBannerId = null;
+        },
+        error: (error) => {
+          console.error('Error uploading banner image:', error);
+          alert('Failed to upload image. Please try again.');
+          // Reset file input
+          this.bannerImageInput.nativeElement.value = '';
+          this.selectedBannerId = null;
+        }
+      });
     }
   }
 

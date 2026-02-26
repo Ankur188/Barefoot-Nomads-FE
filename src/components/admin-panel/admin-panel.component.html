@@ -266,6 +266,16 @@
         <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
         </div>
+        
+        <!-- Hidden file input for banner image upload -->
+        <input 
+          type="file" 
+          #bannerImageInput 
+          accept="image/jpeg,image/jpg,image/png,image/webp" 
+          (change)="onBannerImageSelected($event)" 
+          style="display: none"
+        />
+        
         <!-- Header Section -->
         <div class="trips-header">
           <h2>List of all the Banners</h2>

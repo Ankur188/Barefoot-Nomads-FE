@@ -106,4 +106,11 @@ export class AdminService {
       userData
     );
   }
+
+  uploadBannerImage(bannerId: string, formData: FormData): Observable<any> {
+    return this.http.put(
+      environment.production ? `/api/admin/banners/${bannerId}/image` : `${environment.apiURL}admin/banners/${bannerId}/image`,
+      formData
+    );
+  }
 }
