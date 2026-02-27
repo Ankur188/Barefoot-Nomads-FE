@@ -434,6 +434,38 @@ export class AddEntityFormComponent implements OnInit {
 
   prepareFormData(): FormData | any {
     if (this.entityType === 'trips') {
+      // In edit mode, send JSON data (not FormData) since the PUT endpoint doesn't handle file uploads
+      if (this.mode === 'edit') {
+        const updateData: any = {
+          name: this.entityForm.value.name,
+          description: this.entityForm.value.description,
+          days: this.entityForm.value.days,
+          nights: parseInt(this.entityForm.value.nights),
+          destinations: this.entityForm.value.destinations,
+          physicalRating: parseInt(this.entityForm.value.physicalRating)
+        };
+        
+        // Include itinerary from original data (as it is)
+      const daysArray = this.entityForm.value.daysForms;
+      const daysObject: any = {};
+      daysArray.forEach((day: any, index: number) => {
+        daysObject[(index + 1).toString()] = {
+          title: day.heading,
+          content: day.description
+        };
+      });
+      
+      updateData.daysData = JSON.stringify(daysObject);
+
+        // Add trip ID if in edit mode
+        if (this.data && this.data.id) {
+          updateData.id = this.data.id;
+        }
+        
+        return updateData;
+      }
+      
+      // In add mode, use FormData for file uploads
       const formData = new FormData();
       formData.append('name', this.entityForm.value.name);
       formData.append('description', this.entityForm.value.description);

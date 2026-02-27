@@ -84,10 +84,10 @@ export class BookingComponent implements OnInit {
   ngOnInit(): void {}
 
   getTripDetails() {
-    this.staticService.getTripDetails(this.tripId).subscribe((data) => {
+    this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
       this.getBatches(this.tripId);
       this.details = data;
-      this.destinations = data.desitnations.split(',');
+      this.destinations = data?.destinations?.split(',');
       console.log('details', this.details);
     });
   }

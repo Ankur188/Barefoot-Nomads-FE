@@ -1192,7 +1192,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   onTabChange(index: number) {
     this.selectedTab = index;
-    console.log('Tab changed to:', index);
     
     // Close all forms when tab changes
     this.showTripsForm = false;
@@ -1281,12 +1280,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   updateTripStatus = (rowData: any, newStatus: string) => {
-    console.log('Updating trip status:', rowData, newStatus);
     // Convert string status to boolean for backend
     const statusBoolean = newStatus === 'active';
     this.adminService.updateTrip(rowData.id, { status: statusBoolean }).subscribe({
       next: (response) => {
-        console.log('Trip status updated successfully:', response);
       },
       error: (error) => {
         console.error('Error updating trip status:', error);
@@ -1301,12 +1298,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   updateBatchStatus = (rowData: any, newStatus: string) => {
-    console.log('Updating batch status:', rowData, newStatus);
     // Convert string status to boolean for backend
     const statusBoolean = newStatus === 'active';
     this.adminService.updateBatch(rowData.id, { status: statusBoolean }).subscribe({
       next: (response) => {
-        console.log('Batch status updated successfully:', response);
       },
       error: (error) => {
         console.error('Error updating batch status:', error);
@@ -1462,10 +1457,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
-        console.log('Edit clicked for:', event.data);
+        this.tripsFormMode = 'edit';
         this.handleEditTrip(event.data);
       } else if (action === 'delete') {
-        console.log('Delete clicked for:', event.data);
         // Handle delete action
       }
     }
@@ -1507,7 +1501,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   onSelectionChanged(event: any) {
     const selectedRows = event.api.getSelectedRows();
     this.selectedRowCount = selectedRows.length;
-    console.log('Selected rows count:', this.selectedRowCount);
   }
 
   // Batches Grid Event Handlers
@@ -1547,7 +1540,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
-        console.log('Edit batch clicked for:', event.data);
         // Get the batch ID from the row data
         const batchId = event.data.id || event.data.batchId;
         if (batchId) {
@@ -1566,7 +1558,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           });
         }
       } else if (action === 'delete') {
-        console.log('Delete batch clicked for:', event.data);
         const batchId = event.data.id || event.data.batchId;
         const batchName = event.data.batchName;
         
@@ -1574,7 +1565,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           this.adminService.deleteBatch(batchId).subscribe({
             next: (response) => {
               if (response && response.success) {
-                console.log('Batch deleted successfully');
                 // Reload the batches data to reflect the deletion
                 this.loadBatchesData(this.batchesCurrentPage);
               }
@@ -1624,7 +1614,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   onBatchesSelectionChanged(event: any) {
     const selectedRows = event.api.getSelectedRows();
     this.batchesSelectedRowCount = selectedRows.length;
-    console.log('Selected batches count:', this.batchesSelectedRowCount);
   }
 
   // Users Grid Event Handlers
@@ -1638,7 +1627,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'delete') {
-        console.log('Delete user clicked for:', event.data);
         // Handle delete action
       }
     }
@@ -1680,7 +1668,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   onUsersSelectionChanged(event: any) {
     const selectedRows = event.api.getSelectedRows();
     this.usersSelectedRowCount = selectedRows.length;
-    console.log('Selected users count:', this.usersSelectedRowCount);
   }
 
   // Banners Grid Event Handlers
@@ -1694,7 +1681,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'upload') {
-        console.log('Upload clicked for banner:', event.data);
         this.selectedBannerId = event.data.id;
         // Trigger file input click
         this.bannerImageInput.nativeElement.click();
@@ -1723,10 +1709,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       const formData = new FormData();
       formData.append('image', file);
 
-      console.log('Uploading image for banner ID:', this.selectedBannerId);
       this.adminService.uploadBannerImage(this.selectedBannerId, formData).subscribe({
         next: (response) => {
-          console.log('Banner image uploaded successfully:', response);
           alert('Image uploaded successfully!');
           // Reset file input
           this.bannerImageInput.nativeElement.value = '';
@@ -1787,10 +1771,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
-        console.log('Edit clicked for coupon:', event.data);
         // Handle edit action
       } else if (action === 'delete') {
-        console.log('Delete clicked for coupon:', event.data);
         // Handle delete action
       }
     }
@@ -1845,10 +1827,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
-        console.log('Edit clicked for lead:', event.data);
         // Handle edit action
       } else if (action === 'delete') {
-        console.log('Delete clicked for lead:', event.data);
         // Handle delete action
       }
     }
@@ -1857,7 +1837,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   onLeadsSelectionChanged(event: any) {
     const selectedRows = event.api.getSelectedRows();
     this.leadsSelectedRowCount = selectedRows.length;
-    console.log('Selected leads count:', this.leadsSelectedRowCount);
   }
 
   onLeadsFirstDataRendered(params: GridReadyEvent) {
@@ -1895,6 +1874,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   // Toggle form visibility
   openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
+    this.tripsFormMode = 'add';
     this.currentEntityType = entityType;
     // Reset to add mode when opening form via add button
     if (entityType === 'trips') {
@@ -1954,7 +1934,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   // Handle form submission
   onFormSubmit(event: { action: string, data: any }) {
     if (event.action === 'save') {
-      console.log('Form submitted with data:', event.data);
       this.handleEntitySave(this.currentEntityType, event.data);
     } else if (event.action === 'cancel') {
       this.closeEntityForm(this.currentEntityType);
@@ -1963,45 +1942,55 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   // Handle entity save based on type
   private handleEntitySave(entityType: string, data: any) {
-    console.log('handleEntitySave called with:', { entityType, data });
     
-    // Log FormData contents if it's a FormData object
-    if (data instanceof FormData) {
-      console.log('FormData contents:');
-      data.forEach((value, key) => {
-        console.log(`  ${key}:`, value);
-      });
-    }
     
     switch (entityType) {
       case 'trips':
-        // Call API to create trip
-        console.log('Creating trip:', data);
-        this.adminService.createTrip(data).subscribe({
-          next: (response) => {
-            console.log('Trip created successfully:', response);
-            // Reload trips data to show the new trip
-            this.loadTripsData(1);
-            // Close form only on success
-            this.closeEntityForm(entityType);
-          },
-          error: (error) => {
-            console.error('Error creating trip:', error);
-            // TODO: Show error message to user
-            // Form stays open on error
-          }
-        });
+        // Check if we're in edit or add mode
+        const tripId = data.id;
+        
+        if (this.tripsFormMode === 'edit' && tripId) {
+        console.log('mode', this.tripsFormMode, tripId);
+          // Remove id from data before sending
+          const { id, ...updateData } = data;
+          this.adminService.updateTrip(tripId, updateData).subscribe({
+            next: (response) => {
+              // Reload trips data to show the updated trip
+              this.loadTripsData(this.tripsCurrentPage);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error updating trip:', error);
+              // TODO: Show error message to user
+              // Form stays open on error
+            }
+          });
+        } else {
+          // Call API to create trip (data is FormData)
+          this.adminService.createTrip(data).subscribe({
+            next: (response) => {
+              // Reload trips data to show the new trip
+              this.loadTripsData(1);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error creating trip:', error);
+              // TODO: Show error message to user
+              // Form stays open on error
+            }
+          });
+        }
         break;
       case 'batches':
         // Check if we're in edit or add mode
         if (this.batchesFormMode === 'edit' && data.id) {
-          console.log('Updating batch:', data);
           const batchId = data.id;
           // Remove id from data as it's passed as URL parameter
           const { id, ...updateData } = data;
           this.adminService.updateBatch(batchId, updateData).subscribe({
             next: (response) => {
-              console.log('Batch updated successfully:', response);
               // Reload batches data to show the updated batch
               this.loadBatchesData(this.batchesCurrentPage);
               // Close form only on success
@@ -2014,10 +2003,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             }
           });
         } else {
-          console.log('Creating batch:', data);
           this.adminService.createBatch(data).subscribe({
             next: (response) => {
-              console.log('Batch created successfully:', response);
               // Reload batches data to show the new batch
               this.loadBatchesData(1);
               // Close form only on success
@@ -2033,10 +2020,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'users':
         // Call API to create user
-        console.log('Creating user:', data);
         this.adminService.createUser(data).subscribe({
           next: (response) => {
-            console.log('User created successfully:', response);
             // Reload users data to show the new user
             this.loadUsersData(1);
             // Close form only on success
@@ -2051,11 +2036,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'coupons':
         // Call API to create coupon
-        console.log('Creating coupon:', data);
         break;
       case 'leads':
         // Call API to create lead
-        console.log('Creating lead:', data);
         break;
     }
   }
@@ -2065,7 +2048,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Fetch full trip details by ID
     this.adminService.getTripById(tripData.id).subscribe({
       next: (response) => {
-        console.log('Trip details fetched:', response);
         this.currentEntityType = 'trips';
         this.editTripData = response.trip;
         this.tripsFormMode = 'edit';

@@ -34,8 +34,6 @@ export class StaticService {
   }
 
   getTripDetails(id: string) {
-    if (this.tripDetailsSubject.value && this.tripDetailsSubject.value.id === id) return of(this.tripDetailsSubject.value);
-    else
       return this.http
         .get(environment.production ? `/api/trips/${id}` : `${environment.apiURL}trips/${id}`)
         .pipe(tap((data) => this.tripDetailsSubject.next(data)));
