@@ -273,6 +273,23 @@ export class AddEntityFormComponent implements OnInit {
           destination_name: data.destination_name
         };
       }
+    } else if (this.entityType === 'coupons' && data) {
+      // Handle coupon-specific data
+      // Convert timestamps to date strings for input fields
+      const startDate = data.start_date ? this.formatDateForInput(new Date(data.start_date * 1000)) : '';
+      const endDate = data.end_date ? this.formatDateForInput(new Date(data.end_date * 1000)) : '';
+      
+      this.entityForm.patchValue({
+        couponCode: data.code || '',
+        deduction: data.deduction || 0,
+        startDate: startDate,
+        endDate: endDate
+      });
+
+      // Disable coupon code field in edit mode
+      if (this.mode === 'edit') {
+        this.entityForm.get('couponCode')?.disable();
+      }
     } else {
       // For other entity types, use simple patch
       this.entityForm.patchValue(data);
@@ -535,6 +552,11 @@ export class AddEntityFormComponent implements OnInit {
       }
       if (formData.endDate) {
         formData.endDate = new Date(formData.endDate).getTime() / 1000;
+      }
+      
+      // Add coupon ID if in edit mode
+      if (this.mode === 'edit' && this.data && this.data.id) {
+        formData.id = this.data.id;
       }
       
       return formData;

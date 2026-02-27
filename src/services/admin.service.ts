@@ -60,6 +60,19 @@ export class AdminService {
     );
   }
 
+  getCouponById(couponId: string): Observable<any> {
+    return this.http.get(
+      environment.production ? `/api/admin/coupons/${couponId}` : `${environment.apiURL}admin/coupons/${couponId}`
+    );
+  }
+
+  updateCoupon(couponId: string, couponData: any): Observable<any> {
+    return this.http.put(
+      environment.production ? `/api/admin/coupons/${couponId}` : `${environment.apiURL}admin/coupons/${couponId}`,
+      couponData
+    );
+  }
+
   getBanners(): Observable<any> {
     return this.http.get(
       environment.production ? '/api/admin/banners' : `${environment.apiURL}admin/banners`

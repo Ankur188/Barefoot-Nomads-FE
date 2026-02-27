@@ -102,6 +102,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   editTripData: any = null;
   batchesFormMode: 'add' | 'edit' = 'add';
   editBatchData: any = null;
+  couponsFormMode: 'add' | 'edit' = 'add';
+  editCouponData: any = null;
   tripsCurrentPage = 1;
   tripsPageSize = 20;
   tripsTotalCount = 0;
@@ -1427,6 +1429,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
           
           this.couponsRowData = response.coupons.map((coupon: any) => {
             return {
+              id: coupon.id,
               couponCode: coupon.code || '',
               deduction: coupon.deduction ? `${coupon.deduction}%` : '',
               startDate: this.formatDate(coupon.start_date),
@@ -1789,7 +1792,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
-        // Handle edit action
+        console.log('Edit coupon clicked for:', event.data);
+        this.handleEditCoupon(event.data);
       } else if (action === 'delete') {
         // Handle delete action
       }
@@ -1901,6 +1905,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     } else if (entityType === 'batches') {
       this.batchesFormMode = 'add';
       this.editBatchData = null;
+    } else if (entityType === 'coupons') {
+      this.couponsFormMode = 'add';
+      this.editCouponData = null;
     }
     
     switch(entityType) {
@@ -1942,6 +1949,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'coupons':
         this.showCouponsForm = false;
+        // Reset edit mode
+        this.couponsFormMode = 'add';
+        this.editCouponData = null;
         break;
       case 'leads':
         this.showLeadsForm = false;
@@ -2053,7 +2063,31 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         });
         break;
       case 'coupons':
-        // Call API to create coupon
+        // Check if we're in edit or add mode
+        if (this.couponsFormMode === 'edit' && data.id) {
+          console.log('Updating coupon:', data);
+          const couponId = data.id;
+          // Remove id from data as it's passed as URL parameter
+          const { id, ...updateData } = data;
+          this.adminService.updateCoupon(couponId, updateData).subscribe({
+            next: (response) => {
+              console.log('Coupon updated successfully:', response);
+              // Reload coupons data to show the updated coupon
+              this.loadCouponsData(this.couponsCurrentPage);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error updating coupon:', error);
+              // TODO: Show error message to user
+              // Form stays open on error
+            }
+          });
+        } else {
+          // Call API to create coupon
+          console.log('Creating coupon:', data);
+          // TODO: Implement create coupon when backend endpoint is ready
+        }
         break;
       case 'leads':
         // Call API to create lead
@@ -2074,6 +2108,28 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Error fetching trip details:', error);
         const errorMessage = error.error?.error || 'Failed to fetch trip details. Please try again.';
+        alert(errorMessage);
+      }
+    });
+  }
+
+  // Handle edit coupon
+  private handleEditCoupon(couponData: any) {
+    console.log('handleEditCoupon called with couponData:', couponData);
+    // Fetch full coupon details by ID
+    this.adminService.getCouponById(couponData.id).subscribe({
+      next: (response) => {
+        console.log('Coupon details fetched:', response);
+        this.currentEntityType = 'coupons';
+        this.editCouponData = response.coupon;
+        this.couponsFormMode = 'edit';
+        console.log('Set couponsFormMode to:', this.couponsFormMode);
+        console.log('Set editCouponData to:', this.editCouponData);
+        this.showCouponsForm = true;
+      },
+      error: (error) => {
+        console.error('Error fetching coupon details:', error);
+        const errorMessage = error.error?.error || 'Failed to fetch coupon details. Please try again.';
         alert(errorMessage);
       }
     });

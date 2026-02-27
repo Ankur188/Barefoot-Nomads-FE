@@ -348,7 +348,8 @@
         <app-add-entity-form 
           *ngIf="showCouponsForm"
           [entityType]="'coupons'"
-          [mode]="'add'"
+          [mode]="couponsFormMode"
+          [data]="editCouponData"
           (formSubmit)="onFormSubmit($event)"
         ></app-add-entity-form>
         
