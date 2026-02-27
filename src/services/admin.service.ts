@@ -66,10 +66,23 @@ export class AdminService {
     );
   }
 
+  createCoupon(couponData: any): Observable<any> {
+    return this.http.post(
+      environment.production ? '/api/admin/coupons' : `${environment.apiURL}admin/coupons`,
+      couponData
+    );
+  }
+
   updateCoupon(couponId: string, couponData: any): Observable<any> {
     return this.http.put(
       environment.production ? `/api/admin/coupons/${couponId}` : `${environment.apiURL}admin/coupons/${couponId}`,
       couponData
+    );
+  }
+
+  deleteCoupon(couponId: string): Observable<any> {
+    return this.http.delete(
+      environment.production ? `/api/admin/coupons/${couponId}` : `${environment.apiURL}admin/coupons/${couponId}`
     );
   }
 

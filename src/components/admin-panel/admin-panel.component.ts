@@ -1795,7 +1795,25 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         console.log('Edit coupon clicked for:', event.data);
         this.handleEditCoupon(event.data);
       } else if (action === 'delete') {
-        // Handle delete action
+        console.log('Delete coupon clicked for:', event.data);
+        const couponId = event.data.id;
+        const couponCode = event.data.couponCode;
+        
+        if (couponId && confirm(`Are you sure you want to delete coupon "${couponCode}"?`)) {
+          this.adminService.deleteCoupon(couponId).subscribe({
+            next: (response) => {
+              if (response && response.success) {
+                console.log('Coupon deleted successfully');
+                // Reload the coupons data to reflect the deletion
+                this.loadCouponsData(this.couponsCurrentPage);
+              }
+            },
+            error: (error) => {
+              console.error('Error deleting coupon:', error);
+              alert(error.error?.error || 'Failed to delete coupon. Please try again.');
+            }
+          });
+        }
       }
     }
   }
@@ -2086,7 +2104,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         } else {
           // Call API to create coupon
           console.log('Creating coupon:', data);
-          // TODO: Implement create coupon when backend endpoint is ready
+          this.adminService.createCoupon(data).subscribe({
+            next: (response) => {
+              console.log('Coupon created successfully:', response);
+              // Reload coupons data to show the new coupon
+              this.loadCouponsData(1);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error creating coupon:', error);
+              alert(error.error?.error || 'Failed to create coupon. Please try again.');
+              // Form stays open on error
+            }
+          });
         }
         break;
       case 'leads':
