@@ -107,6 +107,12 @@ export class AdminService {
     );
   }
 
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(
+      environment.production ? `/api/admin/users/${userId}` : `${environment.apiURL}admin/users/${userId}`
+    );
+  }
+
   uploadBannerImage(bannerId: string, formData: FormData): Observable<any> {
     return this.http.put(
       environment.production ? `/api/admin/banners/${bannerId}/image` : `${environment.apiURL}admin/banners/${bannerId}/image`,

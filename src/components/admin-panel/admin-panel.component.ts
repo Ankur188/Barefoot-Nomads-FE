@@ -1627,7 +1627,25 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'delete') {
-        // Handle delete action
+        console.log('Delete user clicked for:', event.data);
+        const userId = event.data.id;
+        const userName = event.data.name;
+        
+        if (userId && confirm(`Are you sure you want to delete user "${userName}"?`)) {
+          this.adminService.deleteUser(userId).subscribe({
+            next: (response) => {
+              if (response && response.success) {
+                console.log('User deleted successfully');
+                // Reload the users data to reflect the deletion
+                this.loadUsersData(this.usersCurrentPage);
+              }
+            },
+            error: (error) => {
+              console.error('Error deleting user:', error);
+              alert(error.error?.error || 'Failed to delete user. Please try again.');
+            }
+          });
+        }
       }
     }
   }
