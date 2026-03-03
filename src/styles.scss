@@ -18,11 +18,14 @@ html {
   position: relative;
   background-color: #000;
   height: 100%;
+  overflow: hidden;
 }
 .wrapper {
   max-width: 1920px; /* fixed width */
   margin: 0 auto; /* centers the content horizontally */
   background: $lf-white;
+  height: 100vh;
+  overflow: hidden;
 }
 
 * {
@@ -96,6 +99,98 @@ html {
 
 .w-100 {
   width: 100%;
+}
+
+/* Coming Soon Page Styles */
+.coming-soon-header {
+  background-color: $lf-black;
+  padding: 2rem 4rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+    img {
+      height: 3rem;
+      width: auto;
+    }
+    
+  }
+}
+
+.coming-soon-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 7rem);
+  background: linear-gradient(135deg, $lf-black 0%, $lf-dark-grey 100%);
+  padding: 2rem;
+  overflow: hidden;
+  
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    color: $lf-gold;
+    text-align: center;
+    letter-spacing: 0.1rem;
+    animation: fadeInUp 1s ease-out;
+    margin-bottom: 1.5rem;
+  }
+  
+  p {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    letter-spacing: 0.05rem;
+    animation: fadeInUp 1.2s ease-out;
+    white-space: nowrap;
+    margin-top: 1rem;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .coming-soon-header {
+    padding: 1.5rem 2rem;
+    
+    .logo {
+      gap: 0.75rem;
+      
+      img {
+        height: 2.5rem;
+      }
+      
+      span {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+  .coming-soon-section {
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      white-space: nowrap;
+    }
+  }
 }
 
 mat-icon {
