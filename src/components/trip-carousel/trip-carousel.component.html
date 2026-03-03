@@ -11,9 +11,7 @@
     <!-- Carousel Slides -->
     <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentPage * 100 + '%)'">
       <div class="carousel-page" *ngFor="let page of pages">
-        <div class="trip-card" *ngFor="let trip of page">
-  <trip-card [card]="trip" (click)="navigateToTrip(trip)" class="cursor-pointer"></trip-card>
-        </div>
+        <trip-card *ngFor="let trip of page" [card]="trip" (click)="navigateToTrip(trip)" class="cursor-pointer"></trip-card>
       </div>
     </div>
   </div>
