@@ -377,6 +377,7 @@
             [animateRows]="gridOptions.animateRows"
             [enableCellTextSelection]="gridOptions.enableCellTextSelection"
             [ensureDomOrder]="gridOptions.ensureDomOrder"
+            [context]="couponsGridContext"
             (gridReady)="onCouponsGridReady($event)"
             (cellClicked)="onCouponsCellClicked($event)"
             (selectionChanged)="onCouponsSelectionChanged($event)"

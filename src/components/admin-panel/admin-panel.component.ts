@@ -88,6 +88,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   // Grid contexts for cell renderers
   tripsGridContext: any;
   batchesGridContext: any;
+  couponsGridContext: any;
   
   // Form visibility flags
   showTripsForm = false;
@@ -1138,6 +1139,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       componentParent: this,
       updateStatus: this.updateBatchStatus
     };
+    this.couponsGridContext = {
+      componentParent: this,
+      updateStatus: this.updateCouponStatus
+    };
   }
 
   ngOnInit(): void {
@@ -1309,6 +1314,25 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         console.error('Error updating batch status:', error);
         // Revert the status change in the grid on error
         const node = this.batchesGridApi.getRowNode(rowData.id);
+        if (node) {
+          const revertedStatus = newStatus === 'active' ? 'inactive' : 'active';
+          node.setDataValue('status', revertedStatus);
+        }
+      }
+    });
+  }
+
+  updateCouponStatus = (rowData: any, newStatus: string) => {
+    // Convert string status to boolean for backend
+    const statusBoolean = newStatus === 'active';
+    this.adminService.updateCoupon(rowData.id, { status: statusBoolean }).subscribe({
+      next: (response) => {
+        console.log('Coupon status updated successfully');
+      },
+      error: (error) => {
+        console.error('Error updating coupon status:', error);
+        // Revert the status change in the grid on error
+        const node = this.couponsGridApi.getRowNode(rowData.id);
         if (node) {
           const revertedStatus = newStatus === 'active' ? 'inactive' : 'active';
           node.setDataValue('status', revertedStatus);
