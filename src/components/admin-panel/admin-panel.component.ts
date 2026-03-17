@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { ColDef, GridReadyEvent, GridApi, IDateFilterParams } from 'ag-grid-community';
 import { CheckboxCellRendererComponent } from './checkbox-cell-renderer.component';
 import { HeaderCheckboxRendererComponent } from './header-checkbox-renderer.component';
@@ -1172,7 +1173,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   constructor(
     private staticService: StaticService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private router: Router
   ) {
     // Initialize grid contexts
     this.tripsGridContext = {
@@ -2046,6 +2048,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   // Toggle form visibility
   openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
+    // For leads, navigate to enquire page
+    if (entityType === 'leads') {
+      this.router.navigate(['/enquire']);
+      return;
+    }
+    
     this.tripsFormMode = 'add';
     this.currentEntityType = entityType;
     // Reset to add mode when opening form via add button
@@ -2072,9 +2080,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'coupons':
         this.showCouponsForm = true;
-        break;
-      case 'leads':
-        this.showLeadsForm = true;
         break;
     }
   }
