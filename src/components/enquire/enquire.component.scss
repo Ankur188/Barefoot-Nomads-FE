@@ -65,6 +65,24 @@ mat-radio-group mat-radio-button {
   margin-bottom: 2rem;
 }
 
+.invalid {
+  border: 1px solid #ff4d4d !important;
+}
+
+// Date input styling to match other fields
+input[type="date"] {
+  color: #7e7e7e !important; // placeholder color
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(0.5); // makes the calendar icon gray to match placeholder color
+    cursor: pointer;
+  }
+
+  &:valid {
+    color: $lf-light-grey !important; // when date is selected, match other input text color
+  }
+}
+
 @media only screen and (max-width: 427px) {
   .main-container {
     padding: 2rem;

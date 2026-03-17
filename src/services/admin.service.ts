@@ -60,6 +60,13 @@ export class AdminService {
     );
   }
 
+  getLeads(page: number = 1, limit: number = 20): Observable<any> {
+    return this.http.get(
+      environment.production ? '/api/admin/leads' : `${environment.apiURL}admin/leads`,
+      { params: { page: page.toString(), limit: limit.toString() } }
+    );
+  }
+
   getCouponById(couponId: string): Observable<any> {
     return this.http.get(
       environment.production ? `/api/admin/coupons/${couponId}` : `${environment.apiURL}admin/coupons/${couponId}`
@@ -136,6 +143,12 @@ export class AdminService {
   deleteUser(userId: string): Observable<any> {
     return this.http.delete(
       environment.production ? `/api/admin/users/${userId}` : `${environment.apiURL}admin/users/${userId}`
+    );
+  }
+
+  deleteLead(leadId: string): Observable<any> {
+    return this.http.delete(
+      environment.production ? `/api/admin/leads/${leadId}` : `${environment.apiURL}admin/leads/${leadId}`
     );
   }
 

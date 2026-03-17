@@ -68,6 +68,7 @@ interface Lead {
   email: string;
   phoneNumber: string;
   message: string;
+  createdAt?: number; // Unix timestamp in seconds
 }
 
 @Component({
@@ -130,6 +131,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   bannersTotalPages = 0;
   allBannersData: any[] = [];
   leadsSelectedRowCount = 0;
+  leadsCurrentPage = 1;
+  leadsPageSize = 20;
+  leadsTotalCount = 0;
+  leadsTotalPages = 0;
 
   // File input for banner image upload
   @ViewChild('bannerImageInput') bannerImageInput!: ElementRef<HTMLInputElement>;
@@ -1045,6 +1050,45 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       }
     },
     {
+      headerName: 'Created At',
+      field: 'createdAt',
+      width: 250,
+      filter: 'agDateColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      valueFormatter: (params: any) => {
+        if (!params.value) return '';
+        const date = new Date(params.value * 1000); // Convert seconds to milliseconds
+        return date.toLocaleString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        comparator: (filterLocalDateAtMidnight: Date, cellValue: number) => {
+          if (cellValue == null) return -1;
+          const cellDate = new Date(cellValue * 1000);
+          const cellDateAtMidnight = new Date(cellDate.getFullYear(), cellDate.getMonth(), cellDate.getDate());
+          if (filterLocalDateAtMidnight.getTime() === cellDateAtMidnight.getTime()) {
+            return 0;
+          }
+          if (cellDateAtMidnight < filterLocalDateAtMidnight) {
+            return -1;
+          }
+          if (cellDateAtMidnight > filterLocalDateAtMidnight) {
+            return 1;
+          }
+          return 0;
+        }
+      } as IDateFilterParams
+    },
+    {
       headerName: 'Message',
       field: 'message',
       width: 600,
@@ -1223,6 +1267,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     else if (index === 4) {
       this.loadCouponsData();
     }
+    // Fetch leads data when switching to leads tab (index 5)
+    else if (index === 5) {
+      this.loadLeadsData();
+    }
   }
 
   private loadBatchesData(page: number = 1) {
@@ -1387,6 +1435,53 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error fetching users:', error);
+      }
+    });
+  }
+
+  private loadLeadsData(page: number = 1) {
+    this.adminService.getLeads(page, this.leadsPageSize).subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response)) {
+          this.leadsCurrentPage = page;
+          this.leadsTotalCount = response.length;
+          this.leadsTotalPages = Math.ceil(response.length / this.leadsPageSize);
+          
+          this.leadsRowData = response.map((lead: any) => {
+            // Format trip date
+            let tripDate = '—';
+            if (lead.date) {
+              const date = new Date(lead.date * 1000); // Convert seconds to milliseconds
+              tripDate = date.toLocaleDateString('en-US', { 
+                month: 'long', 
+                day: 'numeric', 
+                year: 'numeric' 
+              });
+            }
+
+            return {
+              id: lead.id,
+              name: lead.name || '',
+              location: lead.location || '',
+              tripDate: tripDate,
+              people: lead.travellers || 0,
+              days: lead.days || 0,
+              approxBudget: lead.budget || 0,
+              email: lead.email || '',
+              phoneNumber: lead.phone ? String(lead.phone) : '',
+              message: lead.message || '',
+              createdAt: lead.created_at || 0
+            };
+          });
+          
+          // Refresh the leads grid if it's already initialized
+          if (this.leadsGridApi) {
+            this.leadsGridApi.setRowData(this.leadsRowData);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching leads:', error);
       }
     });
   }
@@ -1891,9 +1986,22 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'edit') {
-        // Handle edit action
+        // Handle edit action for leads (not implemented yet)
       } else if (action === 'delete') {
-        // Handle delete action
+        // Handle delete action for leads
+        const leadId = event.data.id;
+        if (leadId && confirm('Are you sure you want to delete this lead?')) {
+          this.adminService.deleteLead(leadId).subscribe({
+            next: () => {
+              console.log('Lead deleted successfully');
+              this.loadLeadsData(this.leadsCurrentPage);
+            },
+            error: (error) => {
+              console.error('Error deleting lead:', error);
+              alert('Failed to delete lead');
+            }
+          });
+        }
       }
     }
   }

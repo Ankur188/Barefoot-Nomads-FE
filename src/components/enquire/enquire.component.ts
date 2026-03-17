@@ -33,29 +33,53 @@ export class EnquireComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.min(1000000000),
-          Validators.max(9999999999),
+          Validators.pattern('^[0-9]{10}$'),
         ],
       ],
-      message: ['', [Validators.required]],
-      budget: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      message: [''],
+      budget: [''],
     });
+    // Update budget validators based on initial selection
+    this.updateBudgetValidators();
   }
 
   submitEnquireForm() {
-    var postData = this.enquireForm.getRawValue();
-    postData['type'] =
-      this.isTailorMadeSelected === 'true' ? 'tailor-made' : 'pre-made';
+    // Mark all fields as touched to show validation errors
+    this.enquireForm.markAllAsTouched();
+    
     if (this.enquireForm.valid) {
+      var postData = this.enquireForm.getRawValue();
+      postData['type'] =
+        this.isTailorMadeSelected === 'true' ? 'tailor-made' : 'pre-made';
+      
+      // Convert date to timestamp (in seconds)
+      if (postData['date']) {
+        postData['date'] = Math.floor(new Date(postData['date']).getTime() / 1000);
+      }
+      
+      // Add createdAt timestamp (current date in seconds)
+      postData['createdAt'] = Math.floor(Date.now() / 1000);
+      
       this.staticService.postEnquiry(postData).subscribe((data) => {
         this.enquireForm.reset();
       });
-    } else {
-      this.enquireForm.markAllAsTouched(); // highlight all invalid fields
     }
   }
 
   formChanged() {
-    this.enquireForm.get('location')?.setValue('');
+    // Reset the entire form (clears values and validation states)
+    this.enquireForm.reset();
+    this.updateBudgetValidators();
+  }
+
+  updateBudgetValidators() {
+    const budgetControl = this.enquireForm.get('budget');
+    if (this.isTailorMadeSelected === 'true') {
+      budgetControl?.setValidators([Validators.required]);
+    } else {
+      budgetControl?.clearValidators();
+    }
+    budgetControl?.updateValueAndValidity();
   }
 }

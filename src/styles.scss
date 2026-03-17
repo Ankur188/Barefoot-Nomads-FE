@@ -91,6 +91,12 @@ html {
     border-radius: 0.8rem;
     font-size: 1.5rem;
     letter-spacing: 0.15rem;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 }
 
