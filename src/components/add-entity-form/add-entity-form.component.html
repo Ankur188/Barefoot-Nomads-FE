@@ -736,6 +736,236 @@
           ></textarea>
         </div>
       </div>
+
+      <!-- BOOKINGS FORM -->
+      <div *ngIf="entityType === 'bookings'" class="form-grid">
+        <div class="form-group">
+          <label for="bookingUser">User<span class="required">*</span></label>
+          <div class="autocomplete-container" [class.error]="shouldShowError('user')">
+            <div class="autocomplete-wrapper">
+              <!-- Show chip if user is selected -->
+              <div *ngIf="selectedUser" class="selected-trip-chip">
+                <div class="trip-chip">
+                  <span>{{ selectedUser.name }}</span>
+                  <button
+                    type="button"
+                    class="remove-trip-btn"
+                    (click)="removeSelectedUser()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Show autocomplete input if no user is selected -->
+              <input
+                *ngIf="!selectedUser"
+                id="bookingUser"
+                type="text"
+                [formControl]="userSearchControl"
+                placeholder="Type at least 3 characters to search"
+              />
+              <div class="autocomplete-dropdown" *ngIf="filteredUsers.length > 0 && !selectedUser">
+                <div
+                  *ngFor="let user of filteredUsers"
+                  class="autocomplete-option"
+                  (click)="selectUser(user)"
+                >
+                  {{ user.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="error-message" *ngIf="shouldShowError('user')">
+            {{ getFieldError("user") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="bookingBatch">Batch<span class="required">*</span></label>
+          <div class="autocomplete-container" [class.error]="shouldShowError('batch')">
+            <div class="autocomplete-wrapper">
+              <!-- Show chip if batch is selected -->
+              <div *ngIf="selectedBatch" class="selected-trip-chip">
+                <div class="trip-chip">
+                  <span>{{ selectedBatch.batch_name }}</span>
+                  <button
+                    type="button"
+                    class="remove-trip-btn"
+                    (click)="removeSelectedBatch()"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Show autocomplete input if no batch is selected -->
+              <input
+                *ngIf="!selectedBatch"
+                id="bookingBatch"
+                type="text"
+                [formControl]="batchSearchControl"
+                placeholder="Type at least 3 characters to search"
+              />
+              <div class="autocomplete-dropdown" *ngIf="filteredBatches.length > 0 && !selectedBatch">
+                <div
+                  *ngFor="let batch of filteredBatches"
+                  class="autocomplete-option"
+                  (click)="selectBatch(batch)"
+                >
+                  {{ batch.batch_name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="error-message" *ngIf="shouldShowError('batch')">
+            {{ getFieldError("batch") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="bookingName">Name<span class="required">*</span></label>
+          <input
+            id="bookingName"
+            type="text"
+            formControlName="name"
+            placeholder="Enter Name"
+            [class.error]="shouldShowError('name')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('name')">
+            {{ getFieldError("name") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="bookingPhone">Phone Number<span class="required">*</span></label>
+          <input
+            id="bookingPhone"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="Enter Phone Number"
+            [class.error]="shouldShowError('phoneNumber')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('phoneNumber')">
+            {{ getFieldError("phoneNumber") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="guardianNumber">Guardian Number</label>
+          <input
+            id="guardianNumber"
+            type="tel"
+            formControlName="guardianNumber"
+            placeholder="Enter Guardian Number"
+            [class.error]="shouldShowError('guardianNumber')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('guardianNumber')">
+            {{ getFieldError("guardianNumber") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="bookingEmail">Email<span class="required">*</span></label>
+          <input
+            id="bookingEmail"
+            type="email"
+            formControlName="email"
+            placeholder="Enter Email"
+            [class.error]="shouldShowError('email')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('email')">
+            {{ getFieldError("email") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="payment">Payment<span class="required">*</span></label>
+          <input
+            id="payment"
+            type="number"
+            formControlName="payment"
+            placeholder="0"
+            [class.error]="shouldShowError('payment')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('payment')">
+            {{ getFieldError("payment") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="travellers">Travellers<span class="required">*</span></label>
+          <input
+            id="travellers"
+            type="number"
+            formControlName="travellers"
+            placeholder="0"
+            [class.error]="shouldShowError('travellers')"
+          />
+          <span class="error-message" *ngIf="shouldShowError('travellers')">
+            {{ getFieldError("travellers") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="roomType">Room Type<span class="required">*</span></label>
+          <select
+            id="roomType"
+            formControlName="roomType"
+            [class.error]="shouldShowError('roomType')"
+          >
+            <option value="" disabled selected>Select room type</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+            <option value="Triple">Triple</option>
+          </select>
+          <span class="error-message" *ngIf="shouldShowError('roomType')">
+            {{ getFieldError("roomType") }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <div class="label-with-action">
+            <label for="invoice">Invoice<span class="required">*</span></label>
+            <input
+              type="file"
+              #invoiceInput
+              accept=".pdf,.doc,.docx"
+              (change)="onInvoiceSelected($event)"
+              style="display: none"
+            />
+            <button
+              type="button"
+              class="browse-text-btn"
+              (click)="invoiceInput.click()"
+            >
+              Browse
+            </button>
+          </div>
+          <div class="file-input-wrapper" [class.has-file]="invoiceFile" [class.error]="shouldShowError('invoice')">
+            <div class="file-chip" *ngIf="invoiceFile">
+              <span>{{ invoiceFile.name }}</span>
+              <button
+                type="button"
+                class="remove-file-btn"
+                (click)="removeInvoice()"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <input
+              id="invoice"
+              type="text"
+              *ngIf="!invoiceFile"
+              placeholder="No file chosen"
+              readonly
+            />
+          </div>
+          <span class="error-message" *ngIf="shouldShowError('invoice')">
+            {{ getFieldError("invoice") }}
+          </span>
+        </div>
+      </div>
     </form>
   </div>
 </div>

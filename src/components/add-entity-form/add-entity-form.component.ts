@@ -4,7 +4,7 @@ import { AdminService } from 'src/services/admin.service';
 import { debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 
 export interface EntityFormConfig {
-  entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads';
+  entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings';
   mode?: 'add' | 'edit';
   data?: any;
 }
@@ -15,15 +15,17 @@ export interface EntityFormConfig {
   styleUrls: ['./add-entity-form.component.scss']
 })
 export class AddEntityFormComponent implements OnInit {
-  @Input() entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' = 'trips';
+  @Input() entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings' = 'trips';
   @Input() mode: 'add' | 'edit' = 'add';
   @Input() data?: any;
   @Output() formSubmit = new EventEmitter<{ action: string, data: any }>();
   @ViewChild('itineraryInput') itineraryInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('invoiceInput') invoiceInput!: ElementRef<HTMLInputElement>;
   
   entityForm!: FormGroup;
   uploadedImages: File[] = [];
   itineraryFile: File | null = null;
+  invoiceFile: File | null = null;
   numberOfDays = 1;
   maxDays = 30;
   selectedDayIndex = 0; // Currently selected day (0-indexed)
@@ -36,6 +38,14 @@ export class AddEntityFormComponent implements OnInit {
   tripSearchControl = new FormControl('');
   filteredTrips: any[] = [];
   selectedTrip: any = null;
+
+  // User and batch autocomplete for bookings
+  userSearchControl = new FormControl('');
+  filteredUsers: any[] = [];
+  selectedUser: any = null;
+  batchSearchControl = new FormControl('');
+  filteredBatches: any[] = [];
+  selectedBatch: any = null;
 
   // Date validation
   minStartDate: string = '';
@@ -55,6 +65,8 @@ export class AddEntityFormComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.setupTripAutocomplete();
+    this.setupUserAutocomplete();
+    this.setupBatchAutocomplete();
     this.setupDateValidation();
     if (this.mode === 'edit' && this.data) {
       this.patchFormData(this.data);
@@ -75,6 +87,40 @@ export class AddEntityFormComponent implements OnInit {
       )
       .subscribe(response => {
         this.filteredTrips = response.trips || [];
+      });
+  }
+
+  setupUserAutocomplete(): void {
+    this.userSearchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(value => {
+          if (typeof value === 'string' && value.length >= 3) {
+            return this.adminService.searchUsers(value);
+          }
+          return of({ users: [] });
+        })
+      )
+      .subscribe(response => {
+        this.filteredUsers = response.users || [];
+      });
+  }
+
+  setupBatchAutocomplete(): void {
+    this.batchSearchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(value => {
+          if (typeof value === 'string' && value.length >= 3) {
+            return this.adminService.searchBatches(value);
+          }
+          return of({ batches: [] });
+        })
+      )
+      .subscribe(response => {
+        this.filteredBatches = response.batches || [];
       });
   }
 
@@ -128,6 +174,30 @@ export class AddEntityFormComponent implements OnInit {
   removeSelectedTrip(): void {
     this.selectedTrip = null;
     this.entityForm.patchValue({ assignedTrip: '' });
+  }
+
+  selectUser(user: any): void {
+    this.selectedUser = user;
+    this.entityForm.patchValue({ user: user.id });
+    this.userSearchControl.setValue('');
+    this.filteredUsers = [];
+  }
+
+  removeSelectedUser(): void {
+    this.selectedUser = null;
+    this.entityForm.patchValue({ user: '' });
+  }
+
+  selectBatch(batch: any): void {
+    this.selectedBatch = batch;
+    this.entityForm.patchValue({ batch: batch.id });
+    this.batchSearchControl.setValue('');
+    this.filteredBatches = [];
+  }
+
+  removeSelectedBatch(): void {
+    this.selectedBatch = null;
+    this.entityForm.patchValue({ batch: '' });
   }
 
   initializeForm(): void {
@@ -197,6 +267,21 @@ export class AddEntityFormComponent implements OnInit {
           email: ['', [Validators.required, Validators.email]],
           phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
           message: ['']
+        });
+        break;
+
+      case 'bookings':
+        this.entityForm = this.fb.group({
+          user: ['', Validators.required],
+          batch: ['', Validators.required],
+          name: ['', Validators.required],
+          phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+          guardianNumber: ['', Validators.pattern('^[0-9]{10}$')],
+          email: ['', [Validators.required, Validators.email]],
+          payment: ['', [Validators.required, Validators.min(1)]],
+          travellers: ['', [Validators.required, Validators.min(1)]],
+          roomType: ['', Validators.required],
+          invoice: ['', Validators.required]
         });
         break;
     }
@@ -290,6 +375,36 @@ export class AddEntityFormComponent implements OnInit {
       if (this.mode === 'edit') {
         this.entityForm.get('couponCode')?.disable();
       }
+    } else if (this.entityType === 'bookings' && data) {
+      // Handle booking-specific data
+      this.entityForm.patchValue({
+        user: data.user_id || '',
+        batch: data.batch_id || '',
+        name: data.name || '',
+        phoneNumber: data.phone_number || '',
+        guardianNumber: data.guardian_number || '',
+        email: data.email || '',
+        payment: data.payment || '',
+        travellers: data.travellers || 0,
+        roomType: data.room_type || '',
+        invoice: data.invoice || ''
+      });
+
+      // Set selected user if user data is available
+      if (data.user_id && data.user_name) {
+        this.selectedUser = {
+          id: data.user_id,
+          name: data.user_name
+        };
+      }
+
+      // Set selected batch if batch data is available
+      if (data.batch_id && data.batch_name) {
+        this.selectedBatch = {
+          id: data.batch_id,
+          batch_name: data.batch_name
+        };
+      }
     } else {
       // For other entity types, use simple patch
       this.entityForm.patchValue(data);
@@ -335,6 +450,24 @@ export class AddEntityFormComponent implements OnInit {
     // Clear the file input to allow re-selecting the same file
     if (this.itineraryInput) {
       this.itineraryInput.nativeElement.value = '';
+    }
+  }
+
+  // Invoice file handling
+  onInvoiceSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.invoiceFile = file;
+      this.entityForm.patchValue({ invoice: file.name });
+    }
+  }
+
+  removeInvoice(): void {
+    this.invoiceFile = null;
+    this.entityForm.patchValue({ invoice: '' });
+    // Clear the file input to allow re-selecting the same file
+    if (this.invoiceInput) {
+      this.invoiceInput.nativeElement.value = '';
     }
   }
 

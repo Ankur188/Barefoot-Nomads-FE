@@ -72,6 +72,20 @@ interface Lead {
   createdAt?: number; // Unix timestamp in seconds
 }
 
+interface Booking {
+  id?: string;
+  userName: string;
+  batchName: string;
+  name: string;
+  phoneNumber: string;
+  guardianNumber: string;
+  email: string;
+  payment: number;
+  travellers: number;
+  roomType: string;
+  invoice: string;
+}
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -85,6 +99,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   private bannersGridApi!: GridApi;
   private couponsGridApi!: GridApi;
   private leadsGridApi!: GridApi;
+  private bookingsGridApi!: GridApi;
   selectedRowCount = 0;
   
   // Grid contexts for cell renderers
@@ -98,7 +113,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   showUsersForm = false;
   showCouponsForm = false;
   showLeadsForm = false;
-  currentEntityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' = 'trips';
+  showBookingsForm = false;
+  currentEntityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings' = 'trips';
   
   // Edit mode tracking
   tripsFormMode: 'add' | 'edit' = 'add';
@@ -107,6 +123,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   editBatchData: any = null;
   couponsFormMode: 'add' | 'edit' = 'add';
   editCouponData: any = null;
+  bookingsFormMode: 'add' | 'edit' = 'add';
+  editBookingData: any = null;
   tripsCurrentPage = 1;
   tripsPageSize = 20;
   tripsTotalCount = 0;
@@ -136,6 +154,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   leadsPageSize = 20;
   leadsTotalCount = 0;
   leadsTotalPages = 0;
+  bookingsSelectedRowCount = 0;
+  bookingsCurrentPage = 1;
+  bookingsPageSize = 20;
+  bookingsTotalCount = 0;
+  bookingsTotalPages = 0;
 
   // File input for banner image upload
   @ViewChild('bannerImageInput') bannerImageInput!: ElementRef<HTMLInputElement>;
@@ -1151,6 +1174,214 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     { name: 'Ronald Richards', location: 'Olivanders', tripDate: 'September 9, 2013', people: 15, days: 7, approxBudget: 9359, email: 'felicia.reid@example.com', phoneNumber: '91-8862466329', message: 'felicia.reid@example.com' },
   ];
 
+  // Bookings Column Definitions
+  bookingsColumnDefs: ColDef[] = [
+    {
+      headerName: '',
+      field: 'checkbox',
+      width: 50,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      suppressMenu: true,
+      pinned: 'left',
+      cellRenderer: CheckboxCellRendererComponent,
+      headerComponent: HeaderCheckboxRendererComponent,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: 'User',
+      field: 'userName',
+      width: 240,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Batch',
+      field: 'batchName',
+      width: 200,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Name',
+      field: 'name',
+      width: 240,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Phone Number',
+      field: 'phoneNumber',
+      width: 240,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Guardian Number',
+      field: 'guardianNumber',
+      width: 300,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Email',
+      field: 'email',
+      width: 400,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Payment',
+      field: 'payment',
+      width: 200,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellStyle: { textAlign: 'center' },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['equals', 'notEqual', 'lessThan', 'lessThanOrEqual', 'greaterThan', 'greaterThanOrEqual'],
+        defaultOption: 'equals',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Travellers',
+      field: 'travellers',
+      width: 200,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellStyle: { textAlign: 'center' },
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['equals', 'notEqual', 'lessThan', 'lessThanOrEqual', 'greaterThan', 'greaterThanOrEqual'],
+        defaultOption: 'equals',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Room Type',
+      field: 'roomType',
+      width: 230,
+      filter: 'agSetColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        values: ['Single', 'Double', 'Triple']
+      }
+    },
+    {
+      headerName: 'Invoice',
+      field: 'invoice',
+      width: 200,
+      filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true,
+        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
+        defaultOption: 'contains',
+        suppressAndOrCondition: true,
+        maxNumConditions: 1
+      }
+    },
+    {
+      headerName: 'Actions',
+      field: 'actions',
+      width: 150,
+      suppressSizeToFit: true,
+      sortable: false,
+      filter: false,
+      resizable: false,
+      cellRenderer: (params: any) => {
+        return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+          <button class="action-btn edit-btn" data-action="edit" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ri_edit-fill.png" alt="Edit" width="18" height="18" />
+          </button>
+          <button class="action-btn delete-btn" data-action="delete" style="border: none; background: none; cursor: pointer; padding: 4px;">
+            <img src="assets/ant-design_delete-filled.svg" alt="Delete" width="18" height="18" />
+          </button>
+        </div>`;
+      }
+    }
+  ];
+
+  // Row Data for Bookings
+  bookingsRowData: Booking[] = [];
+
   // Default column definitions
   defaultColDef: ColDef = {
     sortable: true,
@@ -1252,6 +1483,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     this.showUsersForm = false;
     this.showCouponsForm = false;
     this.showLeadsForm = false;
+    this.showBookingsForm = false;
     
     // Fetch batches data when switching to batches tab (index 1)
     if (index === 1) {
@@ -1272,6 +1504,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     // Fetch leads data when switching to leads tab (index 5)
     else if (index === 5) {
       this.loadLeadsData();
+    }
+    // Fetch bookings data when switching to bookings tab (index 6)
+    else if (index === 6) {
+      this.loadBookingsData();
     }
   }
 
@@ -2047,7 +2283,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   // Toggle form visibility
-  openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
+  openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings') {
     // For leads, navigate to enquire page
     if (entityType === 'leads') {
       this.router.navigate(['/enquire']);
@@ -2066,6 +2302,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     } else if (entityType === 'coupons') {
       this.couponsFormMode = 'add';
       this.editCouponData = null;
+    } else if (entityType === 'bookings') {
+      this.bookingsFormMode = 'add';
+      this.editBookingData = null;
     }
     
     switch(entityType) {
@@ -2081,11 +2320,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       case 'coupons':
         this.showCouponsForm = true;
         break;
+      case 'bookings':
+        this.showBookingsForm = true;
+        break;
     }
   }
 
   // Close form and return to table view
-  closeEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads') {
+  closeEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings') {
     switch(entityType) {
       case 'trips':
         this.showTripsForm = false;
@@ -2110,6 +2352,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'leads':
         this.showLeadsForm = false;
+        break;
+      case 'bookings':
+        this.showBookingsForm = false;
+        // Reset edit mode
+        this.bookingsFormMode = 'add';
+        this.editBookingData = null;
         break;
     }
   }
@@ -2260,6 +2508,44 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       case 'leads':
         // Call API to create lead
         break;
+      case 'bookings':
+        // Check if we're in edit or add mode
+        if (this.bookingsFormMode === 'edit' && data.id) {
+          const bookingId = data.id;
+          // Remove id from data before sending
+          const { id, ...updateData } = data;
+          this.adminService.updateBooking(bookingId, updateData).subscribe({
+            next: (response) => {
+              console.log('Booking updated successfully');
+              // Reload bookings data to show the updated booking
+              this.loadBookingsData(this.bookingsCurrentPage);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error updating booking:', error);
+              alert(error.error?.error || 'Failed to update booking. Please try again.');
+              // Form stays open on error
+            }
+          });
+        } else {
+          // Call API to create booking
+          this.adminService.createBooking(data).subscribe({
+            next: (response) => {
+              console.log('Booking created successfully');
+              // Reload bookings data to show the new booking
+              this.loadBookingsData(1);
+              // Close form only on success
+              this.closeEntityForm(entityType);
+            },
+            error: (error) => {
+              console.error('Error creating booking:', error);
+              alert(error.error?.error || 'Failed to create booking. Please try again.');
+              // Form stays open on error
+            }
+          });
+        }
+        break;
     }
   }
 
@@ -2301,5 +2587,140 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         alert(errorMessage);
       }
     });
+  }
+
+  // Handle edit booking
+  private handleEditBooking(bookingData: any) {
+    // Fetch full booking details by ID
+    this.adminService.getBookingById(bookingData.id).subscribe({
+      next: (response) => {
+        this.currentEntityType = 'bookings';
+        this.editBookingData = response.booking;
+        this.bookingsFormMode = 'edit';
+        this.showBookingsForm = true;
+      },
+      error: (error) => {
+        console.error('Error fetching booking details:', error);
+        const errorMessage = error.error?.error || 'Failed to fetch booking details. Please try again.';
+        alert(errorMessage);
+      }
+    });
+  }
+
+  // Bookings Grid Event Handlers
+  onBookingsGridReady(params: GridReadyEvent) {
+    this.bookingsGridApi = params.api;
+    params.api.sizeColumnsToFit();
+    this.adjustBookingsRowHeight();
+  }
+
+  onBookingsCellClicked(event: any) {
+    if (event.event.target.closest('.action-btn')) {
+      const action = event.event.target.closest('.action-btn').dataset.action;
+      if (action === 'edit') {
+        console.log('Edit booking clicked for:', event.data);
+        this.handleEditBooking(event.data);
+      } else if (action === 'delete') {
+        console.log('Delete booking clicked for:', event.data);
+        const bookingId = event.data.id;
+        const bookingName = event.data.name;
+        
+        if (bookingId && confirm(`Are you sure you want to delete booking for "${bookingName}"?`)) {
+          this.adminService.deleteBooking(bookingId).subscribe({
+            next: (response) => {
+              if (response && response.success) {
+                console.log('Booking deleted successfully');
+                // Reload the bookings data to reflect the deletion
+                this.loadBookingsData(this.bookingsCurrentPage);
+              }
+            },
+            error: (error) => {
+              console.error('Error deleting booking:', error);
+              alert(error.error?.error || 'Failed to delete booking. Please try again.');
+            }
+          });
+        }
+      }
+    }
+  }
+
+  onBookingsSelectionChanged(event: any) {
+    const selectedRows = event.api.getSelectedRows();
+    this.bookingsSelectedRowCount = selectedRows.length;
+  }
+
+  onBookingsFirstDataRendered(params: GridReadyEvent) {
+    params.api.sizeColumnsToFit();
+    this.adjustBookingsRowHeight();
+  }
+
+  adjustBookingsRowHeight() {
+    if (!this.bookingsGridApi) return;
+
+    const gridElement = document.querySelector('.bookings-grid') as HTMLElement;
+    if (!gridElement) return;
+
+    const displayedRowCount = this.bookingsGridApi.getDisplayedRowCount();
+    if (displayedRowCount === 0) return;
+
+    // Get the grid body height (excluding header and pagination)
+    const gridHeight = gridElement.clientHeight;
+    const headerHeight = 48;
+    const paginationHeight = 48;
+    const availableHeight = gridHeight - headerHeight - paginationHeight;
+
+    // Calculate row height to fill available space
+    const calculatedRowHeight = Math.floor(availableHeight / displayedRowCount);
+    const minRowHeight = 40;
+    const maxRowHeight = 80;
+    const rowHeight = Math.min(Math.max(calculatedRowHeight, minRowHeight), maxRowHeight);
+
+    // Set the row height
+    this.bookingsGridApi.forEachNode((node) => {
+      node.setRowHeight(rowHeight);
+    });
+    this.bookingsGridApi.onRowHeightChanged();
+  }
+
+  private loadBookingsData(page: number = 1) {
+    this.adminService.getBookings(page, this.bookingsPageSize).subscribe({
+      next: (response) => {
+        if (response && response.bookings && Array.isArray(response.bookings)) {
+          this.bookingsCurrentPage = response.page || page;
+          this.bookingsTotalCount = response.total || 0;
+          this.bookingsTotalPages = response.totalPages || 0;
+          
+          this.bookingsRowData = response.bookings.map((booking: any) => {
+            return {
+              id: booking.id,
+              userName: booking.user_name || '',
+              batchName: booking.batch_name || '',
+              name: booking.name || '',
+              phoneNumber: booking.phone_number ? String(booking.phone_number) : '',
+              guardianNumber: booking.guardian_number ? String(booking.guardian_number) : '',
+              email: booking.email || '',
+              payment: booking.payment || 0,
+              travellers: booking.travellers || 0,
+              roomType: booking.room_type || '',
+              invoice: booking.invoice || ''
+            };
+          });
+          
+          // Refresh the bookings grid if it's already initialized
+          if (this.bookingsGridApi) {
+            this.bookingsGridApi.setRowData(this.bookingsRowData);
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching bookings:', error);
+      }
+    });
+  }
+
+  goToBookingsPage(page: number) {
+    if (page >= 1 && page <= this.bookingsTotalPages) {
+      this.loadBookingsData(page);
+    }
   }
 }

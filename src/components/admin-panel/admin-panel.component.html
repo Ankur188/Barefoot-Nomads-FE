@@ -474,6 +474,91 @@
         </ng-container>
       </div>
     </mat-tab>
+    <mat-tab label="BOOKINGS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showBookingsForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('bookings')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showBookingsForm"
+          [entityType]="'bookings'"
+          [mode]="bookingsFormMode"
+          [data]="editBookingData"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showBookingsForm">
+          <!-- Header Section -->
+          <div class="trips-header">
+            <h2>List of all the Bookings</h2>
+            <button class="bulk-actions-btn" [disabled]="bookingsSelectedRowCount === 0">
+              Bulk Actions
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+          </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine bookings-grid"
+            [rowData]="bookingsRowData"
+            [columnDefs]="bookingsColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onBookingsGridReady($event)"
+            (cellClicked)="onBookingsCellClicked($event)"
+            (selectionChanged)="onBookingsSelectionChanged($event)"
+            (firstDataRendered)="onBookingsFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ bookingsTotalCount === 0 ? 0 : (bookingsCurrentPage - 1) * bookingsPageSize + 1 }} to {{ Math.min(bookingsCurrentPage * bookingsPageSize, bookingsTotalCount) }} of {{ bookingsTotalCount }} bookings
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === 1 || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === 1 || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(bookingsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ bookingsTotalPages === 0 ? 0 : bookingsCurrentPage }} of {{ bookingsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === bookingsTotalPages || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(bookingsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === bookingsTotalPages || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(bookingsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
   </mat-tab-group>
-    <img *ngIf="showLeadsForm || showTripsForm || showCouponsForm || showBatchesForm || showTripsForm" src="../../assets/barefoot-logo-admin-form.png" alt="" class="barefoot-logo-admin">
+    <img *ngIf="showLeadsForm || showTripsForm || showCouponsForm || showBatchesForm || showTripsForm || showBookingsForm" src="../../assets/barefoot-logo-admin-form.png" alt="" class="barefoot-logo-admin">
 </div>

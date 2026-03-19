@@ -158,4 +158,58 @@ export class AdminService {
       formData
     );
   }
+
+  // Booking APIs
+  getBookings(page: number = 1, limit: number = 20): Observable<any> {
+    return this.http.get(
+      environment.production ? '/api/admin/bookings' : `${environment.apiURL}admin/bookings`,
+      { params: { page: page.toString(), limit: limit.toString() } }
+    );
+  }
+
+  getBookingById(bookingId: string): Observable<any> {
+    return this.http.get(
+      environment.production ? `/api/admin/bookings/${bookingId}` : `${environment.apiURL}admin/bookings/${bookingId}`
+    );
+  }
+
+  createBooking(bookingData: any): Observable<any> {
+    return this.http.post(
+      environment.production ? '/api/admin/bookings' : `${environment.apiURL}admin/bookings`,
+      bookingData
+    );
+  }
+
+  updateBooking(bookingId: string, bookingData: any): Observable<any> {
+    return this.http.put(
+      environment.production ? `/api/admin/bookings/${bookingId}` : `${environment.apiURL}admin/bookings/${bookingId}`,
+      bookingData
+    );
+  }
+
+  deleteBooking(bookingId: string): Observable<any> {
+    return this.http.delete(
+      environment.production ? `/api/admin/bookings/${bookingId}` : `${environment.apiURL}admin/bookings/${bookingId}`
+    );
+  }
+
+  searchUsers(searchTerm: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'X-Skip-Loader': 'true'
+    });
+    return this.http.get(
+      environment.production ? '/api/admin/users' : `${environment.apiURL}admin/users`,
+      { params: { search: searchTerm }, headers }
+    );
+  }
+
+  searchBatches(searchTerm: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'X-Skip-Loader': 'true'
+    });
+    return this.http.get(
+      environment.production ? '/api/admin/batches' : `${environment.apiURL}admin/batches`,
+      { params: { search: searchTerm }, headers }
+    );
+  }
 }
