@@ -64,12 +64,52 @@
         }
       }
 
+      .coupon-container {
+        position: relative;
+        width: 100%;
+      }
+
       .coupon-input {
         height: 3rem;
         border-radius: 0.4rem;
         border: 1px dashed rgba(0, 0, 0, 0.5);
-        padding: 1rem;
+        padding: 1rem 6rem 1rem 1rem;
         background-color: #f1f1f1;
+      }
+
+      .apply-btn {
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        color: $lf-black !important;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+
+        &:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+
+        &:not(:disabled):hover {
+          opacity: 0.7;
+        }
+      }
+
+      .error-message {
+        color: $lf-red !important;
+        font-size: 0.85rem;
+        padding-left: 0.5rem;
+      }
+
+      .discount-amount {
+        color: green !important;
+        font-weight: 600;
       }
     }
   }

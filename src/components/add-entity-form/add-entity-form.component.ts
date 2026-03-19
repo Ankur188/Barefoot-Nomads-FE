@@ -296,7 +296,7 @@ export class AddEntityFormComponent implements OnInit {
         description: data.description,
         days: data.days,
         nights: data.nights,
-        destinations: data.desitnations, // Note: API uses 'desitnations' (typo in DB)
+        destinations: data.destinations, // Note: API uses 'destinations' (typo in DB)
         physicalRating: data.physical_rating?.toString()
       });
 

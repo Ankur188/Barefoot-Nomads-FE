@@ -235,10 +235,10 @@
             }}</span>
           </div>
           <div class="duration">
-            {{ batchSelected.days }} Days - {{ batchSelected.nights }} Nights
+            {{ details.days }} Days - {{ details.nights }} Nights
           </div>
         </div>
-        <div class="locations mt-4">
+        <div *ngIf="destinatons && destinations.length" class="locations mt-4">
           <span
             *ngFor="let destination of destinations"
             class="para-font-style text-uppercase"
@@ -273,36 +273,53 @@
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style">GST (5%)</span>
-            <span class="para-font-style"
-              >&#8377; {{ batchSelected.price * 0.05 * numberOfTravellers }}</span
-            >
-          </div>
-          <div class="d-flex justify-content-between mt-3">
             <span class="para-font-style">Subtotal</span>
             <span class="para-font-style"
               >&#8377;
-              {{
-                totalPrice * numberOfTravellers +
-                  0.05 * (totalPrice * numberOfTravellers)
-              }}</span
+              {{ getBaseAmount() | number:'1.0-0' }}</span
             >
           </div>
         </div>
 
-        <input
-          type="text"
-          placeholder="Enter Coupon Code"
-          class="mt-4 w-100 coupon-input"
-        />
+        <div class="coupon-container mt-4">
+          <input
+            type="text"
+            placeholder="Enter Coupon Code"
+            class="w-100 coupon-input"
+            [formControl]="couponCode"
+          />
+          <button
+            *ngIf="!isCouponValid"
+            class="apply-btn"
+            [disabled]="!couponCode.value || couponCode.value.trim() === ''"
+            (click)="applyCoupon()"
+          >
+            Apply
+          </button>
+          <button
+            *ngIf="isCouponValid"
+            class="apply-btn remove-btn"
+            (click)="removeCoupon()"
+          >
+            ✕
+          </button>
+        </div>
+        <div *ngIf="couponError" class="error-message mt-2">
+          {{ couponError }}
+        </div>
+        <div *ngIf="appliedCoupon" class="d-flex justify-content-between mt-3">
+          <span class="para-font-style">Coupon Discount {{ appliedCoupon.code }} ({{ appliedCoupon.deduction }}%)</span>
+          <span class="para-font-style discount-amount">- &#8377; {{ getDiscountAmount() | number:'1.0-0' }}</span>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <span class="para-font-style">GST (5%)</span>
+          <span class="para-font-style">&#8377; {{ getGSTAmount() | number:'1.0-0' }}</span>
+        </div>
         <div class="total mt-4 d-flex justify-content-between">
           <span>Amount to be paid</span>
           <span class="amount"
             >&#8377;
-            {{
-              totalPrice * numberOfTravellers +
-                0.05 * (totalPrice * numberOfTravellers)
-            }}</span
+            {{ getFinalAmount() | number:'1.0-0' }}</span
           >
         </div>
 

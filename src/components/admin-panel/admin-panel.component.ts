@@ -1151,28 +1151,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   ];
 
   // Row Data for Leads
-  leadsRowData: Lead[] = [
-    { name: 'Darrell Steward', location: 'Little Hangleton', tripDate: 'May 12, 2019', people: 15, days: 4, approxBudget: 4000, email: 'michelle.rivera@example.com', phoneNumber: '91-8862466329', message: 'Aliquam porta nisl dolor, molestie...' },
-    { name: 'Jerome Bell', location: 'Florean Fortes...', tripDate: 'December 19, 2013', people: 15, days: 3, approxBudget: 3000, email: 'jessica.hanson@example.com', phoneNumber: '91-8837372732', message: 'Donec sed erat ut magna suscipit...' },
-    { name: 'Dianne Russell', location: 'Godric\'s Hollow', tripDate: 'February 29, 2012', people: 12, days: 6, approxBudget: 5045, email: 'tanya.hill@example.com', phoneNumber: '91-9838313132', message: 'Donec sed erat ut magna suscipit...' },
-    { name: 'Darlene Robertson', location: 'Olivanders', tripDate: 'October 30, 2017', people: 24, days: 4, approxBudget: 9261, email: 'bill.sanders@example.com', phoneNumber: '91-8837372732', message: 'Vestibulum eu quam nec neque p...' },
-    { name: 'Albert Flores', location: 'House of Gaunt', tripDate: 'February 28, 2018', people: 23, days: 2, approxBudget: 1784, email: 'tim.jennings@example.com', phoneNumber: '91-8862466329', message: 'Vestibulum eu quam nec neque p...' },
-    { name: 'Leslie Alexander', location: 'House of Gaunt', tripDate: 'May 31, 2015', people: 21, days: 2, approxBudget: 5560, email: 'nathan.roberts@example.com', phoneNumber: '91-9838313132', message: 'Vestibulum eu quam nec neque p...' },
-    { name: 'Kathryn Murphy', location: 'Florean Fortes...', tripDate: 'May 9, 2014', people: 24, days: 1, approxBudget: 1148, email: 'georgia.young@example.com', phoneNumber: '91-8837372732', message: 'Aliquam palutac vestibulum sem ...' },
-    { name: 'Floyd Miles', location: 'Olivanders', tripDate: 'March 6, 2018', people: 21, days: 5, approxBudget: 5946, email: 'jackson.graham@example.com', phoneNumber: '91-9838313132', message: 'Aliquam palutac vestibulum sem ...' },
-    { name: 'Devon Lane', location: 'Florean Fortes...', tripDate: 'March 23, 2013', people: 12, days: 7, approxBudget: 6025, email: 'sara.cruz@example.com', phoneNumber: '91-9935648723', message: 'In a Iorpret puros. Integer ligure c...' },
-    { name: 'Ronald Richards', location: 'Olivanders', tripDate: 'September 9, 2013', people: 15, days: 7, approxBudget: 9359, email: 'felicia.reid@example.com', phoneNumber: '91-8862466329', message: 'felicia.reid@example.com' },
-    { name: 'Darrell Steward', location: 'Little Hangleton', tripDate: 'May 12, 2019', people: 15, days: 4, approxBudget: 4000, email: 'michelle.rivera@example.com', phoneNumber: '91-8862466329', message: 'Aliquam porta nisl dolor, molestie...' },
-    { name: 'Jerome Bell', location: 'Florean Fortes...', tripDate: 'December 19, 2013', people: 15, days: 3, approxBudget: 3000, email: 'jessica.hanson@example.com', phoneNumber: '91-8837372732', message: 'Donec sed erat ut magna suscipit...' },
-    { name: 'Dianne Russell', location: 'Godric\'s Hollow', tripDate: 'February 29, 2012', people: 12, days: 6, approxBudget: 5045, email: 'tanya.hill@example.com', phoneNumber: '91-9838313132', message: 'Donec sed erat ut magna suscipit...' },
-    { name: 'Darlene Robertson', location: 'Olivanders', tripDate: 'October 30, 2017', people: 24, days: 4, approxBudget: 9261, email: 'bill.sanders@example.com', phoneNumber: '91-8837372732', message: 'Vestibulum eu quam nec neque p...' },
-    { name: 'Albert Flores', location: 'House of Gaunt', tripDate: 'February 28, 2018', people: 23, days: 2, approxBudget: 1784, email: 'tim.jennings@example.com', phoneNumber: '91-8862466329', message: 'Vestibulum eu quam nec neque p...' },
-    { name: 'Leslie Alexander', location: 'House of Gaunt', tripDate: 'May 31, 2015', people: 21, days: 2, approxBudget: 5560, email: 'nathan.roberts@example.com', phoneNumber: '91-9838313132', message: 'Vestibulum eu quam nec neque p...' },
-    { name: 'Kathryn Murphy', location: 'Florean Fortes...', tripDate: 'May 9, 2014', people: 24, days: 1, approxBudget: 1148, email: 'georgia.young@example.com', phoneNumber: '91-8837372732', message: 'Aliquam palutac vestibulum sem ...' },
-    { name: 'Floyd Miles', location: 'Olivanders', tripDate: 'March 6, 2018', people: 21, days: 5, approxBudget: 5946, email: 'jackson.graham@example.com', phoneNumber: '91-9838313132', message: 'Aliquam palutac vestibulum sem ...' },
-    { name: 'Devon Lane', location: 'Florean Fortes...', tripDate: 'March 23, 2013', people: 12, days: 7, approxBudget: 6025, email: 'sara.cruz@example.com', phoneNumber: '91-9935648723', message: 'In a Iorpret puros. Integer ligure c...' },
-    { name: 'Ronald Richards', location: 'Olivanders', tripDate: 'September 9, 2013', people: 15, days: 7, approxBudget: 9359, email: 'felicia.reid@example.com', phoneNumber: '91-8862466329', message: 'felicia.reid@example.com' },
-  ];
+  leadsRowData: Lead[];
 
   // Bookings Column Definitions
   bookingsColumnDefs: ColDef[] = [

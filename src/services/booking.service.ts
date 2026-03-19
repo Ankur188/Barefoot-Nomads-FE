@@ -21,4 +21,8 @@ export class BookingService {
   getUserBookings(userId: string): Observable<any> {
     return this.http.get( environment.production ? `/api/booking?userId=${userId}` : `${environment.apiURL}booking?userId=${userId}`);
   }
+
+  validateCoupon(couponCode: string): Observable<any> {
+    return this.http.post( environment.production ? '/api/booking/validate-coupon' : `${environment.apiURL}booking/validate-coupon`, { couponCode });
+  }
 }

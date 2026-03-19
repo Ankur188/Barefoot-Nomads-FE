@@ -130,7 +130,7 @@ export class TripDetailsComponent implements OnInit {
       this.details = data;
       this.itinerary = JSON.parse(data.itinerary);
       this.keys = Object.keys(this.itinerary);
-      this.destinations = data.desitnations.split(',');
+      this.destinations = data.destinations.split(',');
     });
   }
 

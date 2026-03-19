@@ -41,7 +41,9 @@
 // }
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BookingService } from 'src/services/booking.service';
 
 @Component({
   selector: 'app-draggable-bottom-sheet',
@@ -65,8 +67,12 @@ export class DraggableBottomSheetComponent implements OnInit {
   @Input() tripId: string;
   @Input() totalPrice: number;
   @Output() pay: EventEmitter<any> = new EventEmitter();
+  couponCode: FormControl = new FormControl('');
+  isCouponValid: boolean = false;
+  couponError: string = '';
+  appliedCoupon: any = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private bookingService: BookingService) {}
 
   ngOnInit(): void {
     // if (this.isBookingPage) {
@@ -122,5 +128,68 @@ export class DraggableBottomSheetComponent implements OnInit {
 
   payNow() {
     this.pay.emit();
+  }
+
+  applyCoupon() {
+    const code = this.couponCode.value?.trim();
+    if (code) {
+      this.couponError = '';
+      this.bookingService.validateCoupon(code).subscribe(
+        (response) => {
+          if (response.success) {
+            this.isCouponValid = true;
+            this.appliedCoupon = response.coupon;
+            this.couponCode.disable();
+          }
+        },
+        (error) => {
+          this.isCouponValid = false;
+          this.couponError = error.error?.error || 'Coupon code invalid';
+        }
+      );
+    }
+  }
+
+  removeCoupon() {
+    this.isCouponValid = false;
+    this.appliedCoupon = null;
+    this.couponError = '';
+    this.couponCode.enable();
+    this.couponCode.setValue('');
+  }
+
+  getBaseAmount(): number {
+    return this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+  }
+
+  getDiscountAmount(): number {
+    if (this.appliedCoupon) {
+      const baseAmount = this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+      return baseAmount * (this.appliedCoupon.deduction / 100);
+    }
+    return 0;
+  }
+
+  getGSTAmount(): number {
+    const baseAmount = this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+    let amountAfterDiscount = baseAmount;
+    
+    if (this.appliedCoupon) {
+      amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
+    }
+    
+    return amountAfterDiscount * 0.05;
+  }
+
+  getFinalAmount(): number {
+    const baseAmount = this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+    let amountAfterDiscount = baseAmount;
+    
+    if (this.appliedCoupon) {
+      amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
+    }
+    
+    const gst = amountAfterDiscount * 0.05;
+    return amountAfterDiscount + gst;
   }
 }

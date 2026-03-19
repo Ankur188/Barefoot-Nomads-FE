@@ -38,6 +38,10 @@ export class BookingComponent implements OnInit {
     guardianNumber: new FormControl(''),
     email: new FormControl(''),
   });
+  couponCode: FormControl = new FormControl('');
+  isCouponValid: boolean = false;
+  couponError: string = '';
+  appliedCoupon: any = null;
   batchSelected: any;
   totalPrice = 0;
   batchFilter = 'All';
@@ -87,7 +91,7 @@ export class BookingComponent implements OnInit {
     this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
       this.getBatches(this.tripId);
       this.details = data;
-      this.destinations = data?.destinations?.split(',');
+      this.destinations = this.details?.destinations?.split(',');
       console.log('details', this.details);
     });
   }
@@ -204,5 +208,68 @@ export class BookingComponent implements OnInit {
       this.getBatches(this.tripId, 1, filter - 1);
     }
     this.batchFilter = filter;
+  }
+
+  applyCoupon() {
+    const code = this.couponCode.value?.trim();
+    if (code) {
+      this.couponError = '';
+      this.bookingService.validateCoupon(code).subscribe(
+        (response) => {
+          if (response.success) {
+            this.isCouponValid = true;
+            this.appliedCoupon = response.coupon;
+            this.couponCode.disable();
+          }
+        },
+        (error) => {
+          this.isCouponValid = false;
+          this.couponError = error.error?.error || 'Coupon code invalid';
+        }
+      );
+    }
+  }
+
+  removeCoupon() {
+    this.isCouponValid = false;
+    this.appliedCoupon = null;
+    this.couponError = '';
+    this.couponCode.enable();
+    this.couponCode.setValue('');
+  }
+
+  getBaseAmount(): number {
+    return this.totalPrice * this.numberOfTravellers;
+  }
+
+  getDiscountAmount(): number {
+    if (this.appliedCoupon) {
+      const baseAmount = this.totalPrice * this.numberOfTravellers;
+      return baseAmount * (this.appliedCoupon.deduction / 100);
+    }
+    return 0;
+  }
+
+  getGSTAmount(): number {
+    const baseAmount = this.totalPrice * this.numberOfTravellers;
+    let amountAfterDiscount = baseAmount;
+    
+    if (this.appliedCoupon) {
+      amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
+    }
+    
+    return amountAfterDiscount * 0.05;
+  }
+
+  getFinalAmount(): number {
+    const baseAmount = this.totalPrice * this.numberOfTravellers;
+    let amountAfterDiscount = baseAmount;
+    
+    if (this.appliedCoupon) {
+      amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
+    }
+    
+    const gst = amountAfterDiscount * 0.05;
+    return amountAfterDiscount + gst;
   }
 }
