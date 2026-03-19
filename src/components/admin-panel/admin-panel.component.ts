@@ -1344,18 +1344,22 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     {
       headerName: 'Invoice',
       field: 'invoice',
-      width: 200,
-      filter: 'agTextColumnFilter',
-      sortable: true,
+      width: 150,
+      sortable: false,
+      filter: false,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
-      filterParams: {
-        buttons: ['reset', 'apply'],
-        closeOnApply: true,
-        filterOptions: ['contains', 'notContains', 'equals', 'notEqual', 'startsWith', 'endsWith'],
-        defaultOption: 'contains',
-        suppressAndOrCondition: true,
-        maxNumConditions: 1
+      cellStyle: { textAlign: 'center' },
+      cellRenderer: (params: any) => {
+        if (params.data && params.data.id) {
+          return `<button class="action-btn download-invoice-btn" data-action="download-invoice" data-booking-id="${params.data.id}" 
+                    style="border: none; background: none; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 16L7 11L8.4 9.55L11 12.15V4H13V12.15L15.6 9.55L17 11L12 16ZM6 20C5.45 20 4.979 19.804 4.587 19.412C4.195 19.02 3.99933 18.5493 4 18V15H6V18H18V15H20V18C20 18.55 19.804 19.021 19.412 19.413C19.02 19.805 18.5493 20.0007 18 20H6Z" fill="#666"/>
+                    </svg>
+                  </button>`;
+        }
+        return '';
       }
     },
     {
@@ -2510,24 +2514,35 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         break;
       case 'bookings':
         // Check if we're in edit or add mode
-        if (this.bookingsFormMode === 'edit' && data.id) {
-          const bookingId = data.id;
-          // Remove id from data before sending
-          const { id, ...updateData } = data;
-          this.adminService.updateBooking(bookingId, updateData).subscribe({
-            next: (response) => {
-              console.log('Booking updated successfully');
-              // Reload bookings data to show the updated booking
-              this.loadBookingsData(this.bookingsCurrentPage);
-              // Close form only on success
-              this.closeEntityForm(entityType);
-            },
-            error: (error) => {
-              console.error('Error updating booking:', error);
-              alert(error.error?.error || 'Failed to update booking. Please try again.');
-              // Form stays open on error
-            }
-          });
+        if (this.bookingsFormMode === 'edit') {
+          // Extract booking ID from FormData
+          let bookingId: string | null = null;
+          if (data instanceof FormData) {
+            bookingId = data.get('id') as string;
+            // Remove id from FormData before sending
+            data.delete('id');
+          } else if (data.id) {
+            bookingId = data.id;
+            const { id, ...updateData } = data;
+            data = updateData;
+          }
+          
+          if (bookingId) {
+            this.adminService.updateBooking(bookingId, data).subscribe({
+              next: (response) => {
+                console.log('Booking updated successfully');
+                // Reload bookings data to show the updated booking
+                this.loadBookingsData(this.bookingsCurrentPage);
+                // Close form only on success
+                this.closeEntityForm(entityType);
+              },
+              error: (error) => {
+                console.error('Error updating booking:', error);
+                alert(error.error?.error || 'Failed to update booking. Please try again.');
+                // Form stays open on error
+              }
+            });
+          }
         } else {
           // Call API to create booking
           this.adminService.createBooking(data).subscribe({
@@ -2640,6 +2655,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             }
           });
         }
+      } else if (action === 'download-invoice') {
+        const bookingId = event.event.target.closest('.action-btn').dataset.bookingId;
+        if (bookingId) {
+          this.downloadInvoice(bookingId);
+        }
       }
     }
   }
@@ -2722,5 +2742,27 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (page >= 1 && page <= this.bookingsTotalPages) {
       this.loadBookingsData(page);
     }
+  }
+
+  downloadInvoice(bookingId: string) {
+    console.log('Downloading invoice for booking:', bookingId);
+    this.adminService.getBookingInvoice(bookingId).subscribe({
+      next: (response) => {
+        if (response && response.success && response.downloadUrl) {
+          // S3 signed URL with Content-Disposition header will automatically trigger download
+          // Create a temporary anchor element to trigger download
+          const link = document.createElement('a');
+          link.href = response.downloadUrl;
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      },
+      error: (error) => {
+        console.error('Error downloading invoice:', error);
+        alert(error.error?.error || 'Failed to download invoice. Please try again.');
+      }
+    });
   }
 }

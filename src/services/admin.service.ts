@@ -193,6 +193,12 @@ export class AdminService {
     );
   }
 
+  getBookingInvoice(bookingId: string): Observable<any> {
+    return this.http.get(
+      environment.production ? `/api/admin/bookings/${bookingId}/invoice` : `${environment.apiURL}admin/bookings/${bookingId}/invoice`
+    );
+  }
+
   searchUsers(searchTerm: string): Observable<any> {
     const headers = new HttpHeaders({
       'X-Skip-Loader': 'true'

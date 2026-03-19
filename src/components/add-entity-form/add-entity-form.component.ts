@@ -281,7 +281,7 @@ export class AddEntityFormComponent implements OnInit {
           payment: ['', [Validators.required, Validators.min(1)]],
           travellers: ['', [Validators.required, Validators.min(1)]],
           roomType: ['', Validators.required],
-          invoice: ['', Validators.required]
+          invoice: ['', this.mode === 'add' ? Validators.required : null]
         });
         break;
     }
@@ -703,6 +703,33 @@ export class AddEntityFormComponent implements OnInit {
       }
       
       return formData;
+    } else if (this.entityType === 'bookings') {
+      // Use FormData for bookings to handle invoice file upload
+      const formData = new FormData();
+      const formValue = this.entityForm.getRawValue();
+      
+      // Append all form fields
+      formData.append('user', formValue.user);
+      formData.append('batch', formValue.batch);
+      formData.append('name', formValue.name);
+      formData.append('phoneNumber', formValue.phoneNumber);
+      formData.append('guardianNumber', formValue.guardianNumber || '');
+      formData.append('email', formValue.email);
+      formData.append('payment', formValue.payment.toString());
+      formData.append('travellers', formValue.travellers.toString());
+      formData.append('roomType', formValue.roomType);
+      
+      // Add invoice file if present
+      if (this.invoiceFile) {
+        formData.append('invoice', this.invoiceFile);
+      }
+      
+      // Add booking ID if in edit mode
+      if (this.mode === 'edit' && this.data && this.data.id) {
+        formData.append('id', this.data.id);
+      }
+      
+      return formData;
     } else {
       // Use getRawValue() to include disabled fields
       return this.entityForm.getRawValue();
@@ -753,6 +780,9 @@ export class AddEntityFormComponent implements OnInit {
       return this.entityForm.valid && 
              this.itineraryFile !== null && 
              this.uploadedImages.length > 0;
+    } else if (this.entityType === 'bookings' && this.mode === 'add') {
+      // For bookings in add mode, invoice file is required
+      return this.entityForm.valid && this.invoiceFile !== null;
     }
     return this.entityForm.valid;
   }
