@@ -26,6 +26,7 @@ export class AddEntityFormComponent implements OnInit {
   uploadedImages: File[] = [];
   itineraryFile: File | null = null;
   invoiceFile: File | null = null;
+  existingInvoiceFilename: string | null = null; // Track existing invoice from backend
   numberOfDays = 1;
   maxDays = 30;
   selectedDayIndex = 0; // Currently selected day (0-indexed)
@@ -405,6 +406,22 @@ export class AddEntityFormComponent implements OnInit {
           batch_name: data.batch_name
         };
       }
+
+      // Fetch existing invoice filename from backend if in edit mode
+      if (this.mode === 'edit' && data.id) {
+        this.adminService.getBookingInvoice(data.id).subscribe({
+          next: (response) => {
+            if (response && response.success && response.filename) {
+              this.existingInvoiceFilename = response.filename;
+              this.entityForm.patchValue({ invoice: response.filename });
+            }
+          },
+          error: (error) => {
+            console.log('No existing invoice found or error fetching invoice');
+            // It's okay if invoice doesn't exist
+          }
+        });
+      }
     } else {
       // For other entity types, use simple patch
       this.entityForm.patchValue(data);
@@ -458,12 +475,14 @@ export class AddEntityFormComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.invoiceFile = file;
+      this.existingInvoiceFilename = null; // Clear existing invoice when new file is selected
       this.entityForm.patchValue({ invoice: file.name });
     }
   }
 
   removeInvoice(): void {
     this.invoiceFile = null;
+    this.existingInvoiceFilename = null;
     this.entityForm.patchValue({ invoice: '' });
     // Clear the file input to allow re-selecting the same file
     if (this.invoiceInput) {
@@ -780,9 +799,14 @@ export class AddEntityFormComponent implements OnInit {
       return this.entityForm.valid && 
              this.itineraryFile !== null && 
              this.uploadedImages.length > 0;
-    } else if (this.entityType === 'bookings' && this.mode === 'add') {
+    } else if (this.entityType === 'bookings') {
       // For bookings in add mode, invoice file is required
-      return this.entityForm.valid && this.invoiceFile !== null;
+      // For bookings in edit mode, either a new invoice file or existing invoice is acceptable
+      if (this.mode === 'add') {
+        return this.entityForm.valid && this.invoiceFile !== null;
+      } else {
+        return this.entityForm.valid && (this.invoiceFile !== null || this.existingInvoiceFilename !== null);
+      }
     }
     return this.entityForm.valid;
   }

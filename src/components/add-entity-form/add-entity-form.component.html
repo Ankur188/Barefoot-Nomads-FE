@@ -942,9 +942,9 @@
               Browse
             </button>
           </div>
-          <div class="file-input-wrapper" [class.has-file]="invoiceFile" [class.error]="shouldShowError('invoice')">
-            <div class="file-chip" *ngIf="invoiceFile">
-              <span>{{ invoiceFile.name }}</span>
+          <div class="file-input-wrapper" [class.has-file]="invoiceFile || existingInvoiceFilename" [class.error]="shouldShowError('invoice')">
+            <div class="file-chip" *ngIf="invoiceFile || existingInvoiceFilename">
+              <span>{{ invoiceFile ? invoiceFile.name : existingInvoiceFilename }}</span>
               <button
                 type="button"
                 class="remove-file-btn"
@@ -956,7 +956,7 @@
             <input
               id="invoice"
               type="text"
-              *ngIf="!invoiceFile"
+              *ngIf="!invoiceFile && !existingInvoiceFilename"
               placeholder="No file chosen"
               readonly
             />

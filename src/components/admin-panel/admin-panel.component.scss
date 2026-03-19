@@ -272,6 +272,14 @@
       color: #222222 !important;
     }
 
+    // Global center-aligned cell class for all grids
+    .ag-cell.center-aligned {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+
     // AG Grid Styling
     .trips-grid {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
