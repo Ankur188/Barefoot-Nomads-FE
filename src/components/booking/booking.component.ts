@@ -14,12 +14,6 @@ import { StaticService } from 'src/services/static.service';
 export class BookingComponent implements OnInit {
   batches: any[] = [];
 
-  occupancy: any = {
-    200: 'TRIPLE OCCUPANCY',
-    400: 'DOUBLE OCCUPANCY',
-    600: 'SINGLE OCCUPANCY',
-  };
-
   viewPort = window.innerWidth;
   currentPage = 1;
   itemsPerPage = 4;
@@ -30,7 +24,8 @@ export class BookingComponent implements OnInit {
   details: any;
   numberOfTravellers = 1;
   destinations: any;
-  roomPrice = 200;
+  roomPrice = 0;
+  roomType = 'TRIPLE OCCUPANCY';
   loading$: Observable<boolean>;
   bookingForm: FormGroup = new FormGroup({
     fullName: new FormControl(''),
@@ -102,7 +97,23 @@ export class BookingComponent implements OnInit {
       .subscribe((data) => {
         this.batches = data.data;
         this.batchSelected = this.batches[0];
-        this.totalPrice = this.batches[0].price - 200 + this.roomPrice;
+        
+        // Initialize room price with first available room type
+        if (this.batchSelected.triple_room > 0) {
+          this.roomPrice = this.batchSelected.triple_room;
+          this.roomType = 'TRIPLE OCCUPANCY';
+        } else if (this.batchSelected.double_room > 0) {
+          this.roomPrice = this.batchSelected.double_room;
+          this.roomType = 'DOUBLE OCCUPANCY';
+        } else if (this.batchSelected.single_room > 0) {
+          this.roomPrice = this.batchSelected.single_room;
+          this.roomType = 'SINGLE OCCUPANCY';
+        } else {
+          this.roomPrice = 0;
+          this.roomType = 'TRIPLE OCCUPANCY';
+        }
+        
+        this.totalPrice = this.batchSelected.price;
         this.totalPages = data.totalPages;
         this.updatePagination();
       });
@@ -122,7 +133,7 @@ export class BookingComponent implements OnInit {
       this.totalPrice * this.numberOfTravellers +
       0.05 * (this.totalPrice * this.numberOfTravellers);
     payload['travellers'] = this.numberOfTravellers;
-    payload['roomType'] = this.occupancy[this.roomPrice];
+    payload['roomType'] = this.roomType;
     this.bookingService.bookTrip(payload).subscribe((data) => {
       if (data) {
         this.router.navigate([
@@ -136,18 +147,89 @@ export class BookingComponent implements OnInit {
     this.router.navigate(['../']);
   }
 
-  selectRoom(price) {
+  selectRoom(roomTypeKey: string) {
     event.stopPropagation();
-    this.totalPrice -= this.roomPrice;
-    this.totalPrice += price;
-    this.roomPrice = price;
-    console.log('rrom', this.occupancy[this.roomPrice]);
+    const oldRoomPrice = this.roomPrice;
+    
+    switch(roomTypeKey) {
+      case 'triple':
+        this.roomPrice = this.batchSelected?.triple_room || 0;
+        this.roomType = 'TRIPLE OCCUPANCY';
+        break;
+      case 'double':
+        this.roomPrice = this.batchSelected?.double_room || 0;
+        this.roomType = 'DOUBLE OCCUPANCY';
+        break;
+      case 'single':
+        this.roomPrice = this.batchSelected?.single_room || 0;
+        this.roomType = 'SINGLE OCCUPANCY';
+        break;
+    }
   }
 
   selectBatch(batch) {
+    const oldRoomPrice = this.roomPrice;
     this.totalPrice -= this.batchSelected.price;
     this.totalPrice += batch.price;
     this.batchSelected = batch;
+    
+    // Reset room selection to triple occupancy (default) if available, otherwise first available room
+    if (batch.triple_room > 0) {
+      this.roomPrice = batch.triple_room;
+      this.roomType = 'TRIPLE OCCUPANCY';
+    } else if (batch.double_room > 0) {
+      this.roomPrice = batch.double_room;
+      this.roomType = 'DOUBLE OCCUPANCY';
+    } else if (batch.single_room > 0) {
+      this.roomPrice = batch.single_room;
+      this.roomType = 'SINGLE OCCUPANCY';
+    } else {
+      this.roomPrice = 0;
+      this.roomType = 'TRIPLE OCCUPANCY';
+    }
+  }
+
+  isRoomAvailable(roomType: string): boolean {
+    if (!this.batchSelected) return false;
+    
+    switch(roomType) {
+      case 'triple':
+        return (this.batchSelected.triple_room || 0) > 0;
+      case 'double':
+        return (this.batchSelected.double_room || 0) > 0;
+      case 'single':
+        return (this.batchSelected.single_room || 0) > 0;
+      default:
+        return false;
+    }
+  }
+
+  getRoomPrice(roomType: string): number {
+    if (!this.batchSelected) return 0;
+    
+    switch(roomType) {
+      case 'triple':
+        return this.batchSelected.triple_room || 0;
+      case 'double':
+        return this.batchSelected.double_room || 0;
+      case 'single':
+        return this.batchSelected.single_room || 0;
+      default:
+        return 0;
+    }
+  }
+
+  isRoomSelected(roomType: string): boolean {
+    switch(roomType) {
+      case 'triple':
+        return this.roomType === 'TRIPLE OCCUPANCY';
+      case 'double':
+        return this.roomType === 'DOUBLE OCCUPANCY';
+      case 'single':
+        return this.roomType === 'SINGLE OCCUPANCY';
+      default:
+        return false;
+    }
   }
 
   updateCounter(type) {
@@ -239,37 +321,41 @@ export class BookingComponent implements OnInit {
   }
 
   getBaseAmount(): number {
-    return this.totalPrice * this.numberOfTravellers;
+    return this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
+  }
+
+  getTaxRate(): number {
+    return this.batchSelected?.tax ? this.batchSelected.tax / 100 : 0.05;
   }
 
   getDiscountAmount(): number {
     if (this.appliedCoupon) {
-      const baseAmount = this.totalPrice * this.numberOfTravellers;
+      const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
       return baseAmount * (this.appliedCoupon.deduction / 100);
     }
     return 0;
   }
 
   getGSTAmount(): number {
-    const baseAmount = this.totalPrice * this.numberOfTravellers;
+    const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
     let amountAfterDiscount = baseAmount;
     
     if (this.appliedCoupon) {
       amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
     }
     
-    return amountAfterDiscount * 0.05;
+    return amountAfterDiscount * this.getTaxRate();
   }
 
   getFinalAmount(): number {
-    const baseAmount = this.totalPrice * this.numberOfTravellers;
+    const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
     let amountAfterDiscount = baseAmount;
     
     if (this.appliedCoupon) {
       amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
     }
     
-    const gst = amountAfterDiscount * 0.05;
+    const gst = amountAfterDiscount * this.getTaxRate();
     return amountAfterDiscount + gst;
   }
 }

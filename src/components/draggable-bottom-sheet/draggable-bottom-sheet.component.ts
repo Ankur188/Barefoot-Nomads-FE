@@ -64,8 +64,10 @@ export class DraggableBottomSheetComponent implements OnInit {
   @Input() destinations: Array<string>;
   @Input() numberOfTravellers: number;
   @Input() roomPrice: number;
+  @Input() roomType: string;
   @Input() tripId: string;
   @Input() totalPrice: number;
+  @Input() batchSelected: any;
   @Output() pay: EventEmitter<any> = new EventEmitter();
   couponCode: FormControl = new FormControl('');
   isCouponValid: boolean = false;
@@ -159,37 +161,41 @@ export class DraggableBottomSheetComponent implements OnInit {
   }
 
   getBaseAmount(): number {
-    return this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+    return this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
+  }
+
+  getTaxRate(): number {
+    return this.batchSelected?.tax ? this.batchSelected.tax / 100 : 0.05;
   }
 
   getDiscountAmount(): number {
     if (this.appliedCoupon) {
-      const baseAmount = this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+      const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
       return baseAmount * (this.appliedCoupon.deduction / 100);
     }
     return 0;
   }
 
   getGSTAmount(): number {
-    const baseAmount = this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+    const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
     let amountAfterDiscount = baseAmount;
     
     if (this.appliedCoupon) {
       amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
     }
     
-    return amountAfterDiscount * 0.05;
+    return amountAfterDiscount * this.getTaxRate();
   }
 
   getFinalAmount(): number {
-    const baseAmount = this.totalPrice * this.numberOfTravellers + (this.roomPrice - 200) * this.numberOfTravellers;
+    const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
     let amountAfterDiscount = baseAmount;
     
     if (this.appliedCoupon) {
       amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
     }
     
-    const gst = amountAfterDiscount * 0.05;
+    const gst = amountAfterDiscount * this.getTaxRate();
     return amountAfterDiscount + gst;
   }
 }

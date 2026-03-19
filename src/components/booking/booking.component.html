@@ -191,34 +191,35 @@
         </div>
         <div class="room-types-main-div">
           <div class="types d-flex justify-content-between">
-            <div class="card d-flex flex-column">
+            <div *ngIf="isRoomAvailable('triple')" class="card d-flex flex-column">
               <mat-radio-button
-                [checked]="roomPrice === 200"
+                [checked]="isRoomSelected('triple')"
                 name="room"
-                (change)="selectRoom(200)"
+                (change)="selectRoom('triple')"
               >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Triple Occupancy </span>
+              <div *ngIf="getRoomPrice('triple') > 0" class="price mt-3">+ &#8377; {{ getRoomPrice('triple') }}</div>
             </div>
-            <div class="card d-flex flex-column">
+            <div *ngIf="isRoomAvailable('double')" class="card d-flex flex-column">
               <mat-radio-button
-                [checked]="roomPrice === 400"
+                [checked]="isRoomSelected('double')"
                 name="room"
-                (change)="selectRoom(400)"
+                (change)="selectRoom('double')"
               >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Double Occupancy </span>
-              <div class="price mt-3">+ &#8377; 400</div>
+              <div *ngIf="getRoomPrice('double') > 0" class="price mt-3">+ &#8377; {{ getRoomPrice('double') }}</div>
             </div>
-            <div class="card d-flex flex-column">
+            <div *ngIf="isRoomAvailable('single')" class="card d-flex flex-column">
               <mat-radio-button
-                [checked]="roomPrice === 600"
+                [checked]="isRoomSelected('single')"
                 name="room"
-                (change)="selectRoom(600)"
+                (change)="selectRoom('single')"
               >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Single Occupancy </span>
-              <div class="price mt-3">+ &#8377; 600</div>
+              <div *ngIf="getRoomPrice('single') > 0" class="price mt-3">+ &#8377; {{ getRoomPrice('single') }}</div>
             </div>
           </div>
         </div>
@@ -255,19 +256,11 @@
             <span class="para-font-style">Standard Price</span>
             <span class="para-font-style"
               >&#8377;
-              {{ (batchSelected.price - 200) * numberOfTravellers }}</span
+              {{ batchSelected.price * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style"
-              >{{
-                roomPrice === 200
-                  ? "Triple Room Occupancy / Per Person"
-                  : roomPrice === 400
-                  ? "Double Room Occupancy / Per Person"
-                  : "Single Room Occupancy / Per Person"
-              }}
-            </span>
+            <span class="para-font-style">{{ roomType }} / Per Person</span>
             <span class="para-font-style"
               >&#8377; {{ roomPrice * numberOfTravellers }}</span
             >
@@ -312,7 +305,7 @@
           <span class="para-font-style discount-amount">- &#8377; {{ getDiscountAmount() | number:'1.0-0' }}</span>
         </div>
         <div class="d-flex justify-content-between mt-3">
-          <span class="para-font-style">GST (5%)</span>
+          <span class="para-font-style">GST ({{ batchSelected?.tax || 5 }}%)</span>
           <span class="para-font-style">&#8377; {{ getGSTAmount() | number:'1.0-0' }}</span>
         </div>
         <div class="total mt-4 d-flex justify-content-between">
@@ -338,8 +331,10 @@
     [details]="details"
     [numberOfTravellers]="numberOfTravellers"
     [roomPrice]="roomPrice"
+    [roomType]="roomType"
     [destinations]="destinations"
     [totalPrice]="totalPrice"
+    [batchSelected]="batchSelected"
     (pay)="payNow()"
   ></app-draggable-bottom-sheet>
 </div>

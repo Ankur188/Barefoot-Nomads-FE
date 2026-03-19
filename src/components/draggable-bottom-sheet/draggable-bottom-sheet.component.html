@@ -54,19 +54,11 @@
             <span class="para-font-style">Standard Price</span>
             <span class="para-font-style"
               >&#8377;
-              {{ (totalPrice - (roomPrice - 200)) * numberOfTravellers }}</span
+              {{ totalPrice * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style"
-              >{{
-                roomPrice === 200
-                  ? "Triple Room Occupancy / Per Person"
-                  : roomPrice === 400
-                  ? "Double Room Occupancy / Per Person"
-                  : "Single Room Occupancy / Per Person"
-              }}
-            </span>
+            <span class="para-font-style">{{ roomType }} / Per Person</span>
             <span class="para-font-style"
               >&#8377; {{ roomPrice * numberOfTravellers }}</span
             >
@@ -111,7 +103,7 @@
           <span class="para-font-style discount-amount">- &#8377; {{ getDiscountAmount() | number:'1.0-0' }}</span>
         </div>
         <div class="d-flex justify-content-between mt-3">
-          <span class="para-font-style">GST (5%)</span>
+          <span class="para-font-style">GST ({{ batchSelected?.tax || 5 }}%)</span>
           <span class="para-font-style">&#8377; {{ getGSTAmount() | number:'1.0-0' }}</span>
         </div>
         <!-- <div class="total mt-4 d-flex justify-content-between">
