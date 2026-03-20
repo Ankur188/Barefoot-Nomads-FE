@@ -29,22 +29,53 @@
             ><span>*</span>
           </p>
           <form [formGroup]="bookingForm" class="form-detail">
-            <input
-              type="text"
-              formControlName="fullName"
-              placeholder="Full Name"
-            />
-            <input
-              type="number"
-              formControlName="number"
-              placeholder="Phone Number"
-            />
-            <input
-              type="number"
-              formControlName="guardianNumber"
-              placeholder="Emergency / Guardian Contact Number"
-            />
-            <input type="text" formControlName="email" placeholder="Email" />
+            <div class="input-wrapper">
+              <input
+                type="text"
+                formControlName="fullName"
+                placeholder="Full Name *"
+                [class.invalid]="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched">
+                <span *ngIf="bookingForm.get('fullName')?.errors?.['required']">Full name is required</span>
+                <span *ngIf="bookingForm.get('fullName')?.errors?.['minlength']">Minimum 3 characters required</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="tel"
+                formControlName="number"
+                placeholder="Phone Number *"
+                [class.invalid]="bookingForm.get('number')?.invalid && bookingForm.get('number')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('number')?.invalid && bookingForm.get('number')?.touched">
+                <span *ngIf="bookingForm.get('number')?.errors?.['required']">Phone number is required</span>
+                <span *ngIf="bookingForm.get('number')?.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="tel"
+                formControlName="guardianNumber"
+                placeholder="Emergency / Guardian Contact Number"
+                [class.invalid]="bookingForm.get('guardianNumber')?.invalid && bookingForm.get('guardianNumber')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('guardianNumber')?.invalid && bookingForm.get('guardianNumber')?.touched">
+                <span *ngIf="bookingForm.get('guardianNumber')?.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="Email *"
+                [class.invalid]="bookingForm.get('email')?.invalid && bookingForm.get('email')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('email')?.invalid && bookingForm.get('email')?.touched">
+                <span *ngIf="bookingForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="bookingForm.get('email')?.errors?.['email']">Enter a valid email address</span>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -106,6 +137,9 @@
             </div>
             <div class="status">Status</div>
             <div>Starting Price</div>
+          </div>
+          <div *ngIf="!batches || batches.length === 0" class="no-batches-message">
+            <p>No batches found for the selected filter.</p>
           </div>
           <div *ngIf="batches && batches.length" class="dates">
             <div
@@ -318,6 +352,7 @@
 
         <div
           class="pay w-100 text-uppercase text-center align-content-center mt-4"
+          [class.disabled]="!isFormValid()"
           (click)="payNow()"
         >
           Pay now

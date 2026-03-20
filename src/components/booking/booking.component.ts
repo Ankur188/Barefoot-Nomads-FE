@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BookingService } from 'src/services/booking.service';
@@ -28,10 +28,10 @@ export class BookingComponent implements OnInit {
   roomType = 'TRIPLE OCCUPANCY';
   loading$: Observable<boolean>;
   bookingForm: FormGroup = new FormGroup({
-    fullName: new FormControl(''),
-    number: new FormControl(''),
-    guardianNumber: new FormControl(''),
-    email: new FormControl(''),
+    fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+    guardianNumber: new FormControl('', [Validators.pattern('^[0-9]{10}$')]),
+    email: new FormControl('', [Validators.required, Validators.email]),
   });
   couponCode: FormControl = new FormControl('');
   isCouponValid: boolean = false;
@@ -96,24 +96,30 @@ export class BookingComponent implements OnInit {
       .getBatches(id, page, filter)
       .subscribe((data) => {
         this.batches = data.data;
-        this.batchSelected = this.batches[0];
         
-        // Initialize room price with first available room type
-        if (this.batchSelected.triple_room > 0) {
-          this.roomPrice = this.batchSelected.triple_room;
-          this.roomType = 'TRIPLE OCCUPANCY';
-        } else if (this.batchSelected.double_room > 0) {
-          this.roomPrice = this.batchSelected.double_room;
-          this.roomType = 'DOUBLE OCCUPANCY';
-        } else if (this.batchSelected.single_room > 0) {
-          this.roomPrice = this.batchSelected.single_room;
-          this.roomType = 'SINGLE OCCUPANCY';
-        } else {
-          this.roomPrice = 0;
-          this.roomType = 'TRIPLE OCCUPANCY';
+        // Only update batchSelected if batches are found
+        if(this.batches && this.batches.length > 0) {
+          this.batchSelected = this.batches[0];
+          
+          // Initialize room price with first available room type
+          if (this.batchSelected.triple_room > 0) {
+            this.roomPrice = this.batchSelected.triple_room;
+            this.roomType = 'TRIPLE OCCUPANCY';
+          } else if (this.batchSelected.double_room > 0) {
+            this.roomPrice = this.batchSelected.double_room;
+            this.roomType = 'Double';
+          } else if (this.batchSelected.single_room > 0) {
+            this.roomPrice = this.batchSelected.single_room;
+            this.roomType = 'Single';
+          } else {
+            this.roomPrice = 0;
+            this.roomType = 'Triple';
+          }
+          
+          this.totalPrice = this.batchSelected.price;
         }
+        // If no batches found, keep the previously selected batch
         
-        this.totalPrice = this.batchSelected.price;
         this.totalPages = data.totalPages;
         this.updatePagination();
       });
@@ -126,6 +132,11 @@ export class BookingComponent implements OnInit {
   }
 
   payNow() {
+    if (this.bookingForm.invalid) {
+      this.bookingForm.markAllAsTouched();
+      return;
+    }
+    
     let payload = this.bookingForm.getRawValue();
     payload['userId'] = localStorage.getItem('id');
     payload['batch_id'] = this.batchSelected.id;
@@ -143,6 +154,10 @@ export class BookingComponent implements OnInit {
     });
   }
 
+  isFormValid(): boolean {
+    return this.bookingForm.valid;
+  }
+
   navigateBack() {
     this.router.navigate(['../']);
   }
@@ -154,15 +169,15 @@ export class BookingComponent implements OnInit {
     switch(roomTypeKey) {
       case 'triple':
         this.roomPrice = this.batchSelected?.triple_room || 0;
-        this.roomType = 'TRIPLE OCCUPANCY';
+        this.roomType = 'Triple';
         break;
       case 'double':
         this.roomPrice = this.batchSelected?.double_room || 0;
-        this.roomType = 'DOUBLE OCCUPANCY';
+        this.roomType = 'Double';
         break;
       case 'single':
         this.roomPrice = this.batchSelected?.single_room || 0;
-        this.roomType = 'SINGLE OCCUPANCY';
+        this.roomType = 'Single';
         break;
     }
   }
@@ -176,16 +191,16 @@ export class BookingComponent implements OnInit {
     // Reset room selection to triple occupancy (default) if available, otherwise first available room
     if (batch.triple_room > 0) {
       this.roomPrice = batch.triple_room;
-      this.roomType = 'TRIPLE OCCUPANCY';
+      this.roomType = 'Triple';
     } else if (batch.double_room > 0) {
       this.roomPrice = batch.double_room;
-      this.roomType = 'DOUBLE OCCUPANCY';
+      this.roomType = 'Double';
     } else if (batch.single_room > 0) {
       this.roomPrice = batch.single_room;
-      this.roomType = 'SINGLE OCCUPANCY';
+      this.roomType = 'Single';
     } else {
       this.roomPrice = 0;
-      this.roomType = 'TRIPLE OCCUPANCY';
+      this.roomType = 'Triple';
     }
   }
 
@@ -222,11 +237,11 @@ export class BookingComponent implements OnInit {
   isRoomSelected(roomType: string): boolean {
     switch(roomType) {
       case 'triple':
-        return this.roomType === 'TRIPLE OCCUPANCY';
+        return this.roomType === 'Triple';
       case 'double':
-        return this.roomType === 'DOUBLE OCCUPANCY';
+        return this.roomType === 'Double';
       case 'single':
-        return this.roomType === 'SINGLE OCCUPANCY';
+        return this.roomType === 'Single';
       default:
         return false;
     }
