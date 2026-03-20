@@ -29,6 +29,7 @@ interface Batch {
   tax: string;
   travelers: string;
   tripProgress: string;
+  booked: number;
   count: number;
   availability: string;
   status: 'active' | 'inactive';
@@ -398,6 +399,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -411,6 +413,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -424,6 +427,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -437,6 +441,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -450,6 +455,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -486,6 +492,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       }
     },
     {
+      headerName: 'Booked',
+      field: 'booked',
+      width: 130,
+      filter: 'agNumberColumnFilter',
+      sortable: true,
+      resizable: true,
+      headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
+      filterParams: {
+        buttons: ['reset', 'apply'],
+        closeOnApply: true
+      }
+    },
+    {
       headerName: 'Count',
       field: 'count',
       width: 130,
@@ -493,6 +513,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       sortable: true,
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
+      cellClass: 'center-aligned',
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true
@@ -1537,6 +1558,7 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
               tax: batch.tax + '%' || '0%',
               travelers: (batch.users.length > 0 ? batch.users[0] : '') + (batch.users.length > 1 ? ' + ' + batch.users.length : '') || '',
               tripProgress: tripProgress,
+              booked: batch.users_count || 0,
               count: batch.max_adventurers|| 0,
               availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
               status: batch.status ? 'active' : 'inactive',
