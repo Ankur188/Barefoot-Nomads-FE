@@ -672,6 +672,10 @@ export class AddEntityFormComponent implements OnInit {
       // Use getRawValue() to include disabled fields (like batchName)
       const formData = this.entityForm.getRawValue();
       
+      // Ensure singleRoom and doubleRoom are 0 if empty or null
+      formData.singleRoom = formData.singleRoom || 0;
+      formData.doubleRoom = formData.doubleRoom || 0;
+      
       // Convert dates to timestamps
       if (formData.startDate) {
         formData.startDate = new Date(formData.startDate).getTime() / 1000;
