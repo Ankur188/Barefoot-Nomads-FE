@@ -1558,9 +1558,9 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
               tax: batch.tax + '%' || '0%',
               travelers: (batch.users.length > 0 ? batch.users[0] : '') + (batch.users.length > 1 ? ' + ' + batch.users.length : '') || '',
               tripProgress: tripProgress,
-              booked: batch.users_count || 0,
+              booked: batch.total_bookings || 0,
               count: batch.max_adventurers|| 0,
-              availability: batch.users_count <= batch.max_adventurers/3 ? 'Available' : batch.users_count === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
+              availability: batch.total_bookings <= batch.max_adventurers/3 ? 'Available' : batch.total_bookings === batch.max_adventurers ? 'Sold Out' : 'Filling Fast',
               status: batch.status ? 'active' : 'inactive',
               hasUsers: batch.users && batch.users.length > 0
             };

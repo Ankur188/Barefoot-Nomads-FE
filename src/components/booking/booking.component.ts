@@ -95,6 +95,7 @@ export class BookingComponent implements OnInit {
     this.staticService
       .getBatches(id, page, filter)
       .subscribe((data) => {
+        // Backend now returns only upcoming batches with available spots
         this.batches = data.data;
         
         // Only update batchSelected if batches are found

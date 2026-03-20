@@ -138,7 +138,9 @@ export class TripDetailsComponent implements OnInit {
     this.staticService
       .getBatches(id, page, filter)
       .subscribe((data) => {
+        // Backend now returns only upcoming batches with available spots
         this.batches = data.data;
+        
         this.totalPages = data.totalPages;
         this.updatePagination();
       });
@@ -175,7 +177,10 @@ export class TripDetailsComponent implements OnInit {
   }
 
   bookNow() {
-    this.router.navigate([`trip/${this.tripId}/booking`]);
+    // Only navigate if there are available batches
+    if (this.batches && this.batches.length > 0) {
+      this.router.navigate([`trip/${this.tripId}/booking`]);
+    }
   }
 
   openLightbox() {

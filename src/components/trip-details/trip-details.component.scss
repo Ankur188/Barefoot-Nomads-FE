@@ -143,6 +143,19 @@ hr {
   font-size: 1.25rem;
   letter-spacing: 0.15rem;
   border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 
 .overview {
@@ -191,6 +204,19 @@ hr {
   }
   .status {
     padding-right: 2.5rem;
+  }
+  .no-batches-message {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background-color: $lf-white;
+    border-bottom: 1px solid $lf-light-grey;
+    
+    p {
+      margin: 0;
+      font-size: 1rem;
+      color: rgba(0, 0, 0, 0.6);
+      font-style: italic;
+    }
   }
   .dates {
     .content {

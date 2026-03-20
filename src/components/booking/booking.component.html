@@ -161,22 +161,22 @@
               <div
                 class="availablity text-uppercase d-flex align-items-center justify-content-center"
                 [ngClass]="{
-                  available: batch.booked <= (1 / 4) * batch.max_adventurers,
+                  available: batch.total_bookings <= (1 / 4) * batch.max_adventurers,
                   'filling-fast':
                     batch.max_adventurers >
-                    batch.booked >
+                    batch.total_bookings >
                     (1 / 4) * batch.max_adventurers,
-                  full: batch.booked === batch.max_adventurers
+                  full: batch.total_bookings === batch.max_adventurers
                 }"
               >
                 {{
-                  batch.booked <= (1 / 4) * batch.max_adventurers
+                  batch.total_bookings <= (1 / 4) * batch.max_adventurers
                     ? "Available"
                     : batch.max_adventurers >
-                      batch.booked >
+                      batch.total_bookings >
                       (1 / 4) * batch.max_adventurers
                     ? "Filling Fast"
-                    : batch.booked === batch.max_adventurers
+                    : batch.total_bookings === batch.max_adventurers
                     ? "Full"
                     : ""
                 }}

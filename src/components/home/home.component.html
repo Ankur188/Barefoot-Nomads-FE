@@ -71,8 +71,8 @@
     journey.
   </p>
 </div>
-<ng-container>
-  <trip-carousel></trip-carousel>
+<ng-container *ngIf="hasTrips">
+  <trip-carousel [trips]="trips"></trip-carousel>
 </ng-container>
 
 <div class="banner d-flex align-items-center justify-content-center w-100">

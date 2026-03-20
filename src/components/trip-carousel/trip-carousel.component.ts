@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { StaticService } from "src/services/static.service";
 import { Router } from "@angular/router";
 
@@ -7,22 +7,21 @@ import { Router } from "@angular/router";
   templateUrl: './trip-carousel.component.html',
   styleUrls: ['./trip-carousel.component.scss']
 })
-export class TripCarouselComponent implements OnInit {
-  trips:any[]  = [];
+export class TripCarouselComponent implements OnInit, OnChanges {
+  @Input() trips: any[] = [];
 
   pages: any[][] = [];
   currentPage = 0;
 
-    constructor (public staticService: StaticService, private router: Router) {    
-    this.staticService.getTrips().subscribe(data => {
-      this.trips = data.trips;
-      console.log('image url', this.trips[0]['imageUrl'])
-    this.groupTrips();
-
-    })
-  }
+  constructor (public staticService: StaticService, private router: Router) {}
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['trips'] && this.trips) {
+      this.groupTrips();
+    }
   }
 
   groupTrips(): void {
