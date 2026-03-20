@@ -586,26 +586,25 @@
             <!-- </div> -->
             <div
               class="availablity text-uppercase d-flex align-items-center justify-content-center"
-              [ngClass]="{
-                available: batch.total_bookings <= (1 / 4) * batch.max_adventurers,
-                'filling-fast':
-                  batch.max_adventurers >
-                  batch.total_bookings >
-                  (1 / 4) * batch.max_adventurers,
-                full: batch.total_bookings === batch.max_adventurers
-              }"
-            >
-              {{
-                batch.total_bookings || 0 <= (1 / 4) * batch.max_adventurers
-                  ? "Available"
-                  : batch.max_adventurers >
-                    batch.total_bookings >
-                    (1 / 4) * batch.max_adventurers
-                  ? "Filling Fast"
-                  : batch.total_bookings === batch.max_adventurers
-                  ? "Full"
-                  : ""
-              }}
+                [ngClass]="{
+                  available: batch.total_bookings <= (1 / 4) * batch.max_adventurers,
+                  'filling-fast':
+                    batch.total_bookings > (1 / 4) * batch.max_adventurers &&
+                    batch.total_bookings < batch.max_adventurers,
+                  full: batch.total_bookings >= batch.max_adventurers
+                }"
+              >
+                {{
+                  batch.total_bookings <= (1 / 4) * batch.max_adventurers
+                    ? "Available"
+                    : batch.total_bookings > (1 / 4) * batch.max_adventurers &&
+                      batch.total_bookings < batch.max_adventurers
+                    ? "Filling Fast"
+                    : batch.total_bookings >= batch.max_adventurers
+                    ? "Full"
+                    : ""
+                }}
+              
             </div>
           </div>
           <div
@@ -722,9 +721,9 @@
     </div>
   </div>
 
-  <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" />
+  <img *ngIf="bannerUrl" [src]="bannerUrl" alt="S3 Image" class="w-100 banner" (error)="bannerUrl = ''" />
 
-  <!-- <div class="suggested-trips">
+  <!-- <div class="suggested-trips">>
     <div class="heading d-flex align-items-center">
       <img src="../../assets/hashtag.png" alt="" class="me-3" />
       <span>Few handpicked Journeys for you!</span>

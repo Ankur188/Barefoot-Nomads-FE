@@ -223,12 +223,20 @@ hr {
       padding: 1rem;
       background-color: $lf-white;
       border-bottom: 1px solid $lf-light-grey;
-      div {
+      .availablity {
         padding: 0.3rem 1.5rem;
-        background-color: $lf-green;
         color: $lf-white;
         border-radius: 2rem;
         font-size: 0.75rem;
+      }
+      .available {
+        background-color: $lf-green;
+      }
+      .filling-fast {
+        background-color: #F0BB1F;
+      }
+      .full {
+        background-color: #FF5A5F;
       }
     }
     .pagination-div {

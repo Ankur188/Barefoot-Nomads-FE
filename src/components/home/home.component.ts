@@ -15,8 +15,14 @@ export class HomeComponent implements OnInit {
   constructor(public staticService: StaticService) {}
 
   ngOnInit(): void {
-    this.staticService.getBanner('home-page-banner').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
+    this.staticService.getBanner('home-page-banner').subscribe({
+      next: (data) => {
+        this.bannerUrl = data.imageUrl;
+      },
+      error: (error) => {
+        console.error('Failed to load banner:', error);
+        this.bannerUrl = '';
+      }
     });
     
     // Fetch trips and filter based on lowestPriceBatch

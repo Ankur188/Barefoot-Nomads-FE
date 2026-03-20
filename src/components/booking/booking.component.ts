@@ -25,7 +25,7 @@ export class BookingComponent implements OnInit {
   numberOfTravellers = 1;
   destinations: any;
   roomPrice = 0;
-  roomType = 'TRIPLE OCCUPANCY';
+  roomType = 'Triple';
   loading$: Observable<boolean>;
   bookingForm: FormGroup = new FormGroup({
     fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -105,7 +105,7 @@ export class BookingComponent implements OnInit {
           // Initialize room price with first available room type
           if (this.batchSelected.triple_room > 0) {
             this.roomPrice = this.batchSelected.triple_room;
-            this.roomType = 'TRIPLE OCCUPANCY';
+            this.roomType = 'Triple';
           } else if (this.batchSelected.double_room > 0) {
             this.roomPrice = this.batchSelected.double_room;
             this.roomType = 'Double';
@@ -118,6 +118,12 @@ export class BookingComponent implements OnInit {
           }
           
           this.totalPrice = this.batchSelected.price;
+          
+          // Ensure numberOfTravellers doesn't exceed batch's available spots
+          const maxAvailable = this.getMaxAvailableSpots();
+          if (this.numberOfTravellers > maxAvailable) {
+            this.numberOfTravellers = Math.max(1, maxAvailable);
+          }
         }
         // If no batches found, keep the previously selected batch
         
@@ -127,8 +133,14 @@ export class BookingComponent implements OnInit {
   }
 
   getBanner() {
-    this.staticService.getBanner('home_page_banner.png').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
+    this.staticService.getBanner('home_page_banner.png').subscribe({
+      next: (data) => {
+        this.bannerUrl = data.imageUrl;
+      },
+      error: (error) => {
+        console.error('Failed to load banner:', error);
+        this.bannerUrl = null;
+      }
     });
   }
 
@@ -203,6 +215,12 @@ export class BookingComponent implements OnInit {
       this.roomPrice = 0;
       this.roomType = 'Triple';
     }
+    
+    // Ensure numberOfTravellers doesn't exceed new batch's available spots
+    const maxAvailable = this.getMaxAvailableSpots();
+    if (this.numberOfTravellers > maxAvailable) {
+      this.numberOfTravellers = maxAvailable;
+    }
   }
 
   isRoomAvailable(roomType: string): boolean {
@@ -250,10 +268,22 @@ export class BookingComponent implements OnInit {
 
   updateCounter(type) {
     if (type === 'increase') {
-      this.numberOfTravellers++;
+      const maxAvailableSpots = this.getMaxAvailableSpots();
+      if (this.numberOfTravellers < maxAvailableSpots) {
+        this.numberOfTravellers++;
+      }
     } else if (type === 'decrease' && this.numberOfTravellers > 1) {
       this.numberOfTravellers--;
     }
+  }
+
+  getMaxAvailableSpots(): number {
+    if (!this.batchSelected) {
+      return 1;
+    }
+    const maxAdventurers = this.batchSelected.max_adventurers || 0;
+    const totalBookings = this.batchSelected.total_bookings || 0;
+    return Math.max(1, maxAdventurers - totalBookings);
   }
 
   //pagination methods

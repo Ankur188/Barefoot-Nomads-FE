@@ -147,8 +147,14 @@ export class TripDetailsComponent implements OnInit {
   }
 
   getBanner() {
-    this.staticService.getBanner('home_page_banner.png').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
+    this.staticService.getBanner('home_page_banner.png').subscribe({
+      next: (data) => {
+        this.bannerUrl = data.imageUrl;
+      },
+      error: (error) => {
+        console.error('Failed to load banner:', error);
+        this.bannerUrl = '';
+      }
     });
   }
 

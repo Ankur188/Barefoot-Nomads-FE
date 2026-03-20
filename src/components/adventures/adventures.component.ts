@@ -150,8 +150,14 @@ export class AdventuresComponent implements OnInit {
   }
 
   getBanner() {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
+    this.staticService.getBanner('home_page_banner').subscribe({
+      next: (data) => {
+        this.bannerUrl = data.imageUrl;
+      },
+      error: (error) => {
+        console.error('Failed to load banner:', error);
+        this.bannerUrl = null;
+      }
     });
   }
 
