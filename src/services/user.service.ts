@@ -20,18 +20,20 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUserProfile(): Observable<any> {
+    const userId = localStorage.getItem('id');
     return this.http.get(
       environment.production 
-        ? '/api/user/profile' 
-        : `${environment.apiURL}user/profile`
+        ? `/api/user/profile/${userId}` 
+        : `${environment.apiURL}user/profile/${userId}`
     );
   }
 
   updateUserProfile(profileData: UserProfile): Observable<any> {
+    const userId = localStorage.getItem('id');
     return this.http.put(
       environment.production 
-        ? '/api/user/profile' 
-        : `${environment.apiURL}user/profile`,
+        ? `/api/user/profile/${userId}` 
+        : `${environment.apiURL}user/profile/${userId}`,
       profileData
     );
   }
