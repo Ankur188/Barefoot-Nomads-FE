@@ -53,6 +53,7 @@ import { AvailabilityDropdownRendererComponent } from 'src/components/admin-pane
 import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-dropdown-renderer.component';
 import { AddEntityFormComponent } from 'src/components/add-entity-form/add-entity-form.component';
 import { ProfileComponent } from 'src/components/profile/profile.component';
+import { PrivacyPolicyComponent } from 'src/components/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { ProfileComponent } from 'src/components/profile/profile.component';
     AvailabilityDropdownRendererComponent,
     RoleDropdownRendererComponent,
     AddEntityFormComponent,
-    ProfileComponent
+    ProfileComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     BrowserModule,

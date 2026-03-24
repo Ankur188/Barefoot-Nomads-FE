@@ -14,12 +14,14 @@ import { AdminGuard } from 'src/auth-guards/admin.guard';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
 import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
 import { ProfileComponent } from 'src/components/profile/profile.component';
+import { PrivacyPolicyComponent } from 'src/components/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'enquire', pathMatch: 'full', component: EnquireComponent },
   { path: 'quotation', pathMatch: 'full', component: GetQuotationComponent },
   { path: 'about', pathMatch: 'full', component: AboutComponent },
+  { path: 'privacy', pathMatch: 'full', component: PrivacyPolicyComponent },
   { path: 'upload', pathMatch: 'full', component: UploadFileComponent },
   { path: 'trip/:id', pathMatch: 'full', component: TripDetailsComponent },
   { path: 'trip/:id/booking', pathMatch: 'full', component: BookingComponent, canActivate: [LoginAuthGuard] },
