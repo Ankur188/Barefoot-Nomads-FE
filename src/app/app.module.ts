@@ -54,6 +54,7 @@ import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-d
 import { AddEntityFormComponent } from 'src/components/add-entity-form/add-entity-form.component';
 import { ProfileComponent } from 'src/components/profile/profile.component';
 import { PrivacyPolicyComponent } from 'src/components/privacy-policy/privacy-policy.component';
+import { TermsAndConditionsComponent } from 'src/components/terms-and-conditions/terms-and-conditions.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { PrivacyPolicyComponent } from 'src/components/privacy-policy/privacy-po
     RoleDropdownRendererComponent,
     AddEntityFormComponent,
     ProfileComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    TermsAndConditionsComponent
   ],
   imports: [
     BrowserModule,
