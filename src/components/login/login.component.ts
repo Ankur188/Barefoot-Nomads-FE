@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,16 +29,29 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
     this.signUpform = new FormGroup({
-      name: new FormControl(''),
-      email: new FormControl(''),
-      phone: new FormControl(''),
-      password: new FormControl(''),
-    });
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phone: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirmPassword: new FormControl('', [Validators.required]),
+    }, { validators: this.passwordMatchValidator });
 
     this.loginForm = new FormGroup({
-      email: new FormControl(''),
-      password: new FormControl(''),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required]),
     });
+  }
+
+  // Custom validator to check if password and confirmPassword match
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    
+    if (!password || !confirmPassword) {
+      return null;
+    }
+    
+    return password.value === confirmPassword.value ? null : { passwordMismatch: true };
   }
 
   ngOnInit(): void {
@@ -44,8 +59,21 @@ export class LoginComponent implements OnInit {
   }
 
   submitSignUpform() {
+    // Mark all fields as touched to show validation errors
+    Object.keys(this.signUpform.controls).forEach(key => {
+      this.signUpform.get(key)?.markAsTouched();
+    });
+
+    // Validate form before submission
+    if (this.signUpform.invalid) {
+      console.log('Form is invalid', this.signUpform.errors);
+      return;
+    }
+
     console.log(this.signUpform.value);
     let postData = this.signUpform.getRawValue();
+    // Remove confirmPassword from post data
+    delete postData.confirmPassword;
     postData['role'] = 'user';
     postData['createdAt'] = Math.floor(new Date().getTime() / 1000);
     this.authService.signUpUser(postData).subscribe((data) => {
@@ -68,6 +96,17 @@ export class LoginComponent implements OnInit {
   }
 
   submitLoginForm() {
+    // Mark all fields as touched to show validation errors
+    Object.keys(this.loginForm.controls).forEach(key => {
+      this.loginForm.get(key)?.markAsTouched();
+    });
+
+    // Validate form before submission
+    if (this.loginForm.invalid) {
+      console.log('Login form is invalid');
+      return;
+    }
+
     let postData = this.loginForm.getRawValue();
     this.authService.loginUser(postData).subscribe((data) => {
       if (data) {

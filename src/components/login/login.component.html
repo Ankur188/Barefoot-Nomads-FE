@@ -35,27 +35,50 @@
       <div
         class="form-div d-flex justify-content-center flex-column align-items-center"
       >
-        <p class="mb-4">
+        <p class="mb-2">
           > Don't have an account?
           <span class="signup-login-btn" (click)="isSignUp = true"
             >SignUp Now</span
           >
         </p>
-        <input type="text" placeholder="Email" formControlName="email" />
+
+        <!-- Email Field -->
+        <input 
+          class="mb-1" 
+          type="text" 
+          placeholder="Email" 
+          formControlName="email"
+          [class.error-field]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        />
+        <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+        </div>
 
         <div class="d-flex align-items-end justify-content-between">
           <!-- <p class="small-text signup-login-btn">Forgot Password?</p> -->
         </div>
+
+        <!-- Password Field -->
         <input
+          class="mb-1"
           type="password"
           placeholder="Password"
           formControlName="password"
+          [class.error-field]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
         />
+        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+        </div>
 
         <div
           class="btnDiv d-flex align-items-center justify-content-center flex-column"
         >
-          <button class="cstmSubmitBtn text-uppercase" type="submit">
+          <button 
+            class="cstmSubmitBtn text-uppercase" 
+            type="submit"
+            [disabled]="loginForm.invalid"
+          >
             Login
           </button>
         </div>
@@ -71,50 +94,86 @@
       <div
         class="form-div d-flex justify-content-center align-items-center flex-column"
       >
-        <p class="mb-4">
+        <p class="mb-2">
           > Have an account already?
           <span class="signup-login-btn" (click)="isSignUp = false"
             >Login Now</span
           >
         </p>
+
+        <!-- Name Field -->
         <input
-          class="mb-4"
+          class="mb-1"
           type="text"
           placeholder="Name"
           formControlName="name"
+          [class.error-field]="signUpform.get('name')?.invalid && signUpform.get('name')?.touched"
         />
+        <div class="error-message" *ngIf="signUpform.get('name')?.invalid && signUpform.get('name')?.touched">
+          <span *ngIf="signUpform.get('name')?.errors?.['required']">Name is required</span>
+          <span *ngIf="signUpform.get('name')?.errors?.['minlength']">Name must be at least 3 characters</span>
+        </div>
 
+        <!-- Email Field -->
         <input
-          class="mb-4"
+          class="mb-1"
           type="text"
           placeholder="Email"
           formControlName="email"
+          [class.error-field]="signUpform.get('email')?.invalid && signUpform.get('email')?.touched"
         />
+        <div class="error-message mb-3" *ngIf="signUpform.get('email')?.invalid && signUpform.get('email')?.touched">
+          <span *ngIf="signUpform.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="signUpform.get('email')?.errors?.['email']">Please enter a valid email address</span>
+        </div>
 
+        <!-- Phone Field -->
         <input
-          class="mb-4"
-          type="number"
-          placeholder="Phone"
+          class="mb-1"
+          type="text"
+          placeholder="Phone (10 digits)"
           formControlName="phone"
+          [class.error-field]="signUpform.get('phone')?.invalid && signUpform.get('phone')?.touched"
         />
+        <div class="error-message mb-3" *ngIf="signUpform.get('phone')?.invalid && signUpform.get('phone')?.touched">
+          <span *ngIf="signUpform.get('phone')?.errors?.['required']">Phone number is required</span>
+          <span *ngIf="signUpform.get('phone')?.errors?.['pattern']">Phone must be exactly 10 digits</span>
+        </div>
 
+        <!-- Password Field -->
         <input
-          class="mb-4"
+          class="mb-1"
           type="password"
-          placeholder="Password"
+          placeholder="Password (min 8 characters)"
           formControlName="password"
+          [class.error-field]="signUpform.get('password')?.invalid && signUpform.get('password')?.touched"
         />
+        <div class="error-message mb-3" *ngIf="signUpform.get('password')?.invalid && signUpform.get('password')?.touched">
+          <span *ngIf="signUpform.get('password')?.errors?.['required']">Password is required</span>
+          <span *ngIf="signUpform.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</span>
+        </div>
 
+        <!-- Confirm Password Field -->
         <input
-          class="mb-4"
+          class="mb-1"
           type="password"
           placeholder="Re-enter Password"
+          formControlName="confirmPassword"
+          [class.error-field]="(signUpform.get('confirmPassword')?.invalid && signUpform.get('confirmPassword')?.touched) || (signUpform.errors?.['passwordMismatch'] && signUpform.get('confirmPassword')?.touched)"
         />
+        <div class="error-message mb-3" *ngIf="signUpform.get('confirmPassword')?.touched">
+          <span *ngIf="signUpform.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
+          <span *ngIf="signUpform.errors?.['passwordMismatch'] && !signUpform.get('confirmPassword')?.errors?.['required']">Passwords do not match</span>
+        </div>
 
         <div
           class="btnDiv d-flex align-items-center justify-content-center flex-column"
         >
-          <button class="cstmSubmitBtn text-uppercase" type="submit">
+          <button 
+            class="cstmSubmitBtn text-uppercase" 
+            type="submit"
+            [disabled]="signUpform.invalid"
+          >
             Create
           </button>
         </div>
