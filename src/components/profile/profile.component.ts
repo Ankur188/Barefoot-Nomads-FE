@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 import { UserService } from 'src/services/user.service';
 import { BookingService } from 'src/services/booking.service';
@@ -146,7 +147,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public authService: AuthService,
     private userService: UserService,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -366,6 +368,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.profileForm.get(key)?.markAsTouched();
       });
     }
+  }
+
+  logout(): void {
+    this.authService.logout().subscribe({
+      next: (response) => {
+        console.log('Logout successful:', response);
+        // Clear all storage and auth state
+        this.authService.performLogout();
+        // Navigate to home page
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Logout error:', error);
+        // Even if API fails, clear local data and redirect
+        this.authService.performLogout();
+        this.router.navigate(['/']);
+      }
+    });
   }
 }
 

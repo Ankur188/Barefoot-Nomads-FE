@@ -58,4 +58,22 @@ export class AuthService {
     this.userName = '';
     this.userRole = '';
   }
+
+  logout(): Observable<any> {
+    return this.http.post(
+      environment.production ? '/api/user/logout' : `${environment.apiURL}user/logout`,
+      {}
+    );
+  }
+
+  performLogout(): void {
+    // Clear all localStorage
+    localStorage.clear();
+    // Clear all sessionStorage
+    sessionStorage.clear();
+    // Reset auth state
+    this.isUserLoggedIn = false;
+    this.userName = '';
+    this.userRole = '';
+  }
 }
