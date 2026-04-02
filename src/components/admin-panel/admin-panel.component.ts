@@ -2384,13 +2384,20 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     switch (entityType) {
       case 'trips':
         // Check if we're in edit or add mode
-        const tripId = data.id;
+        let tripId: string | null = null;
+        
+        // Extract trip ID from FormData if in edit mode
+        if (this.tripsFormMode === 'edit' && data instanceof FormData) {
+          tripId = data.get('id') as string;
+          // Remove id from FormData before sending to API
+          data.delete('id');
+        } else if (this.tripsFormMode === 'edit') {
+          tripId = data.id;
+        }
         
         if (this.tripsFormMode === 'edit' && tripId) {
-        console.log('mode', this.tripsFormMode, tripId);
-          // Remove id from data before sending
-          const { id, ...updateData } = data;
-          this.adminService.updateTrip(tripId, updateData).subscribe({
+          console.log('mode', this.tripsFormMode, tripId);
+          this.adminService.updateTrip(tripId, data).subscribe({
             next: (response) => {
               // Reload trips data to show the updated trip
               this.loadTripsData(this.tripsCurrentPage);

@@ -113,7 +113,7 @@ export class AdminService {
     );
   }
 
-  updateTrip(tripId: string, tripData: any): Observable<any> {
+  updateTrip(tripId: string, tripData: FormData | any): Observable<any> {
     return this.http.put(
       environment.production ? `/api/admin/trips/${tripId}` : `${environment.apiURL}admin/trips/${tripId}`,
       tripData

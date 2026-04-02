@@ -16,8 +16,6 @@ export class StaticService {
   constructor(private http: HttpClient) {}
 
   getTrips(): Observable<any> {
-    if (this.tripsSubject.value) return of(this.tripsSubject.value);
-    else
       return this.http
         .get( environment.production ? '/api/trips' : `${environment.apiURL}trips`)
         .pipe(tap((data) => this.tripsSubject.next(data)));
