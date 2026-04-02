@@ -15,6 +15,13 @@ interface Trip {
   startDate: string;
   endDate: string;
   status: 'active' | 'inactive';
+  batches?: Array<{
+    id: string;
+    from_date: number;
+    to_date: number;
+    batch_name: string;
+    booking_count: number;
+  }>;
 }
 
 interface Batch {
@@ -1448,7 +1455,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
             name: trip.destination_name || '',
             startDate: this.formatDate(trip.from_month),
             endDate: this.formatDate(trip.to_month),
-            status: trip.status ? 'active' : 'inactive'
+            status: trip.status ? 'active' : 'inactive',
+            batches: trip.batches || []
           }));
           
           // Refresh the grid if it's already initialized

@@ -79,27 +79,88 @@ export class StatusToggleRendererComponent implements ICellRendererAngularComp {
   }
 
   private shouldShowToggle(): boolean {
-    // Check if this is a batches row (has startDate and endDate)
     const rowData = this.params.data;
-    if (!rowData || !rowData.startDate || !rowData.endDate) {
-      // For non-batch rows (trips, coupons, etc.), always show toggle
-      return true;
-    }
-
-    // Parse dates for batches
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Reset to midnight for date comparison
     
-    const startDate = this.parseDate(rowData.startDate);
-    const endDate = this.parseDate(rowData.endDate);
-
-    if (!startDate || !endDate) {
-      // If dates can't be parsed, show toggle by default
+    // For rows without startDate/endDate (non-batch rows like coupons, banners)
+    if (!rowData || (!rowData.startDate && !rowData.batches)) {
       return true;
     }
 
-    // Hide toggle if current date >= start date (trip has started or ended)
-    return currentDate < startDate;
+    // For batch rows (has startDate and endDate)
+    if (rowData.startDate && rowData.endDate && !rowData.batches) {
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+      
+      const startDate = this.parseDate(rowData.startDate);
+      const endDate = this.parseDate(rowData.endDate);
+
+      if (!startDate || !endDate) {
+        return true;
+      }
+
+      // Hide toggle if current date >= start date (batch has started or ended)
+      return currentDate < startDate;
+    }
+
+    // For trip rows (has batches array)
+    if (rowData.batches && Array.isArray(rowData.batches)) {
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+
+      // Check if any batch is currently active (current date is between start and end date)
+      const hasActiveBatch = rowData.batches.some((batch: any) => {
+        const batchStart = this.parseDateFromTimestamp(batch.from_date);
+        const batchEnd = this.parseDateFromTimestamp(batch.to_date);
+        
+        if (!batchStart || !batchEnd) return false;
+        
+        // Check if current date is between start and end (inclusive)
+        return currentDate >= batchStart && currentDate <= batchEnd;
+      });
+
+      // If any batch is currently active, hide the toggle
+      if (hasActiveBatch) {
+        return false;
+      }
+
+      // Check if all future batches (start date > current date) have bookings
+      const futureBatches = rowData.batches.filter((batch: any) => {
+        const batchStart = this.parseDateFromTimestamp(batch.from_date);
+        return batchStart && batchStart > currentDate;
+      });
+
+      // If there are future batches
+      if (futureBatches.length > 0) {
+        // Check if all future batches have bookings
+        const allFutureBatchesHaveBookings = futureBatches.every((batch: any) => {
+          return parseInt(batch.booking_count || '0') > 0;
+        });
+
+        // Hide toggle if all future batches have bookings
+        if (allFutureBatchesHaveBookings) {
+          return false;
+        }
+      }
+
+      // Show toggle if:
+      // - No active batches AND
+      // - (No future batches OR at least one future batch has no bookings)
+      return true;
+    }
+
+    // Default: show toggle
+    return true;
+  }
+
+  private parseDateFromTimestamp(timestamp: string | number): Date | null {
+    if (!timestamp) return null;
+    
+    const timestampNum = typeof timestamp === 'string' ? parseInt(timestamp) : timestamp;
+    if (isNaN(timestampNum)) return null;
+    
+    const date = new Date(timestampNum * 1000);
+    date.setHours(0, 0, 0, 0);
+    return date;
   }
 
   private parseDate(dateStr: string): Date | null {
