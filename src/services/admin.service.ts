@@ -99,6 +99,26 @@ export class AdminService {
     );
   }
 
+  getTripImages(tripName: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'X-Skip-Loader': 'true'
+    });
+    return this.http.get(
+      environment.production ? '/api/img/trip' : `${environment.apiURL}img/trip`,
+      { params: { name: tripName }, headers }
+    );
+  }
+
+  getTripItinerary(tripName: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'X-Skip-Loader': 'true'
+    });
+    return this.http.get(
+      environment.production ? '/api/img/trip/itinerary' : `${environment.apiURL}img/trip/itinerary`,
+      { params: { name: tripName }, headers }
+    );
+  }
+
   createTrip(tripData: FormData): Observable<any> {
     return this.http.post(
       environment.production ? '/api/admin/trips' : `${environment.apiURL}admin/trips`,

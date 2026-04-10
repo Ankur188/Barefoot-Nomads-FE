@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnDestroy, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { AdminService } from 'src/services/admin.service';
 import { debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
@@ -14,7 +14,7 @@ export interface EntityFormConfig {
   templateUrl: './add-entity-form.component.html',
   styleUrls: ['./add-entity-form.component.scss']
 })
-export class AddEntityFormComponent implements OnInit {
+export class AddEntityFormComponent implements OnInit, OnDestroy {
   @Input() entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings' = 'trips';
   @Input() mode: 'add' | 'edit' = 'add';
   @Input() data?: any;
@@ -24,7 +24,11 @@ export class AddEntityFormComponent implements OnInit {
   
   entityForm!: FormGroup;
   uploadedImages: File[] = [];
+  existingImages: Array<{ index: number; key: string; url: string; name: string }> = [];
+  removedExistingImages: Array<{ index: number; key: string; url: string; name: string }> = [];
   itineraryFile: File | null = null;
+  existingItinerary: { key: string; url: string; name: string } | null = null;
+  removedExistingItinerary: { key: string; url: string; name: string } | null = null;
   invoiceFile: File | null = null;
   existingInvoiceFilename: string | null = null; // Track existing invoice from backend
   numberOfDays = 1;
@@ -72,6 +76,18 @@ export class AddEntityFormComponent implements OnInit {
     if (this.mode === 'edit' && this.data) {
       this.patchFormData(this.data);
     }
+  }
+
+  ngOnDestroy(): void {
+    // Explicitly clear image arrays to prevent any memory leaks
+    this.uploadedImages = [];
+    this.existingImages = [];
+    this.removedExistingImages = [];
+    this.itineraryFile = null;
+    this.existingItinerary = null;
+    this.removedExistingItinerary = null;
+    this.invoiceFile = null;
+    this.existingInvoiceFilename = null;
   }
 
   setupTripAutocomplete(): void {
@@ -300,6 +316,39 @@ export class AddEntityFormComponent implements OnInit {
         physicalRating: data.physical_rating?.toString()
       });
 
+      // Fetch existing images from S3 if in edit mode
+      if (this.mode === 'edit' && data.destination_name) {
+        console.log('Fetching trip images for:', data.destination_name);
+        this.adminService.getTripImages(data.destination_name).subscribe({
+          next: (response) => {
+            console.log('Trip images response:', response);
+            if (response.images && Array.isArray(response.images)) {
+              this.existingImages = response.images;
+            }
+          },
+          error: (error) => {
+            console.error('Error fetching trip images:', error);
+            console.error('Error status:', error.status);
+            console.error('Error message:', error.message);
+          }
+        });
+
+        // Fetch existing itinerary file from S3
+        console.log('Fetching trip itinerary for:', data.destination_name);
+        this.adminService.getTripItinerary(data.destination_name).subscribe({
+          next: (response) => {
+            console.log('Trip itinerary response:', response);
+            if (response.success && response.itinerary) {
+              this.existingItinerary = response.itinerary;
+            }
+          },
+          error: (error) => {
+            console.error('Error fetching trip itinerary:', error);
+            // It's okay if itinerary doesn't exist
+          }
+        });
+      }
+
       // Parse and populate itinerary days if available
       if (data.itinerary) {
         try {
@@ -439,7 +488,7 @@ export class AddEntityFormComponent implements OnInit {
     const files: FileList = event.target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        const totalImages = this.uploadedImages.length + this.imagesArray.length;
+        const totalImages = this.uploadedImages.length + this.existingImages.length;
         if (totalImages < 8) {
           this.uploadedImages.push(files[i]);
         }
@@ -449,7 +498,22 @@ export class AddEntityFormComponent implements OnInit {
 
   removeImage(index: number): void {
       this.uploadedImages.splice(index, 1);
-    this.imagesArray.removeAt(index);
+  }
+
+  removeExistingImage(index: number): void {
+    // Move the image to removed list instead of deleting immediately
+    // Actual deletion happens on save, along with sequence renaming
+    const removedImage = this.existingImages[index];
+    this.removedExistingImages.push(removedImage);
+    this.existingImages.splice(index, 1);
+    
+    console.log(`Marked for deletion: ${removedImage.key}`);
+    console.log(`Remaining ${this.existingImages.length} images will be renumbered sequentially (1-${this.existingImages.length}) on save`);
+    console.log('Current remaining images:', this.existingImages.map(img => img.key));
+  }
+
+  get totalImageCount(): number {
+    return this.uploadedImages.length + this.existingImages.length;
   }
 
   // Itinerary file handling
@@ -457,6 +521,11 @@ export class AddEntityFormComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.itineraryFile = file;
+      // If there's an existing itinerary, mark it for deletion when new file is uploaded
+      if (this.existingItinerary) {
+        this.removedExistingItinerary = this.existingItinerary;
+        this.existingItinerary = null;
+      }
       this.entityForm.patchValue({ itinerary: file.name });
     }
   }
@@ -467,6 +536,15 @@ export class AddEntityFormComponent implements OnInit {
     // Clear the file input to allow re-selecting the same file
     if (this.itineraryInput) {
       this.itineraryInput.nativeElement.value = '';
+    }
+  }
+
+  removeExistingItinerary(): void {
+    // Mark the existing itinerary for deletion
+    if (this.existingItinerary) {
+      this.removedExistingItinerary = this.existingItinerary;
+      this.existingItinerary = null;
+      console.log(`Marked itinerary for deletion: ${this.removedExistingItinerary.key}`);
     }
   }
 
@@ -635,8 +713,35 @@ export class AddEntityFormComponent implements OnInit {
         formData.append(`images`, image);
       });
 
-      // Add the number of images uploaded
+      // Add the number of images uploaded (new images only)
       formData.append('imageCount', this.uploadedImages.length.toString());
+      
+      // Add existing image count if in edit mode
+      if (this.mode === 'edit') {
+        // Send remaining existing images (for sequence preservation)
+        const existingKeys = this.existingImages.map(img => img.key);
+        formData.append('existingImageKeys', JSON.stringify(existingKeys));
+        
+        // Send removed images (for deletion)
+        const removedKeys = this.removedExistingImages.map(img => img.key);
+        formData.append('removedImageKeys', JSON.stringify(removedKeys));
+        
+        // Send removed itinerary if marked for deletion
+        if (this.removedExistingItinerary) {
+          formData.append('removedItineraryKey', this.removedExistingItinerary.key);
+          console.log('Marked itinerary for deletion:', this.removedExistingItinerary.key);
+        }
+        
+        // Add total count for database update
+        formData.append('totalImageCount', this.totalImageCount.toString());
+        
+        console.log('=== Trip Edit Image Summary ===');
+        console.log('Existing images (will be renumbered 1, 2, 3...):', existingKeys);
+        console.log('Removed images (will be deleted):', removedKeys);
+        console.log('New images to upload:', this.uploadedImages.length, 'starting from number', this.existingImages.length + 1);
+        console.log('Total final count:', this.totalImageCount);
+        console.log('==============================');
+      }
 
       // Add trip ID if in edit mode
       if (this.mode === 'edit' && this.data && this.data.id) {
@@ -775,10 +880,10 @@ export class AddEntityFormComponent implements OnInit {
   // Check if form is valid including custom validations
   isFormValid(): boolean {
     if (this.entityType === 'trips') {
-      // For trips, also check if itinerary file and at least one image is uploaded
-      return this.entityForm.valid && 
-             this.itineraryFile !== null && 
-             this.uploadedImages.length > 0;
+      // For trips, check if itinerary file and at least one image (new or existing) is present
+      const hasItinerary = this.itineraryFile !== null || this.mode === 'edit';
+      const hasImages = this.uploadedImages.length > 0 || this.existingImages.length > 0;
+      return this.entityForm.valid && hasItinerary && hasImages;
     } else if (this.entityType === 'bookings') {
       // For bookings in add mode, invoice file is required
       // For bookings in edit mode, either a new invoice file or existing invoice is acceptable

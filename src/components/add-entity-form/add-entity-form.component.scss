@@ -561,6 +561,15 @@
             font-size: 12px;
             color: #333;
 
+            &.existing-image {
+              background: #e8f5e9;
+              border-color: #81c784;
+              
+              span {
+                color: #2e7d32;
+              }
+            }
+
             span {
               max-width: 150px;
               overflow: hidden;

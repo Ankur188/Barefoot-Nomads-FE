@@ -49,8 +49,24 @@
               Browse
             </button>
           </div>
-          <div class="file-input-wrapper" [class.has-file]="itineraryFile">
-            <div class="file-chip" *ngIf="itineraryFile">
+          
+          <!-- Existing itinerary from S3 -->
+          <div class="file-input-wrapper" *ngIf="existingItinerary" [class.has-file]="existingItinerary">
+            <div class="file-chip existing-itinerary">
+              <span>{{ existingItinerary.name }}</span>
+              <button
+                type="button"
+                class="remove-file-btn"
+                (click)="removeExistingItinerary()"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Newly uploaded itinerary -->
+          <div class="file-input-wrapper" *ngIf="itineraryFile && !existingItinerary" [class.has-file]="itineraryFile">
+            <div class="file-chip">
               <span>{{ itineraryFile.name }}</span>
               <button
                 type="button"
@@ -60,14 +76,18 @@
                 <mat-icon>close</mat-icon>
               </button>
             </div>
+          </div>
+          
+          <!-- Placeholder when no file -->
+          <div class="file-input-wrapper" *ngIf="!itineraryFile && !existingItinerary">
             <input
               id="itinerary"
               type="text"
-              *ngIf="!itineraryFile"
               placeholder="No file chosen"
               readonly
             />
-          </div>
+          <!-- </div>  -->
+        </div>
         </div>
 
         <!-- Row 2, Col 1: Description -->
@@ -256,13 +276,13 @@
         <div class="form-group grid-item-r3-c1">
           <div class="d-flex align-items-center justify-content-between">
             <label>Images for the trip<span class="required">*</span></label>
-            <div class="image-count">{{ uploadedImages.length }}/8</div>
+            <div class="image-count">{{ totalImageCount }}/8</div>
           </div>
           <div class="image-upload-area">
             <div 
               class="drag-drop-zone" 
-              [class.disabled]="uploadedImages.length >= 8"
-              (click)="uploadedImages.length < 8 && imageInput.click()">
+              [class.disabled]="totalImageCount >= 8"
+              (click)="totalImageCount < 8 && imageInput.click()">
               <p>Drag or Browse the images for the trip</p>
             </div>
             <input
@@ -270,10 +290,27 @@
               #imageInput
               accept="image/*"
               multiple
-              [disabled]="uploadedImages.length >= 8"
+              [disabled]="totalImageCount >= 8"
               (change)="onImagesSelected($event)"
               style="display: none"
             />
+            <!-- Existing images from S3 -->
+            <div class="uploaded-images" *ngIf="existingImages.length > 0">
+              <div
+                class="image-chip existing-image"
+                *ngFor="let image of existingImages; let i = index"
+              >
+                <span>{{ image.name }}</span>
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeExistingImage(i)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+            <!-- Newly uploaded images -->
             <div class="uploaded-images" *ngIf="uploadedImages.length > 0">
               <div
                 class="image-chip"
