@@ -5,7 +5,9 @@
     </button>
     <div class="header-actions">
       <button class="cancel-btn" (click)="onCancel()">Cancel</button>
-      <button class="save-btn" (click)="onSubmit()" [disabled]="!isFormValid()">Save</button>
+      <button class="save-btn" (click)="onSubmit()" [disabled]="!isFormValid()">
+        Save
+      </button>
     </div>
   </div>
 
@@ -49,9 +51,13 @@
               Browse
             </button>
           </div>
-          
+
           <!-- Existing itinerary from S3 -->
-          <div class="file-input-wrapper" *ngIf="existingItinerary" [class.has-file]="existingItinerary">
+          <div
+            class="file-input-wrapper"
+            *ngIf="existingItinerary"
+            [class.has-file]="existingItinerary"
+          >
             <div class="file-chip existing-itinerary">
               <span>{{ existingItinerary.name }}</span>
               <button
@@ -63,9 +69,13 @@
               </button>
             </div>
           </div>
-          
+
           <!-- Newly uploaded itinerary -->
-          <div class="file-input-wrapper" *ngIf="itineraryFile && !existingItinerary" [class.has-file]="itineraryFile">
+          <div
+            class="file-input-wrapper"
+            *ngIf="itineraryFile && !existingItinerary"
+            [class.has-file]="itineraryFile"
+          >
             <div class="file-chip">
               <span>{{ itineraryFile.name }}</span>
               <button
@@ -77,17 +87,20 @@
               </button>
             </div>
           </div>
-          
+
           <!-- Placeholder when no file -->
-          <div class="file-input-wrapper" *ngIf="!itineraryFile && !existingItinerary">
+          <div
+            class="file-input-wrapper"
+            *ngIf="!itineraryFile && !existingItinerary"
+          >
             <input
               id="itinerary"
               type="text"
               placeholder="No file chosen"
               readonly
             />
-          <!-- </div>  -->
-        </div>
+            <!-- </div>  -->
+          </div>
         </div>
 
         <!-- Row 2, Col 1: Description -->
@@ -140,7 +153,9 @@
 
         <!-- Destinations Field -->
         <div class="form-group">
-          <label for="destinations">Destinations<span class="required">*</span></label>
+          <label for="destinations"
+            >Destinations<span class="required">*</span></label
+          >
           <input
             id="destinations"
             type="text"
@@ -155,7 +170,9 @@
 
         <!-- Physical Rating Field -->
         <div class="form-group">
-          <label for="physicalRating">Physical Rating<span class="required">*</span></label>
+          <label for="physicalRating"
+            >Physical Rating<span class="required">*</span></label
+          >
           <select
             id="physicalRating"
             formControlName="physicalRating"
@@ -175,9 +192,13 @@
         <!-- Row 2-3, Col 2: Days/Heading/Description (spans 2 rows) -->
         <div class="form-group grid-item-r2-c2-span">
           <div class="days-selector">
-            <div class="days-header d-flex align-items-center justify-content-between">
+            <div
+              class="days-header d-flex align-items-center justify-content-between"
+            >
               <label
-                >Number of days in itinerary<span class="required">*</span></label
+                >Number of days in itinerary<span class="required"
+                  >*</span
+                ></label
               >
               <div class="days-display">
                 <input
@@ -218,7 +239,7 @@
                 <button
                   type="button"
                   *ngFor="let dayNum of getVisibleDayNumbers(); let i = index"
-                  [class.active]="selectedDayIndex === (currentPageStart + i)"
+                  [class.active]="selectedDayIndex === currentPageStart + i"
                   (click)="selectDay(currentPageStart + i)"
                 >
                   {{ dayNum }}
@@ -237,33 +258,66 @@
 
           <!-- Day-specific content (pagination style) -->
           <div formArrayName="daysForms">
-            <div *ngFor="let dayForm of daysArray.controls; let i = index" [formGroupName]="i">
+            <div
+              *ngFor="let dayForm of daysArray.controls; let i = index"
+              [formGroupName]="i"
+            >
               <div *ngIf="selectedDayIndex === i" class="day-content">
                 <div class="d-flex flex-column">
-                  <label [for]="'heading-day-' + i">Day {{ i + 1 }} Heading<span class="required">*</span></label>
+                  <label [for]="'heading-day-' + i"
+                    >Day {{ i + 1 }} Heading<span class="required"
+                      >*</span
+                    ></label
+                  >
                   <input
                     [id]="'heading-day-' + i"
                     type="text"
                     formControlName="heading"
                     placeholder="Enter Heading for Day {{ i + 1 }}"
-                    [class.error]="dayForm.get('heading')?.invalid && (dayForm.get('heading')?.touched || dayForm.get('heading')?.dirty)"
+                    [class.error]="
+                      dayForm.get('heading')?.invalid &&
+                      (dayForm.get('heading')?.touched ||
+                        dayForm.get('heading')?.dirty)
+                    "
                   />
-                  <span class="error-message" *ngIf="dayForm.get('heading')?.invalid && (dayForm.get('heading')?.touched || dayForm.get('heading')?.dirty)">
+                  <span
+                    class="error-message"
+                    *ngIf="
+                      dayForm.get('heading')?.invalid &&
+                      (dayForm.get('heading')?.touched ||
+                        dayForm.get('heading')?.dirty)
+                    "
+                  >
                     This field is required
                   </span>
                 </div>
 
                 <div class="d-flex flex-column">
-                  <label [for]="'description-day-' + i">Day {{ i + 1 }} Description<span class="required">*</span></label>
+                  <label [for]="'description-day-' + i"
+                    >Day {{ i + 1 }} Description<span class="required"
+                      >*</span
+                    ></label
+                  >
                   <textarea
                     [id]="'description-day-' + i"
                     class="description-second"
                     formControlName="description"
                     placeholder="Enter Description for Day {{ i + 1 }}"
                     rows="4"
-                    [class.error]="dayForm.get('description')?.invalid && (dayForm.get('description')?.touched || dayForm.get('description')?.dirty)"
+                    [class.error]="
+                      dayForm.get('description')?.invalid &&
+                      (dayForm.get('description')?.touched ||
+                        dayForm.get('description')?.dirty)
+                    "
                   ></textarea>
-                  <span class="error-message" *ngIf="dayForm.get('description')?.invalid && (dayForm.get('description')?.touched || dayForm.get('description')?.dirty)">
+                  <span
+                    class="error-message"
+                    *ngIf="
+                      dayForm.get('description')?.invalid &&
+                      (dayForm.get('description')?.touched ||
+                        dayForm.get('description')?.dirty)
+                    "
+                  >
                     This field is required
                   </span>
                 </div>
@@ -279,10 +333,11 @@
             <div class="image-count">{{ totalImageCount }}/8</div>
           </div>
           <div class="image-upload-area">
-            <div 
-              class="drag-drop-zone" 
+            <div
+              class="drag-drop-zone"
               [class.disabled]="totalImageCount >= 8"
-              (click)="totalImageCount < 8 && imageInput.click()">
+              (click)="totalImageCount < 8 && imageInput.click()"
+            >
               <p>Drag or Browse the images for the trip</p>
             </div>
             <input
@@ -368,8 +423,11 @@
           <label for="assignedTrip"
             >Assigned Trip<span class="required">*</span></label
           >
-          
-          <div class="autocomplete-container" [class.error]="shouldShowError('assignedTrip')">
+
+          <div
+            class="autocomplete-container"
+            [class.error]="shouldShowError('assignedTrip')"
+          >
             <div class="autocomplete-wrapper">
               <!-- Show chip if trip is selected -->
               <div *ngIf="selectedTrip" class="selected-trip-chip">
@@ -393,8 +451,11 @@
                 [formControl]="tripSearchControl"
                 placeholder="Type at least 3 characters to search"
               />
-              <div class="autocomplete-dropdown" *ngIf="filteredTrips.length > 0">
-                <div 
+              <div
+                class="autocomplete-dropdown"
+                *ngIf="filteredTrips.length > 0"
+              >
+                <div
                   class="autocomplete-option"
                   *ngFor="let trip of filteredTrips"
                   (click)="selectTrip(trip)"
@@ -411,9 +472,7 @@
         </div>
 
         <div class="form-group">
-          <label for="singleRoom"
-            >Single Room</label
-          >
+          <label for="singleRoom">Single Room</label>
           <input
             id="singleRoom"
             type="number"
@@ -441,9 +500,7 @@
         </div>
 
         <div class="form-group">
-          <label for="doubleRoom"
-            >Double Room</label
-          >
+          <label for="doubleRoom">Double Room</label>
           <input
             id="doubleRoom"
             type="number"
@@ -778,7 +835,10 @@
       <div *ngIf="entityType === 'bookings'" class="form-grid">
         <div class="form-group">
           <label for="bookingUser">User<span class="required">*</span></label>
-          <div class="autocomplete-container" [class.error]="shouldShowError('user')">
+          <div
+            class="autocomplete-container"
+            [class.error]="shouldShowError('user')"
+          >
             <div class="autocomplete-wrapper">
               <!-- Show chip if user is selected -->
               <div *ngIf="selectedUser" class="selected-trip-chip">
@@ -802,7 +862,10 @@
                 [formControl]="userSearchControl"
                 placeholder="Type at least 3 characters to search"
               />
-              <div class="autocomplete-dropdown" *ngIf="filteredUsers.length > 0 && !selectedUser">
+              <div
+                class="autocomplete-dropdown"
+                *ngIf="filteredUsers.length > 0 && !selectedUser"
+              >
                 <div
                   *ngFor="let user of filteredUsers"
                   class="autocomplete-option"
@@ -820,7 +883,10 @@
 
         <div class="form-group">
           <label for="bookingBatch">Batch<span class="required">*</span></label>
-          <div class="autocomplete-container" [class.error]="shouldShowError('batch')">
+          <div
+            class="autocomplete-container"
+            [class.error]="shouldShowError('batch')"
+          >
             <div class="autocomplete-wrapper">
               <!-- Show chip if batch is selected -->
               <div *ngIf="selectedBatch" class="selected-trip-chip">
@@ -844,7 +910,10 @@
                 [formControl]="batchSearchControl"
                 placeholder="Type at least 3 characters to search"
               />
-              <div class="autocomplete-dropdown" *ngIf="filteredBatches.length > 0 && !selectedBatch">
+              <div
+                class="autocomplete-dropdown"
+                *ngIf="filteredBatches.length > 0 && !selectedBatch"
+              >
                 <div
                   *ngFor="let batch of filteredBatches"
                   class="autocomplete-option"
@@ -875,7 +944,9 @@
         </div>
 
         <div class="form-group">
-          <label for="bookingPhone">Phone Number<span class="required">*</span></label>
+          <label for="bookingPhone"
+            >Phone Number<span class="required">*</span></label
+          >
           <input
             id="bookingPhone"
             type="tel"
@@ -931,7 +1002,9 @@
         </div>
 
         <div class="form-group">
-          <label for="travellers">Travellers<span class="required">*</span></label>
+          <label for="travellers"
+            >Travellers<span class="required">*</span></label
+          >
           <input
             id="travellers"
             type="number"
@@ -979,9 +1052,18 @@
               Browse
             </button>
           </div>
-          <div class="file-input-wrapper" [class.has-file]="invoiceFile || existingInvoiceFilename" [class.error]="shouldShowError('invoice')">
-            <div class="file-chip" *ngIf="invoiceFile || existingInvoiceFilename">
-              <span>{{ invoiceFile ? invoiceFile.name : existingInvoiceFilename }}</span>
+          <div
+            class="file-input-wrapper"
+            [class.has-file]="invoiceFile || existingInvoiceFilename"
+            [class.error]="shouldShowError('invoice')"
+          >
+            <div
+              class="file-chip"
+              *ngIf="invoiceFile || existingInvoiceFilename"
+            >
+              <span>{{
+                invoiceFile ? invoiceFile.name : existingInvoiceFilename
+              }}</span>
               <button
                 type="button"
                 class="remove-file-btn"
