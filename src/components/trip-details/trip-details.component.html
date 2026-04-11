@@ -54,6 +54,13 @@
             class="trip-img d-flex align-items-center justify-content-between"
           >
             <img
+              *ngIf="tripImages.length > 0"
+              class="primary-img"
+              [src]="tripImages[0]"
+              alt="{{ details.destination_name }}"
+            />
+            <img
+              *ngIf="tripImages.length === 0"
               class="primary-img"
               src="../../assets/kashmir_Gallery.png"
               alt=""
@@ -66,8 +73,26 @@
               >
             </div>
             <div *ngIf="viewPort > 427" class="secondary-img">
-              <img src="../../assets//Kashmir_Gallery_1.png" alt="" />
-              <img src="../../assets//Kashmir_Gallery_2.png" alt="" />
+              <img 
+                *ngIf="tripImages.length > 1" 
+                [src]="tripImages[1]" 
+                [alt]="details.destination_name" 
+              />
+              <img 
+                *ngIf="tripImages.length === 0" 
+                src="../../assets//Kashmir_Gallery_1.png" 
+                alt="" 
+              />
+              <img 
+                *ngIf="tripImages.length > 2" 
+                [src]="tripImages[2]" 
+                [alt]="details.destination_name" 
+              />
+              <img 
+                *ngIf="tripImages.length === 0" 
+                src="../../assets//Kashmir_Gallery_2.png" 
+                alt="" 
+              />
               <div
                 class="show-all d-flex align-items-center"
                 (click)="openLightbox()"

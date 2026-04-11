@@ -37,6 +37,7 @@ export class TripDetailsComponent implements OnInit {
   bannerUrl: string = '';
   trips: any;
   details: any;
+  tripImages: string[] = []; // Store trip images from S3
   showMask = false;
   previewImage = false;
   inclusionSelected = true;
@@ -117,7 +118,7 @@ export class TripDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getTripDetials();
     this.getBanner();
-    this.getTrips();
+    // this.getTrips();
     this.loadingService.show();
     setTimeout(() => {
       this.loadingService.hide();
@@ -128,6 +129,7 @@ export class TripDetailsComponent implements OnInit {
     this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
       this.getBatches(data.id);
       this.details = data;
+      this.tripImages = data.images || []; // Store the images from the API
       this.itinerary = JSON.parse(data.itinerary);
       this.keys = Object.keys(this.itinerary);
       this.destinations = data.destinations.split(',');
