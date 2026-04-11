@@ -46,4 +46,8 @@ export class StaticService {
         .get(environment.production ? `/api/trips/${id}/batches?page=${page}&month=${filter +1}` : `${environment.apiURL}trips/${id}/batches?page=${page}&month=${filter +1}`)
         }
   }
+
+  getItineraryDownloadUrl(id: string): string {
+    return environment.production ? `/api/trips/${id}/itinerary` : `${environment.apiURL}trips/${id}/itinerary`;
+  }
 }

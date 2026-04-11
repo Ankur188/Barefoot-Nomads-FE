@@ -146,6 +146,19 @@ export class TripDetailsComponent implements OnInit {
     this.previewImage = false;
   }
 
+  downloadItinerary() {
+    if (!this.tripId) return;
+    
+    // Create a link to the backend endpoint which streams the file with download headers
+    const downloadUrl = this.staticService.getItineraryDownloadUrl(this.tripId);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = ''; // Browser will use filename from Content-Disposition header
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   //pagination methods
   updatePagination() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
