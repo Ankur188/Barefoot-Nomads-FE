@@ -30,6 +30,11 @@
 }
 .right-div {
   width: 33%;
+  position: sticky;
+  top: 8rem; /* 5rem header height + 3rem gap */
+  align-self: flex-start;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
 }
 
 .pricing {
@@ -161,6 +166,11 @@ hr {
 
 .overview {
   margin-top: 3rem;
+  position: sticky;
+  top: 8rem; /* 5rem header height + 3rem gap */
+  background-color: $lf-white;
+  z-index: 100;
+  padding-bottom: 1rem;
   .header {
     border-radius: 0.4rem;
     background-color: $lf-light-grey;
