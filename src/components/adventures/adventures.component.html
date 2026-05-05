@@ -50,35 +50,15 @@
 
     <div class="filter-carousel-wrapper">
       <div class="d-flex justify-content-between mt-4">
-        <div class="filter-container position-relative" #filterContainer>
-          <div class="filter-toggle d-flex align-items-center justify-content-around" [class.expanded]="filterVisible"
-            (click)="toggleFilter($event)">
+        <!-- Filter Toggle Icon (outside carousel) -->
+        <div class="filter-toggle-outside" #filterContainer (click)="toggleFilter($event)">
+          <div class="filter-toggle d-flex align-items-center justify-content-around" [class.expanded]="filterVisible">
             <img src="../../assets/adventureImages/filter_trips.svg" alt="Filter Icon" class="filter-icon" />
             <div class="clear-all" *ngIf="filterVisible" (click)="clearAll($event)">
               Clear All
             </div>
           </div>
-
-          <div class="filter-dropdown" *ngIf="filterVisible" (click)="$event.stopPropagation()">
-            <div *ngFor="let details of filterDetails; let i = index" class="select-wrapper">
-              <div class="select-container">
-                <select [(ngModel)]="selectedValues[i]">
-                  <option [ngValue]="undefined" disabled selected hidden>
-                    {{ details.filterCriteria }}
-                  </option>
-                  <option class="filterData" *ngFor="let item of details.filterData" [value]="item">
-                    {{ item.name || item }}
-                  </option>
-                </select>
-                <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="select-arrow" />
-              </div>
-            </div>
-            <button class="filter-apply mt-3" (click)="onApplyFilter()">
-              APPLY
-            </button>
-          </div>
         </div>
-
 
         <div class="dropdown position-relative d-flex justify-content-between mr-3">
           <div class="select-wrapper mr-3">
@@ -97,48 +77,75 @@
         </div>
       </div>
 
-      <div class="card-carousel-filter mt-3 d-flex flex-column" [class.shifted]="filterVisible">
+      <div class="card-carousel-filter mt-3 d-flex flex-column">
         <div class="applied-filters d-flex justify-content-between mb-3">
           <ng-container *ngIf="appliedFilterSectionVisible">
             <div #appliedFilterSection class="appliedFilterSection d-flex align-items-center justify-content-around"
-              *ngFor="let filter of appliedFiltersArray">
+              *ngFor="let filter of appliedFiltersArray; let i = index">
               {{ filter.value }}
-              <img src="../../assets/adventureImages/close.svg" alt="close" class="custom-close" (click)="removeFilter($event, i)" />
+              <img src="../../assets/adventureImages/close.svg" alt="close" class="custom-close" (click)="removeFilter(i, $event)" />
             </div>
           </ng-container>
 
           <div class="d-flex align-items-center justify-content-end" style="margin-left: auto"></div>
         </div>
-        <div #tripSection class="cardTripDetailsSection d-flex flex-wrap">
-          <div class="card d-flex justify-content-evenly align-items-center" [@slideAnimation]="{
-              value: animationDirection,
-              params: {
-                transform:
-                  animationDirection === 'right'
-                    ? 'translateX(100%)'
-                    : 'translateX(-100%)'
-              }
-            }" *ngFor="let trip of paginatedBatches">
-            <div class="img-container">
-              <img [src]="trip.img" class="card-img-top" alt="{{ trip.tripName }}" />
-              <div class="topDetailsSection">
-                <div class="recentAddedSection" [style.visibility]="trip.recentlyAdded ? 'visible' : 'hidden'">
-                  <p>RECENTLY ADDED</p>
+
+        <!-- Carousel Container -->
+        <div class="carousel-container">
+          <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentPage * 100 + '%)'">
+            <div class="carousel-page" *ngFor="let page of pages; let pageIndex = index">
+              <div class="cardTripDetailsSection" [class.has-filter]="filterVisible && pageIndex === 0">
+                
+                <!-- Filter Dropdown Panel (only on first page when visible) -->
+                <div class="filter-panel-grid-item" 
+                     *ngIf="filterVisible && pageIndex === 0"
+                     (click)="$event.stopPropagation()">
+                  <div class="filter-dropdown">
+                    <div *ngFor="let details of filterDetails; let i = index" class="select-wrapper">
+                      <div class="select-container">
+                        <select [(ngModel)]="selectedValues[i]">
+                          <option [ngValue]="undefined" disabled selected hidden>
+                            {{ details.filterCriteria }}
+                          </option>
+                          <option class="filterData" *ngFor="let item of details.filterData" [value]="item">
+                            {{ item.name || item }}
+                          </option>
+                        </select>
+                        <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="select-arrow" />
+                      </div>
+                    </div>
+                    <button class="filter-apply mt-3" (click)="onApplyFilter()">
+                      APPLY
+                    </button>
+                  </div>
                 </div>
-                <div class="monthDetails">
-                  <img src="../../assets/adventureImages/calendarTrip.svg" alt="calendar icon" />
-                  <p>{{ trip.duration }}</p>
-                </div>
-              </div>
-              <div class="overlay-title">{{ trip.tripName | uppercase }}</div>
-              <div class="bottomDetailsSection">
-                <div>
-                  <img src="../../assets/adventureImages/moneyTrip.svg" alt="price icon" />
-                  <p>&#8377; {{ trip.price }}</p>
-                </div>
-                <div>
-                  <img src="../../assets/adventureImages/stayTrip.svg" alt="stay icon" />
-                  <p>{{ trip.stay }}</p>
+                
+                <!-- Trip Cards -->
+                <div class="card d-flex justify-content-evenly align-items-center" 
+                     *ngFor="let trip of page">
+                  <div class="img-container">
+                    <img [src]="trip.img" class="card-img-top" alt="{{ trip.tripName }}" />
+                    <div class="topDetailsSection">
+                      <div class="recentAddedSection" [style.visibility]="trip.recentlyAdded ? 'visible' : 'hidden'">
+                        <p>RECENTLY ADDED</p>
+                      </div>
+                      <div class="monthDetails">
+                        <img src="../../assets/adventureImages/calendarTrip.svg" alt="calendar icon" />
+                        <p>{{ trip.duration }}</p>
+                      </div>
+                    </div>
+                    <div class="overlay-title">{{ trip.tripName | uppercase }}</div>
+                    <div class="bottomDetailsSection">
+                      <div>
+                        <img src="../../assets/adventureImages/moneyTrip.svg" alt="price icon" />
+                        <p>&#8377; {{ trip.price }}</p>
+                      </div>
+                      <div>
+                        <img src="../../assets/adventureImages/stayTrip.svg" alt="stay icon" />
+                        <p>{{ trip.stay }}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -146,15 +153,15 @@
         </div>
 
         <div class="pagination-div d-flex align-items-center justify-content-center content mt-4">
-          <button (click)="prevPage()" [disabled]="currentPage === 1"
+          <button (click)="prevPage()" [disabled]="currentPage === 0"
             class="d-flex align-items-center justify-content-center me-3">
             <mat-icon>keyboard_arrow_left</mat-icon>
           </button>
-          <div *ngFor="let page of pages" (click)="setPage(page)" [class.active]="currentPage === page"
+          <div *ngFor="let page of pageNumbers" (click)="setPage(page)" [class.active]="currentPage === page - 1"
             class="pageNumber d-flex align-items-center justify-content-center me-3">
             {{ page }}
           </div>
-          <button (click)="nextPage()" [disabled]="currentPage === totalPages"
+          <button (click)="nextPage()" [disabled]="currentPage === pages.length - 1"
             class="d-flex align-items-center justify-content-center">
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>

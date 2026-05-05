@@ -126,11 +126,9 @@ export class AdventuresComponent implements OnInit {
 
   searchPreference: any = ["Recommended", "Most Visited"]
 
-
-  currentPage = 1;
-  itemsPerPage = 8;
-  paginatedBatches = [];
-  totalPages = Math.ceil(this.tripsDetails.length / this.itemsPerPage);
+  // Carousel pagination properties
+  pages: any[][] = [];
+  currentPage = 0;
   filterVisible: boolean = false;
   appliedFilterSectionVisible: boolean = false
   appliedFiltersArray: { criteria: string; value: string | number }[] = [];
@@ -146,7 +144,7 @@ export class AdventuresComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedValues = this.filterDetails.map(() => undefined);
-    this.updatePagination()
+    this.groupTripsIntoPages();
   }
 
   getBanner() {
@@ -161,40 +159,49 @@ export class AdventuresComponent implements OnInit {
     });
   }
 
- 
-
-  get pages() {
-    return Array(this.totalPages).fill(0).map((_, i) => i + 1);
+  // Group trips into pages based on filter state
+  groupTripsIntoPages(): void {
+    this.pages = [];
+    // When filter is closed: 2 rows x 4 cols = 8 trips per page
+    // When filter is open: 2 rows x 3 cols = 6 trips per page (filter takes 1 column)
+    const tripsPerPage = this.filterVisible ? 6 : 8;
+    
+    for (let i = 0; i < this.tripsDetails.length; i += tripsPerPage) {
+      this.pages.push(this.tripsDetails.slice(i, i + tripsPerPage));
+    }
+    
+    // Ensure currentPage stays within valid range
+    if (this.currentPage >= this.pages.length && this.pages.length > 0) {
+      this.currentPage = this.pages.length - 1;
+    }
   }
 
-  updatePagination() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    this.paginatedBatches = this.tripsDetails.slice(start, start + this.itemsPerPage);
+  get pageNumbers() {
+    return Array(this.pages.length).fill(0).map((_, i) => i + 1);
   }
 
   setPage(page: number) {
-  if (page !== this.currentPage) {
-    this.animationDirection = page > this.currentPage ? 'right' : 'left';
-    this.currentPage = page;
-    this.updatePagination();
+    // page comes as 1-based from template, convert to 0-based
+    const pageIndex = page - 1;
+    if (pageIndex !== this.currentPage && pageIndex >= 0 && pageIndex < this.pages.length) {
+      this.animationDirection = pageIndex > this.currentPage ? 'right' : 'left';
+      this.currentPage = pageIndex;
+    }
   }
-}
 
- // pagnation Logic //
+  // Pagination Logic
 
   prevPage() {
-    if (this.currentPage > 1) {
-       this.animationDirection = 'left';
+    if (this.currentPage > 0) {
+      this.animationDirection = 'left';
       this.currentPage--;
-      this.updatePagination();
     }
   }
 
   nextPage() {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.pages.length - 1) {
       this.animationDirection = 'right';
       this.currentPage++;
-      this.updatePagination();
     }
   }
 
@@ -203,28 +210,22 @@ export class AdventuresComponent implements OnInit {
 
 
   toggleFilter(event: MouseEvent) {
-    event.stopPropagation(); // Optional: prevents bubbling
-    console.log('filter clicked')
+    event.stopPropagation();
+    console.log('filter clicked');
     this.filterVisible = !this.filterVisible;
-    if (this.tripSection?.nativeElement) {
-      this.tripSection.nativeElement.classList.toggle('filter-open', this.filterVisible);
-    }
+    // Recalculate pagination based on new filter state
+    this.currentPage = 0; // Reset to first page
+    this.groupTripsIntoPages();
   }
 
 
 
   @HostListener('document:click', ['$event'])
-handleClickOutside(event: MouseEvent) {
-   if (this.skipCloseFilter) return; // skip if triggered by removeFilter
-  const clickedInsideFilter = this.filterContainer?.nativeElement.contains(event.target);
-  const clickedInsideApplied = this.appliedFilterSection?.nativeElement.contains(event.target);
-
-  // Only close if clicked outside both filter dropdown AND applied filters
-  if (this.filterVisible && !clickedInsideFilter && !clickedInsideApplied) {
-    this.filterVisible = false;
-    this.tripSection?.nativeElement.classList.remove('filter-open');
+  handleClickOutside(event: MouseEvent) {
+    // Filter only closes when clicking the filter icon, not when clicking outside
+    // This method can be used for other click-outside logic if needed
+    return;
   }
-}
 
   clearAll(event) {
     event.stopPropagation();
