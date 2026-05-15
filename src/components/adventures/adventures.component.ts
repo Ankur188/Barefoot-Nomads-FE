@@ -1,34 +1,49 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { StaticService } from 'src/services/static.service';
 import {
-  trigger,
-  transition,
-  style,
-  animate
-} from '@angular/animations';
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+} from '@angular/core';
+import { StaticService } from 'src/services/static.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { MatSelectModule } from '@angular/material/select';
-import { Router } from "@angular/router";
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-adventures',
   templateUrl: './adventures.component.html',
   styleUrls: ['./adventures.component.scss'],
   animations: [
-  trigger('slideAnimation', [
-    transition(':enter', [
-      style({ opacity: 0, transform: '{{transform}}' }),
-      animate('400ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
-    ], { params: { transform: 'translateX(100%)' } }),
-    transition(':leave', [
-      animate('400ms ease-in', style({ opacity: 0, transform: '{{transform}}' }))
-    ], { params: { transform: 'translateX(-100%)' } })
-  ])
-]
-})
-export class AdventuresComponent implements OnInit {
+    trigger('slideAnimation', [
+      transition(
+        ':enter',
+        [
+          style({ transform: 'translateX({{enterFrom}})', opacity: 0 }),
+          animate(
+            '400ms ease',
+            style({ transform: 'translateX(0)', opacity: 1 })
+          ),
+        ],
+        { params: { enterFrom: '100%' } }
+      ),
 
-  bannerUrl: any
+      transition(
+        ':leave',
+        [
+          animate(
+            '400ms ease',
+            style({ transform: 'translateX({{leaveTo}})', opacity: 0 })
+          ),
+        ],
+        { params: { leaveTo: '-100%' } }
+      ),
+    ]),
+  ],
+})
+export class AdventuresComponent implements OnInit, AfterViewInit {
+  bannerUrl: any;
   tripsDetails: any = [
     {
       tripName: 'Kedarnath',
@@ -36,7 +51,7 @@ export class AdventuresComponent implements OnInit {
       price: 2400,
       stay: '8 Days 7 Nights',
       recentlyAdded: true,
-      img: "assets/adventureImages/kedarnathTrip.svg",
+      img: 'assets/adventureImages/kedarnathTrip.svg',
     },
     {
       tripName: 'Tawang',
@@ -44,7 +59,7 @@ export class AdventuresComponent implements OnInit {
       price: 7400,
       stay: '8 Days 7 Nights',
       recentlyAdded: false,
-      img: "assets/adventureImages/tawangTrip.svg"
+      img: 'assets/adventureImages/tawangTrip.svg',
     },
     {
       tripName: 'Singapore',
@@ -52,7 +67,7 @@ export class AdventuresComponent implements OnInit {
       price: 7400,
       stay: '8 Days 7 Nights',
       recentlyAdded: false,
-      img: "assets/adventureImages/singaporeTrip.svg"
+      img: 'assets/adventureImages/singaporeTrip.svg',
     },
     {
       tripName: 'Kashmir',
@@ -60,7 +75,7 @@ export class AdventuresComponent implements OnInit {
       price: 7400,
       stay: '8 Days 7 Nights',
       recentlyAdded: false,
-      img: "assets/adventureImages/kashmirTrip.svg"
+      img: 'assets/adventureImages/kashmirTrip.svg',
     },
     {
       tripName: 'Spiti',
@@ -68,21 +83,23 @@ export class AdventuresComponent implements OnInit {
       price: 7400,
       stay: '8 Days 7 Nights',
       recentlyAdded: false,
-      img: "assets/adventureImages/spitiTrip.svg"
-    }, {
+      img: 'assets/adventureImages/spitiTrip.svg',
+    },
+    {
       tripName: 'Meghalaya',
       duration: 'APR-JUN',
       price: 3500,
       stay: '8 Days 7 Nights',
       recentlyAdded: true,
-      img: "assets/adventureImages/meghalayaTrip.svg"
-    }, {
+      img: 'assets/adventureImages/meghalayaTrip.svg',
+    },
+    {
       tripName: 'Bali',
-      duration: 'JAN-MAR',
+      duration: 'JAN-MARCH',
       price: 2400,
       stay: '8 Days 7 Nights',
       recentlyAdded: false,
-      img: "assets/adventureImages/baliTrip.svg"
+      img: 'assets/adventureImages/baliTrip.svg',
     },
     {
       tripName: 'Vietnam',
@@ -90,63 +107,109 @@ export class AdventuresComponent implements OnInit {
       price: 7400,
       stay: '8 Days 7 Nights',
       recentlyAdded: true,
-      img: "assets/adventureImages/vietnamTrip.svg"
+      img: 'assets/adventureImages/vietnamTrip.svg',
     },
     {
       tripName: 'Bali',
-      duration: 'JAN-MAR',
+      duration: 'JAN-MARCH',
       price: 2400,
       stay: '8 Days 7 Nights',
       recentlyAdded: false,
-      img: "assets/adventureImages/baliTrip.svg"
+      img: 'assets/adventureImages/baliTrip.svg',
     },
-  ]
+    {
+      tripName: 'MAuritius',
+      duration: 'APR-JUN',
+      price: 89000,
+      stay: '8 Days 7 Nights',
+      recentlyAdded: true,
+      img: 'assets/adventureImages/vietnamTrip.svg',
+    },
+  ];
 
   filterDetails: any = [
     {
-      filterCriteria: "Select Adventures",
-      filterData: ['KedarNath', 'Tawang', 'Singapore', 'Kashmir', 'Spiti', 'Bali', 'Meghalaya']
+      filterCriteria: 'Select Adventures',
+      filterData: [
+        'KedarNath',
+        'Tawang',
+        'Singapore',
+        'Kashmir',
+        'Spiti',
+        'Bali',
+        'Meghalaya',
+      ],
     },
     {
-      filterCriteria: "Select Locations",
-      filterData: ['KedarNath', 'Tawang', 'Singapore', 'Kashmir', 'Spiti', 'Bali', 'Meghalaya']
+      filterCriteria: 'Select Locations',
+      filterData: [
+        'KedarNath',
+        'Tawang',
+        'Singapore',
+        'Kashmir',
+        'Spiti',
+        'Bali',
+        'Meghalaya',
+      ],
     },
     {
-      filterCriteria: "Select Duration",
-      filterData: ['JAN-MARCH', 'JAN-MARCH', 'APR-JUN', 'JUL-SEP', 'OCT-DEC', 'DEC-FEB', 'JAN-MARCH', 'APR-JUN']
+      filterCriteria: 'Select Duration',
+      filterData: [
+        'JAN-MAR',
+        'APR-JUN',
+        'JUL-SEP',
+        'OCT-DEC',
+        'DEC-FEB',
+        'APR-JUN',
+      ],
     },
     {
-      filterCriteria: "Select Approx. Budget",
-      filterData: [2400, 7400, 7400, 7400, 7400, 7400, 3500, 2400]
+      filterCriteria: 'Select Approx. Budget',
+      filterData: [2400, 7400, 7400, 7400, 7400, 7400, 3500, 2400],
     },
-  ]
-  filterItems: any = []
-  // selectedValues:string[]=[]
-  selectedValues: any[] = []
-
-  searchPreference: any = ["Recommended", "Most Visited"]
-
+  ];
+  filterItems: any = [];
+  selectedValues: any[] = [];
+  trips: any[] = [];
+  searchPreference: any = ['Recommended', 'Most Visited'];
+  allTrips: any[] = [];
 
   currentPage = 1;
   itemsPerPage = 8;
-  paginatedBatches = [];
+  paginatedBatches: any[][] = [];
   totalPages = Math.ceil(this.tripsDetails.length / this.itemsPerPage);
   filterVisible: boolean = false;
-  appliedFilterSectionVisible: boolean = false
+  appliedFilterSectionVisible: boolean = false;
   appliedFiltersArray: { criteria: string; value: string | number }[] = [];
   private skipCloseFilter = false; // flag to prevent closing
   // for animation
   animationDirection: 'left' | 'right' = 'right';
 
-  @ViewChild('filterContainer') filterContainer: ElementRef
-  @ViewChild('tripSection') tripSection: ElementRef
-   @ViewChild('appliedFilterSection') appliedFilterSection: ElementRef
+  @ViewChild('filterContainer') filterContainer: ElementRef;
+  @ViewChild('tripSection') tripSection: ElementRef;
+  @ViewChild('appliedFilterSection') appliedFilterSection: ElementRef;
+  @ViewChild('cardCarousel') cardCarousel: ElementRef;
 
-  constructor(public staticService: StaticService) { }
+  constructor(public staticService: StaticService) {}
 
   ngOnInit(): void {
     this.selectedValues = this.filterDetails.map(() => undefined);
-    this.updatePagination()
+    //this.totalPages = Math.ceil(this.tripsDetails.length / this.itemsPerPage);
+    this.staticService.getTrips().subscribe((data) => {
+      this.trips = data.trips;
+      this.allTrips = data.trips; // store original data
+      this.updatePagination();
+      console.log('All Trips', this.allTrips);
+      console.log('Filtered Trips', this.trips);
+      console.log('Trips before filter:', this.allTrips.length);
+      console.log('Trips after filter:', this.trips.length);
+    });
+    this.updatePagination();
+  }
+
+  ngAfterViewInit(): void {
+    // align applied filter pills after view initializes
+    setTimeout(() => this.alignAppliedFilters(), 50);
   }
 
   getBanner() {
@@ -155,32 +218,49 @@ export class AdventuresComponent implements OnInit {
     });
   }
 
- 
-
   get pages() {
-    return Array(this.totalPages).fill(0).map((_, i) => i + 1);
+    return Array(this.totalPages)
+      .fill(0)
+      .map((_, i) => i + 1);
   }
+
+  //   updatePagination() {
+  //   const start = (this.currentPage - 1) * this.itemsPerPage;
+  //   this.paginatedBatches = this.tripsDetails.slice(start, start + this.itemsPerPage);
+  // }
+
+  // updatePagination() {
+  //   const start = (this.currentPage - 1) * this.itemsPerPage;
+  //   this.paginatedBatches = this.trips.slice(start, start + this.itemsPerPage);
+  // }
+
 
   updatePagination() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    this.paginatedBatches = this.tripsDetails.slice(start, start + this.itemsPerPage);
+  this.totalPages = Math.ceil(this.trips.length / this.itemsPerPage) || 1;
+
+  // Prevent going to invalid page
+  if (this.currentPage > this.totalPages) {
+    this.currentPage = this.totalPages;
   }
 
-  setPage(page: number) {
-  if (page !== this.currentPage) {
-    this.animationDirection = page > this.currentPage ? 'right' : 'left';
-    this.currentPage = page;
-    this.updatePagination();
-  }
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  this.paginatedBatches = this.trips.slice(start, start + this.itemsPerPage);
 }
 
- // pagnation Logic //
+  setPage(page: number) {
+    if (page !== this.currentPage) {
+      this.animationDirection = page > this.currentPage ? 'right' : 'left';
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  // pagnation Logic //
 
   prevPage() {
     if (this.currentPage > 1) {
-       this.animationDirection = 'left';
+      this.animationDirection = 'left';
       this.currentPage--;
-      this.updatePagination();
     }
   }
 
@@ -188,172 +268,211 @@ export class AdventuresComponent implements OnInit {
     if (this.currentPage < this.totalPages) {
       this.animationDirection = 'right';
       this.currentPage++;
-      this.updatePagination();
     }
   }
 
-
-  // filter logic 
-
+  // filter logic
 
   toggleFilter(event: MouseEvent) {
     event.stopPropagation(); // Optional: prevents bubbling
-    console.log('filter clicked')
+    console.log('filter clicked');
     this.filterVisible = !this.filterVisible;
     if (this.tripSection?.nativeElement) {
-      this.tripSection.nativeElement.classList.toggle('filter-open', this.filterVisible);
+      this.tripSection.nativeElement.classList.toggle(
+        'filter-open',
+        this.filterVisible
+      );
+    }
+    // reposition applied filter pills when filter toggles
+    setTimeout(() => this.alignAppliedFilters(), 80);
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    if (this.skipCloseFilter) return; // skip if triggered by removeFilter
+    const clickedInsideFilter = this.filterContainer?.nativeElement.contains(
+      event.target
+    );
+    const clickedInsideApplied =
+      this.appliedFilterSection?.nativeElement.contains(event.target);
+
+    // Only close if clicked outside both filter dropdown AND applied filters
+    if (this.filterVisible && !clickedInsideFilter && !clickedInsideApplied) {
+      this.filterVisible = false;
+      this.tripSection?.nativeElement.classList.remove('filter-open');
     }
   }
 
-
-
-  @HostListener('document:click', ['$event'])
-handleClickOutside(event: MouseEvent) {
-   if (this.skipCloseFilter) return; // skip if triggered by removeFilter
-  const clickedInsideFilter = this.filterContainer?.nativeElement.contains(event.target);
-  const clickedInsideApplied = this.appliedFilterSection?.nativeElement.contains(event.target);
-
-  // Only close if clicked outside both filter dropdown AND applied filters
-  if (this.filterVisible && !clickedInsideFilter && !clickedInsideApplied) {
-    this.filterVisible = false;
-    this.tripSection?.nativeElement.classList.remove('filter-open');
-  }
-}
+  // clearAll(event) {
+  //   event.stopPropagation();
+  //   this.appliedFilterSectionVisible = false;
+  //   this.selectedValues = [];
+  // }
 
   clearAll(event) {
     event.stopPropagation();
     this.appliedFilterSectionVisible = false;
     this.selectedValues = [];
+    this.appliedFiltersArray = [];
+    this.trips = [...this.allTrips];
+     this.currentPage = 1; // important
+  this.updatePagination();
   }
 
+  
 
+  // onApplyFilter() {
+  //   this.appliedFilterSectionVisible = true;
 
+  //   const newFilterArray = this.selectedValues
+  //     .map((value, index) => {
+  //       if (value !== undefined) {
+  //         return {
+  //           criteria: this.filterDetails[index].filterCriteria,
+  //           value: value,
+  //         };
+  //       }
+  //       return null;
+  //     })
+  //     .filter((item) => item !== null) as any[];
+
+  //   this.appliedFiltersArray = newFilterArray;
+  //   console.log('Filters', this.appliedFiltersArray);
+
+  //   this.applyFilters(); // 🔴 THIS MUST BE HERE
+  // }
 
   onApplyFilter() {
-    this.appliedFilterSectionVisible = true;
+  this.appliedFilterSectionVisible = true;
 
-    // Filter out undefined values and create a display list
-   const newFilterArray = this.selectedValues
-      .map((value, index) => {
-        if (value !== undefined) {
-          return {
-            criteria: this.filterDetails[index].filterCriteria,
-            value: typeof value === 'object' ? value.name : value
-          };
-        }
-        return null;
-      })
-      .filter(item => item !== null) as any[];
+  const newFilterArray = this.selectedValues
+    .map((value, index) => {
+      if (value !== undefined) {
+        return {
+          criteria: this.filterDetails[index].filterCriteria,
+          value: value,
+        };
+      }
+      return null;
+    })
+    .filter((item) => item !== null) as any[];
 
+  this.appliedFiltersArray = newFilterArray;
 
-      newFilterArray.forEach(filter =>{
-        const alreadyExists = this.appliedFiltersArray.some(
-          f=> f.criteria === filter.criteria && f.value === filter.value
-        );
+  this.currentPage = 1; // 🔴 reset page after filter
+  this.applyFilters();
+}
 
-        if(!alreadyExists){
-          this.appliedFiltersArray.push(filter)
-        }
-      })
-
-      this.selectedValues = this.selectedValues.map(()=> undefined)
-
-    console.log("Applied Filters:", this.appliedFiltersArray );
-  }
-
-
-  removeFilter(index, event:MouseEvent){
-    event?.stopPropagation()
-    this.skipCloseFilter = true
-    console.log(this.appliedFiltersArray ,'appliedFilter')
-     this.appliedFiltersArray.splice(index ,1 )
-    if(this.appliedFiltersArray.length === 0 && this.tripSection?.nativeElement ){   
-      this.tripSection.nativeElement.classList.add('filter-open');
+  applyFilters() {
+    if (this.appliedFiltersArray.length === 0) {
+      this.trips = [...this.allTrips];
+      this.updatePagination();
+      return;
     }
 
+    this.trips = this.allTrips.filter((trip) => {
+      return this.appliedFiltersArray.every((filter) => {
+        const value = String(filter.value).toLowerCase().trim();
 
-    // Reset flag after short delay to allow HostListener to finish
-  setTimeout(() => this.skipCloseFilter = false, 0);
+        switch (filter.criteria) {
+          case 'Select Adventures':
+            return trip.destination_name?.toLowerCase().includes(value);
 
+          case 'Select Locations':
+            return trip.desitnations?.toLowerCase().includes(value);
+
+case "Select Duration":
+
+  if (!trip.from_month || !trip.to_month) return false;
+
+  const fromMonth = new Date(trip.from_month * 1000).getMonth();
+  const toMonth = new Date(trip.to_month * 1000).getMonth();
+
+  if (value === "jan-march") {
+    return fromMonth >= 0 && toMonth <= 2;
   }
 
+  if (value === "apr-jun") {
+    return fromMonth >= 3 && toMonth <= 5;
+  }
 
-//  trips: any[] = [];
-//   pages: any[][] = [];
-//   currentPage = 0;
-//   filterOpen = false; // toggle when filter opens/closes
+  if (value === "jul-sep") {
+    return fromMonth >= 6 && toMonth <= 8;
+  }
 
-//   constructor(public staticService: StaticService, private router: Router) {}
+  if (value === "oct-dec") {
+    return fromMonth >= 9 && toMonth <= 11;
+  }
 
-//   ngOnInit(): void {
-//     this.staticService.getTrips().subscribe((data: any) => {
-//       this.trips = data.trips;
-//       this.groupTrips();
-//     });
-//   }
+  return true;
 
-//   toggleFilter(): void {
-//     this.filterOpen = !this.filterOpen;
-//     this.groupTrips();
-//     this.currentPage = 0; // reset page
-//   }
+          case 'Select Approx. Budget':
+            return trip.lowestPriceBatch?.price <= Number(filter.value);
 
-//   groupTrips(): void {
-//     this.pages = [];
+          default:
+            return true;
+        }
+      });
+    });
 
-//     if (!this.filterOpen) {
-//       // 2 rows x 4 cols = 8 trips per page
-//       for (let i = 0; i < this.trips.length; i += 8) {
-//         this.pages.push(this.trips.slice(i, i + 8));
-//       }
-//     } else {
-//       // Filter open: 2 rows, 3 columns per row (6 trips per page)
-//       const tripsPerPage = 6;
-//       for (let i = 0; i < this.trips.length; i += tripsPerPage) {
-//         this.pages.push(this.trips.slice(i, i + tripsPerPage));
-//       }
-//     }
-//   }
+    this.updatePagination();
+  }
 
-//   getGridColumn(index: number): string {
-//     if (!this.filterOpen) return '';
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.alignAppliedFilters();
+  }
 
-//     // First row: columns 2,3,4
-//     if (index === 0) return '2';
-//     if (index === 1) return '3';
-//     if (index === 2) return '4';
+  private alignAppliedFilters() {
+    try {
+      const filterEl = this.filterContainer?.nativeElement as HTMLElement;
+      const appliedEl = this.appliedFilterSection?.nativeElement as HTMLElement;
+      const carouselEl = this.cardCarousel?.nativeElement as HTMLElement;
+      if (!filterEl || !appliedEl || !carouselEl) return;
 
-//     // Second row: columns 2,3,4
-//     if (index === 3) return '2';
-//     if (index === 4) return '3';
-//     if (index === 5) return '4';
+      const filterRect = filterEl.getBoundingClientRect();
+      const carouselRect = carouselEl.getBoundingClientRect();
 
-//     return '';
-//   }
+      // compute left offset so the applied pills start at the right edge of filter container
+      const left = filterRect.right - carouselRect.left + 8; // small gap
+      appliedEl.style.position = 'absolute';
+      appliedEl.style.left = `${Math.max(0, left)}px`;
+      appliedEl.style.top = '0px';
+    } catch (e) {
+      // ignore
+    }
+  }
 
-//   getGridRow(index: number): string {
-//     if (!this.filterOpen) return '';
-//     return index < 3 ? '1' : '2';
-//   }
+  removeFilter(index, event: MouseEvent) {
+    event?.stopPropagation();
+    // this.skipCloseFilter = true
+    // console.log(this.appliedFiltersArray ,'appliedFilter')
+    //  this.appliedFiltersArray.splice(index ,1 )
+    // if(this.appliedFiltersArray.length === 0 && this.tripSection?.nativeElement ){
+    //   this.tripSection.nativeElement.classList.add('filter-open');
+    // }
+    this.appliedFiltersArray.splice(index, 1);
+    this.applyFilters();
 
-//   nextPage(): void {
-//     if (this.currentPage < this.pages.length - 1) this.currentPage++;
-//   }
+    // Reset flag after short delay to allow HostListener to finish
+    setTimeout(() => (this.skipCloseFilter = false), 0);
+  }
 
-//   prevPage(): void {
-//     if (this.currentPage > 0) this.currentPage--;
-//   }
+  getTransform() {
+    const cardsPerRow = 4;
+    const rowsPerPage = 2;
+    const cardsPerPage = cardsPerRow * rowsPerPage; // 8 cards per page
 
-//   goToPage(index: number): void {
-//     this.currentPage = index;
-//   }
+    const cardElement = this.tripSection?.nativeElement.querySelector('.card');
+    if (!cardElement) return 'translateX(0)';
 
-//   navigateToTrip(trip: any) {
-//     this.router.navigate([`trip/${trip.id}`]);
-//   }
+    const style = window.getComputedStyle(cardElement);
+    const cardWidth = cardElement.offsetWidth;
+    const gap = parseInt(style.marginRight) || 0;
 
-//   navigateToAdventures() {
-//     this.router.navigate(['adventures']);
-//   }
+    const pageWidth = (cardWidth + gap) * cardsPerRow; // width of 1 row
+    const shift = (this.currentPage - 1) * pageWidth; // multiply by current page index
 
+    return `translateX(-${shift}px)`;
+  }
 }

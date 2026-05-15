@@ -22,18 +22,18 @@
 
   .introduction {
     .intro-text {
-      width: 72%;
+      width: 95%;
     }
 
     .intro-image {
-      width: 20rem;
+      width: 21rem;
     }
   }
 }
 
 /* Characteristics Section */
 .characteristics {
-  width: 40%;
+  width: 51%;
   padding-top: 3rem;
 }
 
@@ -188,28 +188,34 @@
 }
 
 /* Filter Dropdown */
+.applied-filters {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.75rem 0 0 0; /* default spacing */
+}
+
 .appliedFilterSection {
-  width: 7rem;
-  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 20px;
   background-color: #d2d8e5;
-  opacity: 1;
   color: #121212;
-  margin: 1rem 1rem 0rem 0rem;
-  padding: 0rem 0rem 0rem 1rem;
-  font-size: 0.75rem;
-  p {
-    font-size: 0.75rem;
-    color: $lf-black;
-    margin: 0;
-    letter-spacing: 0.04;
-    opacity: 1;
-    font-weight: 400;
-  }
+  font-size: 0.85rem;
   img {
     width: 1rem;
     height: 1rem;
     cursor: pointer;
+  }
+}
+
+/* Align applied filter pills with the card grid on desktop */
+@media (min-width: 992px) {
+  .card-carousel-filter .applied-filters {
+    /* align with the cards column: filters-col (260px) + main container left padding (12rem) */
+    margin-left: calc(260px + 12rem);
   }
 }
 .filter-dropdown {
@@ -265,17 +271,7 @@
 
 /* Pagination */
 .pagination-div {
-  // button,
-  // mat-icon,
-  // div {
-  //   border: 1px solid rgba(0, 0, 0, 0.1);
-  //   border-radius: 0.4rem;
-  //   width: 2.5rem;
-  //   height: 2.5rem;
-  //   color: $lf-black;
-  //   background-color: transparent;
-  //   font-weight: bold;
-  // }
+
 
   button,
   .pageNumber {
@@ -304,6 +300,45 @@
 }
 
 /* Cards Section */
+
+.cardTripDetailsSection-wrapper {
+  /* allow cards to wrap instead of being clipped */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+/* ensure bootstrap helper classes don't force large gaps that cause horizontal overflow */
+.cardTripDetailsSection-wrapper.d-flex {
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+}
+/* Ensure direct child cards size and wrap correctly (override older nested rules) */
+.cardTripDetailsSection-wrapper > .cardTripDetailsSection {
+  box-sizing: border-box;
+  flex: 0 0 calc(25% - 1rem); /* default: 4 per row */
+  max-width: calc(25% - 1rem);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.cardTripDetailsSection-wrapper.filter-open > .cardTripDetailsSection {
+  flex: 0 0 calc(33.33% - 1rem); /* when filter open: 3 per row */
+  max-width: calc(33.33% - 1rem);
+}
+/* Support layout when inner items are named .cardTripDetailsSection (template uses this) */
+.cardTripDetailsSection-wrapper > .cardTripDetailsSection {
+  box-sizing: border-box;
+  flex: 0 0 calc(25% - 1rem); /* default: 4 per row */
+  max-width: calc(25% - 1rem);
+}
+
+.cardTripDetailsSection-wrapper.filter-open > .cardTripDetailsSection {
+  flex: 0 0 calc(33.33% - 1rem); /* when filter open: 3 per row */
+  max-width: calc(33.33% - 1rem);
+}
 .cardTripDetailsSection {
   width: 100%;
   gap: 1rem;
@@ -313,9 +348,10 @@
   position: relative;
   overflow: hidden;
   min-height: 22rem;
+  transition: transform 0.7s ease-in-out;
 
   .card {
-    height: 22rem;
+    height: 25rem;
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
@@ -454,7 +490,46 @@
 }
 
 .card-carousel-filter {
+  position: relative;
   transition: margin-left 0.3s ease; /* smooth shift */
+}
+
+
+// - no filter matched----//
+
+.no-data-container {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #555;
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: $lf-black;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #f2af29;
+    border-radius: 5px;
+    cursor: pointer;
+    color: $lf-black;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+.applied-filters {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.25rem;
 }
 
 .card-carousel-filter.shifted {
@@ -474,16 +549,128 @@
 }
 
 /* When filter panel is open → 3 per row */
-.cardTripDetailsSection.filter-open .card {
+.cardTripDetailsSection-wrapper.filter-open .card {
   flex: 0 0 calc(33.33% - 1rem);
   max-width: calc(33.33% - 1rem);
 }
 
 /* Responsive */
-@media only screen and (max-width: 427px) {
+// @media only screen and (max-width: 427px) {
+//   .para-font-style {
+//     font-size: 0.875rem;
+//   }
+
+//   .intro-container {
+//     padding: 2rem;
+//     padding-top: 10rem;
+
+//     .heading {
+//       font-size: 1rem;
+//       font-weight: 600;
+//       line-height: 0.5rem;
+//       letter-spacing: 0.125rem;
+//       opacity: 0.6;
+//     }
+
+//     .sub-heading {
+//       font-size: 2rem;
+//       font-weight: 600;
+//       line-height: 3rem;
+//     }
+
+//     .introduction {
+//       flex-direction: column-reverse;
+//       align-items: baseline;
+
+//       .intro-text {
+//         width: 100%;
+//         margin-top: 2%;
+//       }
+
+//       .intro-image {
+//         width: 100%;
+//       }
+//     }
+//   }
+
+//   .characteristics {
+//     width: 100%;
+//   }
+
+//   .characteristic {
+//     p {
+//       font-size: 0.65rem;
+//     }
+//   }
+
+//   .main-container {
+//     padding: 1rem;
+//     padding-top: 10rem;
+//   }
+
+//   .card {
+//     width: 21rem !important;
+//     height: 23rem !important;
+//   }
+
+//   .cardSectionHeading {
+//     line-height: 1rem !important;
+//     font-size: 0.75rem !important;
+//   }
+
+//   .cardSectionSub-heading {
+//     font-size: 1.5rem !important;
+//     line-height: 1.5rem !important;
+//   }
+
+//   .cardTripDetailsSection .card {
+//     flex: 0 0 100%;
+//     max-width: 100% !important;
+//     display: block !important;
+//   }
+// }
+
+
+// @media (max-width: 427px) {
+
+//   /* Stack cards vertically */
+//   .cardTripDetailsSection-wrapper {
+//     display: flex;
+//     flex-direction: column !important;
+//     gap: 1rem;
+//   }
+
+//   /* Each card container full width */
+//   .cardTripDetailsSection-wrapper > .cardTripDetailsSection {
+//     flex: 0 0 100% !important;
+//     max-width: 100% !important;
+//   }
+
+//   /* Remove inner grid behavior */
+//   .cardTripDetailsSection {
+//     display: block !important;
+//     min-height: auto;
+//   }
+
+//   /* Actual card fix */
+//   .cardTripDetailsSection .card {
+//     width: 100% !important;
+//     max-width: 100% !important;
+//     height: 20rem; /* adjust if needed */
+//     flex: unset !important;
+//   }
+
+// }
+
+
+
+@media (max-width: 427px) {
+
+  /* Typography */
   .para-font-style {
     font-size: 0.875rem;
   }
+
 
   .intro-container {
     padding: 2rem;
@@ -518,24 +705,19 @@
     }
   }
 
+
   .characteristics {
     width: 100%;
   }
 
-  .characteristic {
-    p {
-      font-size: 0.65rem;
-    }
+  .characteristic p {
+    font-size: 0.65rem;
   }
+
 
   .main-container {
     padding: 1rem;
     padding-top: 10rem;
-  }
-
-  .card {
-    width: 21rem !important;
-    height: 23rem !important;
   }
 
   .cardSectionHeading {
@@ -548,113 +730,44 @@
     line-height: 1.5rem !important;
   }
 
+
+  /* Stack cards */
+
+  .filter-carousel-wrapper{
+    padding: 0px 2px 0px 10px;
+  }
+
+  .card{
+    width: 21rem !important;
+  }
+  .cardTripDetailsSection-wrapper {
+    display: flex;
+    flex-direction: column !important;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Card container full width */
+  .cardTripDetailsSection-wrapper > .cardTripDetailsSection {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding: 0;
+  }
+
+  /* Remove inner flex/grid issues */
+  .cardTripDetailsSection {
+    display: block !important;
+    min-height: auto;
+  }
+
+  /* Actual card */
   .cardTripDetailsSection .card {
-    flex: 0 0 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 20rem; /* adjusted */
+    margin: 0 !important;
+    flex: unset !important;
+    border-radius: 10px;
   }
 }
-
-
-
-
-
-// .main-container {
-//   padding: 5rem 2rem;
-//   font-weight: 600;
-
-//   .heading {
-//     color: #000;
-//     font-size: 1.25rem;
-//     letter-spacing: 0.125rem;
-//     opacity: 0.6;
-//   }
-
-//   .sub-heading {
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: baseline;
-//     margin-top: 1rem;
-
-//     p {
-//       color: #000;
-//       font-size: 2rem;
-//     }
-
-//     .view-all {
-//       cursor: pointer;
-//       color: gold;
-//       font-size: 1.25rem;
-//     }
-//   }
-// }
-
-// .carousel-container {
-//   width: 100%;
-//   overflow: hidden;
-//   position: relative;
-//   margin-top: 2rem;
-// }
-
-// .carousel-wrapper {
-//   display: flex;
-//   transition: transform 0.5s ease-in-out;
-//   width: 100%;
-// }
-
-// .carousel-page {
-//   min-width: 100%;
-//   display: grid;
-//   grid-template-columns: repeat(4, 1fr);
-//   grid-template-rows: repeat(2, auto);
-//   gap: 15px;
-//   padding: 10px;
-
-//   &.filter-open {
-//     .filter-card {
-//       grid-column: 1 / 2;
-//       grid-row: 1 / 2;
-//       background: #f0f0f0;
-//       padding: 1rem;
-//     }
-//   }
-// }
-
-// .carousel-controls {
-//   margin-top: 15px;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-
-//   .dots {
-//     display: flex;
-//     gap: 8px;
-//     align-items: center;
-
-//     span {
-//       width: 0.6rem;
-//       height: 0.6rem;
-//       background: #ccc;
-//       border-radius: 50%;
-//       cursor: pointer;
-//       transition: background 0.3s;
-
-//       &.active {
-//         background: #000;
-//         width: 1.5rem;
-//         height: 0.3rem;
-//         border-radius: 0;
-//       }
-//     }
-//   }
-
-//   .action-btn button {
-//     cursor: pointer;
-//     background: none;
-//     border: none;
-//     mat-icon {
-//       color: #000;
-//     }
-//     &:disabled mat-icon {
-//       color: #ccc;
-//     }
-//   }
-// }
