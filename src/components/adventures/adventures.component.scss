@@ -554,113 +554,16 @@
   max-width: calc(33.33% - 1rem);
 }
 
-/* Responsive */
-// @media only screen and (max-width: 427px) {
-//   .para-font-style {
-//     font-size: 0.875rem;
-//   }
+/*----------------- Responsive ------------------*/
 
-//   .intro-container {
-//     padding: 2rem;
-//     padding-top: 10rem;
+/* desktop */
+.mobile-only-image {
+  display: none;
+}
 
-//     .heading {
-//       font-size: 1rem;
-//       font-weight: 600;
-//       line-height: 0.5rem;
-//       letter-spacing: 0.125rem;
-//       opacity: 0.6;
-//     }
-
-//     .sub-heading {
-//       font-size: 2rem;
-//       font-weight: 600;
-//       line-height: 3rem;
-//     }
-
-//     .introduction {
-//       flex-direction: column-reverse;
-//       align-items: baseline;
-
-//       .intro-text {
-//         width: 100%;
-//         margin-top: 2%;
-//       }
-
-//       .intro-image {
-//         width: 100%;
-//       }
-//     }
-//   }
-
-//   .characteristics {
-//     width: 100%;
-//   }
-
-//   .characteristic {
-//     p {
-//       font-size: 0.65rem;
-//     }
-//   }
-
-//   .main-container {
-//     padding: 1rem;
-//     padding-top: 10rem;
-//   }
-
-//   .card {
-//     width: 21rem !important;
-//     height: 23rem !important;
-//   }
-
-//   .cardSectionHeading {
-//     line-height: 1rem !important;
-//     font-size: 0.75rem !important;
-//   }
-
-//   .cardSectionSub-heading {
-//     font-size: 1.5rem !important;
-//     line-height: 1.5rem !important;
-//   }
-
-//   .cardTripDetailsSection .card {
-//     flex: 0 0 100%;
-//     max-width: 100% !important;
-//     display: block !important;
-//   }
-// }
-
-
-// @media (max-width: 427px) {
-
-//   /* Stack cards vertically */
-//   .cardTripDetailsSection-wrapper {
-//     display: flex;
-//     flex-direction: column !important;
-//     gap: 1rem;
-//   }
-
-//   /* Each card container full width */
-//   .cardTripDetailsSection-wrapper > .cardTripDetailsSection {
-//     flex: 0 0 100% !important;
-//     max-width: 100% !important;
-//   }
-
-//   /* Remove inner grid behavior */
-//   .cardTripDetailsSection {
-//     display: block !important;
-//     min-height: auto;
-//   }
-
-//   /* Actual card fix */
-//   .cardTripDetailsSection .card {
-//     width: 100% !important;
-//     max-width: 100% !important;
-//     height: 20rem; /* adjust if needed */
-//     flex: unset !important;
-//   }
-
-// }
+.desktop-image {
+  display: block;
+}
 
 
 
@@ -689,20 +592,25 @@
       font-weight: 600;
       line-height: 3rem;
     }
+ 
+  .desktop-image {
+    display: none;
+  }
 
-    .introduction {
-      flex-direction: column-reverse;
-      align-items: baseline;
+  .mobile-only-image {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
 
-      .intro-text {
-        width: 100%;
-        margin-top: 2%;
-      }
+  .mobile-only-image .intro-image {
+    width: 100%;
+    max-width: 320px;
+  }
 
-      .intro-image {
-        width: 100%;
-      }
-    }
+  .introduction {
+    flex-direction: column;
+  }
   }
 
 
