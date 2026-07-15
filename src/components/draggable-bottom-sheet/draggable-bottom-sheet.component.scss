@@ -6,8 +6,8 @@
 @media (max-width: 768px) {
   .bottom-sheet-scrollable {
     position: fixed;
-    bottom: 9rem; // height of preview
-    height: 31vh;
+    bottom: 10rem; // default bottom
+    height: 52vh; // default height for non-booking page
     left: 0;
     right: 0;
     background: #fff;
@@ -19,11 +19,29 @@
     display: flex;
     flex-direction: column;
     touch-action: none;
+    overflow: hidden; // hide content that overflows when collapsed
   }
   
+  // Non-booking page (default)
+  .bottom-sheet-scrollable.collapsed {
+    bottom: 9rem;
+  }
+  
+  .bottom-sheet-scrollable.expanded {
+    bottom: -9rem;
+  }
 
-  .reciept {
-    height: 40vh !important;
+  // Booking page overrides
+  .bottom-sheet-scrollable.reciept {
+    height: 58vh;
+  }
+  
+  .bottom-sheet-scrollable.reciept.collapsed {
+    bottom: 19rem;
+  }
+  
+  .bottom-sheet-scrollable.reciept.expanded {
+    bottom: 9rem;
   }
 
   .handle {
@@ -37,6 +55,7 @@
   .sheet-content {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 2rem;
     .para-font-style {
       color: $lf-black;

@@ -1,7 +1,11 @@
 <div
   class="bottom-sheet-scrollable"
   [ngStyle]="{ transform: 'translateY(' + translateY + 'px)' }"
-  [ngClass]="{ reciept: isBookingPage }"
+  [ngClass]="{ 
+    'reciept': isBookingPage,
+    'expanded': isExpanded,
+    'collapsed': !isExpanded
+  }"
   (touchstart)="onTouchStart($event)"
   (touchmove)="onTouchMove($event)"
   (touchend)="onTouchEnd()"

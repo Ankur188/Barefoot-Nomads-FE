@@ -53,12 +53,11 @@ import { BookingService } from 'src/services/booking.service';
 export class DraggableBottomSheetComponent implements OnInit {
   startY = 0;
   currentY = 0;
-  translateY = 140; // sheet hidden by default except preview
-  // translateY = 60; // sheet hidden by default except preview
+  translateY = 0; // will be set in ngOnInit
   expandedY = 0;
-  // collapsedY = 280; // same as initial translateY
-  collapsedY = 140; // same as initial translateY
+  collapsedY = 0; // will be set in ngOnInit
   isDragging = false;
+  isExpanded = false; // track expanded/collapsed state
   @Input() isBookingPage = false;
   @Input() details: any;
   @Input() destinations: Array<string>;
@@ -77,29 +76,31 @@ export class DraggableBottomSheetComponent implements OnInit {
   constructor(private router: Router, private bookingService: BookingService) {}
 
   ngOnInit(): void {
-    // if (this.isBookingPage) {
-    //   this.collapsedY = 280;
-    //   this.translateY = 280;
-    // }
-
-      const vh = window.innerHeight;
-
-  // collapsed offset (around 15–25% of screen height)
-  this.collapsedY = vh * 0.2;   // 20% of device height
-  this.translateY = this.collapsedY;
-
-  this.expandedY = 0; // fully expanded
-
     this.setHeights();
-  window.addEventListener("resize", this.setHeights.bind(this));
+    window.addEventListener("resize", this.setHeights.bind(this));
   }
 
- setHeights() {
-  const vh = window.innerHeight;
-  this.collapsedY = vh * 0.2; // 20% screen height collapsed
-  if (this.translateY > this.collapsedY) {
+  setHeights() {
+    const vh = window.innerHeight;
+    
+    if (this.isBookingPage) {
+      // For booking page: height 58vh
+      const sheetHeight = vh * 0.58;
+      // When expanded: no transform (use CSS bottom: 9rem)
+      this.expandedY = 0;
+      // When collapsed: move down to hide content, leave only handle
+      this.collapsedY = sheetHeight - 30; // show only ~30px (handle area)
+    } else {
+      // For non-booking page: height 52vh
+      const sheetHeight = vh * 0.52;
+      // When expanded: no transform (use CSS bottom: 10rem)
+      this.expandedY = 0;
+      // When collapsed: move down to hide content, leave only handle
+      this.collapsedY = sheetHeight - 30; // show only ~30px (handle area)
+    }
+    
     this.translateY = this.collapsedY;
-  }
+    this.isExpanded = false;
   }
   onTouchStart(event: TouchEvent) {
     this.isDragging = true;
@@ -120,8 +121,12 @@ export class DraggableBottomSheetComponent implements OnInit {
 
   onTouchEnd() {
     this.isDragging = false;
-    this.translateY =
-      this.translateY < this.collapsedY / 2 ? this.expandedY : this.collapsedY;
+    // Calculate midpoint between expanded and collapsed positions
+    const midpoint = (this.expandedY + this.collapsedY) / 2;
+    // Snap to expanded if closer to expanded, otherwise snap to collapsed
+    this.translateY = this.translateY < midpoint ? this.expandedY : this.collapsedY;
+    // Update expanded state
+    this.isExpanded = this.translateY === this.expandedY;
   }
 
   bookNow() {
