@@ -89,8 +89,14 @@ footer {
   .input {
     height: 4rem;
     border: none;
+    outline: none;
     margin-bottom: 2px;
     background: none;
+    color: #222;
+    &:focus {
+      outline: none;
+      border: none;
+    }
   }
 }
 

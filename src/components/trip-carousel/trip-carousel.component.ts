@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
 import { StaticService } from "src/services/static.service";
 import { Router } from "@angular/router";
 
@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 })
 export class TripCarouselComponent implements OnInit, OnChanges {
   @Input() trips: any[] = [];
+  @ViewChild('carouselContainer', { static: false }) carouselContainer: ElementRef;
 
   pages: any[][] = [];
   currentPage = 0;
@@ -34,12 +35,20 @@ export class TripCarouselComponent implements OnInit, OnChanges {
   nextPage(): void {
     if (this.currentPage < this.pages.length - 1) {
       this.currentPage++;
+      this.scrollToTopOnMobile();
     }
   }
 
   prevPage(): void {
     if (this.currentPage > 0) {
       this.currentPage--;
+      this.scrollToTopOnMobile();
+    }
+  }
+
+  scrollToTopOnMobile(): void {
+    if (window.innerWidth <= 427 && this.carouselContainer) {
+      this.carouselContainer.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
