@@ -219,7 +219,7 @@
           </div>
         </div>
       </div>
-      <div class="rooms-div">
+      <div *ngIf="batches && batches.length !== 0" class="rooms-div">
         <div class="text-uppercase d-flex align-items-center">
           <span class="me-2">Select the type of your room </span>
           <mat-icon
@@ -357,7 +357,7 @@
 
         <div
           class="pay w-100 text-uppercase text-center align-content-center mt-4"
-          [class.disabled]="!isFormValid()"
+          [class.disabled]="!isFormValid() || !batches || batches.length === 0"
           (click)="payNow()"
         >
           Pay now
