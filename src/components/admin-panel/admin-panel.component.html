@@ -1,0 +1,564 @@
+<div class="admin-panel-container">
+  <!-- Tabs Section -->
+  <mat-tab-group
+    class="admin-tabs"
+    [(selectedIndex)]="selectedTab"
+    (selectedIndexChange)="onTabChange($event)"
+  >
+    <mat-tab label="TRIPS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showTripsForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('trips')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showTripsForm"
+          [entityType]="'trips'"
+          [mode]="tripsFormMode"
+          [data]="editTripData"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showTripsForm">
+          <!-- Header Section -->
+          <div class="trips-header">
+            <h2>List of all the Trips</h2>
+            <button class="bulk-actions-btn" [disabled]="selectedRowCount === 0">
+              Bulk Actions
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+          </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine trips-grid"
+            [rowData]="rowData"
+            [columnDefs]="columnDefs"
+            [defaultColDef]="defaultColDef"
+            [context]="tripsGridContext"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onGridReady($event)"
+            (cellClicked)="onCellClicked($event)"
+            (selectionChanged)="onSelectionChanged($event)"
+            (firstDataRendered)="onFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (tripsCurrentPage - 1) * tripsPageSize + 1 }} to {{ Math.min(tripsCurrentPage * tripsPageSize, tripsTotalCount) }} of {{ tripsTotalCount }} trips
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === 1"
+                (click)="goToTripsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === 1"
+                (click)="goToTripsPage(tripsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ tripsCurrentPage }} of {{ tripsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === tripsTotalPages"
+                (click)="goToTripsPage(tripsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="tripsCurrentPage === tripsTotalPages"
+                (click)="goToTripsPage(tripsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab label="BATCHES">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showBatchesForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('batches')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showBatchesForm"
+          [entityType]="'batches'"
+          [mode]="batchesFormMode"
+          [data]="editBatchData"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showBatchesForm">
+          <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Batches</h2>
+          <button class="bulk-actions-btn" [disabled]="batchesSelectedRowCount === 0">
+            Bulk Actions
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine batches-grid"
+            [rowData]="batchesRowData"
+            [columnDefs]="batchesColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [context]="batchesGridContext"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onBatchesGridReady($event)"
+            (cellClicked)="onBatchesCellClicked($event)"
+            (selectionChanged)="onBatchesSelectionChanged($event)"
+            (firstDataRendered)="onBatchesFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (batchesCurrentPage - 1) * batchesPageSize + 1 }} to {{ Math.min(batchesCurrentPage * batchesPageSize, batchesTotalCount) }} of {{ batchesTotalCount }} batches
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === 1"
+                (click)="goToBatchesPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === 1"
+                (click)="goToBatchesPage(batchesCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ batchesCurrentPage }} of {{ batchesTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === batchesTotalPages"
+                (click)="goToBatchesPage(batchesCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="batchesCurrentPage === batchesTotalPages"
+                (click)="goToBatchesPage(batchesTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab label="USERS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showUsersForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('users')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showUsersForm"
+          [entityType]="'users'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showUsersForm">
+          <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Users</h2>
+          <button class="bulk-actions-btn" [disabled]="usersSelectedRowCount === 0">
+            Bulk Actions
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine users-grid"
+            [rowData]="usersRowData"
+            [columnDefs]="usersColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onUsersGridReady($event)"
+            (cellClicked)="onUsersCellClicked($event)"
+            (selectionChanged)="onUsersSelectionChanged($event)"
+            (firstDataRendered)="onUsersFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (usersCurrentPage - 1) * usersPageSize + 1 }} to {{ Math.min(usersCurrentPage * usersPageSize, usersTotalCount) }} of {{ usersTotalCount }} users
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === 1"
+                (click)="goToUsersPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === 1"
+                (click)="goToUsersPage(usersCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ usersCurrentPage }} of {{ usersTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === usersTotalPages"
+                (click)="goToUsersPage(usersCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="usersCurrentPage === usersTotalPages"
+                (click)="goToUsersPage(usersTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab label="BANNERS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+        </div>
+        
+        <!-- Hidden file input for banner image upload -->
+        <input 
+          type="file" 
+          #bannerImageInput 
+          accept="image/jpeg,image/jpg,image/png,image/webp" 
+          (change)="onBannerImageSelected($event)" 
+          style="display: none"
+        />
+        
+        <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Banners</h2>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine banners-grid"
+            [rowData]="bannersRowData"
+            [columnDefs]="bannersColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onBannersGridReady($event)"
+            (cellClicked)="onBannersCellClicked($event)"
+            (firstDataRendered)="onBannersFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (bannersCurrentPage - 1) * bannersPageSize + 1 }} to {{ Math.min(bannersCurrentPage * bannersPageSize, bannersTotalCount) }} of {{ bannersTotalCount }} banners
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === 1"
+                (click)="goToBannersPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === 1"
+                (click)="goToBannersPage(bannersCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ bannersCurrentPage }} of {{ bannersTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === bannersTotalPages"
+                (click)="goToBannersPage(bannersCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bannersCurrentPage === bannersTotalPages"
+                (click)="goToBannersPage(bannersTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="COUPONS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showCouponsForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('coupons')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showCouponsForm"
+          [entityType]="'coupons'"
+          [mode]="couponsFormMode"
+          [data]="editCouponData"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showCouponsForm">
+          <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Coupons</h2>
+          <button class="bulk-actions-btn" [disabled]="couponsSelectedRowCount === 0">
+            Bulk Actions
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine coupons-grid"
+            [rowData]="couponsRowData"
+            [columnDefs]="couponsColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            [context]="couponsGridContext"
+            (gridReady)="onCouponsGridReady($event)"
+            (cellClicked)="onCouponsCellClicked($event)"
+            (selectionChanged)="onCouponsSelectionChanged($event)"
+            (firstDataRendered)="onCouponsFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ (couponsCurrentPage - 1) * couponsPageSize + 1 }} to {{ Math.min(couponsCurrentPage * couponsPageSize, couponsTotalCount) }} of {{ couponsTotalCount }} coupons
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === 1"
+                (click)="goToCouponsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === 1"
+                (click)="goToCouponsPage(couponsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ couponsCurrentPage }} of {{ couponsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === couponsTotalPages"
+                (click)="goToCouponsPage(couponsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="couponsCurrentPage === couponsTotalPages"
+                (click)="goToCouponsPage(couponsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab label="LEADS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showLeadsForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('leads')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showLeadsForm"
+          [entityType]="'leads'"
+          [mode]="'add'"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showLeadsForm">
+          <!-- Header Section -->
+        <div class="trips-header">
+          <h2>List of all the Leads</h2>
+          <button class="bulk-actions-btn" [disabled]="leadsSelectedRowCount === 0">
+            Bulk Actions
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+        </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine leads-grid"
+            [rowData]="leadsRowData"
+            [columnDefs]="leadsColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="gridOptions.pagination"
+            [paginationPageSize]="gridOptions.paginationPageSize"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onLeadsGridReady($event)"
+            (cellClicked)="onLeadsCellClicked($event)"
+            (selectionChanged)="onLeadsSelectionChanged($event)"
+            (paginationChanged)="adjustLeadsRowHeight()"
+            (firstDataRendered)="onLeadsFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+    <mat-tab label="BOOKINGS">
+      <div class="tab-content">
+        <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showBookingsForm">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
+          <button class="addActionBtn" (click)="openAddEntityForm('bookings')">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Form View -->
+        <app-add-entity-form 
+          *ngIf="showBookingsForm"
+          [entityType]="'bookings'"
+          [mode]="bookingsFormMode"
+          [data]="editBookingData"
+          (formSubmit)="onFormSubmit($event)"
+        ></app-add-entity-form>
+        
+        <!-- Table View -->
+        <ng-container *ngIf="!showBookingsForm">
+          <!-- Header Section -->
+          <div class="trips-header">
+            <h2>List of all the Bookings</h2>
+            <button class="bulk-actions-btn" [disabled]="bookingsSelectedRowCount === 0">
+              Bulk Actions
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+          </div>
+
+        <!-- AG Grid -->
+        <div class="grid-wrapper">
+          <ag-grid-angular
+            class="ag-theme-alpine bookings-grid"
+            [rowData]="bookingsRowData"
+            [columnDefs]="bookingsColumnDefs"
+            [defaultColDef]="defaultColDef"
+            [pagination]="false"
+            [suppressRowClickSelection]="gridOptions.suppressRowClickSelection"
+            [rowSelection]="gridOptions.rowSelection"
+            [animateRows]="gridOptions.animateRows"
+            [enableCellTextSelection]="gridOptions.enableCellTextSelection"
+            [ensureDomOrder]="gridOptions.ensureDomOrder"
+            (gridReady)="onBookingsGridReady($event)"
+            (cellClicked)="onBookingsCellClicked($event)"
+            (selectionChanged)="onBookingsSelectionChanged($event)"
+            (firstDataRendered)="onBookingsFirstDataRendered($event)"
+          >
+          </ag-grid-angular>
+          <!-- Custom Pagination Controls -->
+          <div class="custom-pagination">
+            <div class="pagination-info">
+              Showing {{ bookingsTotalCount === 0 ? 0 : (bookingsCurrentPage - 1) * bookingsPageSize + 1 }} to {{ Math.min(bookingsCurrentPage * bookingsPageSize, bookingsTotalCount) }} of {{ bookingsTotalCount }} bookings
+            </div>
+            <div class="pagination-controls">
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === 1 || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(1)">
+                <mat-icon>first_page</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === 1 || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(bookingsCurrentPage - 1)">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <span class="page-info">Page {{ bookingsTotalPages === 0 ? 0 : bookingsCurrentPage }} of {{ bookingsTotalPages }}</span>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === bookingsTotalPages || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(bookingsCurrentPage + 1)">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+              <button 
+                class="pagination-btn" 
+                [disabled]="bookingsCurrentPage === bookingsTotalPages || bookingsTotalPages === 0"
+                (click)="goToBookingsPage(bookingsTotalPages)">
+                <mat-icon>last_page</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        </ng-container>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+    <img *ngIf="showLeadsForm || showTripsForm || showCouponsForm || showBatchesForm || showTripsForm || showBookingsForm" src="../../assets/barefoot-logo-admin-form.png" alt="" class="barefoot-logo-admin">
+</div>

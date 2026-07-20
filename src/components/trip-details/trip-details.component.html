@@ -54,6 +54,13 @@
             class="trip-img d-flex align-items-center justify-content-between"
           >
             <img
+              *ngIf="tripImages.length > 0"
+              class="primary-img"
+              [src]="tripImages[0]"
+              alt="{{ details.destination_name }}"
+            />
+            <img
+              *ngIf="tripImages.length === 0"
               class="primary-img"
               src="../../assets/kashmir_Gallery.png"
               alt=""
@@ -66,8 +73,26 @@
               >
             </div>
             <div *ngIf="viewPort > 427" class="secondary-img">
-              <img src="../../assets//Kashmir_Gallery_1.png" alt="" />
-              <img src="../../assets//Kashmir_Gallery_2.png" alt="" />
+              <img 
+                *ngIf="tripImages.length > 1" 
+                [src]="tripImages[1]" 
+                [alt]="details.destination_name" 
+              />
+              <img 
+                *ngIf="tripImages.length === 0" 
+                src="../../assets//Kashmir_Gallery_1.png" 
+                alt="" 
+              />
+              <img 
+                *ngIf="tripImages.length > 2" 
+                [src]="tripImages[2]" 
+                [alt]="details.destination_name" 
+              />
+              <img 
+                *ngIf="tripImages.length === 0" 
+                src="../../assets//Kashmir_Gallery_2.png" 
+                alt="" 
+              />
               <div
                 class="show-all d-flex align-items-center"
                 (click)="openLightbox()"
@@ -257,8 +282,12 @@
           </div>
           <div
             class="download d-flex align-items-center justify-content-center"
+            (click)="downloadItinerary()"
+            matTooltip="Download Itinerary"
+            matTooltipPosition="above"
+            style="cursor: pointer;"
           >
-            <img src="../../assets/download.png" alt="" />
+            <img src="../../assets/download.png" alt="Download Itinerary" />
           </div>
         </div>
 
@@ -543,7 +572,7 @@
         <div class="d-flex align-items-center justify-content-between mt-2">
           <span class="para-font-style">Starting from</span>
           <div class="price-tag d-flex align-items-center">
-            <span class="price me-2"> &#8377; {{ details.price }}</span>
+            <span class="price me-2"> &#8377; {{ details.lowestPriceBatch.price }}</span>
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
@@ -558,83 +587,85 @@
           <button
             class="cstmSubmitBtn text-uppercase"
             type="submit"
+            [disabled]="!batches || batches.length === 0"
+            [class.disabled]="!batches || batches.length === 0"
             (click)="bookNow()"
           >
             Book now
           </button>
         </div>
       </div>
-        <div class="batches">
-          <div class="header d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-end">
-              <div>Batch Dates</div>
-            </div>
-            <div class="status">Status</div>
+      <div class="batches">
+        <div class="header d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-end">
+            <div>Batch Dates</div>
           </div>
-          <div *ngIf="batches && batches.length" class="dates">
+          <div class="status">Status</div>
+        </div>
+        <div *ngIf="!batches || batches.length === 0" class="no-batches-message">
+          <p>No available batches at the moment.</p>
+        </div>
+        <div *ngIf="batches && batches.length" class="dates">
+          <div
+            *ngFor="let batch of batches"
+            class="d-flex align-items-center justify-content-between content"
+          >
+            <!-- <div class="d-flex align-items-end"> -->
+            <span>{{ batch.from_date | tripDuration : batch.to_date }}</span>
+            <!-- </div> -->
             <div
-              *ngFor="let batch of batches"
-              class="d-flex align-items-center justify-content-between content"
-            >
-              <!-- <div class="d-flex align-items-end"> -->
-                <span>{{
-                  batch.from_date | tripDuration : batch.to_date
-                }}</span>
-              <!-- </div> -->
-              <div
-                class="availablity text-uppercase d-flex align-items-center justify-content-center"
+              class="availablity text-uppercase d-flex align-items-center justify-content-center"
                 [ngClass]="{
-                  available: batch.booked <= (1 / 4) * batch.max_adventurers,
+                  available: batch.total_bookings <= (1 / 4) * batch.max_adventurers,
                   'filling-fast':
-                    batch.max_adventurers >
-                    batch.booked >
-                    (1 / 4) * batch.max_adventurers,
-                  full: batch.booked === batch.max_adventurers
+                    batch.total_bookings > (1 / 4) * batch.max_adventurers &&
+                    batch.total_bookings < batch.max_adventurers,
+                  full: batch.total_bookings >= batch.max_adventurers
                 }"
               >
                 {{
-                  batch.booked || 0 <= (1 / 4) * batch.max_adventurers
+                  batch.total_bookings <= (1 / 4) * batch.max_adventurers
                     ? "Available"
-                    : batch.max_adventurers >
-                      batch.booked >
-                      (1 / 4) * batch.max_adventurers
+                    : batch.total_bookings > (1 / 4) * batch.max_adventurers &&
+                      batch.total_bookings < batch.max_adventurers
                     ? "Filling Fast"
-                    : batch.booked === batch.max_adventurers
+                    : batch.total_bookings >= batch.max_adventurers
                     ? "Full"
                     : ""
                 }}
-              </div>
-            </div>
-            <div
-              class="d-flex align-items-center justify-content-center content pagination-div"
-            >
-              <button
-                (click)="prevPage()"
-                [disabled]="currentPage === 1"
-                [class.disabled]="currentPage === 1"
-                class="d-flex align-items-center justify-content-center me-3 cursor-pointer"
-              >
-                <mat-icon>keyboard_arrow_left</mat-icon>
-              </button>
-              <div
-                *ngFor="let page of pages"
-                (click)="setPage(page)"
-                [class.active]="currentPage === page"
-                class="d-flex align-items-center justify-content-center me-3 cursor-pointer index-btn"
-              >
-                {{ page }}
-              </div>
-              <button
-                (click)="nextPage()"
-                [disabled]="currentPage === totalPages"
-                [class.disabled]="currentPage === totalPages"
-                class="d-flex align-items-center justify-content-center cursor-pointer"
-              >
-                <mat-icon>keyboard_arrow_right</mat-icon>
-              </button>
+              
             </div>
           </div>
+          <div
+            class="d-flex align-items-center justify-content-center content pagination-div"
+          >
+            <button
+              (click)="prevPage()"
+              [disabled]="currentPage === 1"
+              [class.disabled]="currentPage === 1"
+              class="d-flex align-items-center justify-content-center me-3 cursor-pointer"
+            >
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <div
+              *ngFor="let page of pages"
+              (click)="setPage(page)"
+              [class.active]="currentPage === page"
+              class="d-flex align-items-center justify-content-center me-3 cursor-pointer index-btn"
+            >
+              {{ page }}
+            </div>
+            <button
+              (click)="nextPage()"
+              [disabled]="currentPage === totalPages"
+              [class.disabled]="currentPage === totalPages"
+              class="d-flex align-items-center justify-content-center cursor-pointer"
+            >
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
   </div>
 
@@ -719,9 +750,9 @@
     </div>
   </div>
 
-  <!-- <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" /> -->
+  <img *ngIf="bannerUrl" [src]="bannerUrl" alt="S3 Image" class="w-100 banner" (error)="bannerUrl = ''" />
 
-  <!-- <div class="suggested-trips">
+  <!-- <div class="suggested-trips">>
     <div class="heading d-flex align-items-center">
       <img src="../../assets/hashtag.png" alt="" class="me-3" />
       <span>Few handpicked Journeys for you!</span>
@@ -740,5 +771,5 @@
     [showMask]="showMask"
     (closeLightBox)="closeLightBox($event)"
   ></app-lightbox>
-  <app-draggable-bottom-sheet></app-draggable-bottom-sheet>
+  <app-draggable-bottom-sheet [tripId]="tripId"></app-draggable-bottom-sheet>
 </div>

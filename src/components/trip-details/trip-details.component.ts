@@ -37,87 +37,31 @@ export class TripDetailsComponent implements OnInit {
   bannerUrl: string = '';
   trips: any;
   details: any;
+  tripImages: string[] = []; // Store trip images from S3 (3 random for display)
+  allTripImages: string[] = []; // Store all trip images for lightbox
   showMask = false;
   previewImage = false;
   inclusionSelected = true;
   viewPort = window.innerWidth;
-  galleryData = [
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      imageAlt: '1',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1642670310920-6f4e3a3adee3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80',
-      imageAlt: '2',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1642570517818-99c0fd6f0349?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-      imageAlt: '3',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1642649149963-0ef6779df6c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      imageAlt: '4',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1642618215095-3523a9a36893?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-      imageAlt: '5',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1642628658566-1db49cadf78c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80',
-      imageAlt: '6',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      imageAlt: '7',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=975&q=80',
-      imageAlt: '8',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=871&q=80',
-      imageAlt: '9',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1523712999610-f77fbcfc3843?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      imageAlt: '10',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      imageAlt: '11',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-      imageAlt: '12',
-    },
-    {
-      imageSrc:
-        'https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80',
-      imageAlt: '13',
-    },
-  ];
+  
+  // Computed property for gallery data - transforms allTripImages into lightbox format
+  get galleryData() {
+    return this.allTripImages.map((imageUrl, index) => ({
+      imageSrc: imageUrl,
+      imageAlt: `${this.details?.destination_name || 'Trip'} - Image ${index + 1}`
+    }));
+  }
+  
   batches: any[] = [];
   totalPages = 0;
-    currentPage = 1;
+  currentPage = 1;
   itemsPerPage = 4;
   paginatedBatches = [];
 
   ngOnInit(): void {
     this.getTripDetials();
     this.getBanner();
-    this.getTrips();
+    // this.getTrips();
     this.loadingService.show();
     setTimeout(() => {
       this.loadingService.hide();
@@ -126,27 +70,37 @@ export class TripDetailsComponent implements OnInit {
 
   getTripDetials() {
     this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
-      this.getBatches(data.destination_name);
+      this.getBatches(data.id);
       this.details = data;
+      this.tripImages = data.images || []; // Store the 3 random images for display
+      this.allTripImages = data.allImages || []; // Store all images for lightbox
       this.itinerary = JSON.parse(data.itinerary);
       this.keys = Object.keys(this.itinerary);
-      this.destinations = data.desitnations.split(',');
+      this.destinations = data.destinations.split(',');
     });
   }
 
-    getBatches(destination: string, page: number = 1, filter?) {
-    console.log('2424234234234');
-    this.staticService.getBatches(destination, page, filter).subscribe((data) => {
-      this.batches = data.data;
-      this.totalPages = data.totalPages;
-      this.updatePagination();
-    });
+  getBatches(id: string, page: number = 1, filter?) {
+    this.staticService
+      .getBatches(id, page, filter)
+      .subscribe((data) => {
+        // Backend now returns only upcoming batches with available spots
+        this.batches = data.data;
+        
+        this.totalPages = data.totalPages;
+        this.updatePagination();
+      });
   }
-
 
   getBanner() {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
+    this.staticService.getBanner('home_page_banner.png').subscribe({
+      next: (data) => {
+        this.bannerUrl = data.imageUrl;
+      },
+      error: (error) => {
+        console.error('Failed to load banner:', error);
+        this.bannerUrl = '';
+      }
     });
   }
 
@@ -175,7 +129,10 @@ export class TripDetailsComponent implements OnInit {
   }
 
   bookNow() {
-    this.router.navigate([`trip/${this.tripId}/booking`]);
+    // Only navigate if there are available batches
+    if (this.batches && this.batches.length > 0) {
+      this.router.navigate([`trip/${this.tripId}/booking`]);
+    }
   }
 
   openLightbox() {
@@ -189,8 +146,21 @@ export class TripDetailsComponent implements OnInit {
     this.previewImage = false;
   }
 
+  downloadItinerary() {
+    if (!this.tripId) return;
+    
+    // Create a link to the backend endpoint which streams the file with download headers
+    const downloadUrl = this.staticService.getItineraryDownloadUrl(this.tripId);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = ''; // Browser will use filename from Content-Disposition header
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   //pagination methods
-    updatePagination() {
+  updatePagination() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     this.paginatedBatches = this.batches.slice(
       start,
@@ -200,14 +170,14 @@ export class TripDetailsComponent implements OnInit {
 
   setPage(page: number) {
     this.currentPage = page;
-    this.getBatches(this.details.destination_name, this.currentPage);
+    this.getBatches(this.details.id, this.currentPage);
     this.updatePagination();
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.details.id, this.currentPage);
       this.updatePagination();
     }
   }
@@ -215,7 +185,7 @@ export class TripDetailsComponent implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.details.id, this.currentPage);
       this.updatePagination();
     }
   }

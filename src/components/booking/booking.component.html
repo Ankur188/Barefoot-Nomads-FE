@@ -29,22 +29,53 @@
             ><span>*</span>
           </p>
           <form [formGroup]="bookingForm" class="form-detail">
-            <input
-              type="text"
-              formControlName="fullName"
-              placeholder="Full Name"
-            />
-            <input
-              type="number"
-              formControlName="number"
-              placeholder="Phone Number"
-            />
-            <input
-              type="number"
-              formControlName="guardianNumber"
-              placeholder="Emergency / Guardian Contact Number"
-            />
-            <input type="text" formControlName="email" placeholder="Email" />
+            <div class="input-wrapper">
+              <input
+                type="text"
+                formControlName="fullName"
+                placeholder="Full Name *"
+                [class.invalid]="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('fullName')?.invalid && bookingForm.get('fullName')?.touched">
+                <span *ngIf="bookingForm.get('fullName')?.errors?.['required']">Full name is required</span>
+                <span *ngIf="bookingForm.get('fullName')?.errors?.['minlength']">Minimum 3 characters required</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="tel"
+                formControlName="number"
+                placeholder="Phone Number *"
+                [class.invalid]="bookingForm.get('number')?.invalid && bookingForm.get('number')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('number')?.invalid && bookingForm.get('number')?.touched">
+                <span *ngIf="bookingForm.get('number')?.errors?.['required']">Phone number is required</span>
+                <span *ngIf="bookingForm.get('number')?.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="tel"
+                formControlName="guardianNumber"
+                placeholder="Emergency / Guardian Contact Number"
+                [class.invalid]="bookingForm.get('guardianNumber')?.invalid && bookingForm.get('guardianNumber')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('guardianNumber')?.invalid && bookingForm.get('guardianNumber')?.touched">
+                <span *ngIf="bookingForm.get('guardianNumber')?.errors?.['pattern']">Enter a valid 10-digit phone number</span>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="Email *"
+                [class.invalid]="bookingForm.get('email')?.invalid && bookingForm.get('email')?.touched"
+              />
+              <div class="error-text" *ngIf="bookingForm.get('email')?.invalid && bookingForm.get('email')?.touched">
+                <span *ngIf="bookingForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="bookingForm.get('email')?.errors?.['email']">Enter a valid email address</span>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -55,6 +86,7 @@
             class="IncDecBtn"
             aria-label="Decrease number of travelers"
             (click)="updateCounter('decrease')"
+            [disabled]="numberOfTravellers <= 1"
           >
             -
           </button>
@@ -65,10 +97,16 @@
             class="IncDecBtn"
             aria-label="Increase number of travelers"
             (click)="updateCounter('increase')"
+            [disabled]="numberOfTravellers >= getMaxAvailableSpots()"
           >
             +
           </button>
         </div>
+      </div>
+      <div *ngIf="batchSelected" class="availability-info mb-3">
+        <small class="text-muted">
+          {{ getMaxAvailableSpots() }} spot(s) available for selected batch
+        </small>
       </div>
       <span class="para-font-style mt-3"
         >Once your booking is complete, government-issued ID proofs will be
@@ -107,6 +145,9 @@
             <div class="status">Status</div>
             <div>Starting Price</div>
           </div>
+          <div *ngIf="!batches || batches.length === 0" class="no-batches-message">
+            <p>No batches found for the selected filter.</p>
+          </div>
           <div *ngIf="batches && batches.length" class="dates">
             <div
               *ngFor="let batch of batches"
@@ -127,22 +168,20 @@
               <div
                 class="availablity text-uppercase d-flex align-items-center justify-content-center"
                 [ngClass]="{
-                  available: batch.booked <= (1 / 4) * batch.max_adventurers,
+                  available: batch.total_bookings <= (1 / 4) * batch.max_adventurers,
                   'filling-fast':
-                    batch.max_adventurers >
-                    batch.booked >
-                    (1 / 4) * batch.max_adventurers,
-                  full: batch.booked === batch.max_adventurers
+                    batch.total_bookings > (1 / 4) * batch.max_adventurers &&
+                    batch.total_bookings < batch.max_adventurers,
+                  full: batch.total_bookings >= batch.max_adventurers
                 }"
               >
                 {{
-                  batch.booked <= (1 / 4) * batch.max_adventurers
+                  batch.total_bookings <= (1 / 4) * batch.max_adventurers
                     ? "Available"
-                    : batch.max_adventurers >
-                      batch.booked >
-                      (1 / 4) * batch.max_adventurers
+                    : batch.total_bookings > (1 / 4) * batch.max_adventurers &&
+                      batch.total_bookings < batch.max_adventurers
                     ? "Filling Fast"
-                    : batch.booked === batch.max_adventurers
+                    : batch.total_bookings >= batch.max_adventurers
                     ? "Full"
                     : ""
                 }}
@@ -180,7 +219,7 @@
           </div>
         </div>
       </div>
-      <div class="rooms-div">
+      <div *ngIf="batches && batches.length !== 0" class="rooms-div">
         <div class="text-uppercase d-flex align-items-center">
           <span class="me-2">Select the type of your room </span>
           <mat-icon
@@ -190,35 +229,36 @@
           ></mat-icon>
         </div>
         <div class="room-types-main-div">
-          <div class="types d-flex justify-content-between">
-            <div class="card d-flex flex-column">
+          <div class="types d-flex">
+            <div *ngIf="isRoomAvailable('triple')" class="card d-flex flex-column">
               <mat-radio-button
-                [checked]="roomPrice === 200"
+                [checked]="isRoomSelected('triple')"
                 name="room"
-                (change)="selectRoom(200)"
+                (change)="selectRoom('triple')"
               >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Triple Occupancy </span>
+              <div *ngIf="getRoomPrice('triple') > 0" class="price mt-3">+ &#8377; {{ getRoomPrice('triple') }}</div>
             </div>
-            <div class="card d-flex flex-column">
+            <div *ngIf="isRoomAvailable('double')" class="card d-flex flex-column">
               <mat-radio-button
-                [checked]="roomPrice === 400"
+                [checked]="isRoomSelected('double')"
                 name="room"
-                (change)="selectRoom(400)"
+                (change)="selectRoom('double')"
               >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Double Occupancy </span>
-              <div class="price mt-3">+ &#8377; 400</div>
+              <div *ngIf="getRoomPrice('double') > 0" class="price mt-3">+ &#8377; {{ getRoomPrice('double') }}</div>
             </div>
-            <div class="card d-flex flex-column">
+            <div *ngIf="isRoomAvailable('single')" class="card d-flex flex-column">
               <mat-radio-button
-                [checked]="roomPrice === 600"
+                [checked]="isRoomSelected('single')"
                 name="room"
-                (change)="selectRoom(600)"
+                (change)="selectRoom('single')"
               >
               </mat-radio-button>
               <span class="para-font-style mt-3"> Single Occupancy </span>
-              <div class="price mt-3">+ &#8377; 600</div>
+              <div *ngIf="getRoomPrice('single') > 0" class="price mt-3">+ &#8377; {{ getRoomPrice('single') }}</div>
             </div>
           </div>
         </div>
@@ -226,7 +266,7 @@
     </div>
     <div *ngIf="viewPort > 427" class="right-div">
       <div class="cart">
-        <span class="title">{{ batchSelected.destination_name }}</span>
+        <span class="title">{{ details.destination_name }}</span>
         <div class="trip-details d-flex justify-content-between mt-2">
           <div class="d-flex align-items-center">
             <img src="../../assets/calendar_small.png" alt="" class="me-2" />
@@ -235,10 +275,10 @@
             }}</span>
           </div>
           <div class="duration">
-            {{ batchSelected.days }} Days - {{ batchSelected.nights }} Nights
+            {{ details.days }} Days - {{ details.nights }} Nights
           </div>
         </div>
-        <div class="locations mt-4">
+        <div *ngIf="destinatons && destinations.length" class="locations mt-4">
           <span
             *ngFor="let destination of destinations"
             class="para-font-style text-uppercase"
@@ -255,59 +295,69 @@
             <span class="para-font-style">Standard Price</span>
             <span class="para-font-style"
               >&#8377;
-              {{ (batchSelected.price - 200) * numberOfTravellers }}</span
+              {{ batchSelected.price * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style"
-              >{{
-                roomPrice === 200
-                  ? "Triple Room Occupancy / Per Person"
-                  : roomPrice === 400
-                  ? "Double Room Occupancy / Per Person"
-                  : "Single Room Occupancy / Per Person"
-              }}
-            </span>
+            <span class="para-font-style">{{ roomType ? roomType + ' Occupancy / Per Person' : '' }}</span>
             <span class="para-font-style"
               >&#8377; {{ roomPrice * numberOfTravellers }}</span
-            >
-          </div>
-          <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style">GST (5%)</span>
-            <span class="para-font-style"
-              >&#8377; {{ details.price * 0.05 * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
             <span class="para-font-style">Subtotal</span>
             <span class="para-font-style"
               >&#8377;
-              {{
-                totalPrice * numberOfTravellers +
-                  0.05 * (totalPrice * numberOfTravellers)
-              }}</span
+              {{ getBaseAmount() | number:'1.0-0' }}</span
             >
           </div>
         </div>
 
-        <input
-          type="text"
-          placeholder="Enter Coupon Code"
-          class="mt-4 w-100 coupon-input"
-        />
+        <div class="coupon-container mt-4">
+          <input
+            type="text"
+            placeholder="Enter Coupon Code"
+            class="w-100 coupon-input"
+            [formControl]="couponCode"
+          />
+          <button
+            *ngIf="!isCouponValid"
+            class="apply-btn"
+            [disabled]="!couponCode.value || couponCode.value.trim() === ''"
+            (click)="applyCoupon()"
+          >
+            Apply
+          </button>
+          <button
+            *ngIf="isCouponValid"
+            class="apply-btn remove-btn"
+            (click)="removeCoupon()"
+          >
+            ✕
+          </button>
+        </div>
+        <div *ngIf="couponError" class="error-message mt-2">
+          {{ couponError }}
+        </div>
+        <div *ngIf="appliedCoupon" class="d-flex justify-content-between mt-3">
+          <span class="para-font-style">Coupon Discount {{ appliedCoupon.code }} ({{ appliedCoupon.deduction }}%)</span>
+          <span class="para-font-style discount-amount">- &#8377; {{ getDiscountAmount() | number:'1.0-0' }}</span>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <span class="para-font-style">GST ({{ batchSelected?.tax || 5 }}%)</span>
+          <span class="para-font-style">&#8377; {{ getGSTAmount() | number:'1.0-0' }}</span>
+        </div>
         <div class="total mt-4 d-flex justify-content-between">
           <span>Amount to be paid</span>
           <span class="amount"
             >&#8377;
-            {{
-              totalPrice * numberOfTravellers +
-                0.05 * (totalPrice * numberOfTravellers)
-            }}</span
+            {{ getFinalAmount() | number:'1.0-0' }}</span
           >
         </div>
 
         <div
           class="pay w-100 text-uppercase text-center align-content-center mt-4"
+          [class.disabled]="!isFormValid() || !batches || batches.length === 0"
           (click)="payNow()"
         >
           Pay now
@@ -315,12 +365,16 @@
       </div>
     </div>
   </div>
-  <img [src]="bannerUrl" alt="S3 Image" class="w-100 banner" />
+  <img *ngIf="bannerUrl" [src]="bannerUrl" alt="S3 Image" class="w-100 banner" (error)="bannerUrl = null" />
   <app-draggable-bottom-sheet
     isBookingPage="true"
     [details]="details"
     [numberOfTravellers]="numberOfTravellers"
     [roomPrice]="roomPrice"
+    [roomType]="roomType"
     [destinations]="destinations"
+    [totalPrice]="totalPrice"
+    [batchSelected]="batchSelected"
+    (pay)="payNow()"
   ></app-draggable-bottom-sheet>
 </div>

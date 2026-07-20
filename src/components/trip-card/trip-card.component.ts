@@ -13,6 +13,19 @@ export class TripCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('card', this.card);
+  }
+
+  isRecentlyAdded(): boolean {
+    if (!this.card?.lowestPriceBatch?.created_at) {
+      return false;
+    }
+    
+    const createdAt = this.card.lowestPriceBatch.created_at * 1000; // Convert timestamp to milliseconds
+    const now = Date.now();
+    const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000; // 14 days in milliseconds
+    
+    return (now - createdAt) < fourteenDaysInMs;
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer): string {

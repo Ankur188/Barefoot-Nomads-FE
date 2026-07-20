@@ -6,13 +6,12 @@
 }
 
 .card {
-  flex: 0 0 auto;
-  width: 22rem; /* Adjust based on your card size */
+  width: 100%;
   height: 28rem;
-  margin-right: 20px; /* Adjust based on your card margin */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card-body {
@@ -92,7 +91,7 @@
 
 @media only screen and (max-width: 427px) {
   .card {
-    width: 20rem; /* Adjust based on your card size */
+    width: 100%;
     height: 28rem;
   }
 }

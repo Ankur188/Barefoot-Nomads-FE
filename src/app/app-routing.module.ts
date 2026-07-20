@@ -10,24 +10,36 @@ import { TripDetailsComponent } from 'src/components/trip-details/trip-details.c
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { LoginAuthGuard } from 'src/auth-guards/login.guard';
+import { AdminGuard } from 'src/auth-guards/admin.guard';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
+import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
+import { ProfileComponent } from 'src/components/profile/profile.component';
+import { PrivacyPolicyComponent } from 'src/components/privacy-policy/privacy-policy.component';
+import { TermsAndConditionsComponent } from 'src/components/terms-and-conditions/terms-and-conditions.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'enquire', pathMatch: 'full', component: EnquireComponent },
   { path: 'quotation', pathMatch: 'full', component: GetQuotationComponent },
   { path: 'about', pathMatch: 'full', component: AboutComponent },
+  { path: 'privacy', pathMatch: 'full', component: PrivacyPolicyComponent },
+  { path: 'terms&conditions', pathMatch: 'full', component: TermsAndConditionsComponent },
   { path: 'upload', pathMatch: 'full', component: UploadFileComponent },
   { path: 'trip/:id', pathMatch: 'full', component: TripDetailsComponent },
   { path: 'trip/:id/booking', pathMatch: 'full', component: BookingComponent, canActivate: [LoginAuthGuard] },
   { path: 'trip/:id/booking/:bookingId', pathMatch: 'full', component: BookingConfirmationComponent, canActivate: [LoginAuthGuard] },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: 'adventures', pathMatch: 'full', component: AdventuresComponent },
+  { path: 'admin', pathMatch: 'full', component: AdminPanelComponent, canActivate: [AdminGuard] },
+  { path: 'profile', pathMatch: 'full', component: ProfileComponent, canActivate: [LoginAuthGuard] },
   { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    scrollPositionRestoration: 'top',
+    anchorScrolling: 'enabled'
+  })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

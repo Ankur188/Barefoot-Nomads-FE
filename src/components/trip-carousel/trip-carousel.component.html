@@ -1,5 +1,5 @@
 
-<div class="main-container">
+<div class="main-container" #carouselContainer>
     <div class="heading text-uppercase">Trending & New Adventures Await</div>
   <div class="sub-heading d-flex align-items-baseline justify-content-between mt-4">
     <p>Discover the latest and most sought-after <span>Adventures</span></p>
@@ -11,9 +11,7 @@
     <!-- Carousel Slides -->
     <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentPage * 100 + '%)'">
       <div class="carousel-page" *ngFor="let page of pages">
-        <div class="trip-card" *ngFor="let trip of page">
-  <trip-card [card]="trip" (click)="navigateToTrip(trip)" class="cursor-pointer"></trip-card>
-        </div>
+        <trip-card *ngFor="let trip of page" [card]="trip" (click)="navigateToTrip(trip)" class="cursor-pointer"></trip-card>
       </div>
     </div>
   </div>

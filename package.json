@@ -20,6 +20,8 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "ag-grid-angular": "^29.3.5",
+    "ag-grid-community": "^29.3.5",
     "bootstrap": "^5.3.3",
     "rxjs": "~7.5.0",
     "swiper": "^6",

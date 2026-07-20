@@ -30,6 +30,11 @@
 }
 .right-div {
   width: 33%;
+  position: sticky;
+  top: 8rem; /* 5rem header height + 3rem gap */
+  align-self: flex-start;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
 }
 
 .pricing {
@@ -81,7 +86,8 @@
   // height: 100%;
   // width: 21rem;
   img {
-    width: 19.6rem;
+    width: 21.25rem;
+    height: 14rem;
     border-radius: 0.4rem;
     &:nth-child(2) {
       margin-top: 1.7rem;
@@ -143,10 +149,28 @@ hr {
   font-size: 1.25rem;
   letter-spacing: 0.15rem;
   border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
 
 .overview {
   margin-top: 3rem;
+  position: sticky;
+  top: 8rem; /* 5rem header height + 3rem gap */
+  background-color: $lf-white;
+  z-index: 100;
+  padding-bottom: 1rem;
   .header {
     border-radius: 0.4rem;
     background-color: $lf-light-grey;
@@ -192,17 +216,38 @@ hr {
   .status {
     padding-right: 2.5rem;
   }
+  .no-batches-message {
+    padding: 3rem 1.5rem;
+    text-align: center;
+    background-color: $lf-white;
+    border-bottom: 1px solid $lf-light-grey;
+    
+    p {
+      margin: 0;
+      font-size: 1rem;
+      color: rgba(0, 0, 0, 0.6);
+      font-style: italic;
+    }
+  }
   .dates {
     .content {
       padding: 1rem;
       background-color: $lf-white;
       border-bottom: 1px solid $lf-light-grey;
-      div {
+      .availablity {
         padding: 0.3rem 1.5rem;
-        background-color: $lf-green;
         color: $lf-white;
         border-radius: 2rem;
         font-size: 0.75rem;
+      }
+      .available {
+        background-color: $lf-green;
+      }
+      .filling-fast {
+        background-color: #F0BB1F;
+      }
+      .full {
+        background-color: #FF5A5F;
       }
     }
     .pagination-div {
@@ -423,14 +468,13 @@ hr {
   font-weight: 600;
 }
 .disabled {
-  opacity: .5;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 .selected-txt {
   color: $lf-gold !important;
   font-weight: 700;
 }
-
 
 @media only screen and (max-width: 427px) {
   .main-container {
@@ -446,6 +490,13 @@ hr {
     .title {
       margin-top: 2rem;
       font-size: 1.5rem;
+    }
+    .inclusions {
+      .switch {
+        div {
+          padding: 1.25rem 2.25rem;
+        }
+      }
     }
     .left-div {
       width: 100%;

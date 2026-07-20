@@ -89,7 +89,14 @@ footer {
   .input {
     height: 4rem;
     border: none;
+    outline: none;
     margin-bottom: 2px;
+    background: none;
+    color: #222;
+    &:focus {
+      outline: none;
+      border: none;
+    }
   }
 }
 
@@ -129,6 +136,16 @@ footer {
   p {
     margin-bottom: 0.5rem;
     opacity: 0.7;
+  }
+}
+
+.admin-footer-spacer {
+  padding: 5px 3rem;
+  background-color: #FAFAFA;
+  p {
+    color: #222222;
+    margin: 0;
+    font-size: 12px;
   }
 }
 

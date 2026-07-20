@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BookingService } from 'src/services/booking.service';
@@ -14,12 +14,6 @@ import { StaticService } from 'src/services/static.service';
 export class BookingComponent implements OnInit {
   batches: any[] = [];
 
-  occupancy: any = {
-    200: 'TRIPLE OCCUPANCY',
-    400: 'DOUBLE OCCUPANCY',
-    600: 'SINGLE OCCUPANCY',
-  };
-
   viewPort = window.innerWidth;
   currentPage = 1;
   itemsPerPage = 4;
@@ -30,14 +24,19 @@ export class BookingComponent implements OnInit {
   details: any;
   numberOfTravellers = 1;
   destinations: any;
-  roomPrice = 200;
+  roomPrice = 0;
+  roomType = 'Triple';
   loading$: Observable<boolean>;
   bookingForm: FormGroup = new FormGroup({
-    fullName: new FormControl(''),
-    number: new FormControl(''),
-    guardianNumber: new FormControl(''),
-    email: new FormControl(''),
+    fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+    guardianNumber: new FormControl('', [Validators.pattern('^[0-9]{10}$')]),
+    email: new FormControl('', [Validators.required, Validators.email]),
   });
+  couponCode: FormControl = new FormControl('');
+  isCouponValid: boolean = false;
+  couponError: string = '';
+  appliedCoupon: any = null;
   batchSelected: any;
   totalPrice = 0;
   batchFilter = 'All';
@@ -56,7 +55,14 @@ export class BookingComponent implements OnInit {
     12: 'Dec',
   };
   currentMonth = new Date().getMonth() + 1;
-  monthObjKeys = this.currentMonth <=10 ? [this.currentMonth, this.currentMonth+1, this.currentMonth+2] : this.currentMonth === 11 ? [this.currentMonth, this.currentMonth +1, 1] : this.currentMonth === 12 ? [this.currentMonth, 1, 2] : [];
+  monthObjKeys =
+    this.currentMonth <= 10
+      ? [this.currentMonth, this.currentMonth + 1, this.currentMonth + 2]
+      : this.currentMonth === 11
+      ? [this.currentMonth, this.currentMonth + 1, 1]
+      : this.currentMonth === 12
+      ? [this.currentMonth, 1, 2]
+      : [];
 
   constructor(
     public staticService: StaticService,
@@ -77,40 +83,81 @@ export class BookingComponent implements OnInit {
   ngOnInit(): void {}
 
   getTripDetails() {
-    this.staticService.getTripDetails(this.tripId).subscribe((data) => {
-      this.getBatches(data.destination_name);
+    this.staticService.getTripDetails(this.tripId).subscribe((data: any) => {
+      this.getBatches(this.tripId);
       this.details = data;
-      this.destinations = data.desitnations.split(',');
+      this.destinations = this.details?.destinations?.split(',');
       console.log('details', this.details);
     });
   }
 
-  getBatches(destination: string, page: number = 1, filter?) {
-    console.log('2424234234234');
-    this.staticService.getBatches(destination, page, filter).subscribe((data) => {
-      this.batches = data.data;
-      this.batchSelected = this.batches[0];
-      this.totalPrice = this.batches[0].price - 200 + this.roomPrice;
-      this.totalPages = data.totalPages;
-      this.updatePagination();
-    });
+  getBatches(id: string, page: number = 1, filter?) {
+    this.staticService
+      .getBatches(id, page, filter)
+      .subscribe((data) => {
+        // Backend now returns only upcoming batches with available spots
+        this.batches = data.data;
+        
+        // Only update batchSelected if batches are found
+        if(this.batches && this.batches.length > 0) {
+          this.batchSelected = this.batches[0];
+          
+          // Initialize room price with first available room type
+          if (this.batchSelected.triple_room > 0) {
+            this.roomPrice = this.batchSelected.triple_room;
+            this.roomType = 'Triple';
+          } else if (this.batchSelected.double_room > 0) {
+            this.roomPrice = this.batchSelected.double_room;
+            this.roomType = 'Double';
+          } else if (this.batchSelected.single_room > 0) {
+            this.roomPrice = this.batchSelected.single_room;
+            this.roomType = 'Single';
+          } else {
+            this.roomPrice = 0;
+            this.roomType = 'Triple';
+          }
+          
+          this.totalPrice = this.batchSelected.price;
+          
+          // Ensure numberOfTravellers doesn't exceed batch's available spots
+          const maxAvailable = this.getMaxAvailableSpots();
+          if (this.numberOfTravellers > maxAvailable) {
+            this.numberOfTravellers = Math.max(1, maxAvailable);
+          }
+        }
+        // If no batches found, keep the previously selected batch
+        
+        this.totalPages = data.totalPages;
+        this.updatePagination();
+      });
   }
 
   getBanner() {
-    this.staticService.getBanner('home_page_banner').subscribe((data) => {
-      this.bannerUrl = data.imageUrl;
+    this.staticService.getBanner('home_page_banner.png').subscribe({
+      next: (data) => {
+        this.bannerUrl = data.imageUrl;
+      },
+      error: (error) => {
+        console.error('Failed to load banner:', error);
+        this.bannerUrl = null;
+      }
     });
   }
 
   payNow() {
+    if (this.bookingForm.invalid) {
+      this.bookingForm.markAllAsTouched();
+      return;
+    }
+    
     let payload = this.bookingForm.getRawValue();
     payload['userId'] = localStorage.getItem('id');
-    payload['tripId'] = this.batchSelected.id;
+    payload['batch_id'] = this.batchSelected.id;
     payload['payment'] =
       this.totalPrice * this.numberOfTravellers +
       0.05 * (this.totalPrice * this.numberOfTravellers);
     payload['travellers'] = this.numberOfTravellers;
-    payload['roomType'] = this.occupancy[this.roomPrice];
+    payload['roomType'] = this.roomType;
     this.bookingService.bookTrip(payload).subscribe((data) => {
       if (data) {
         this.router.navigate([
@@ -120,30 +167,123 @@ export class BookingComponent implements OnInit {
     });
   }
 
+  isFormValid(): boolean {
+    return this.bookingForm.valid;
+  }
+
   navigateBack() {
     this.router.navigate(['../']);
   }
 
-  selectRoom(price) {
+  selectRoom(roomTypeKey: string) {
     event.stopPropagation();
-    this.totalPrice -= this.roomPrice;
-    this.totalPrice += price;
-    this.roomPrice = price;
-    console.log('rrom', this.occupancy[this.roomPrice]);
+    const oldRoomPrice = this.roomPrice;
+    
+    switch(roomTypeKey) {
+      case 'triple':
+        this.roomPrice = this.batchSelected?.triple_room || 0;
+        this.roomType = 'Triple';
+        break;
+      case 'double':
+        this.roomPrice = this.batchSelected?.double_room || 0;
+        this.roomType = 'Double';
+        break;
+      case 'single':
+        this.roomPrice = this.batchSelected?.single_room || 0;
+        this.roomType = 'Single';
+        break;
+    }
   }
 
   selectBatch(batch) {
+    const oldRoomPrice = this.roomPrice;
     this.totalPrice -= this.batchSelected.price;
     this.totalPrice += batch.price;
     this.batchSelected = batch;
+    
+    // Reset room selection to triple occupancy (default) if available, otherwise first available room
+    if (batch.triple_room > 0) {
+      this.roomPrice = batch.triple_room;
+      this.roomType = 'Triple';
+    } else if (batch.double_room > 0) {
+      this.roomPrice = batch.double_room;
+      this.roomType = 'Double';
+    } else if (batch.single_room > 0) {
+      this.roomPrice = batch.single_room;
+      this.roomType = 'Single';
+    } else {
+      this.roomPrice = 0;
+      this.roomType = 'Triple';
+    }
+    
+    // Ensure numberOfTravellers doesn't exceed new batch's available spots
+    const maxAvailable = this.getMaxAvailableSpots();
+    if (this.numberOfTravellers > maxAvailable) {
+      this.numberOfTravellers = maxAvailable;
+    }
+  }
+
+  isRoomAvailable(roomType: string): boolean {
+    if (!this.batchSelected) return false;
+    
+    switch(roomType) {
+      case 'triple':
+        return (this.batchSelected.triple_room || 0) > 0;
+      case 'double':
+        return (this.batchSelected.double_room || 0) > 0;
+      case 'single':
+        return (this.batchSelected.single_room || 0) > 0;
+      default:
+        return false;
+    }
+  }
+
+  getRoomPrice(roomType: string): number {
+    if (!this.batchSelected) return 0;
+    
+    switch(roomType) {
+      case 'triple':
+        return this.batchSelected.triple_room || 0;
+      case 'double':
+        return this.batchSelected.double_room || 0;
+      case 'single':
+        return this.batchSelected.single_room || 0;
+      default:
+        return 0;
+    }
+  }
+
+  isRoomSelected(roomType: string): boolean {
+    switch(roomType) {
+      case 'triple':
+        return this.roomType === 'Triple';
+      case 'double':
+        return this.roomType === 'Double';
+      case 'single':
+        return this.roomType === 'Single';
+      default:
+        return false;
+    }
   }
 
   updateCounter(type) {
     if (type === 'increase') {
-      this.numberOfTravellers++;
+      const maxAvailableSpots = this.getMaxAvailableSpots();
+      if (this.numberOfTravellers < maxAvailableSpots) {
+        this.numberOfTravellers++;
+      }
     } else if (type === 'decrease' && this.numberOfTravellers > 1) {
       this.numberOfTravellers--;
     }
+  }
+
+  getMaxAvailableSpots(): number {
+    if (!this.batchSelected) {
+      return 1;
+    }
+    const maxAdventurers = this.batchSelected.max_adventurers || 0;
+    const totalBookings = this.batchSelected.total_bookings || 0;
+    return Math.max(1, maxAdventurers - totalBookings);
   }
 
   //pagination methods
@@ -158,14 +298,14 @@ export class BookingComponent implements OnInit {
 
   setPage(page: number) {
     this.currentPage = page;
-    this.getBatches(this.details.destination_name, this.currentPage);
+    this.getBatches(this.tripId, this.currentPage);
     this.updatePagination();
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.tripId, this.currentPage);
       this.updatePagination();
     }
   }
@@ -173,7 +313,7 @@ export class BookingComponent implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.getBatches(this.details.destination_name, this.currentPage);
+      this.getBatches(this.tripId, this.currentPage);
       this.updatePagination();
     }
   }
@@ -190,12 +330,78 @@ export class BookingComponent implements OnInit {
   }
 
   selectFilter(filter) {
-    if(filter === 'All') {
-      this.getBatches(this.details.destination_name, 1);
+    if (filter === 'All') {
+      this.getBatches(this.tripId, 1);
+    } else {
+      this.getBatches(this.tripId, 1, filter - 1);
     }
-    else {
-      this.getBatches(this.details.destination_name, 1, filter-1)
+    this.batchFilter = filter;
+  }
+
+  applyCoupon() {
+    const code = this.couponCode.value?.trim();
+    if (code) {
+      this.couponError = '';
+      this.bookingService.validateCoupon(code).subscribe(
+        (response) => {
+          if (response.success) {
+            this.isCouponValid = true;
+            this.appliedCoupon = response.coupon;
+            this.couponCode.disable();
+          }
+        },
+        (error) => {
+          this.isCouponValid = false;
+          this.couponError = error.error?.error || 'Coupon code invalid';
+        }
+      );
     }
-    this.batchFilter = filter
+  }
+
+  removeCoupon() {
+    this.isCouponValid = false;
+    this.appliedCoupon = null;
+    this.couponError = '';
+    this.couponCode.enable();
+    this.couponCode.setValue('');
+  }
+
+  getBaseAmount(): number {
+    return this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
+  }
+
+  getTaxRate(): number {
+    return this.batchSelected?.tax ? this.batchSelected.tax / 100 : 0.05;
+  }
+
+  getDiscountAmount(): number {
+    if (this.appliedCoupon) {
+      const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
+      return baseAmount * (this.appliedCoupon.deduction / 100);
+    }
+    return 0;
+  }
+
+  getGSTAmount(): number {
+    const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
+    let amountAfterDiscount = baseAmount;
+    
+    if (this.appliedCoupon) {
+      amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
+    }
+    
+    return amountAfterDiscount * this.getTaxRate();
+  }
+
+  getFinalAmount(): number {
+    const baseAmount = this.totalPrice * this.numberOfTravellers + this.roomPrice * this.numberOfTravellers;
+    let amountAfterDiscount = baseAmount;
+    
+    if (this.appliedCoupon) {
+      amountAfterDiscount = baseAmount - (baseAmount * this.appliedCoupon.deduction / 100);
+    }
+    
+    const gst = amountAfterDiscount * this.getTaxRate();
+    return amountAfterDiscount + gst;
   }
 }

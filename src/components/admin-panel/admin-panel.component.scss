@@ -1,0 +1,2504 @@
+@import "../../styles.scss";
+
+// Prevent page scroll on admin page
+:host {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 1.9rem);
+  overflow: hidden;
+}
+
+// Prevent body scroll
+:host ::ng-deep body {
+  overflow: hidden !important;
+}
+
+.admin-panel-container {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 0;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+
+  .barefoot-logo-admin {
+    position: absolute;
+    bottom: 45%;
+    right: 0;
+    opacity: 0.1;
+    z-index: 1;
+  }
+
+  // Tabs Styling
+  .admin-tabs {
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 24px 24px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  // Tab Content
+  .tab-content {
+    background-color: white;
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+    box-sizing: border-box;
+  }
+
+  // Trips Header
+  .trips-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 17px;
+    flex-shrink: 0;
+    border: 1px solid #babfc7;
+    border-bottom: none;
+    background-color: #FAFAFA;
+
+    h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222222;
+      margin: 0;
+    }
+
+    .bulk-actions-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background-color: white;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      color: #222222;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        background-color: #f5f5f5;
+        border-color: #999;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background-color: #f5f5f5;
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        color: #222222;
+      }
+    }
+  }
+
+  // Grid Wrapper
+  .grid-wrapper {
+    width: 100%;
+    flex: 0.92;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    .trips-grid {
+      width: 100%;
+      height: 100%;
+    }
+
+    .batches-grid {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .users-grid {
+      width: 100%;
+      height: 100%;
+    }
+
+    .banners-grid {
+      width: 100%;
+      height: 100%;
+    }
+
+    .coupons-grid {
+      width: 100%;
+      height: 100%;
+    }
+
+    .leads-grid {
+      width: 100%;
+      height: 100%;
+    }
+
+    .bookings-grid {
+      width: 100%;
+      height: 100%;
+    }
+
+    // Custom Pagination Styling
+    .custom-pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: white;
+      border-top: 1px solid #e0e0e0;
+      min-height: 56px;
+
+      .pagination-info {
+        font-size: 14px;
+        color: #666;
+      }
+
+      .pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .pagination-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background-color: white;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            color: #666;
+          }
+
+          &:hover:not(:disabled) {
+            background-color: #f5f5f5;
+            border-color: #999;
+          }
+
+          &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+          }
+        }
+
+        .page-info {
+          margin: 0 8px;
+          font-size: 14px;
+          color: #333;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  ::ng-deep {
+    // Material Tabs Styling
+    .mat-tab-group {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .mat-tab-body-wrapper {
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .mat-tab-label {
+      opacity: 1 !important;
+    }
+    
+    .mat-tab-label-content {
+      color: #3D3D3D;
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0 32px;
+      min-width: 120px;
+      opacity: 1;
+    }
+    
+    .mat-tab-label-active {
+      .mat-tab-label-content {
+        color: #3D3D3D !important;
+        font-weight: 700;
+      }
+    }
+
+    .mat-ink-bar {
+      background-color: #1976d2;
+      height: 3px;
+    }
+
+    .mat-tab-header {
+      border-bottom: none;
+      flex-shrink: 0;
+    }
+
+    .mat-tab-body-content {
+      overflow: hidden !important;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    // Global AG Grid popup styling
+    .ag-popup {
+      color: #222222 !important;
+    }
+
+    // Global center-aligned cell class for all grids
+    .ag-cell.center-aligned {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+
+    // AG Grid Styling
+    .trips-grid {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+      // All text in the grid should be #222222
+      .ag-root-wrapper {
+        color: #222222;
+      }
+
+      // Header styling - BOLD and #222222
+      .ag-header {
+        background-color: #fafafa;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 700 !important;
+        
+        .ag-header-cell {
+          border-right: none;
+        }
+        
+        .ag-header-cell-text {
+          color: #222222 !important;
+          font-weight: 700 !important;
+          font-size: 13px;
+        }
+        
+        .ag-header-cell-label {
+          color: #222222 !important;
+          font-weight: 700 !important;
+        }
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #e0e0e0;
+        color: #222222;
+        
+        &:hover {
+          background-color: #f9f9f9;
+        }
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        color: #222222 !important;
+        font-size: 13px;
+        line-height: 1.5;
+        border-right: none;
+      }
+
+      // Checkbox styling
+      .ag-checkbox-input-wrapper {
+        width: 18px;
+        height: 18px;
+
+        &.ag-checked::after {
+          color: #1976d2;
+        }
+      }
+
+      // Custom Material Checkbox styling for AG Grid
+      .ag-cell[col-id="checkbox"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      .ag-header-cell[col-id="checkbox"] {
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      // Ensure Material checkbox is centered
+      app-checkbox-cell-renderer,
+      app-header-checkbox-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // Status toggle styling
+      .ag-cell[col-id="status"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      app-status-toggle-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ::ng-deep {
+        .mat-slide-toggle-bar{
+          width: 53px;
+          height: 24px;
+          border-radius: 20px;
+          background-color: rgba(17,84,162,.30);
+        }
+        .mat-slide-toggle-thumb-container{
+          left: 11px;
+          top: 4px;
+        }
+        .mat-slide-toggle-thumb {
+          width: 15px;
+          height: 15px;
+          background-color: #1154A2;
+        }
+      }
+
+      // Floating Filter styling - #222222 text
+      .ag-floating-filter-body {
+        input {
+          color: #222222 !important;
+          font-size: 13px;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &::placeholder {
+            color: #999;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+      }
+
+      .ag-floating-filter-button {
+        color: #222222 !important;
+      }
+
+      .ag-floating-filter-button-button {
+        color: #222222 !important;
+      }
+
+      // Filter Menu styling - ALL TEXT #222222
+      .ag-filter {
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      // Filter buttons
+      .ag-filter-apply-panel {
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+          
+          &.ag-standard-button {
+            background-color: #1976d2;
+            color: white !important;
+            border: none;
+
+            &:hover {
+              background-color: #1565c0;
+            }
+          }
+
+          &.ag-standard-button:last-child {
+            background-color: transparent;
+            border: 1px solid #d0d0d0;
+            color: #222222 !important;
+
+            &:hover {
+              background-color: #f5f5f5;
+            }
+          }
+        }
+      }
+
+      // Hide default AG Grid icons
+      .ag-header-icon {
+        display: none !important;
+      }
+
+      .ag-icon {
+        display: none !important;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Material icon styling in headers
+      .ag-header-cell-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+
+        .mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          color: #222222 !important;
+          cursor: pointer;
+
+          &:hover {
+            color: #1976d2 !important;
+          }
+        }
+      }
+
+      // Ensure header cells have proper layout
+      .ag-header-cell {
+        .ag-header-cell-comp-wrapper {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 16px 24px;
+        color: #222222 !important;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+
+        // Pagination buttons
+        .ag-paging-button {
+          border: none;
+          background-color: transparent;
+          padding: 0;
+          margin: 0 4px;
+          cursor: pointer;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          // Hide default AG Grid icons
+          .ag-icon {
+            display: none !important;
+          }
+
+          // Add Material icons using CSS content
+          &[ref="btFirst"]::before {
+            content: 'first_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btPrevious"]::before {
+            content: 'chevron_left';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btNext"]::before {
+            content: 'chevron_right';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btLast"]::before {
+            content: 'last_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &:hover:not(.ag-disabled) {
+            color: #1154A2;
+
+            &::before {
+              color: #1154A2;
+            }
+          }
+
+          &.ag-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+
+            &::before {
+              opacity: 0.4;
+            }
+          }
+        }
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+      }
+
+      // Action buttons
+      .action-btn {
+        &:hover svg {
+          opacity: 0.7;
+        }
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Status column - center aligned (override previous flex-start)
+      .ag-cell[col-id="status"] {
+        justify-content: center !important;
+      }
+    }
+
+    // Batches Grid Styling (same as trips-grid)
+    .batches-grid {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+      // All text in the grid should be #222222
+      .ag-root-wrapper {
+        color: #222222;
+      }
+
+      // Header styling - BOLD and #222222
+      .ag-header {
+        background-color: #fafafa;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 700 !important;
+        
+        .ag-header-cell {
+          border-right: none;
+        }
+        
+        .ag-header-cell-text {
+          color: #222222 !important;
+          font-weight: 700 !important;
+          font-size: 13px;
+        }
+        
+        .ag-header-cell-label {
+          color: #222222 !important;
+          font-weight: 700 !important;
+        }
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #e0e0e0;
+        color: #222222;
+        
+        &:hover {
+          background-color: #f9f9f9;
+        }
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        color: #222222 !important;
+        font-size: 13px;
+        line-height: 1.5;
+        border-right: none;
+      }
+
+      // Checkbox styling
+      .ag-checkbox-input-wrapper {
+        width: 18px;
+        height: 18px;
+
+        &.ag-checked::after {
+          color: #1976d2;
+        }
+      }
+
+      // Custom Material Checkbox styling for AG Grid
+      .ag-cell[col-id="checkbox"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      .ag-header-cell[col-id="checkbox"] {
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      // Ensure Material checkbox is centered
+      app-checkbox-cell-renderer,
+      app-header-checkbox-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // Status toggle styling
+      .ag-cell[col-id="status"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      app-status-toggle-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ::ng-deep {
+        .mat-slide-toggle-bar{
+          width: 53px;
+          height: 24px;
+          border-radius: 20px;
+          background-color: rgba(17,84,162,.30);
+        }
+        .mat-slide-toggle-thumb-container{
+          left: 11px;
+          top: 4px;
+        }
+        .mat-slide-toggle-thumb {
+          width: 15px;
+          height: 15px;
+          background-color: #1154A2;
+        }
+      }
+
+      // Floating Filter styling - #222222 text
+      .ag-floating-filter-body {
+        input {
+          color: #222222 !important;
+          font-size: 13px;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &::placeholder {
+            color: #999;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+      }
+
+      .ag-floating-filter-button {
+        color: #222222 !important;
+      }
+
+      .ag-floating-filter-button-button {
+        color: #222222 !important;
+      }
+
+      // Filter Menu styling - ALL TEXT #222222
+      .ag-filter {
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      // Filter buttons
+      .ag-filter-apply-panel {
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+          
+          &.ag-standard-button {
+            background-color: #1976d2;
+            color: white !important;
+            border: none;
+
+            &:hover {
+              background-color: #1565c0;
+            }
+          }
+
+          &.ag-standard-button:last-child {
+            background-color: transparent;
+            border: 1px solid #d0d0d0;
+            color: #222222 !important;
+
+            &:hover {
+              background-color: #f5f5f5;
+            }
+          }
+        }
+      }
+
+      // Hide default AG Grid icons
+      .ag-header-icon {
+        display: none !important;
+      }
+
+      .ag-icon {
+        display: none !important;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Material icon styling in headers
+      .ag-header-cell-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+
+        .mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          color: #222222 !important;
+          cursor: pointer;
+
+          &:hover {
+            color: #1976d2 !important;
+          }
+        }
+      }
+
+      // Ensure header cells have proper layout
+      .ag-header-cell {
+        .ag-header-cell-comp-wrapper {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 16px 24px;
+        color: #222222 !important;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+
+        // Pagination buttons
+        .ag-paging-button {
+          border: none;
+          background-color: transparent;
+          padding: 0;
+          margin: 0 4px;
+          cursor: pointer;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          // Hide default AG Grid icons
+          .ag-icon {
+            display: none !important;
+          }
+
+          // Add Material icons using CSS content
+          &[ref="btFirst"]::before {
+            content: 'first_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btPrevious"]::before {
+            content: 'chevron_left';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btNext"]::before {
+            content: 'chevron_right';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btLast"]::before {
+            content: 'last_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &:hover:not(.ag-disabled) {
+            color: #1154A2;
+
+            &::before {
+              color: #1154A2;
+            }
+          }
+
+          &.ag-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+
+            &::before {
+              opacity: 0.4;
+            }
+          }
+        }
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+      }
+
+      // Action buttons
+      .action-btn {
+        &:hover svg {
+          opacity: 0.7;
+        }
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Status column - center aligned (override previous flex-start)
+      .ag-cell[col-id="status"] {
+        justify-content: center !important;
+      }
+
+      // Availability column - space between with center alignment
+      .ag-cell[col-id="availability"] {
+        padding: 0 8px !important;
+        
+        div {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
+
+    // Users Grid Styling (same as batches-grid)
+    .users-grid {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+      // All text in the grid should be #222222
+      .ag-root-wrapper {
+        color: #222222;
+      }
+
+      // Header styling - BOLD and #222222
+      .ag-header {
+        background-color: #fafafa;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 700 !important;
+        
+        .ag-header-cell {
+          border-right: none;
+        }
+        
+        .ag-header-cell-text {
+          color: #222222 !important;
+          font-weight: 700 !important;
+          font-size: 13px;
+        }
+        
+        .ag-header-cell-label {
+          color: #222222 !important;
+          font-weight: 700 !important;
+        }
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #e0e0e0;
+        color: #222222;
+        
+        &:hover {
+          background-color: #f9f9f9;
+        }
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        color: #222222 !important;
+        font-size: 13px;
+        line-height: 1.5;
+        border-right: none;
+      }
+
+      // Checkbox styling
+      .ag-checkbox-input-wrapper {
+        width: 18px;
+        height: 18px;
+
+        &.ag-checked::after {
+          color: #1976d2;
+        }
+      }
+
+      // Custom Material Checkbox styling for AG Grid
+      .ag-cell[col-id="checkbox"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      .ag-header-cell[col-id="checkbox"] {
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      // Ensure Material checkbox is centered
+      app-checkbox-cell-renderer,
+      app-header-checkbox-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // Floating Filter styling - #222222 text
+      .ag-floating-filter-body {
+        input {
+          color: #222222 !important;
+          font-size: 13px;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &::placeholder {
+            color: #999;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+      }
+
+      .ag-floating-filter-button {
+        color: #222222 !important;
+      }
+
+      .ag-floating-filter-button-button {
+        color: #222222 !important;
+      }
+
+      // Filter Menu styling - ALL TEXT #222222
+      .ag-filter {
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      // Filter buttons
+      .ag-filter-apply-panel {
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+          
+          &.ag-standard-button {
+            background-color: #1976d2;
+            color: white !important;
+            border: none;
+
+            &:hover {
+              background-color: #1565c0;
+            }
+          }
+
+          &.ag-standard-button:last-child {
+            background-color: transparent;
+            border: 1px solid #d0d0d0;
+            color: #222222 !important;
+
+            &:hover {
+              background-color: #f5f5f5;
+            }
+          }
+        }
+      }
+
+      // Hide default AG Grid icons
+      .ag-header-icon {
+        display: none !important;
+      }
+
+      .ag-icon {
+        display: none !important;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Material icon styling in headers
+      .ag-header-cell-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+
+        .mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          color: #222222 !important;
+          cursor: pointer;
+
+          &:hover {
+            color: #1976d2 !important;
+          }
+        }
+      }
+
+      // Ensure header cells have proper layout
+      .ag-header-cell {
+        .ag-header-cell-comp-wrapper {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 16px 24px;
+        color: #222222 !important;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+
+        // Pagination buttons
+        .ag-paging-button {
+          border: none;
+          background-color: transparent;
+          padding: 0;
+          margin: 0 4px;
+          cursor: pointer;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          // Hide default AG Grid icons
+          .ag-icon {
+            display: none !important;
+          }
+
+          // Add Material icons using CSS content
+          &[ref="btFirst"]::before {
+            content: 'first_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btPrevious"]::before {
+            content: 'chevron_left';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btNext"]::before {
+            content: 'chevron_right';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btLast"]::before {
+            content: 'last_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &:hover:not(.ag-disabled) {
+            color: #1154A2;
+
+            &::before {
+              color: #1154A2;
+            }
+          }
+
+          &.ag-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+
+            &::before {
+              opacity: 0.4;
+            }
+          }
+        }
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+      }
+
+      // Action buttons
+      .action-btn {
+        &:hover svg {
+          opacity: 0.7;
+        }
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Role column - space between with center alignment
+      .ag-cell[col-id="role"] {
+        padding: 0 8px !important;
+        
+        div {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: space-between !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
+
+    // Banners Grid Styling
+    .banners-grid {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+      // All text in the grid should be #222222
+      .ag-root-wrapper {
+        color: #222222;
+      }
+
+      // Header styling - BOLD and #222222
+      .ag-header {
+        background-color: #fafafa;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 700 !important;
+        
+        .ag-header-cell {
+          border-right: none;
+        }
+        
+        .ag-header-cell-text {
+          color: #222222 !important;
+          font-weight: 700 !important;
+          font-size: 13px;
+        }
+        
+        .ag-header-cell-label {
+          color: #222222 !important;
+          font-weight: 700 !important;
+        }
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #e0e0e0;
+        color: #222222;
+        
+        &:hover {
+          background-color: #f9f9f9;
+        }
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        color: #222222 !important;
+        font-size: 13px;
+        line-height: 1.5;
+        border-right: none;
+      }
+
+      // Status toggle styling
+      .ag-cell[col-id="status"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      app-status-toggle-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ::ng-deep {
+        .mat-slide-toggle-bar{
+          width: 53px;
+          height: 24px;
+          border-radius: 20px;
+          background-color: rgba(17,84,162,.30);
+        }
+        .mat-slide-toggle-thumb-container{
+          left: 11px;
+          top: 4px;
+        }
+        .mat-slide-toggle-thumb {
+          width: 15px;
+          height: 15px;
+          background-color: #1154A2;
+        }
+      }
+
+      // Floating Filter styling
+      .ag-floating-filter-body {
+        input {
+          color: #222222 !important;
+          font-size: 13px;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &::placeholder {
+            color: #999;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+      }
+
+      .ag-floating-filter-button {
+        color: #222222 !important;
+      }
+
+      .ag-floating-filter-button-button {
+        color: #222222 !important;
+      }
+
+      // Filter Menu styling
+      .ag-filter {
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      // Filter buttons
+      .ag-filter-apply-panel {
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+          
+          &.ag-standard-button {
+            background-color: #1976d2;
+            color: white !important;
+            border: none;
+
+            &:hover {
+              background-color: #1565c0;
+            }
+          }
+
+          &.ag-standard-button:last-child {
+            background-color: transparent;
+            border: 1px solid #d0d0d0;
+            color: #222222 !important;
+
+            &:hover {
+              background-color: #f5f5f5;
+            }
+          }
+        }
+      }
+
+      // Hide default AG Grid icons
+      .ag-header-icon {
+        display: none !important;
+      }
+
+      .ag-icon {
+        display: none !important;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Material icon styling in headers
+      .ag-header-cell-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+
+        .mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          color: #222222 !important;
+          cursor: pointer;
+
+          &:hover {
+            color: #1976d2 !important;
+          }
+        }
+      }
+
+      // Ensure header cells have proper layout
+      .ag-header-cell {
+        .ag-header-cell-comp-wrapper {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 16px 24px;
+        color: #222222 !important;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+
+        // Pagination buttons
+        .ag-paging-button {
+          border: none;
+          background-color: transparent;
+          padding: 0;
+          margin: 0 4px;
+          cursor: pointer;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          // Hide default AG Grid icons
+          .ag-icon {
+            display: none !important;
+          }
+
+          // Add Material icons using CSS content
+          &[ref="btFirst"]::before {
+            content: 'first_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btPrevious"]::before {
+            content: 'chevron_left';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btNext"]::before {
+            content: 'chevron_right';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &[ref="btLast"]::before {
+            content: 'last_page';
+            font-family: 'Material Icons';
+            font-size: 20px;
+            color: #222222;
+            display: flex;
+            align-items: center;
+          }
+
+          &:hover:not(.ag-disabled) {
+            color: #1154A2;
+
+            &::before {
+              color: #1154A2;
+            }
+          }
+
+          &.ag-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+
+            &::before {
+              opacity: 0.4;
+            }
+          }
+        }
+      }
+
+      // Upload column - center aligned
+      .ag-cell[col-id="upload"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+      }
+
+      // Upload button styling
+      .upload-btn {
+        &:hover mat-icon {
+          color: #0d4280 !important;
+        }
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Status column - center aligned
+      .ag-cell[col-id="status"] {
+        justify-content: center !important;
+      }
+    }
+
+    .coupons-grid {
+      font-family: 'Roboto', sans-serif;
+      height: 100%;
+      width: 100%;
+
+      // Header styling
+      .ag-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 500;
+        color: #222222;
+      }
+
+      .ag-header-cell {
+        padding: 0 12px;
+        border-right: none;
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        justify-content: space-between !important;
+        color: #222222;
+        font-weight: 500;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Use Material icons in header
+      .ag-header-icon {
+        font-family: 'Material Icons';
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .ag-icon-menu::before {
+        content: 'menu';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-filter::before {
+        content: 'filter_list';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-asc::before {
+        content: 'arrow_upward';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-desc::before {
+        content: 'arrow_downward';
+        font-family: 'Material Icons';
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #e0e0e0;
+        color: #222222;
+      }
+
+      .ag-row-hover {
+        background-color: #f5f5f5 !important;
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        border-right: none;
+        line-height: normal;
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 12px 16px;
+        background-color: #fff;
+        color: #222222;
+
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+      }
+
+      // Use Material icons in pagination
+      .ag-icon-first::before {
+        content: 'first_page';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-previous::before {
+        content: 'chevron_left';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-next::before {
+        content: 'chevron_right';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-last::before {
+        content: 'last_page';
+        font-family: 'Material Icons';
+      }
+
+      // Filter styling
+      .ag-filter {
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      .ag-filter-apply-panel {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px;
+        border-top: 1px solid #e0e0e0;
+
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+        }
+      }
+
+      // Action buttons styling
+      .action-btn {
+        mat-icon {
+          transition: color 0.2s;
+        }
+
+        &:hover mat-icon {
+          color: #0d4280 !important;
+        }
+      }
+
+      // Checkbox column styling
+      .ag-cell[col-id="checkbox"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Status toggle styling
+      .ag-cell[col-id="status"] {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+
+      app-status-toggle-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      ::ng-deep {
+        .mat-slide-toggle-bar{
+          width: 53px;
+          height: 24px;
+          border-radius: 20px;
+          background-color: rgba(17,84,162,.30);
+        }
+        .mat-slide-toggle-thumb-container{
+          left: 11px;
+          top: 4px;
+        }
+        .mat-slide-toggle-thumb {
+          width: 15px;
+          height: 15px;
+          background-color: #1154A2;
+        }
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        justify-content: center !important;
+      }
+    }
+
+    .leads-grid {
+      font-family: 'Roboto', sans-serif;
+      height: 100%;
+      width: 100%;
+
+      // Header styling
+      .ag-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 500;
+        color: #222222;
+      }
+
+      .ag-header-cell {
+        padding: 0 12px;
+        border-right: none;
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        justify-content: space-between !important;
+        color: #222222;
+        font-weight: 500;
+      }
+
+      // Custom header component styling
+      app-custom-header-renderer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #e0e0e0;
+        color: #222222;
+      }
+
+      .ag-row-hover {
+        background-color: #f5f5f5 !important;
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        border-right: none;
+        line-height: normal;
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 12px 16px;
+        background-color: #fff;
+        color: #222222;
+
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+      }
+
+      // Use Material icons in pagination
+      .ag-icon-first::before {
+        content: 'first_page';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-previous::before {
+        content: 'chevron_left';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-next::before {
+        content: 'chevron_right';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-last::before {
+        content: 'last_page';
+        font-family: 'Material Icons';
+      }
+
+      // Filter styling
+      .ag-filter {
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        .ag-filter-condition {
+          color: #222222 !important;
+        }
+
+        input, select, textarea {
+          color: #222222 !important;
+          border: 1px solid #d0d0d0;
+          border-radius: 4px;
+          padding: 6px 8px;
+
+          &:focus {
+            outline: none;
+            border-color: #1976d2;
+          }
+        }
+
+        // Filter options text
+        .ag-select {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-wrapper {
+          color: #222222 !important;
+        }
+
+        .ag-picker-field-display {
+          color: #222222 !important;
+        }
+
+        // Date filter
+        .ag-filter-filter {
+          color: #222222 !important;
+        }
+
+        // Set filter checkboxes
+        .ag-set-filter-item {
+          color: #222222 !important;
+        }
+
+        .ag-set-filter-list {
+          color: #222222 !important;
+        }
+      }
+
+      .ag-filter-apply-panel {
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px;
+        border-top: 1px solid #e0e0e0;
+
+        button {
+          padding: 6px 12px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          color: #222222 !important;
+        }
+      }
+
+      // Action buttons styling
+      .action-btn {
+        mat-icon {
+          transition: color 0.2s;
+        }
+
+        &:hover mat-icon {
+          color: #0d4280 !important;
+        }
+      }
+
+      // Checkbox column styling
+      .ag-cell[col-id="checkbox"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        justify-content: center !important;
+      }
+
+      // Center aligned cells
+      .center-aligned-cell {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+    }
+
+    .bookings-grid {
+      font-family: 'Roboto', sans-serif;
+      height: 100%;
+      width: 100%;
+
+      // Header styling
+      .ag-header {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 500;
+        color: #222222;
+      }
+
+      .ag-header-cell {
+        padding: 0 12px;
+        border-right: none;
+      }
+
+      .ag-header-cell-text {
+        color: #222222 !important;
+        font-weight: 700 !important;
+        font-size: 13px;
+      }
+
+      .ag-header-cell-label {
+        justify-content: center;
+      }
+
+      // Row styling
+      .ag-row {
+        border-bottom: 1px solid #f0f0f0;
+        color: #222222;
+        max-height: 5rem;
+      }
+
+      .ag-cell {
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        color: #222222 !important;
+        font-size: 13px;
+        border-right: none;
+        line-height: normal;
+      }
+
+      // Pagination styling
+      .ag-paging-panel {
+        border-top: 1px solid #e0e0e0;
+        padding: 12px 16px;
+        background-color: #fff;
+        color: #222222;
+
+        .ag-paging-button,
+        .ag-paging-description,
+        .ag-paging-page-summary-panel,
+        .ag-paging-row-summary-panel,
+        span {
+          color: #222222 !important;
+          font-size: 13px;
+        }
+      }
+
+      // Use Material icons in pagination
+      .ag-icon-first::before {
+        content: 'first_page';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-previous::before {
+        content: 'chevron_left';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-next::before {
+        content: 'chevron_right';
+        font-family: 'Material Icons';
+      }
+
+      .ag-icon-last::before {
+        content: 'last_page';
+        font-family: 'Material Icons';
+      }
+
+      // Filter styling
+      .ag-filter {
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        color: #222222 !important;
+        
+        .ag-filter-body {
+          color: #222222 !important;
+        }
+
+        input,
+        textarea,
+        select {
+          color: #222222 !important;
+          border-color: #e0e0e0 !important;
+        }
+      }
+
+      .ag-filter-checkbox,
+      .ag-filter-apply-panel button {
+        color: #222222 !important;
+      }
+
+      // Hover effect on rows
+      .ag-row-hover {
+        background-color: #f5f5f5 !important;
+      }
+
+      // Selected row styling
+      .ag-row-selected {
+        background-color: #e3f2fd !important;
+      }
+
+      // Checkbox styling
+      .ag-checkbox-input-wrapper {
+        font-size: 16px;
+        line-height: 16px;
+        color: #222222;
+      }
+
+      .ag-checkbox-input-wrapper input[type="checkbox"] {
+        cursor: pointer;
+      }
+
+      // Remove default AG Grid borders and styling
+      .ag-cell-focus {
+        border: 1px solid #1976d2 !important;
+      }
+
+      .ag-cell-inline-editing {
+        border: 1px solid #1976d2 !important;
+      }
+
+      // Actions column - center aligned
+      .ag-cell[col-id="actions"] {
+        justify-content: center !important;
+      }
+
+      // Center aligned cells
+      .center-aligned-cell {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+    }
+
+    .mat-tab-list {
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .ag-pinned-left-header {
+      border-right: none;
+    }
+  }
+
+  .header-actions-wrapper {
+    p {
+      color: #222222;
+    }
+
+    .addActionBtn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #1154A2;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        background-color: #0d4280;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      mat-icon {
+        color: white;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
+    }
+  }
+}
+
+// Global max-height constraint for all ag-grid rows
+::ng-deep {
+  .ag-row {
+    max-height: 5rem !important;
+  }
+}

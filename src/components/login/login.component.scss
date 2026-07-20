@@ -23,7 +23,10 @@
   }
 }
 .form-details {
-  margin-top: 6rem;
+  margin-top: 3rem;
+  div {
+    margin-top: 0;
+  }
 }
 
 .small-text {
@@ -42,6 +45,37 @@
     font-size: 1rem;
     span {
       margin-left: 0.5rem;
+    }
+  }
+
+  input {
+    margin-top: 1rem;
+    &.error-field {
+      border: 2px solid #dc3545 !important;
+      background-color: rgba(220, 53, 69, 0.05);
+    }
+  }
+
+  .error-message {
+    width: 49%;
+    color: #dc3545;
+    font-size: 0.75rem;
+    text-align: left;
+    min-height: 1rem;
+    
+    span {
+      display: block;
+      margin: 0;
+    }
+  }
+
+  .cstmSubmitBtn {
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #6c757d !important;
+      color: white !important;
+      pointer-events: none;
     }
   }
 }
@@ -65,7 +99,8 @@
     .form-div {
       width: 100%;
       p,
-      input {
+      input,
+      .error-message {
         width: 100%;
       }
     }

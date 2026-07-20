@@ -3,6 +3,7 @@
     <source src="../../assets/199958-911694865_small.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
+  <div class="overlay"></div>
   <div class="tag-line text-uppercase text-center">Embark on an escape</div>
   <p class="sub-tag-line">
     Explore Handpicked Adventures for an <br *ngIf="viewPort > 460" /><b
@@ -65,13 +66,13 @@
     Barefoot Nomad tribe welcomes all. Together, we traverse the world,
     <span
       >One Barefoot Step at a Time
-      <img src="../../assets/underline.svg" alt="" /></span
+      <img src="../../assets/underline.svg" alt="" /> </span
     >, embracing the spirit of adventure and camaraderie that defines our
     journey.
   </p>
 </div>
-<ng-container>
-  <trip-carousel></trip-carousel>
+<ng-container *ngIf="hasTrips">
+  <trip-carousel [trips]="trips"></trip-carousel>
 </ng-container>
 
 <div class="banner d-flex align-items-center justify-content-center w-100">
@@ -129,6 +130,7 @@
       </div>
     </div>
     <div class="video-container">
+      <div class="overlay"></div>
       <video controls autoplay>
         <source src="../../assets/reviews.mp4" type="video/mp4" />
         Your browser does not support the video tag.

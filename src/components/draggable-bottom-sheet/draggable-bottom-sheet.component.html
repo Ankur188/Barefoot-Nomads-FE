@@ -1,7 +1,11 @@
 <div
   class="bottom-sheet-scrollable"
   [ngStyle]="{ transform: 'translateY(' + translateY + 'px)' }"
-  [ngClass]="{ reciept: isBookingPage }"
+  [ngClass]="{ 
+    'reciept': isBookingPage,
+    'expanded': isExpanded,
+    'collapsed': !isExpanded
+  }"
   (touchstart)="onTouchStart($event)"
   (touchmove)="onTouchMove($event)"
   (touchend)="onTouchEnd()"
@@ -54,49 +58,58 @@
             <span class="para-font-style">Standard Price</span>
             <span class="para-font-style"
               >&#8377;
-              {{
-                (details.price - details.price * 0.05 - 200) *
-                  numberOfTravellers
-              }}</span
+              {{ totalPrice * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style"
-              >{{
-                roomPrice === 200
-                  ? "Triple Room Occupancy / Per Person"
-                  : roomPrice === 400
-                  ? "Double Room Occupancy / Per Person"
-                  : "Single Room Occupancy / Per Person"
-              }}
-            </span>
+            <span class="para-font-style">{{ roomType }} / Per Person</span>
             <span class="para-font-style"
               >&#8377; {{ roomPrice * numberOfTravellers }}</span
-            >
-          </div>
-          <div class="d-flex justify-content-between mt-3">
-            <span class="para-font-style">GST (5%)</span>
-            <span class="para-font-style"
-              >&#8377; {{ details.price * 0.05 * numberOfTravellers }}</span
             >
           </div>
           <div class="d-flex justify-content-between mt-3">
             <span class="para-font-style">Subtotal</span>
             <span class="para-font-style"
               >&#8377;
-              {{
-                details.price * numberOfTravellers +
-                  (roomPrice - 200) * numberOfTravellers
-              }}</span
+              {{ getBaseAmount() | number:'1.0-0' }}</span
             >
           </div>
         </div>
 
-        <input
-          type="text"
-          placeholder="Enter Coupon Code"
-          class="mt-4 w-100 coupon-input"
-        />
+        <div class="coupon-container mt-4">
+          <input
+            type="text"
+            placeholder="Enter Coupon Code"
+            class="w-100 coupon-input"
+            [formControl]="couponCode"
+          />
+          <button
+            *ngIf="!isCouponValid"
+            class="apply-btn"
+            [disabled]="!couponCode.value || couponCode.value.trim() === ''"
+            (click)="applyCoupon()"
+          >
+            Apply
+          </button>
+          <button
+            *ngIf="isCouponValid"
+            class="apply-btn remove-btn"
+            (click)="removeCoupon()"
+          >
+            ✕
+          </button>
+        </div>
+        <div *ngIf="couponError" class="error-message mt-2">
+          {{ couponError }}
+        </div>
+        <div *ngIf="appliedCoupon" class="d-flex justify-content-between mt-3">
+          <span class="para-font-style">Coupon Discount {{ appliedCoupon.code }} ({{ appliedCoupon.deduction }}%)</span>
+          <span class="para-font-style discount-amount">- &#8377; {{ getDiscountAmount() | number:'1.0-0' }}</span>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+          <span class="para-font-style">GST ({{ batchSelected?.tax || 5 }}%)</span>
+          <span class="para-font-style">&#8377; {{ getGSTAmount() | number:'1.0-0' }}</span>
+        </div>
         <!-- <div class="total mt-4 d-flex justify-content-between">
           <span>Amount to be paid</span>
           <span class="amount"
@@ -132,7 +145,7 @@
         class="material-symbols-outlined"
       ></mat-icon>
     </div>
-    <div class="book-now text-uppercase">Book Now</div>
+    <div class="book-now text-uppercase" (click)="bookNow()">Book Now</div>
   </div>
 </div>
 
@@ -141,10 +154,7 @@
     <span>Amount to be paid</span>
     <span class="amount"
       >&#8377;
-      {{
-        details.price * numberOfTravellers +
-          (roomPrice - 200) * numberOfTravellers
-      }}</span
+      {{ getFinalAmount() | number:'1.0-0' }}</span
     >
   </div>
 

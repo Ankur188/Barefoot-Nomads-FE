@@ -27,6 +27,12 @@ import { GetQuotationComponent } from '../components/get-quotation/get-quotation
 import { TripDetailsComponent } from 'src/components/trip-details/trip-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AgGridModule } from 'ag-grid-angular';
 import { BookingConfirmationComponent } from '../components/booking-confirmation/booking-confirmation.component';
 import { BookingComponent } from 'src/components/booking/booking.component';
 import { TripDurationPipe } from 'src/utils/trip-duration.pipe';
@@ -37,6 +43,18 @@ import { DraggableBottomSheetComponent } from 'src/components/draggable-bottom-s
 import { BookingService } from 'src/services/booking.service';
 import { ErrorPopupComponent } from 'src/components/error-popup/error-popup.component';
 import { AdventuresComponent } from 'src/components/adventures/adventures.component';
+import { TokenInterceptor } from 'src/interceptors/token.interceptor';
+import { AdminPanelComponent } from 'src/components/admin-panel/admin-panel.component';
+import { CheckboxCellRendererComponent } from 'src/components/admin-panel/checkbox-cell-renderer.component';
+import { HeaderCheckboxRendererComponent } from 'src/components/admin-panel/header-checkbox-renderer.component';
+import { StatusToggleRendererComponent } from 'src/components/admin-panel/status-toggle-renderer.component';
+import { CustomHeaderRendererComponent } from 'src/components/admin-panel/custom-header-renderer.component';
+import { AvailabilityDropdownRendererComponent } from 'src/components/admin-panel/availability-dropdown-renderer.component';
+import { RoleDropdownRendererComponent } from 'src/components/admin-panel/role-dropdown-renderer.component';
+import { AddEntityFormComponent } from 'src/components/add-entity-form/add-entity-form.component';
+import { ProfileComponent } from 'src/components/profile/profile.component';
+import { PrivacyPolicyComponent } from 'src/components/privacy-policy/privacy-policy.component';
+import { TermsAndConditionsComponent } from 'src/components/terms-and-conditions/terms-and-conditions.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +80,18 @@ import { AdventuresComponent } from 'src/components/adventures/adventures.compon
     DraggableBottomSheetComponent,
     NameToInitialsPipe,
     ErrorPopupComponent,
-    AdventuresComponent
+    AdventuresComponent,
+    AdminPanelComponent,
+    CheckboxCellRendererComponent,
+    HeaderCheckboxRendererComponent,
+    StatusToggleRendererComponent,
+    CustomHeaderRendererComponent,
+    AvailabilityDropdownRendererComponent,
+    RoleDropdownRendererComponent,
+    AddEntityFormComponent,
+    ProfileComponent,
+    PrivacyPolicyComponent,
+    TermsAndConditionsComponent
   ],
   imports: [
     BrowserModule,
@@ -77,10 +106,21 @@ import { AdventuresComponent } from 'src/components/adventures/adventures.compon
     MatRadioModule,
     MatTabsModule,
     MatExpansionModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatMenuModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    AgGridModule,
   ],
   providers: [
     StaticService,
     BookingService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

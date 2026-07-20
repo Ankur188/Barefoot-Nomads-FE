@@ -39,8 +39,9 @@
   min-width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  padding: 10px;
+  gap: 24px;
+  padding: 10px 0;
+  box-sizing: border-box;
 }
 
 .carousel-controls {
@@ -112,8 +113,8 @@
       }
     }
     .carousel-page {
-  grid-template-columns: repeat(1, 4fr);
-
-}
+      grid-template-columns: repeat(1, 1fr);
+      gap: 20px;
+    }
   }
 }

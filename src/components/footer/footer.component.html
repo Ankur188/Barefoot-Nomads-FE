@@ -1,4 +1,4 @@
-<footer>
+<footer *ngIf="showFooter">
     <div>
         <div class="heading d-flex align-items-center">
             <img src="../../assets/BarefootNomads (black).png" alt="">
@@ -19,11 +19,11 @@
             <div class="quick-links d-flex justify-content-end">
                 <div class="d-flex flex-column justify-content-between">
                     <span class="text-uppercase">Quick Links</span>
-                    <a href="">About Us</a>
+                    <a routerLink="/about">About Us</a>
                     <a href="">Contact Us</a>
                     <a href="">Payment Policy</a>
-                    <a href="">Privacy Policy</a>
-                    <a href="">Terms & Conditons</a>
+                    <a routerLink="/privacy" target="_blank">Privacy Policy</a>
+                    <a routerLink="/terms&conditions" target="_blank">Terms & Conditons</a>
                 </div>
             </div>
             <div class="quick-links d-flex justify-content-end">
@@ -51,8 +51,12 @@
     </div>
     <img class="track" src="../../assets//tracks2 1.svg" alt="">
 </footer>
-<div class="copywrite">
+<div *ngIf="showFooter" class="copywrite">
     <p>
-        All Rights Reserved — BarefootNomads© 2025
+        All Rights Reserved — BarefootNomads© {{year}}
     </p>
+</div>
+<div *ngIf="!showFooter" class="admin-footer-spacer d-flex align-items-center justify-content-between">
+    <p>BAREFOOTNOMADS | {{year}}</p>
+    <p>All Rights Reserved</p>
 </div>
