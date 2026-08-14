@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   apiURL: 'http://localhost:3000/api/',
-  'x-nf-sign' : '3fbc17a54f7d3090906fb5ba12dfda9230a72e7f7185ccfb4e44d5b145dc77ac'
 };
 
 /*

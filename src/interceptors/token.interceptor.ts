@@ -69,29 +69,25 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
-  private addToken(request: HttpRequest<any>, token: string | null): HttpRequest<any> {
-    const nfSign = environment['x-nf-sign'];
-    let headers: any = {};
+private addToken(
+  request: HttpRequest<any>,
+  token: string | null
+): HttpRequest<any> {
 
-    // Add user access token if available
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
+  const headers: any = {};
 
-    // Add production token for Netlify
-    if (nfSign && environment.production) {
-      headers['x-nf-sign'] = nfSign;
-    }
-
-    // Clone the request and add headers if any exist
-    if (Object.keys(headers).length > 0) {
-      return request.clone({
-        setHeaders: headers
-      });
-    }
-
-    return request;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
+
+  if (Object.keys(headers).length > 0) {
+    return request.clone({
+      setHeaders: headers
+    });
+  }
+
+  return request;
+}
 
   private shouldBypassAuthHandling(url: string): boolean {
     return this.authBypassPaths.some((path) => url.includes(path));

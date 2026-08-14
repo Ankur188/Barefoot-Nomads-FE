@@ -7,7 +7,6 @@
   to = "http://13.126.10.191:3000/api/:splat"
   status = 200
   force = true
-  signed = "3fbc17a54f7d3090906fb5ba12dfda9230a72e7f7185ccfb4e44d5b145dc77ac"
 
 [[redirects]]
   from = "/*"
