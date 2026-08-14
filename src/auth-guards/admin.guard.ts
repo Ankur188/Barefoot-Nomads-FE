@@ -22,9 +22,9 @@ export class AdminGuard implements CanActivate {
       return false;
     }
 
-    // Check if user has admin role
+    // Check if user has admin or superadmin role
     const userRole = localStorage['userRole'];
-    if (userRole && userRole.toLowerCase() === 'admin') {
+    if (userRole && ['admin', 'superadmin'].includes(userRole.toLowerCase())) {
       return true;
     } else {
       // Redirect to home page if not admin

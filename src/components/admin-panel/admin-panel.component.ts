@@ -102,6 +102,7 @@ interface Booking {
 })
 export class AdminPanelComponent implements OnInit, OnDestroy {
   selectedTab = 0;
+  isSuperadmin = false;
   private gridApi!: GridApi;
   private batchesGridApi!: GridApi;
   private usersGridApi!: GridApi;
@@ -691,13 +692,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       headerComponent: CustomHeaderRendererComponent,
       cellRenderer: RoleDropdownRendererComponent,
       cellRendererParams: {
+        canEditRole: () => this.isSuperadmin,
         onRoleChange: (rowData: any, newRole: string, previousRole: string) =>
           this.onUserRoleChange(rowData, newRole, previousRole)
       },
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true,
-        values: ['Admin', 'User']
+        values: ['Superadmin', 'Admin', 'User']
       }
     },
     {
@@ -709,6 +711,12 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       filter: false,
       resizable: false,
       cellRenderer: (params: any) => {
+        if (!this.isSuperadmin) {
+          return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
+            <span style="color: #999;">—</span>
+          </div>`;
+        }
+
         // Only show delete button if user has no associated trips
         if (params.data.hasTrips) {
           return `<div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
@@ -1440,6 +1448,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isSuperadmin = (localStorage.getItem('userRole') || '').toLowerCase() === 'superadmin';
+
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
     
@@ -1647,6 +1657,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   onUserRoleChange = async (rowData: any, newRole: string, previousRole: string): Promise<boolean> => {
+    if (!this.isSuperadmin) {
+      return false;
+    }
+
     if (!rowData?.id) {
       return false;
     }
@@ -2018,6 +2032,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   onUsersCellClicked(event: any) {
+    if (!this.isSuperadmin) {
+      return;
+    }
+
     if (event.event.target.closest('.action-btn')) {
       const action = event.event.target.closest('.action-btn').dataset.action;
       if (action === 'delete') {
@@ -2318,6 +2336,11 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   // Toggle form visibility
   openAddEntityForm(entityType: 'trips' | 'batches' | 'users' | 'coupons' | 'leads' | 'bookings') {
+    if (entityType === 'users' && !this.isSuperadmin) {
+      alert('Only superadmin can add users.');
+      return;
+    }
+
     // For leads, navigate to enquire page
     if (entityType === 'leads') {
       this.router.navigate(['/enquire']);

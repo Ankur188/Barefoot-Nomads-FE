@@ -181,7 +181,7 @@
       <div class="tab-content">
         <div class="header-actions-wrapper d-flex justify-content-between align-items-center mb-3" *ngIf="!showUsersForm">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem</p>
-          <button class="addActionBtn" (click)="openAddEntityForm('users')">
+          <button class="addActionBtn" *ngIf="isSuperadmin" (click)="openAddEntityForm('users')">
             <mat-icon>add</mat-icon>
           </button>
         </div>

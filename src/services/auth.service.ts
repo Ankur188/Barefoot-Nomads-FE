@@ -21,7 +21,8 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.userRole && this.userRole.toLowerCase() === 'admin';
+    const normalizedRole = (this.userRole || '').toLowerCase();
+    return normalizedRole === 'admin' || normalizedRole === 'superadmin';
   }
 
   signUpUser(postData: any): Observable<any> {

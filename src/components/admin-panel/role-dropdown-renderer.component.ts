@@ -8,12 +8,16 @@ import { ICellRendererParams } from 'ag-grid-community';
     <div class="role-dropdown-container">
       <span class="role-text">{{ value }}</span>
       <mat-icon 
+        *ngIf="canEditRole"
         class="dropdown-icon" 
         [matMenuTriggerFor]="menu"
         (click)="$event.stopPropagation()">
         expand_more
       </mat-icon>
       <mat-menu #menu="matMenu" class="role-menu">
+        <button mat-menu-item (click)="onSelectOption('Superadmin')">
+          Superadmin
+        </button>
         <button mat-menu-item (click)="onSelectOption('Admin')">
           Admin
         </button>
@@ -71,20 +75,23 @@ export class RoleDropdownRendererComponent implements ICellRendererAngularComp {
   public params!: ICellRendererParams;
   public value: string = '';
   public isUpdatingRole = false;
+  public canEditRole = false;
 
   agInit(params: ICellRendererParams): void {
     this.params = params;
     this.value = params.value;
+    this.canEditRole = this.resolveCanEditRole(params);
   }
 
   refresh(params: ICellRendererParams): boolean {
     this.params = params;
     this.value = params.value;
+    this.canEditRole = this.resolveCanEditRole(params);
     return true;
   }
 
   async onSelectOption(option: string): Promise<void> {
-    if (this.isUpdatingRole || option === this.value) {
+    if (!this.canEditRole || this.isUpdatingRole || option === this.value) {
       return;
     }
 
@@ -111,5 +118,18 @@ export class RoleDropdownRendererComponent implements ICellRendererAngularComp {
     } finally {
       this.isUpdatingRole = false;
     }
+  }
+
+  private resolveCanEditRole(params: ICellRendererParams): boolean {
+    const canEditRoleParam = params?.['canEditRole'];
+    if (typeof canEditRoleParam === 'function') {
+      return Boolean(canEditRoleParam());
+    }
+
+    if (typeof canEditRoleParam === 'boolean') {
+      return canEditRoleParam;
+    }
+
+    return false;
   }
 }
