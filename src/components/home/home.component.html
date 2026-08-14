@@ -75,7 +75,7 @@
   <trip-carousel [trips]="trips"></trip-carousel>
 </ng-container>
 
-<div class="banner d-flex align-items-center justify-content-center w-100">
+<div *ngIf="bannerUrl" class="banner d-flex align-items-center justify-content-center w-100">
   <img [src]="bannerUrl" alt="S3 Image" class="w-100" />
 </div>
 

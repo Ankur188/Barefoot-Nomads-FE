@@ -44,7 +44,7 @@
 </section>
 
 <main class="main-container">
-  <div class="banner-section">
+  <div *ngIf="bannerUrl" class="banner-section">
     <img [src]="bannerUrl" alt="S3 Banner" class="w-100 banner" />
   </div>
 
