@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private readonly authBypassPaths = ['/user/login', '/users/signup', 'refresh-token', 'refreshToken', '/user/logout'];
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -23,6 +24,8 @@ export class TokenInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    const shouldBypassAuthHandling = this.shouldBypassAuthHandling(req.url);
+
     // Get the JWT token from sessionStorage
     const accessToken = sessionStorage.getItem('bn_access');
     
@@ -34,6 +37,10 @@ export class TokenInterceptor implements HttpInterceptor {
         if (error instanceof HttpErrorResponse) {
           // Check if this is the refresh token endpoint itself failing
           const isRefreshTokenEndpoint = req.url.includes('refresh-token') || req.url.includes('refreshToken');
+
+          if (shouldBypassAuthHandling) {
+            return throwError(() => error);
+          }
           
           if (isRefreshTokenEndpoint) {
             // Only logout on authentication errors (401/403), not server errors (500, 502, etc.)
@@ -84,6 +91,10 @@ export class TokenInterceptor implements HttpInterceptor {
     }
 
     return request;
+  }
+
+  private shouldBypassAuthHandling(url: string): boolean {
+    return this.authBypassPaths.some((path) => url.includes(path));
   }
 
   private handle403Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

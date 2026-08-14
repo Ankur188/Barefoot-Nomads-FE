@@ -19,7 +19,5 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ErrorPopupComponent {
-  constructor(public errorService: ErrorService) {
-    console.log(222222)
-  }
+  constructor(public errorService: ErrorService) {}
 }

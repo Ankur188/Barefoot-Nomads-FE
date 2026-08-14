@@ -55,7 +55,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    const rawReturnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.getSafeReturnUrl(rawReturnUrl);
   }
 
   submitSignUpform() {
@@ -81,13 +82,14 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('isUserLoggedIn', 'true');
         localStorage.setItem('userName', data.details.name);
         localStorage.setItem('email', data.details.email);
-        localStorage.setItem('role', data.details.role);
+        localStorage.setItem('userRole', data.details.role);
         localStorage.setItem('id', data.details.id);
         this.authService.isUserLoggedIn = true;
         this.authService.userName = data.details.name;
+        this.authService.userRole = data.details.role;
         sessionStorage.setItem('bn_access', data.tokens.accessToken);
         sessionStorage.setItem('bn_refresh', data.tokens.refreshToken);
-        this.router.navigateByUrl(this.returnUrl);
+        this.router.navigateByUrl(this.returnUrl, { replaceUrl: true });
         this.signUpform.reset();
         this.password = null;
         this.isSignUp = false;
@@ -120,8 +122,26 @@ export class LoginComponent implements OnInit {
         this.authService.userRole = data.details.role;
         sessionStorage.setItem('bn_access', data.tokens.accessToken);
         sessionStorage.setItem('bn_refresh', data.tokens.refreshToken);
-        this.router.navigateByUrl(this.returnUrl);
+        this.router.navigateByUrl(this.returnUrl, { replaceUrl: true });
       }
     });
+  }
+
+  private getSafeReturnUrl(url: string): string {
+    if (!url || typeof url !== 'string') {
+      return '/';
+    }
+
+    const trimmedUrl = url.trim();
+    if (!trimmedUrl) {
+      return '/';
+    }
+
+    const normalizedUrl = trimmedUrl.toLowerCase();
+    if (normalizedUrl.startsWith('http://') || normalizedUrl.startsWith('https://') || normalizedUrl.startsWith('/login')) {
+      return '/';
+    }
+
+    return trimmedUrl.startsWith('/') ? trimmedUrl : `/${trimmedUrl}`;
   }
 }

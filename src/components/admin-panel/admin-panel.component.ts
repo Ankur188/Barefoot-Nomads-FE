@@ -9,6 +9,7 @@ import { AvailabilityDropdownRendererComponent } from './availability-dropdown-r
 import { RoleDropdownRendererComponent } from './role-dropdown-renderer.component';
 import { StaticService } from 'src/services/static.service';
 import { AdminService } from 'src/services/admin.service';
+import { firstValueFrom } from 'rxjs';
 
 interface Trip {
   name: string;
@@ -689,6 +690,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
       resizable: true,
       headerComponent: CustomHeaderRendererComponent,
       cellRenderer: RoleDropdownRendererComponent,
+      cellRendererParams: {
+        onRoleChange: (rowData: any, newRole: string, previousRole: string) =>
+          this.onUserRoleChange(rowData, newRole, previousRole)
+      },
       filterParams: {
         buttons: ['reset', 'apply'],
         closeOnApply: true,
@@ -1639,6 +1644,21 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  onUserRoleChange = async (rowData: any, newRole: string, previousRole: string): Promise<boolean> => {
+    if (!rowData?.id) {
+      return false;
+    }
+
+    try {
+      await firstValueFrom(this.adminService.updateUserRole(rowData.id, newRole.toLowerCase()));
+      return true;
+    } catch (error: any) {
+      console.error('Error updating user role:', error);
+      alert(error?.error?.error || 'Failed to update user role. Please try again.');
+      return false;
+    }
   }
 
   private loadUsersData(page: number = 1) {

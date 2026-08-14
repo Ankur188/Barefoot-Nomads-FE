@@ -39,16 +39,12 @@ export class LoadingInterceptor implements HttpInterceptor {
         }
       }),
       catchError((error: HttpErrorResponse) => {
-        console.log(11111, error)
-        if (
-          error.status === 401
-        ) {
-          // Show popup
-          this.errorService.showError(error.error.error);
+        const isRefreshTokenEndpoint = req.url.includes('refresh-token') || req.url.includes('refreshToken');
+
+        if (!isRefreshTokenEndpoint) {
+          this.errorService.showHttpError(error, req.url);
         }
-        else {
-          this.errorService.showError("Something went wrong!");
-        }
+
         return throwError(() => error);
       }) // Hide loader when request completes
     );

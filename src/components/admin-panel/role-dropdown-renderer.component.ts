@@ -70,6 +70,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 export class RoleDropdownRendererComponent implements ICellRendererAngularComp {
   public params!: ICellRendererParams;
   public value: string = '';
+  public isUpdatingRole = false;
 
   agInit(params: ICellRendererParams): void {
     this.params = params;
@@ -82,12 +83,33 @@ export class RoleDropdownRendererComponent implements ICellRendererAngularComp {
     return true;
   }
 
-  onSelectOption(option: string): void {
-    this.value = option;
-    // Update the data in the grid
-    if (this.params.node && this.params.colDef.field) {
-      this.params.node.setDataValue(this.params.colDef.field, option);
+  async onSelectOption(option: string): Promise<void> {
+    if (this.isUpdatingRole || option === this.value) {
+      return;
     }
-    console.log('Role changed to:', option, 'for user:', this.params.data);
+
+    const previousRole = this.value;
+    this.isUpdatingRole = true;
+
+    try {
+      let roleUpdated = true;
+      const callback = this.params?.['onRoleChange'];
+
+      if (typeof callback === 'function') {
+        const callbackResult = callback(this.params.data, option, previousRole);
+        roleUpdated = callbackResult instanceof Promise ? await callbackResult : callbackResult !== false;
+      }
+
+      if (roleUpdated) {
+        this.value = option;
+        if (this.params.node && this.params.colDef.field) {
+          this.params.node.setDataValue(this.params.colDef.field, option);
+        }
+      } else if (this.params.node && this.params.colDef.field) {
+        this.params.node.setDataValue(this.params.colDef.field, previousRole);
+      }
+    } finally {
+      this.isUpdatingRole = false;
+    }
   }
 }

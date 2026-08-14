@@ -569,10 +569,10 @@
           </div>
         </div>
         <hr class="mt-3" />
-        <div class="d-flex align-items-center justify-content-between mt-2">
+        <div *ngIf="batches && batches.length > 0" class="d-flex align-items-center justify-content-between mt-2">
           <span class="para-font-style">Starting from</span>
           <div class="price-tag d-flex align-items-center">
-            <span class="price me-2"> &#8377; {{ details.lowestPriceBatch.price }}</span>
+            <span class="price me-2"> &#8377; {{ details.lowestPriceBatch?.price }}</span>
             <mat-icon
               aria-hidden="false"
               aria-label="Example home icon"
@@ -582,7 +582,7 @@
           </div>
         </div>
         <div
-          class="btnDiv d-flex align-items-center justify-content-center flex-column"
+          class="btnDiv d-flex align-items-center justify-content-center flex-column" [style.cursor]="!batches || batches.length === 0 ? 'no-drop' : 'pointer'"
         >
           <button
             class="cstmSubmitBtn text-uppercase"

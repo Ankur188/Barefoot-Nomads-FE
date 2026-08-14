@@ -160,6 +160,13 @@ export class AdminService {
     );
   }
 
+  updateUserRole(userId: string, role: string): Observable<any> {
+    return this.http.put(
+      environment.production ? `/api/admin/users/${userId}/role` : `${environment.apiURL}admin/users/${userId}/role`,
+      { role }
+    );
+  }
+
   deleteUser(userId: string): Observable<any> {
     return this.http.delete(
       environment.production ? `/api/admin/users/${userId}` : `${environment.apiURL}admin/users/${userId}`

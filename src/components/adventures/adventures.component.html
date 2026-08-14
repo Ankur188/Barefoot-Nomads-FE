@@ -128,7 +128,7 @@
   <!-- ✅ Show cards if available -->
   <ng-container *ngIf="paginatedBatches.length > 0; else noData">
     <div class="cardTripDetailsSection" *ngFor="let trip of paginatedBatches">
-      <trip-card [card]="trip"></trip-card>
+      <trip-card [card]="trip" (click)="navigateToTrip(trip)" style="cursor: pointer;"></trip-card>
     </div>
   </ng-container>
 

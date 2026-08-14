@@ -190,7 +190,7 @@ export class AdventuresComponent implements OnInit, AfterViewInit {
   @ViewChild('appliedFilterSection') appliedFilterSection: ElementRef;
   @ViewChild('cardCarousel') cardCarousel: ElementRef;
 
-  constructor(public staticService: StaticService) {}
+  constructor(public staticService: StaticService, private router: Router) {}
 
   ngOnInit(): void {
     this.selectedValues = this.filterDetails.map(() => undefined);
@@ -480,5 +480,9 @@ case "Select Duration":
     const shift = (this.currentPage - 1) * pageWidth; // multiply by current page index
 
     return `translateX(-${shift}px)`;
+  }
+
+  navigateToTrip(trip) {
+    this.router.navigate([`trip/${trip.id}`]);
   }
 }
