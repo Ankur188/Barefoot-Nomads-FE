@@ -4,10 +4,10 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://ec2-13-203-184-215.ap-south-1.compute.amazonaws.com:3000/api/:splat"
+  to = "http://13.126.10.191:3000/api/:splat"
   status = 200
   force = true
-  signed = "API_SIGNATURE_TOKEN"
+  signed = 3fbc17a54f7d3090906fb5ba12dfda9230a72e7f7185ccfb4e44d5b145dc77ac
 
 [[redirects]]
   from = "/*"
