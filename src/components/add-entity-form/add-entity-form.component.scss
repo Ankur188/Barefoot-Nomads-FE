@@ -1,8 +1,17 @@
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .entity-form-dialog {
   background: white;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
 
   .dialog-header {
     display: flex;
@@ -11,6 +20,7 @@
     padding: 20px 24px;
     background: white;
     z-index: 10;
+    flex-shrink: 0;
 
     .back-btn {
       border: none;
@@ -77,8 +87,9 @@
   .dialog-content {
     width: 80%;
     padding: 24px;
-    overflow-y: visible;
+    overflow-y: auto;
     flex: 1;
+    min-height: 0;
     margin-top: 2rem;
 
     .form-grid {
