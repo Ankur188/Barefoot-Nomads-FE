@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'src/services/auth.service';
 
 @Component({
@@ -9,10 +9,27 @@ import { AuthService } from 'src/services/auth.service';
 export class HeaderComponent implements OnInit {
 
   isScroll: boolean = true;
-  constructor(public authService: AuthService) { 
+  isMenuOpen: boolean = false;
+  constructor(public authService: AuthService, private elementRef: ElementRef) { 
   }
 
   ngOnInit(): void {
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(): void {
+    this.isMenuOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const clickedInsideHeader = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInsideHeader) {
+      this.closeMenu();
+    }
   }
 
   // @HostListener('window:scroll', [])

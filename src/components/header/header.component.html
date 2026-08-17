@@ -22,7 +22,27 @@
             {{authService.userName | nameToInitials}}
         </div>
     </div>
-    <div class="nav-menu">
-        <img src="../../assets/nav-menu.svg" alt="">
+    <div class="nav-menu" (click)="toggleMenu()">
+        <img src="../../assets/nav-menu.svg" alt="Navigation menu">
+        <div class="mobile-dropdown" *ngIf="isMenuOpen" (click)="$event.stopPropagation()">
+            <div [routerLink]="'adventures'" [routerLinkActive]="'is-active'" (click)="closeMenu()">
+                Adventures
+            </div>
+            <div [routerLink]="'/about'" [routerLinkActive]="'is-active'" (click)="closeMenu()">
+                About Us
+            </div>
+            <div [routerLink]="'/enquire'" [routerLinkActive]="'is-active'" (click)="closeMenu()">
+                Enquire
+            </div>
+            <div *ngIf="authService.isAdmin()" [routerLink]="'/admin'" [routerLinkActive]="'is-active'" (click)="closeMenu()">
+                Admin
+            </div>
+            <div *ngIf="!authService.isUserLoggedIn" [routerLink]="'/login'" [routerLinkActive]="'is-active'" (click)="closeMenu()">
+                Sign Up/Login
+            </div>
+            <div *ngIf="authService.isUserLoggedIn" [routerLink]="'/profile'" [routerLinkActive]="'is-active'" (click)="closeMenu()">
+                Profile
+            </div>
+        </div>
     </div>
 </header>
