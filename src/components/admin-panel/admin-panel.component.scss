@@ -26,11 +26,17 @@
   position: relative;
 
   .barefoot-logo-admin {
-    position: absolute;
-    bottom: 45%;
+    position: fixed;
+    top: 50vh;
     right: 0;
+    bottom: auto;
+    transform: translateY(-50%);
+    max-height: 80vh;
+    max-width: min(40vw, 32rem);
+    object-fit: contain;
     opacity: 0.1;
     z-index: 1;
+    pointer-events: none;
   }
 
   // Tabs Styling
