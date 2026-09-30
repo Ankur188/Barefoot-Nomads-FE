@@ -40,4 +40,9 @@ export class HomeComponent implements OnInit {
       this.hasTrips = this.trips.length > 0;
     });
   }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.viewPort = window.innerWidth;
+  }
 }

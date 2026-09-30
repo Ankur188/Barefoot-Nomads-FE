@@ -147,3 +147,38 @@
     }
   }
 }
+
+@media (min-width: 428px) and (max-width: 1024px) {
+  .intro-container,
+  .start-main-div,
+  .cards-list {
+    padding-left: clamp(2rem, 6vw, 5rem);
+    padding-right: clamp(2rem, 6vw, 5rem);
+  }
+
+  .intro-container .introduction div,
+  .start-main-div .start {
+    width: 100%;
+  }
+
+  .characterstics-main {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .intro-container .introduction {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    div,
+    img {
+      width: 100%;
+    }
+  }
+
+  .characterstics-main,
+  .start-main-div .start {
+    width: 100%;
+  }
+}

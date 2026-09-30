@@ -352,9 +352,14 @@
   font-weight: 700;
 }
 
-@media only screen and (max-width: 427px) {
+@media only screen and (max-width: 768px) {
   .main-container {
-    padding: 7rem 2rem;
+    padding: 7rem clamp(1rem, 5vw, 2rem) 4rem;
+    > .d-flex.justify-content-between {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
     .left-div {
       width: 100%;
       .availablity,
@@ -362,9 +367,10 @@
         display: none !important;
       }
       .room-types-main-div {
-        overflow: auto;
+        overflow-x: auto;
         .types {
-          width: 135%;
+          width: max-content;
+          gap: 1rem;
           .card {
             width: 9rem;
           }
@@ -377,6 +383,24 @@
     .banner {
       height: 7rem;
       margin-top: 3rem;
+      object-fit: cover;
     }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-container {
+    padding-left: clamp(2rem, 5vw, 5rem);
+    padding-right: clamp(2rem, 5vw, 5rem);
+  }
+
+  .left-div,
+  .right-div {
+    width: 48%;
+    min-width: 0;
+  }
+
+  .right-div .cart {
+    padding: 1.25rem;
   }
 }

@@ -43,6 +43,11 @@ export class TripDetailsComponent implements OnInit {
   previewImage = false;
   inclusionSelected = true;
   viewPort = window.innerWidth;
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.viewPort = window.innerWidth;
+  }
   
   // Computed property for gallery data - transforms allTripImages into lightbox format
   get galleryData() {

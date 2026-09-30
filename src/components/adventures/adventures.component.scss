@@ -567,7 +567,7 @@
 
 
 
-@media (max-width: 427px) {
+@media (max-width: 767px) {
 
   /* Typography */
   .para-font-style {
@@ -582,7 +582,7 @@
     .heading {
       font-size: 1rem;
       font-weight: 600;
-      line-height: 0.5rem;
+      line-height: 1.25rem;
       letter-spacing: 0.125rem;
       opacity: 0.6;
     }
@@ -677,5 +677,49 @@
     margin: 0 !important;
     flex: unset !important;
     border-radius: 10px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .intro-container,
+  .main-container {
+    padding-left: clamp(2rem, 6vw, 5rem);
+    padding-right: clamp(2rem, 6vw, 5rem);
+  }
+
+  .introduction {
+    gap: 2rem;
+  }
+
+  .characteristics {
+    width: 65%;
+    gap: 1rem;
+  }
+
+  .cardTripDetailsSection-wrapper > .cardTripDetailsSection,
+  .cardTripDetailsSection-wrapper.filter-open > .cardTripDetailsSection {
+    flex-basis: calc(33.333% - 1rem);
+    max-width: calc(33.333% - 1rem);
+  }
+
+  .cardTripDetailsSection .card,
+  .cardTripDetailsSection-wrapper.filter-open .card {
+    flex-basis: calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 991px) {
+  .card-carousel-filter .applied-filters {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+
+  .card-carousel-filter.shifted {
+    margin-left: 0;
+  }
+
+  .filter-dropdown {
+    width: min(15rem, calc(100vw - 2rem));
   }
 }

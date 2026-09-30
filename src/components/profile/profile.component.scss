@@ -510,8 +510,32 @@
 
 // Responsive adjustments
 @media (max-width: 768px) {
+  .greeting-section {
+    padding: 2rem 1.5rem 0 !important;
+  }
+
+  .profile-tabs {
+    padding: 1.5rem 1.5rem 0 !important;
+  }
+
+  .tab-content {
+    padding: 1.5rem 0;
+  }
+
+  .grid-wrapper {
+    overflow-x: auto;
+  }
+
+  .bookings-grid {
+    min-width: 40rem;
+  }
+
   .profile-form .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .greeting-content {
+    flex-direction: column;
   }
 
   .section-header {
@@ -527,5 +551,28 @@
         flex: 1;
       }
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .greeting-section,
+  .profile-tabs {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .profile-tabs ::ng-deep .mat-tab-label {
+    min-width: 5.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .section-header .action-buttons {
+    flex-wrap: wrap;
+  }
+
+  .custom-pagination {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.75rem;
   }
 }

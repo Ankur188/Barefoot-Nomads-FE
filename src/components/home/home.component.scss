@@ -321,3 +321,49 @@ p {
     }
   }
 }
+
+@media (min-width: 428px) and (max-width: 1024px) {
+  .hero-banner,
+  .who-are-we-main-div,
+  .stories {
+    padding-left: clamp(2rem, 6vw, 5rem);
+    padding-right: clamp(2rem, 6vw, 5rem);
+  }
+
+  .banner,
+  .brands {
+    padding-left: clamp(2rem, 6vw, 5rem);
+    padding-right: clamp(2rem, 6vw, 5rem);
+  }
+
+  .banner-points {
+    width: min(100%, 52.3125rem);
+  }
+
+  .stories .main-content video {
+    width: min(48vw, 40rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-banner {
+    min-height: 40rem;
+    height: auto;
+    padding-top: 7rem;
+  }
+
+  .banner-points,
+  .stories .main-content .reviews {
+    width: 100%;
+  }
+
+  .stories .main-content {
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    video {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -15,6 +15,11 @@ export class BookingComponent implements OnInit {
   batches: any[] = [];
 
   viewPort = window.innerWidth;
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.viewPort = window.innerWidth;
+  }
   currentPage = 1;
   itemsPerPage = 4;
   paginatedBatches = [];

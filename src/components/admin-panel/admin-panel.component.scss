@@ -2502,3 +2502,48 @@
     max-height: 5rem !important;
   }
 }
+
+@media (max-width: 768px) {
+  .admin-panel-container {
+    .admin-tabs {
+      padding: 12px 8px 0;
+    }
+
+    .tab-content {
+      padding: 12px;
+    }
+
+    .trips-header {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 8px;
+    }
+
+    .grid-wrapper .custom-pagination {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 8px;
+    }
+  }
+
+  :host ::ng-deep .mat-tab-header {
+    overflow-x: auto;
+  }
+
+  :host ::ng-deep .mat-tab-label-content {
+    min-width: auto;
+    padding: 0 12px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-panel-container .grid-wrapper .custom-pagination {
+    justify-content: center;
+  }
+
+  .admin-panel-container .grid-wrapper .custom-pagination .pagination-info {
+    width: 100%;
+    text-align: center;
+  }
+}
