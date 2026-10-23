@@ -68,8 +68,11 @@ export class EnquireComponent implements OnInit {
   }
 
   formChanged() {
-    // Reset the entire form (clears values and validation states)
+    // Reset the form, then re-apply empty-string defaults for the select controls.
+    // reset() sets controls to null; the selects re-created by *ngIf would then show
+    // no selection (blank) because no <option> matches null. '' matches the placeholder option.
     this.enquireForm.reset();
+    this.enquireForm.patchValue({ location: '', budget: '' });
     this.updateBudgetValidators();
   }
 

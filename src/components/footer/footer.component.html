@@ -11,9 +11,9 @@
                 <div class="main-input-div">
                     <div class="input-div">
                         <span class="text-uppercase">Your Email</span>
-                        <input placeholder="abc@xyz.com" type="text" name="text" class="input">
+                        <input placeholder="abc@xyz.com" type="email" name="email" class="input" [(ngModel)]="email" (keyup.enter)="submitEmail()">
                     </div>
-					<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_forward"></mat-icon>
+                        <mat-icon aria-hidden="false" aria-label="Submit email" fontIcon="arrow_forward" (click)="submitEmail()"></mat-icon>
                 </div>
             </div>
             <div class="quick-links d-flex justify-content-end">

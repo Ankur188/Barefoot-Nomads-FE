@@ -38,7 +38,7 @@
         <input type="text" placeholder="Full Name *" formControlName="name" [class.invalid]="enquireForm.get('name')?.invalid && enquireForm.get('name')?.touched" />
 
         <select *ngIf="isTailorMadeSelected !== 'true'" name="cars" id="cars" formControlName="location" class="custom-select" [class.invalid]="enquireForm.get('location')?.invalid && enquireForm.get('location')?.touched">
-          <option value="" disabled >Select Adventure Package *</option>
+          <option value="" disabled hidden selected>Select Adventure Package *</option>
           <option value="meghalaya">Meghalaya</option>
           <option value="uttrakhand">Uttrakhand</option>
           <option value="north-east">North-East</option>
@@ -78,7 +78,7 @@
           class="custom-select"
           [class.invalid]="enquireForm.get('budget')?.invalid && enquireForm.get('budget')?.touched"
         >
-          <option value="" disabled selected>Select Approx Budget *</option>
+          <option value="" disabled hidden selected>Select Approx Budget *</option>
           <option value="0-10000">0-1000</option>
           <option value="10000-15000">10000 - 15000</option>
           <option value="15000-20000">15000 - 20000</option>
@@ -90,7 +90,7 @@
       <div class="d-flex align-items-center justify-content-between">
   <input type="email" formControlName="email" placeholder="Email *" class="w-small" [class.invalid]="enquireForm.get('email')?.invalid && enquireForm.get('email')?.touched" />
   <input
-    type="text"
+    type="number"
     formControlName="phone"
     placeholder="Phone Number (10 digits) *"
     inputmode="numeric"

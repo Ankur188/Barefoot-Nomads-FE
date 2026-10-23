@@ -60,6 +60,9 @@
 .cards-list {
   // margin-top: 4rem;
   padding: 0 12rem 5rem 12rem;
+  flex-wrap: wrap;
+  justify-content: flex-start !important;
+  gap: 2rem;
 }
 .perk {
   background-color: $lf-dark-grey;
@@ -131,20 +134,13 @@
   .jet-set-go {
     padding: 2rem;
     padding-top: 5rem;
-    .cards-list {
-      display: inline-flex !important;
-      .perk {
-        margin-right: 1rem;
-      }
-    }
   }
 
   .cards-list {
     padding: 2rem 0 5rem 2rem;
     overflow-x: auto;
-    .perk {
-      margin-right: 2rem;
-    }
+    flex-wrap: nowrap;
+    gap: 2rem;
   }
 }
 

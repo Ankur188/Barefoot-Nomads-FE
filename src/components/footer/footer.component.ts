@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { StaticService } from 'src/services/static.service';
 
 @Component({
   selector: 'app-footer',
@@ -11,7 +12,22 @@ export class FooterComponent implements OnInit {
   showFooter: boolean;
   year: number = new Date().getFullYear();
 
-  constructor(private router: Router) { }
+  email: string = '';
+
+  constructor(private router: Router, private staticService: StaticService) { }
+
+  submitEmail(): void {
+    const email = this.email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return;
+    }
+    this.staticService.postEnquiry({
+      email,
+      createdAt: Math.floor(Date.now() / 1000)
+    }).subscribe(() => {
+      this.email = '';
+    });
+  }
 
   ngOnInit(): void {
         this.router.events

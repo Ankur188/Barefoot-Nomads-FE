@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, AfterViewInit } from '@angular/core';
 import { StaticService } from 'src/services/static.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { StaticService } from 'src/services/static.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   viewPort = window.innerWidth;
   bannerUrl: string = '';
   hasTrips: boolean = false;
@@ -39,6 +39,16 @@ export class HomeComponent implements OnInit {
       
       this.hasTrips = this.trips.length > 0;
     });
+  }
+
+  ngAfterViewInit(): void {
+    // Browsers can start autoplay before the muted attribute is applied on reload;
+    // set muted programmatically so the video is guaranteed to start silent.
+    const video = document.getElementById('reviews-video') as HTMLVideoElement | null;
+    if (video) {
+      video.muted = true;
+      video.defaultMuted = true;
+    }
   }
 
   @HostListener('window:resize')
