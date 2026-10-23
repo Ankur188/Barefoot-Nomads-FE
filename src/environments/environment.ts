@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:3000/api/',
+  // Local BE cannot reach RDS (private VPC IP) — point dev at the AWS EC2 backend
+  apiURL: 'http://ec2-13-126-10-191.ap-south-1.compute.amazonaws.com:3000/api/',
 };
 
 /*

@@ -53,17 +53,12 @@
           <div
             class="trip-img d-flex align-items-center justify-content-between"
           >
+          <div class="primary-img-container">
             <img
               *ngIf="tripImages.length > 0"
               class="primary-img"
               [src]="tripImages[0]"
               alt="{{ details.destination_name }}"
-            />
-            <img
-              *ngIf="tripImages.length === 0"
-              class="primary-img"
-              src="../../assets/kashmir_Gallery.png"
-              alt=""
             />
             <div class="months-tag">
               <img src="../../assets/calendar_small.png" alt="" class="me-2" />
@@ -72,6 +67,7 @@
                 {{ details.to_month | timestampToDate }}</span
               >
             </div>
+            </div>
             <div *ngIf="viewPort > 768" class="secondary-img">
               <img 
                 *ngIf="tripImages.length > 1" 
@@ -79,19 +75,9 @@
                 [alt]="details.destination_name" 
               />
               <img 
-                *ngIf="tripImages.length === 0" 
-                src="../../assets//Kashmir_Gallery_1.png" 
-                alt="" 
-              />
-              <img 
                 *ngIf="tripImages.length > 2" 
                 [src]="tripImages[2]" 
                 [alt]="details.destination_name" 
-              />
-              <img 
-                *ngIf="tripImages.length === 0" 
-                src="../../assets//Kashmir_Gallery_2.png" 
-                alt="" 
               />
               <div
                 class="show-all d-flex align-items-center"
@@ -746,7 +732,7 @@
           </div>
         </div>
       </div>
-      <span class="view-more text-uppercase">View More</span>
+      <!-- <span class="view-more text-uppercase">View More</span> -->
     </div>
   </div>
 

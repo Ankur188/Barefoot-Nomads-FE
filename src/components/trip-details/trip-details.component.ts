@@ -78,7 +78,9 @@ export class TripDetailsComponent implements OnInit {
       this.getBatches(data.id);
       this.details = data;
       this.tripImages = data.images || []; // Store the 3 random images for display
+      console.log(22222, this.tripImages);
       this.allTripImages = data.allImages || []; // Store all images for lightbox
+      console.log(33333, this.allTripImages);
       this.itinerary = JSON.parse(data.itinerary);
       this.keys = Object.keys(this.itinerary);
       this.destinations = data.destinations.split(',');

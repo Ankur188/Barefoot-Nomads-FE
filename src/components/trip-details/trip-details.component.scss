@@ -46,8 +46,12 @@
 
 .trip-img {
   position: relative;
+  .primary-img-container {
+    width: 81.5rem;
+    position: relative;
+  }
   .primary-img {
-    width: 40rem;
+    width: 100%;
     height: 29.7rem;
     border-radius: 0.4rem;
   }
@@ -56,7 +60,7 @@
 .months-tag {
   position: absolute;
   top: 1rem;
-  left: 52%;
+  right: 2%;
   border-radius: 2rem;
   background: $lf-white;
   padding: 0.25rem 0.75rem;
@@ -82,7 +86,8 @@
 
 .secondary-img {
   position: relative;
-  width: min-content;
+  margin-left: 1.5rem;
+  // width: min-content;
   // height: 100%;
   // width: 21rem;
   img {
@@ -503,6 +508,9 @@ hr {
         display: flex !important;
         flex-direction: column;
         align-items: stretch !important;
+        .primary-img {
+          width: 100%;
+        }
       }
       .trip-img > .primary-img {
         width: 100%;
@@ -516,6 +524,7 @@ hr {
         right: 1rem;
       }
       .secondary-img {
+        margin-left: 1.5rem;
         width: 100%;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -701,9 +710,13 @@ hr {
   .trip-img {
     gap: 0.75rem;
     min-width: 0;
+    .primary-img-container {
+      width: 81.5rem;
+      position: relative;
+    }
 
     .primary-img {
-      width: 62%;
+      width: 100%;
       height: auto;
       aspect-ratio: 4 / 3;
       object-fit: cover;
@@ -711,6 +724,7 @@ hr {
   }
 
   .secondary-img {
+    margin-left: 1.5rem;
     width: 35%;
     min-width: 0;
 

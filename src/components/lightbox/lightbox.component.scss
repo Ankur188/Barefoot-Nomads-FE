@@ -1,7 +1,7 @@
 @import "../../styles.scss";
 
 .lightbox {
-  margin-top: 4rem;
+  z-index: 2147483647;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,18 +13,12 @@
   background-color: rgba(0,0,0,.95);
 
   .count {
-    position: absolute;
-    bottom: 7rem;
-    left: 46%;
-    width: 7%;
-    height: 10%;
+    display: block;
+    margin-top: 1rem;
+    text-align: center;
     color: $lf-white;
-    opacity: .7;
+    opacity: .8;
     font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: .3rem;
   }
 
   .close-btn  {
@@ -83,8 +77,19 @@
     width: 2rem;
   }
 
+  .lightbox-img {
+    width: min(88vw, 75rem);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+
   .lightbox-img img {
     width: 100%;
+    height: min(75vh, 48rem);
+    object-fit: cover;
     border-radius: .4rem;
   }
 
