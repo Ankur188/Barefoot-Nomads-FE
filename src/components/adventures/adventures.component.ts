@@ -3,6 +3,7 @@ import {
   ElementRef,
   HostListener,
   OnInit,
+  OnDestroy,
   AfterViewInit,
   ViewChild,
 } from '@angular/core';
@@ -10,6 +11,7 @@ import { StaticService } from 'src/services/static.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-adventures',
@@ -42,7 +44,7 @@ import { Router } from '@angular/router';
     ]),
   ],
 })
-export class AdventuresComponent implements OnInit, AfterViewInit {
+export class AdventuresComponent implements OnInit, AfterViewInit, OnDestroy {
   bannerUrl: any;
   tripsDetails: any = [
     {
@@ -189,10 +191,52 @@ export class AdventuresComponent implements OnInit, AfterViewInit {
   @ViewChild('tripSection') tripSection: ElementRef;
   @ViewChild('appliedFilterSection') appliedFilterSection: ElementRef;
   @ViewChild('cardCarousel') cardCarousel: ElementRef;
+  @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
+
+  searchOpen = false;
+  searchTerm = '';
+  readonly minSearchLength = 3;
+  private searchInput$ = new Subject<string>();
+  private searchSub: Subscription;
 
   constructor(public staticService: StaticService, private router: Router) {}
 
+  ngOnDestroy(): void {
+    this.searchSub?.unsubscribe();
+  }
+
+  openSearch(): void {
+    this.searchOpen = true;
+    setTimeout(() => this.searchInput?.nativeElement.focus(), 0);
+  }
+
+  onSearchBlur(): void {
+    if (!this.searchTerm.trim()) {
+      this.searchOpen = false;
+    }
+  }
+
+  onSearchChange(value: string): void {
+    this.searchTerm = value;
+    // emit a normalized value so typing below the minimum resets the list
+    const trimmed = value.trim().toLowerCase();
+    this.searchInput$.next(trimmed.length >= this.minSearchLength ? trimmed : '');
+  }
+
+  clearSearch(event: Event): void {
+    event.stopPropagation();
+    this.searchTerm = '';
+    this.searchOpen = false;
+    this.searchInput$.next('');
+  }
+
   ngOnInit(): void {
+    this.searchSub = this.searchInput$
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.currentPage = 1;
+        this.applyFilters();
+      });
     this.selectedValues = this.filterDetails.map(() => undefined);
     //this.totalPages = Math.ceil(this.tripsDetails.length / this.itemsPerPage);
     this.staticService.getTrips().subscribe((data) => {
@@ -370,13 +414,25 @@ export class AdventuresComponent implements OnInit, AfterViewInit {
 }
 
   applyFilters() {
-    if (this.appliedFiltersArray.length === 0) {
+    const term = this.searchTerm.trim().toLowerCase();
+    const searchActive = term.length >= this.minSearchLength;
+
+    if (this.appliedFiltersArray.length === 0 && !searchActive) {
       this.trips = [...this.allTrips];
       this.updatePagination();
       return;
     }
 
     this.trips = this.allTrips.filter((trip) => {
+      if (
+        searchActive &&
+        !(
+          trip.destination_name?.toLowerCase().includes(term) ||
+          trip.desitnations?.toLowerCase().includes(term)
+        )
+      ) {
+        return false;
+      }
       return this.appliedFiltersArray.every((filter) => {
         const value = String(filter.value).toLowerCase().trim();
 

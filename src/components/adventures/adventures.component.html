@@ -108,8 +108,14 @@
               <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="custom-arrow" />
             </div>
           </div>
-          <div class="search-icon">
-            <img src="../../assets/adventureImages/searchIcon.svg" alt="Search" />
+          <div class="search-box" [class.open]="searchOpen" (click)="openSearch()">
+            <img *ngIf="!searchOpen" src="../../assets/adventureImages/searchIcon.svg" alt="Search" class="search-btn" />
+            <mat-icon *ngIf="searchOpen" class="search-glyph">search</mat-icon>
+            <input #searchInput type="text" class="search-input" [value]="searchTerm"
+              placeholder="Search trips (min 3 letters)"
+              (input)="onSearchChange($any($event.target).value)" (blur)="onSearchBlur()" />
+            <mat-icon *ngIf="searchOpen && searchTerm" class="search-clear"
+              (mousedown)="$event.preventDefault()" (click)="clearSearch($event)">close</mat-icon>
           </div>
         </div>
       </div>
