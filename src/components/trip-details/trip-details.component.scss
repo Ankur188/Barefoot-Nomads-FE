@@ -11,6 +11,26 @@
     opacity: 0.7;
   }
 }
+.share-action {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+}
+.share-tooltip {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 1;
+  padding: 0.4rem 0.65rem;
+  border-radius: 0.25rem;
+  background: $lf-black;
+  color: $lf-white;
+  font-size: 0.8rem;
+  opacity: 1;
+  white-space: nowrap;
+}
 .title {
   font-weight: bold;
   font-size: 2rem;

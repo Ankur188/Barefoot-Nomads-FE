@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   HostListener,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -16,7 +17,7 @@ import { StaticService } from 'src/services/static.service';
   templateUrl: './trip-details.component.html',
   styleUrls: ['./trip-details.component.scss'],
 })
-export class TripDetailsComponent implements OnInit {
+export class TripDetailsComponent implements OnInit, OnDestroy {
   itinerary: any;
   keys: any;
   destinations: any;
@@ -28,11 +29,15 @@ export class TripDetailsComponent implements OnInit {
     private router: Router,
     private loadingService: LoadingService
   ) {
+    this.previousRouteUrl =
+      this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString() ||
+      null;
     this.loading$ = this.loadingService.loading$;
     this.activatedRoute.paramMap.subscribe((params) => {
       this.tripId = params.get('id');
     });
   }
+  private previousRouteUrl: string | null;
   tripId: string;
   bannerUrl: string = '';
   trips: any;
@@ -43,6 +48,8 @@ export class TripDetailsComponent implements OnInit {
   previewImage = false;
   inclusionSelected = true;
   viewPort = window.innerWidth;
+  shareTooltipMessage = '';
+  private shareTooltipTimeout: ReturnType<typeof setTimeout>;
 
   @HostListener('window:resize')
   onWindowResize(): void {
@@ -71,6 +78,35 @@ export class TripDetailsComponent implements OnInit {
     setTimeout(() => {
       this.loadingService.hide();
     }, 3500);
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.shareTooltipTimeout);
+  }
+
+  goBack(): void {
+    if (this.previousRouteUrl) {
+      this.router.navigateByUrl(this.previousRouteUrl);
+      return;
+    }
+
+    this.router.navigate(['/']);
+  }
+
+  async copyTripLink(): Promise<void> {
+    clearTimeout(this.shareTooltipTimeout);
+
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      this.shareTooltipMessage = 'Link copied';
+    } catch (error) {
+      console.error('Failed to copy trip link:', error);
+      this.shareTooltipMessage = 'Unable to copy link';
+    }
+
+    this.shareTooltipTimeout = setTimeout(() => {
+      this.shareTooltipMessage = '';
+    }, 2000);
   }
 
   getTripDetials() {
