@@ -60,6 +60,9 @@ export class EnquireComponent implements OnInit {
       
       // Add createdAt timestamp (current date in seconds)
       postData['createdAt'] = Math.floor(Date.now() / 1000);
+      if(!postData['budget']) {
+        postData['budget'] = null;
+      }
       
       this.staticService.postEnquiry(postData).subscribe((data) => {
         this.enquireForm.reset();

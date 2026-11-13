@@ -43,9 +43,12 @@
             </div>
             <div class="input-wrapper">
               <input
-                type="tel"
+                type="number"
                 formControlName="number"
                 placeholder="Phone Number *"
+                inputmode="numeric"
+                min="1000000000"
+                max="9999999999"
                 [class.invalid]="bookingForm.get('number')?.invalid && bookingForm.get('number')?.touched"
               />
               <div class="error-text" *ngIf="bookingForm.get('number')?.invalid && bookingForm.get('number')?.touched">
@@ -55,9 +58,12 @@
             </div>
             <div class="input-wrapper">
               <input
-                type="tel"
+                type="number"
                 formControlName="guardianNumber"
                 placeholder="Emergency / Guardian Contact Number"
+                inputmode="numeric"
+                min="1000000000"
+                max="9999999999"
                 [class.invalid]="bookingForm.get('guardianNumber')?.invalid && bookingForm.get('guardianNumber')?.touched"
               />
               <div class="error-text" *ngIf="bookingForm.get('guardianNumber')?.invalid && bookingForm.get('guardianNumber')?.touched">

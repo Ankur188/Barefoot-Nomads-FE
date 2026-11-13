@@ -186,7 +186,8 @@
     }
     .types {
       margin-top: 2rem;
-      gap: 20%;
+      gap: 20px;
+      justify-content: space-between;
       .card {
         padding: 1rem;
         width: 10rem;

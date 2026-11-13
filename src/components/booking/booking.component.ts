@@ -34,8 +34,17 @@ export class BookingComponent implements OnInit {
   loading$: Observable<boolean>;
   bookingForm: FormGroup = new FormGroup({
     fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    number: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-    guardianNumber: new FormControl('', [Validators.pattern('^[0-9]{10}$')]),
+    number: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[0-9]{10}$/),
+      Validators.min(1000000000),
+      Validators.max(9999999999),
+    ]),
+    guardianNumber: new FormControl('', [
+      Validators.pattern(/^[0-9]{10}$/),
+      Validators.min(1000000000),
+      Validators.max(9999999999),
+    ]),
     email: new FormControl('', [Validators.required, Validators.email]),
   });
   couponCode: FormControl = new FormControl('');
@@ -163,10 +172,11 @@ export class BookingComponent implements OnInit {
       0.05 * (this.totalPrice * this.numberOfTravellers);
     payload['travellers'] = this.numberOfTravellers;
     payload['roomType'] = this.roomType;
+    payload['guardianNumber'] = payload['guardianNumber'] || null;
     this.bookingService.bookTrip(payload).subscribe((data) => {
       if (data) {
         this.router.navigate([
-          `trip/${data.booking[0].trip_id}/booking/${data.booking[0].id}`,
+          `trip/${this.tripId}/booking/${data.booking[0].id}`,
         ]);
       }
     });
