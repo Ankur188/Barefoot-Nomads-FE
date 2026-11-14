@@ -229,6 +229,7 @@ export class AddEntityFormComponent implements OnInit, OnDestroy {
           nights: ['', [Validators.required, Validators.min(1)]],
           destinations: ['', Validators.required],
           physicalRating: ['', Validators.required],
+          recommend: [false],
           daysForms: this.fb.array([this.createDayFormGroup()]), // FormArray for day-specific data
           images: this.fb.array([])
         });
@@ -313,7 +314,8 @@ export class AddEntityFormComponent implements OnInit, OnDestroy {
         days: data.days,
         nights: data.nights,
         destinations: data.destinations, // Note: API uses 'destinations' (typo in DB)
-        physicalRating: data.physical_rating?.toString()
+        physicalRating: data.physical_rating?.toString(),
+        recommend: data.recommend === true || data.recommend === 'true'
       });
 
       // Fetch existing images from S3 if in edit mode
@@ -690,6 +692,7 @@ export class AddEntityFormComponent implements OnInit, OnDestroy {
       formData.append('nights', this.entityForm.value.nights.toString());
       formData.append('destinations', this.entityForm.value.destinations);
       formData.append('physicalRating', this.entityForm.value.physicalRating.toString());
+      formData.append('recommend', this.entityForm.value.recommend.toString());
 
       // Transform days array to the required format
       const daysArray = this.entityForm.value.daysForms;

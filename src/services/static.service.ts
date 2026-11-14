@@ -15,9 +15,10 @@ export class StaticService {
 
   constructor(private http: HttpClient) {}
 
-  getTrips(): Observable<any> {
+  getTrips(recommended: boolean = false): Observable<any> {
+      const params = recommended ? '?recommended=true' : '';
       return this.http
-        .get( environment.production ? '/api/trips' : `${environment.apiURL}trips`)
+        .get(environment.production ? `/api/trips${params}` : `${environment.apiURL}trips${params}`)
         .pipe(tap((data) => this.tripsSubject.next(data)));
   }
 

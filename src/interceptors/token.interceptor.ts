@@ -4,10 +4,11 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpResponse
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, filter, take, switchMap } from 'rxjs/operators';
+import { catchError, filter, take, switchMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/services/auth.service';
 import { Router } from '@angular/router';
@@ -33,6 +34,20 @@ export class TokenInterceptor implements HttpInterceptor {
     const authReq = this.addToken(req, accessToken);
 
     return next.handle(authReq).pipe(
+      tap((event: HttpEvent<any>) => {
+        // Check for new tokens in response headers (auto-refresh case)
+        if (event instanceof HttpResponse) {
+          const newAccessToken = event.headers.get('X-New-Access-Token');
+          const newRefreshToken = event.headers.get('X-New-Refresh-Token');
+          
+          if (newAccessToken) {
+            sessionStorage.setItem('bn_access', newAccessToken);
+          }
+          if (newRefreshToken) {
+            sessionStorage.setItem('bn_refresh', newRefreshToken);
+          }
+        }
+      }),
       catchError((error) => {
         if (error instanceof HttpErrorResponse) {
           // Check if this is the refresh token endpoint itself failing
@@ -102,14 +117,17 @@ private addToken(
 
       if (refreshToken) {
         return this.authService.refreshToken().pipe(
+          tap((response: any) => {
+            // Extract tokens from response headers if auto-refresh occurred
+            if (response && response.tokens) {
+              sessionStorage.setItem('bn_access', response.tokens.accessToken);
+              sessionStorage.setItem('bn_refresh', response.tokens.refreshToken);
+            }
+          }),
           switchMap((response: any) => {
             this.isRefreshing = false;
             
             if (response && response.tokens) {
-              // Update tokens in sessionStorage
-              sessionStorage.setItem('bn_access', response.tokens.accessToken);
-              sessionStorage.setItem('bn_refresh', response.tokens.refreshToken);
-              
               this.refreshTokenSubject.next(response.tokens.accessToken);
               
               // Retry the original request with new token

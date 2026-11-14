@@ -97,17 +97,17 @@
             </div>
           </div>
 
-        <div class="dropdown position-relative d-flex justify-content-between mr-3 ms-auto">
-          <div class="select-wrapper mr-3">
-            <div class="select-container">
-              <select>
-                <option *ngFor="let pref of searchPreference" [value]="pref">
-                  {{ pref }}
-                </option>
-              </select>
-              <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="custom-arrow" />
-            </div>
-          </div>
+    <div class="dropdown position-relative d-flex justify-content-between mr-3 ms-auto">
+      <div class="select-wrapper mr-3">
+        <div class="select-container">
+          <select (change)="onSearchPreferenceChange($event)">
+            <option *ngFor="let pref of searchPreference" [value]="pref">
+              {{ pref }}
+            </option>
+          </select>
+          <img src="../../assets/adventureImages/select-arrow-down.svg" alt="arrow" class="custom-arrow" />
+        </div>
+      </div>
           <div class="search-box" [class.open]="searchOpen" (click)="openSearch()">
             <img *ngIf="!searchOpen" src="../../assets/adventureImages/searchIcon.svg" alt="Search" class="search-btn" />
             <mat-icon *ngIf="searchOpen" class="search-glyph">search</mat-icon>

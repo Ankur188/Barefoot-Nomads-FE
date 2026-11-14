@@ -174,6 +174,7 @@ export class AdventuresComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedValues: any[] = [];
   trips: any[] = [];
   searchPreference: any = ['Recommended', 'Most Visited'];
+  selectedPreference: string = 'Recommended';
   allTrips: any[] = [];
 
   currentPage = 1;
@@ -238,17 +239,29 @@ export class AdventuresComponent implements OnInit, AfterViewInit, OnDestroy {
         this.applyFilters();
       });
     this.selectedValues = this.filterDetails.map(() => undefined);
-    //this.totalPages = Math.ceil(this.tripsDetails.length / this.itemsPerPage);
-    this.staticService.getTrips().subscribe((data) => {
+    this.selectedPreference = this.searchPreference[0]; // Default to "Recommended"
+    this.loadTrips(true); // Load recommended trips by default
+    this.updatePagination();
+  }
+
+  private loadTrips(recommended: boolean = false): void {
+    this.staticService.getTrips(recommended).subscribe((data) => {
       this.trips = data.trips;
-      this.allTrips = data.trips; // store original data
+      this.allTrips = data.trips;
       this.updatePagination();
       console.log('All Trips', this.allTrips);
       console.log('Filtered Trips', this.trips);
       console.log('Trips before filter:', this.allTrips.length);
       console.log('Trips after filter:', this.trips.length);
     });
-    this.updatePagination();
+  }
+
+  onSearchPreferenceChange(event: Event): void {
+    const preference = (event.target as HTMLSelectElement).value;
+    this.selectedPreference = preference;
+    this.currentPage = 1;
+    const isRecommended = preference === 'Recommended';
+    this.loadTrips(isRecommended);
   }
 
   ngAfterViewInit(): void {

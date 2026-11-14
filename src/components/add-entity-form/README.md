@@ -19,6 +19,7 @@ A dynamic, reusable form component for creating and editing different entity typ
 - Number of days (with quick selectors 1-5)
 - Heading
 - Description
+- Recommend checkbox (unchecked by default)
 - Multiple image uploads (up to 8 images)
 
 ### 2. Batches
@@ -135,6 +136,7 @@ Returns FormData object for file uploads:
 - heading: string
 - description: string
 - numberOfDays: number
+- recommend: boolean as a string (`"true"` or `"false"`)
 - itinerary: File
 - images: File[]
 
